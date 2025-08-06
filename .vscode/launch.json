@@ -1,0 +1,43 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:swan}",
+            "name": "Debug WebGPULife",
+            "program": "${workspaceFolder:swan}/.build/debug/WebGPULife",
+            "preLaunchTask": "swift: Build Debug WebGPULife"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:swan}",
+            "name": "Release WebGPULife",
+            "program": "${workspaceFolder:swan}/.build/release/WebGPULife",
+            "preLaunchTask": "swift: Build Release WebGPULife"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [
+                "${workspaceFolder:CrossPlatform}/webgpu_dawn.xcframework/dawn.json",
+                "${workspaceFolder:CrossPlatform}/Sources/Dawn/Dawn.apinotes"
+            ],
+            "cwd": "${workspaceFolder:swan}",
+            "name": "Debug UpdateDawnBindings",
+            "program": "${workspaceFolder:swan}/.build/debug/UpdateDawnBindings",
+            "preLaunchTask": "swift: Build Debug UpdateDawnBindings"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:swan}",
+            "name": "Release UpdateDawnBindings",
+            "program": "${workspaceFolder:swan}/.build/release/UpdateDawnBindings",
+            "preLaunchTask": "swift: Build Release UpdateDawnBindings"
+        }
+    ]
+}
