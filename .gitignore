@@ -2,3 +2,8 @@
 .DS_Store
 .vscode/settings.json
 webgpu_dawn.xcframework
+Dawn/builds
+Dawn/dist
+Dawn/dawn_source
+__pycache__
+.venv
