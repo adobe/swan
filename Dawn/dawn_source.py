@@ -34,12 +34,10 @@ class DawnSourceToolsDirectoryNotFoundError(DawnSourceDirectoryConfigurationErro
 def get_matching_dawn_for_chromium(channel: str = "canary") -> None:
     """
     Get the Dawn version that matches the latest Chromium release for the given channel
+    and write the version data to the dawn_version.json file.
 
     Args:
         channel: The Chromium channel to use for fetching the latest version
-
-    Returns:
-        A tuple containing the Dawn hash, version, and suffix
     """
 
     chromium_dawn_hash, chromium_dawn_version, chromium_dawn_suffix = (
@@ -48,7 +46,6 @@ def get_matching_dawn_for_chromium(channel: str = "canary") -> None:
     print(
         f"Downloading Dawn matching Chromium version {chromium_dawn_version} ({chromium_dawn_hash})..."
     )
-    fetch_dawn_source(chromium_dawn_hash)
 
     version_data = {
         "chromium_dawn_hash": chromium_dawn_hash,
@@ -154,6 +151,25 @@ def fetch_dawn_source(hash: str) -> None:
         )
     except subprocess.CalledProcessError as e:
         raise GitOperationError(f"Failed to checkout Dawn repository: {e.stderr}")
+
+    # Apply the patch to the Dawn source
+    print("Applying patch to Dawn source...")
+    try:
+        subprocess.run(
+            [
+                "git",
+                "apply",
+                "--ignore-space-change",
+                "--ignore-whitespace",
+                "../dawn_source.patch",
+            ],
+            cwd=str(get_dawn_path()),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except subprocess.CalledProcessError as e:
+        raise GitOperationError(f"Failed to apply patch to Dawn repository: {e.stderr}")
 
     # Verify Dawn tools directory and fetch dawn dependencies
     dawn_source_tools = dest_dir / "tools" / "fetch_dawn_dependencies.py"

@@ -1,0 +1,93 @@
+# Copyright 2025 Adobe
+# All Rights Reserved.
+#
+# NOTICE: Adobe permits you to use, modify, and distribute this file in
+# accordance with the terms of the Adobe license agreement accompanying
+# it.
+
+name: Check if Dawn is up to date
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Chromium channel for Dawn"
+        required: false
+        default: "canary"
+        type: choice
+        options:
+          - stable
+          - beta
+          - canary
+      config:
+        description: "Configuration"
+        required: false
+        default: "release"
+        type: choice
+        options:
+          - release
+          - debug
+
+jobs:
+  check-dawn:
+    runs-on: ubuntu-latest
+    outputs:
+      needs_build: ${{ steps.release_check.outputs.needs_build }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          cd Dawn
+          pip install -r requirements.txt
+
+      - name: Get Dawn version
+        run: |
+          cd Dawn
+          python ci_build_dawn.py get-dawn-version --channel ${{ github.event.inputs.channel }}
+
+      - name: Read Dawn version
+        id: read-version
+        run: |
+          cd Dawn
+          value=$(jq -r '.chromium_channel' dawn_version.json)
+          echo "chromium_channel=$value" >> $GITHUB_OUTPUT
+          value=$(jq -r '.chromium_dawn_version' dawn_version.json)
+          echo "chromium_dawn_version=$value" >> $GITHUB_OUTPUT
+          value=$(jq -r '.chromium_dawn_hash' dawn_version.json)
+          echo "chromium_dawn_hash=$value" >> $GITHUB_OUTPUT
+          value=$(jq -r '.chromium_dawn_suffix' dawn_version.json)
+          echo "chromium_dawn_suffix=$value" >> $GITHUB_OUTPUT
+
+      - name: Tag name
+        id: tag
+        run: |
+          TAG="dawn-chromium-${{github.event.inputs.channel}}-${{steps.read-version.outputs.chromium_dawn_version}}-${{github.event.inputs.config}}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Run Dawn build if necessary
+        id: release_check
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release '$TAG' already exists. Skipping upload."
+            echo "needs_build=false" >> $GITHUB_OUTPUT
+          else
+            echo "Uploading to release: $TAG"
+            echo "needs_build=true" >> $GITHUB_OUTPUT
+          fi
+  
+  build-dawn:
+    if: ${{ needs.check-dawn.outputs.needs_build == 'true' }}
+    needs: check-dawn
+    uses: ./.github/workflows/dawn.yaml
+    with:
+      channel: ${{ github.event.inputs.channel }}
+      config: ${{ github.event.inputs.config }}

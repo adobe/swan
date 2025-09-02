@@ -24,13 +24,16 @@ def write_target_manifest(
         manifest_file: Path to the manifest file to write
         target_config: Target configuration containing build settings
     """
-    build_dir = pathlib.Path("builds").resolve()
+    build_dir = pathlib.Path("builds")
     target_dir = build_dir / str(target_config) / "install"
     manifest = {
         "targetName": str(target_config),
         "libraryPath": str(target_dir / "lib"),
         "includePath": str(target_dir / "include"),
         "supportedTriples": target_config.triples(),
+        "libraryName": "libwebgpu_dawn.lib"
+        if target_config.os.is_windows()
+        else "libwebgpu_dawn.a",
     }
     manifest_file.write_text(json.dumps(manifest, indent=2))
 
@@ -56,13 +59,15 @@ def write_bundle_manifest(version: str) -> None:
     Args:
         version: Version string for the bundle
     """
-    archive_dir = pathlib.Path("dist").resolve() / "dawn_webgpu.artifactbundle"
+    archive_dir = pathlib.Path("dist") / "dawn_webgpu.artifactbundle"
     archive_dir.mkdir(exist_ok=True, parents=True)
     archive_manifest_file = archive_dir / "info.json"
 
     target_manifests = [
         {
-            "path": str(pathlib.Path(manifest["targetName"]) / "libwebgpu_dawn.a"),
+            "path": (
+                pathlib.Path(manifest["targetName"]) / manifest["libraryName"]
+            ).as_posix(),
             "staticLibraryMetadata": {"headerPaths": ["include"]},
             "supportedTriples": manifest["supportedTriples"],
         }
@@ -90,15 +95,15 @@ def build_bundle_target(target_config: TargetConfig) -> None:
         target_config: Target configuration for the build
     """
     dawn_path = dawn_source.get_dawn_path()
-    build_dir = pathlib.Path("builds").resolve()
+    build_dir = pathlib.Path("builds")
 
     target_name = str(target_config)
     target_dir = build_dir / target_name / "install"
     target_dir.mkdir(exist_ok=True, parents=True)
 
-    manifset_dir = build_dir / "manifest"
-    manifset_dir.mkdir(exist_ok=True, parents=True)
-    manifest_file = manifset_dir / f"{target_name}.json"
+    manifest_dir = build_dir / "manifest"
+    manifest_dir.mkdir(exist_ok=True, parents=True)
+    manifest_file = manifest_dir / f"{target_name}.json"
 
     dawn_builder.build_dawn(dawn_path, target_dir, target_config)
     write_target_manifest(manifest_file, target_config)
@@ -153,7 +158,7 @@ def create_artifact_bundle(version: str, archive_name: str) -> pathlib.Path:
     dawn_version_file.write_text(json.dumps(version_data, indent=2))
 
     # Create the archive
-    archive_path = pathlib.Path("dist").resolve() / f"{archive_name}"
+    archive_path = pathlib.Path("dist") / f"{archive_name}"
 
     # Remove the archive if it exists (from shutil.make_archive)
     if archive_path.exists():
@@ -173,7 +178,7 @@ def dist_directory() -> pathlib.Path:
     Returns:
         Path to the dist directory
     """
-    return pathlib.Path("dist").resolve()
+    return pathlib.Path("dist")
 
 
 def artifact_bundle_directory() -> pathlib.Path:
@@ -190,7 +195,7 @@ def remove_build_directory() -> None:
     """
     Remove the build directory and all its contents.
     """
-    build_dir = pathlib.Path("builds").resolve()
+    build_dir = pathlib.Path("builds")
     if build_dir.exists():
         shutil.rmtree(build_dir)
 
@@ -211,4 +216,4 @@ def manifests_dir() -> pathlib.Path:
     Returns:
         Path to the manifests directory
     """
-    return pathlib.Path("builds").resolve() / "manifest"
+    return pathlib.Path("builds") / "manifest"
