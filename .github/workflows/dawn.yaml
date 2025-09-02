@@ -1,0 +1,203 @@
+name: Build Dawn WebGPU
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Chromium channel for Dawn"
+        required: false
+        default: "canary"
+        type: choice
+        options:
+          - stable
+          - beta
+          - canary
+
+env:
+  DAWN_CHANNEL: ${{ github.event.inputs.channel || 'canary' }}
+
+jobs:
+  get-dawn-source:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          cd Dawn
+          pip install -r requirements.txt
+
+      - name: Get Dawn source
+        run: |
+          cd Dawn
+          python ci_build_dawn.py get-dawn --channel ${{ env.DAWN_CHANNEL }}
+
+      - name: Upload Dawn source
+        uses: actions/upload-artifact@v4
+        with:
+          name: dawn-source
+          path: |
+            Dawn/dawn_source/
+            !Dawn/dawn_source/.git
+          retention-days: 1
+
+      - name: Read Dawn version
+        id: read-version
+        run: |
+          cd Dawn
+          value=$(jq -r '.chromium_channel' dawn_version.json)
+          echo "chromium_channel=$value" >> $GITHUB_OUTPUT
+          value=$(jq -r '.chromium_dawn_version' dawn_version.json)
+          echo "chromium_dawn_version=$value" >> $GITHUB_OUTPUT
+          value=$(jq -r '.chromium_dawn_hash' dawn_version.json)
+          echo "chromium_dawn_hash=$value" >> $GITHUB_OUTPUT
+          value=$(jq -r '.chromium_dawn_suffix' dawn_version.json)
+          echo "chromium_dawn_suffix=$value" >> $GITHUB_OUTPUT
+
+  build-dawn:
+    needs: get-dawn-source
+    strategy:
+      matrix:
+        include:
+          - platform: ubuntu-latest
+            target: linux
+            python-version: "3.11"
+          - platform: macos-latest
+            target: macosx
+            python-version: "3.11"
+          # - platform: windows-latest
+          #   target: windows
+          #   python-version: "3.11"
+          - platform: macos-latest
+            target: iphoneos
+            python-version: "3.11"
+          - platform: macos-latest
+            target: iphonesimulator
+            python-version: "3.11"
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          cd Dawn
+          pip install -r requirements.txt
+
+      - name: Download Dawn source
+        uses: actions/download-artifact@v5
+        with:
+          name: dawn-source
+          path: Dawn/dawn_source/
+
+      - name: Build Dawn for ${{ matrix.target }}
+        run: |
+          cd Dawn
+          python ci_build_dawn.py build-target --target ${{ matrix.target }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dawn-build-${{ matrix.target }}
+          path: Dawn/builds/
+          retention-days: 1
+
+  create-bundle:
+    needs: [build-dawn, get-dawn-source]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          cd Dawn
+          pip install -r requirements.txt
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: Dawn/builds/
+
+      - name: Create artifact bundle
+        run: |
+          cd Dawn
+          python ci_build_dawn.py bundle
+
+      - name: Upload bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dawn-webgpu-bundle
+          path: Dawn/dawn_webgpu_${{needs.get-dawn-source.outputs.chromium_dawn_suffix}}.zip
+          retention-days: 30
+
+  create-release:
+    needs: [create-bundle, get-dawn-source]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download bundle artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dawn-webgpu-bundle
+          path: dawn-bundle/
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_name: Dawn WebGPU from Chromium ${{ needs.get-dawn-source.outputs.chromium_dawn_version }}
+          body: |
+            Dawn WebGPU build matching Chromium ${{ needs.get-dawn-source.outputs.chromium_dawn_version }}.
+            Built from Dawn hash: ${{ needs.get-dawn-source.outputs.chromium_dawn_hash }}
+
+            This release contains pre-built Dawn WebGPU libraries for multiple platforms:
+            - linux (x86_64)
+            - macosx (x86_64 + ARM64)
+            - iphoneos (ARM64)
+            - iphonesimulator (x86_64)
+
+            Built from Chromium channel: ${{ env.DAWN_CHANNEL }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        run: |
+          TAG="dawn-chromium-${{env.DAWN_CHANNEL}}-${{needs.get-dawn-source.outputs.chromium_dawn_version}}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release '$TAG' already exists. Skipping upload."
+          else
+            echo "Uploading to release: $TAG"
+            cd dawn-bundle
+            gh release upload $TAG dawn_webgpu_${{needs.get-dawn-source.outputs.chromium_dawn_suffix}}.zip --clobber
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
