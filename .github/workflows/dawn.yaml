@@ -172,7 +172,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dawn-version
-          path: Dawn/dawn_version.json
+          path: Dawn
 
       - name: Create artifact bundle
         run: |
@@ -201,6 +201,12 @@ jobs:
           name: dawn-webgpu-bundle
           path: dawn-bundle/
 
+      - name: Compute SHA256
+        run: |
+          cd dawn-bundle
+          sha256sum dawn_webgpu_${{needs.get-dawn-source.outputs.chromium_dawn_suffix}}.zip > sha256sum.txt
+          echo "sha256sum=$(cat sha256sum.txt)" >> $GITHUB_OUTPUT
+
       - name: Tag name
         run: |
           TAG="dawn-chromium-${{env.DAWN_CHANNEL}}-${{needs.get-dawn-source.outputs.chromium_dawn_version}}"
@@ -216,6 +222,7 @@ jobs:
           body: |
             Dawn WebGPU build matching Chromium ${{ needs.get-dawn-source.outputs.chromium_dawn_version }}.
             Built from Dawn hash: ${{ needs.get-dawn-source.outputs.chromium_dawn_hash }}
+            SHA256: ${{ needs.create-release.outputs.sha256sum }}
 
             This release contains pre-built Dawn WebGPU libraries for multiple platforms:
             - linux (x86_64)
