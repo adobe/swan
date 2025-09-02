@@ -27,6 +27,7 @@ _EXIT_SUCCESS = 0
 class BuildDawnError(Exception): pass
 class SDKPathNotFoundError(BuildDawnError): pass
 class CMakeError(BuildDawnError): pass
+class CMakeBuildError(BuildDawnError): pass
 class UploadArchiverError(BuildDawnError): pass
 # fmt: on
 
@@ -59,6 +60,15 @@ class OS(Enum):
         """
         return self in [OS.MACOS, OS.IPHONE, OS.IPADOS]
 
+    def is_windows(self) -> bool:
+        """
+        Check if this OS is Windows.
+
+        Returns:
+            True if this is a Windows OS
+        """
+        return self == OS.WINDOWS
+
 
 def get_current_os() -> OS:
     """
@@ -89,7 +99,8 @@ class TargetConfig:
     arch: List[Arch]
     sdk: Optional[str] = None
     deployment_target: Optional[str] = None
-    debug: bool = False
+    config: str = "release"
+    build_tool: str = "Ninja"
 
     def __str__(self) -> str:
         """
@@ -103,10 +114,7 @@ class TargetConfig:
             parts.append(arch.value)
         if self.sdk:
             parts.append(self.sdk)
-        if self.debug:
-            parts.append("debug")
-        else:
-            parts.append("release")
+        parts.append(self.config)
         return "_".join(parts)
 
     def triples(self) -> List[str]:
@@ -156,7 +164,7 @@ def cmake_flags(target_config: TargetConfig) -> List[str]:
             flags.append("-DDAWN_USE_GLFW=OFF")
             flags.append("-DCMAKE_SYSTEM_NAME=iOS")
 
-    if target_config.debug:
+    if target_config.config == "debug":
         flags.append("-DCMAKE_BUILD_TYPE=Debug")
     else:
         flags.append("-DCMAKE_BUILD_TYPE=Release")
@@ -259,10 +267,10 @@ def build_dawn(
 
     cmake_exec = shutil.which("cmake", path=os.environ.get("PATH"))
 
-    # Run cmake command
+    # Run cmake command to create the build files
     try:
         subprocess.run(
-            [cmake_exec, "-GNinja", *flags, str(dawn_path)],
+            [cmake_exec, f"-G{target_config.build_tool}", *flags, str(dawn_path)],
             env=os.environ,
             cwd=build_dir,
             capture_output=True,
@@ -273,9 +281,22 @@ def build_dawn(
         _subprocess_exception_message(e)
         raise CMakeError
 
-    # Run ninja command
-    ninja_exec = shutil.which("ninja", path=os.environ.get("PATH"))
-    subprocess.run([ninja_exec], cwd=build_dir, check=True)
+    # Run the cmake build command
+    try:
+        subprocess.run(
+            [
+                cmake_exec,
+                "--build",
+                ".",
+                "--config",
+                "Debug" if target_config.config == "debug" else "Release",
+            ],
+            cwd=build_dir,
+            check=True,
+        )
+    except subprocess.CalledProcessError as e:
+        _subprocess_exception_message(e)
+        raise CMakeBuildError
 
     # Install the library and headers
     try:

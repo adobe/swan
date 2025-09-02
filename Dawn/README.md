@@ -21,8 +21,12 @@ If you wish to build a version of Dawn yourself, you can use these CI scripts as
 python3 -m venv .venv
 pip3 install -r requirements.txt
 
-# Download the Dawn source matching the latest release of Chromium Canary
-./ci_build_dawn.py get-dawn
+# Determine the latest release of Chromium Canary and get the Dawn hash
+# Write the data to dawn_version.json
+./ci_build_dawn.py get-dawn-version
+
+# Download the Dawn source matching the given hash
+./ci_build_dawn.py get-source --hash ABC1234ABC
 
 # Build Dawn, running these commands on the appropriate platform
 # Note that macosx builds both Intel and Arm
