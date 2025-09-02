@@ -10,13 +10,13 @@ A set of Swift APIs for using WebGPU across multiple platforms.
 The goal is to be able to write GPU code, using Swift, that works everywhere, including
 (eventually) the web.
 
-The initial implementation is Swift binding to Google's Dawn library.
+The initial implementation is a Swift binding to Google's Dawn library.
 
 ## Non-Goals
 
-Swift WGPU is not intended to be a full rendering engine. It does not provide any
-rendering primitives beyond what is in WebGPU spec. For example, we do not specify a 4x4
-matrix implementation, although we may use one in our examples.
+Swan is not intended to be a full rendering engine. It does not provide any rendering
+primitives beyond what is in WebGPU spec. For example, we do not specify a 4x4 matrix
+implementation, although we may use one in our examples.
 
 ### Quick Start
 
@@ -62,4 +62,4 @@ Contributions are welcomed! Read the [Contributing Guide](./.github/CONTRIBUTING
 
 ### Licensing
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for more information.
+This project is licensed under the BSD 3-Clause License. See [LICENSE](LICENSE) for more information.
