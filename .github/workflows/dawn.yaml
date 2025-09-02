@@ -47,6 +47,15 @@ jobs:
           path: |
             Dawn/dawn_source/
             !Dawn/dawn_source/.git
+            !Dawn/dawn_source/**/*.git
+            !Dawn/dawn_source/third_party/khronos/OpenGL-Registry/specs
+          retention-days: 1
+
+      - name: Upload Dawn Version
+        uses: actions/upload-artifact@v4
+        with:
+          name: dawn-version
+          path: Dawn/dawn_version.json
           retention-days: 1
 
       - name: Read Dawn version
@@ -100,7 +109,6 @@ jobs:
       - name: Install prerequisites on Mac
         if: matrix.platform == 'macos-latest'
         run: |
-          brew install ninja
           echo "c_compiler=clang" >> "$GITHUB_OUTPUT"
           echo "cxx_compiler=clang++" >> "$GITHUB_OUTPUT"
 
@@ -160,6 +168,12 @@ jobs:
         with:
           path: Dawn/builds/
 
+      - name: Download Dawn version
+        uses: actions/download-artifact@v4
+        with:
+          name: dawn-version
+          path: Dawn/dawn_version.json
+
       - name: Create artifact bundle
         run: |
           cd Dawn
@@ -187,12 +201,18 @@ jobs:
           name: dawn-webgpu-bundle
           path: dawn-bundle/
 
+      - name: Tag name
+        run: |
+          TAG="dawn-chromium-${{env.DAWN_CHANNEL}}-${{needs.get-dawn-source.outputs.chromium_dawn_version}}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
       - name: Create Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           release_name: Dawn WebGPU from Chromium ${{ needs.get-dawn-source.outputs.chromium_dawn_version }}
+          tag_name: ${{ needs.create-release.outputs.tag }}
           body: |
             Dawn WebGPU build matching Chromium ${{ needs.get-dawn-source.outputs.chromium_dawn_version }}.
             Built from Dawn hash: ${{ needs.get-dawn-source.outputs.chromium_dawn_hash }}
@@ -211,7 +231,7 @@ jobs:
 
       - name: Upload Release Assets
         run: |
-          TAG="dawn-chromium-${{env.DAWN_CHANNEL}}-${{needs.get-dawn-source.outputs.chromium_dawn_version}}"
+          TAG="${{ needs.create-release.outputs.tag }}"
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "Release '$TAG' already exists. Skipping upload."
           else
