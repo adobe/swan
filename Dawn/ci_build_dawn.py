@@ -16,15 +16,15 @@ _EXIT_FAILURE = 1
 _EXIT_SUCCESS = 0
 
 
-def build_target(target: str, debug: bool) -> None:
+def build_target(target: str, config: str = "release") -> None:
     """
     Build a target using the specified configuration.
 
     Args:
         target: The target platform to build for
-        debug: Whether to build in debug mode
+        config: The configuration to build for
     """
-    target_config = ci_target(target, debug)
+    target_config = ci_target(target, config)
     archive_builder.build_bundle_target(target_config)
 
 
@@ -77,12 +77,21 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="CI build tools for Dawn")
     subparsers = parser.add_subparsers(dest="command")
 
-    get_parser = subparsers.add_parser("get-dawn", help="Get the latest Dawn source")
+    get_parser = subparsers.add_parser(
+        "get-dawn-version", help="Get the latest Dawn version"
+    )
     get_parser.add_argument(
         "--channel",
         choices=["stable", "beta", "canary"],
         default="canary",
         help="Chromium channel to use for Dawn",
+    )
+
+    get_parser = subparsers.add_parser("get-source", help="Get the Dawn source")
+    get_parser.add_argument(
+        "--hash",
+        required=True,
+        help="Dawn hash to get the source for",
     )
 
     build_parser = subparsers.add_parser("build-target", help="Build a target")
@@ -93,12 +102,13 @@ def parse_args() -> argparse.Namespace:
         help="Target platform to build for",
     )
     build_parser.add_argument(
-        "--debug", action="store_true", default=False, help="Enable debug mode"
+        "--config",
+        choices=["release", "debug"],
+        default="release",
+        help="Configuration to build for",
     )
 
     subparsers.add_parser("bundle", help="Bundle a target")
-
-    upload_parser = subparsers.add_parser("upload", help="Upload a target")
 
     subparsers.add_parser("clean", help="Clean the build environment")
 
@@ -113,8 +123,11 @@ def main() -> int:
         Exit code (0 for success, 1 for failure)
     """
     args = parse_args()
-    if args.command == "get-dawn":
+    if args.command == "get-dawn-version":
         dawn_source.get_matching_dawn_for_chromium(args.channel)
+        print(dawn_source.get_version())
+    elif args.command == "get-source":
+        dawn_source.fetch_dawn_source(args.hash)
     elif args.command == "build-target":
         if args.target not in [
             "windows",
@@ -126,7 +139,7 @@ def main() -> int:
             print(f"Invalid target: {args.target}")
             return _EXIT_FAILURE
 
-        build_target(args.target, args.debug)
+        build_target(args.target, args.config)
     elif args.command == "bundle":
         bundle()
     elif args.command == "upload":

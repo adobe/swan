@@ -1,0 +1,13 @@
+diff --git a/src/cmake/DawnLibrary.cmake b/src/cmake/DawnLibrary.cmake
+index a5352433f0..fbdcb260db 100644
+--- a/src/cmake/DawnLibrary.cmake
++++ b/src/cmake/DawnLibrary.cmake
+@@ -182,7 +182,7 @@ function(dawn_install_target name)
+   # When building in debug mode with MSVC, install PDB files together with binaries
+   if (MSVC)
+     get_target_property(target_type "${name}" TYPE)
+-    if ((target_type STREQUAL "STATIC_LIBRARY") OR (target_type STREQUAL "SHARED_LIBRARY") OR (target_type STREQUAL "EXECUTABLE"))
++    if ((target_type STREQUAL "SHARED_LIBRARY") OR (target_type STREQUAL "EXECUTABLE"))
+       install(FILES $<TARGET_PDB_FILE:${name}> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
+     endif()
+   endif (MSVC)
