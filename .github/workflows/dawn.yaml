@@ -68,6 +68,9 @@ jobs:
       matrix:
         include:
           - platform: ubuntu-latest
+            runs-on: ubuntu-latest
+            container:
+              image: ghcr.io/adobe/swan-dawn-builder:latest
             target: linux
             python-version: "3.11"
           - platform: macos-latest
