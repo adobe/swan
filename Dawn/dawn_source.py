@@ -128,7 +128,7 @@ def fetch_dawn_source(hash: str) -> None:
         DawnSourceDirectoryConfigurationError, DawnSourceToolsDirectoryNotFoundError, for Dawn Source directory errors
     """
     # Remove destination directory if it exists
-    dest_dir = pathlib.Path("dawn_source").resolve()
+    dest_dir = get_dawn_path()
     if dest_dir.exists():
         shutil.rmtree(dest_dir)
 
@@ -177,7 +177,7 @@ def remove_dawn_source() -> None:
     """
     Remove the Dawn source directory and version file.
     """
-    dawn_source_dir = pathlib.Path("dawn_source").resolve()
+    dawn_source_dir = get_dawn_path()
     if dawn_source_dir.exists():
         shutil.rmtree(dawn_source_dir)
 
@@ -193,4 +193,4 @@ def get_dawn_path() -> pathlib.Path:
     Returns:
         Path to the Dawn source directory
     """
-    return pathlib.Path("dawn_source").resolve()
+    return pathlib.Path("dawn-source").resolve()
