@@ -100,7 +100,7 @@ jobs:
       - name: Install prerequisites on Mac
         if: matrix.platform == 'macos-latest'
         run: |
-          brew install cmake ninja
+          brew install ninja
           echo "c_compiler=clang" >> "$GITHUB_OUTPUT"
           echo "cxx_compiler=clang++" >> "$GITHUB_OUTPUT"
 
