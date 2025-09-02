@@ -68,9 +68,6 @@ jobs:
       matrix:
         include:
           - platform: ubuntu-latest
-            runs-on: ubuntu-latest
-            container:
-              image: ghcr.io/adobe/swan-dawn-builder:latest
             target: linux
             python-version: "3.11"
           - platform: macos-latest
@@ -91,6 +88,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install prerequisites on Linux
+        if: matrix.platform == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake curl git gnupg2 libcurl4-openssl-dev libpython3-dev libssl-dev libx11-xcb-dev libxcursor-dev libxi-dev libxinerama-dev libxml2-dev libxrandr-dev libz-dev libz3-dev mesa-common-dev ninja-build pkg-config python3 python3-pip python3-venv tzdata unzip wget
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -187,6 +190,8 @@ jobs:
             - macosx (x86_64 + ARM64)
             - iphoneos (ARM64)
             - iphonesimulator (x86_64)
+
+            These are just the raw Dawn libraries and do not include the Swift API layer.
 
             Built from Chromium channel: ${{ env.DAWN_CHANNEL }}
           draft: false
