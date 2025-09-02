@@ -193,4 +193,4 @@ def get_dawn_path() -> pathlib.Path:
     Returns:
         Path to the Dawn source directory
     """
-    return pathlib.Path("dawn-source").resolve()
+    return pathlib.Path("dawn_source").resolve()
