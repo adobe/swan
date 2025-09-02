@@ -2,11 +2,10 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
     paths:
       - ".devcontainer/Dockerfile"
   pull_request:
-    branches: [main, master]
     paths:
       - ".devcontainer/Dockerfile"
   workflow_dispatch:
