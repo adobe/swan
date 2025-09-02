@@ -54,6 +54,7 @@ def get_matching_dawn_for_chromium(channel: str = "canary") -> None:
         "chromium_dawn_hash": chromium_dawn_hash,
         "chromium_dawn_version": chromium_dawn_version,
         "chromium_dawn_suffix": chromium_dawn_suffix,
+        "chromium_channel": channel,
     }
 
     version_file = pathlib.Path("dawn_version.json")
