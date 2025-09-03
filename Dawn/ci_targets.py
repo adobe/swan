@@ -58,6 +58,11 @@ def ci_target(name: str, config: str = "release") -> TargetConfig:
         case "linux":
             return TargetConfig(os=OS.LINUX, arch=[Arch.X86_64], config=config)
         case "windows":
-            return TargetConfig(os=OS.WINDOWS, arch=[Arch.X86_64], config=config)
+            return TargetConfig(
+                os=OS.WINDOWS,
+                arch=[Arch.X86_64],
+                config=config,
+                build_tool="Visual Studio 17 2022",
+            )
         case _:
             raise ValueError(f"Invalid target name: {name}")
