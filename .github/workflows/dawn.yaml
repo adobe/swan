@@ -103,14 +103,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential clang cmake curl git gnupg2 libcurl4-openssl-dev libpython3-dev libssl-dev libx11-xcb-dev libxcursor-dev libxi-dev libxinerama-dev libxml2-dev libxrandr-dev libz-dev libz3-dev mesa-common-dev ninja-build pkg-config python3 python3-pip python3-venv tzdata unzip wget
-          echo "c_compiler=clang" >> "$GITHUB_OUTPUT"
-          echo "cxx_compiler=clang++" >> "$GITHUB_OUTPUT"
-
-      - name: Install prerequisites on Mac
-        if: matrix.platform == 'macos-latest'
-        run: |
-          echo "c_compiler=clang" >> "$GITHUB_OUTPUT"
-          echo "cxx_compiler=clang++" >> "$GITHUB_OUTPUT"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -130,9 +122,6 @@ jobs:
           path: Dawn/dawn_source/
 
       - name: Build Dawn for ${{ matrix.target }}
-        env:
-          CC: ${{ env.c_compiler }}
-          CXX: ${{ env.cxx_compiler }}
         run: |
           cd Dawn
           python ci_build_dawn.py build-target --target ${{ matrix.target }}
@@ -142,13 +131,6 @@ jobs:
         with:
           name: dawn-build-${{ matrix.target }}
           path: Dawn/builds/
-          retention-days: 1
-
-      - name: Upload build manifest
-        uses: actions/upload-artifact@v4
-        with:
-          name: dawn-build-manifest-${{ matrix.target }}
-          path: Dawn/builds/manifests/
           retention-days: 1
 
   create-bundle:
@@ -171,21 +153,15 @@ jobs:
           pip install -r requirements.txt
 
       - name: Download all build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: Dawn/builds/
 
       - name: Download Dawn version
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: dawn-version
           path: Dawn
-
-      - name: Download build manifests
-        uses: actions/download-artifact@v4
-        with:
-          name: dawn-build-manifest-${{ matrix.target }}
-          path: Dawn/builds/manifests/
 
       - name: Create artifact bundle
         run: |
@@ -209,10 +185,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download bundle artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
-          name: dawn-webgpu-bundle
+          pattern: dawn-build-*
           path: dawn-bundle/
+          merge-multiple: true
 
       - name: Compute SHA256
         run: |
