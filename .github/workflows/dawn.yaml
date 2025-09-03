@@ -151,7 +151,8 @@ jobs:
   create-bundle:
     needs: [build-dawn, get-dawn-source]
     runs-on: ubuntu-latest
-
+    outputs:
+      bundle_name: ${{ steps.set-bundle-name.outputs.bundle_name }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -200,11 +201,17 @@ jobs:
           cd Dawn
           python ci_build_dawn.py bundle
 
+      - name: Set bundle name
+        id: set-bundle-name
+        run: |
+          BUNDLE_NAME="dawn_webgpu_${{needs.get-dawn-source.outputs.chromium_dawn_suffix}}.zip"
+          echo "bundle_name=$BUNDLE_NAME" >> $GITHUB_OUTPUT
+
       - name: Upload bundle artifact
         uses: actions/upload-artifact@v4
         with:
           name: dawn-webgpu-bundle
-          path: Dawn/dawn_webgpu_${{needs.get-dawn-source.outputs.chromium_dawn_suffix}}.zip
+          path: Dawn/dist/dawn_webgpu_${{steps.set-bundle-name.outputs.bundle_name}}.zip
           retention-days: 30
 
   create-release:
@@ -225,7 +232,7 @@ jobs:
         id: compute-sha256
         run: |
           cd dawn-bundle
-          sha256sum dawn_webgpu_${{needs.get-dawn-source.outputs.chromium_dawn_suffix}}.zip > sha256sum.txt
+          sha256sum dawn_webgpu_${{needs.create-bundle.outputs.bundle_name}}.zip > sha256sum.txt
           echo "sha256sum=$(cat sha256sum.txt)" >> $GITHUB_OUTPUT
 
       - name: Tag name
