@@ -159,7 +159,13 @@ def fetch_dawn_source(hash: str) -> None:
     print("Applying patch to Dawn source...")
     try:
         subprocess.run(
-            ["git", "apply", "../dawn_source.patch"],
+            [
+                "git",
+                "apply",
+                "--ignore-space-change",
+                "--ignore-whitespace",
+                "../dawn_source.patch",
+            ],
             cwd=str(get_dawn_path()),
             check=True,
             capture_output=True,
