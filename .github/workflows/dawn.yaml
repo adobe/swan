@@ -168,11 +168,20 @@ jobs:
           path: Dawn/builds/
           merge-multiple: true
 
+      - name: List build artifacts
+        run: |
+          ls -R Dawn/builds/
+
       - name: Download Dawn version
         uses: actions/download-artifact@v5
         with:
           name: dawn-version
-          path: Dawn
+          path: Dawn/
+          merge-multiple: true
+
+      - name: List build artifacts 2
+        run: |
+          ls -R Dawn/builds/
 
       - name: Create artifact bundle
         run: |
