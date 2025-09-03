@@ -155,7 +155,9 @@ jobs:
       - name: Download all build artifacts
         uses: actions/download-artifact@v5
         with:
+          pattern: dawn-build-*
           path: Dawn/builds/
+          merge-multiple: true
 
       - name: Download Dawn version
         uses: actions/download-artifact@v5
@@ -187,7 +189,7 @@ jobs:
       - name: Download bundle artifact
         uses: actions/download-artifact@v5
         with:
-          pattern: dawn-build-*
+          name: dawn-webgpu-bundle
           path: dawn-bundle/
           merge-multiple: true
 
