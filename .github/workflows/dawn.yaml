@@ -28,7 +28,11 @@ env:
 jobs:
   get-dawn-source:
     runs-on: ubuntu-latest
-
+    outputs:
+      chromium_channel: ${{ steps.read-version.outputs.chromium_channel }}
+      chromium_dawn_version: ${{ steps.read-version.outputs.chromium_dawn_version }}
+      chromium_dawn_hash: ${{ steps.read-version.outputs.chromium_dawn_hash }}
+      chromium_dawn_suffix: ${{ steps.read-version.outputs.chromium_dawn_suffix }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -206,8 +210,6 @@ jobs:
   create-release:
     needs: [create-bundle, get-dawn-source]
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -220,12 +222,14 @@ jobs:
           merge-multiple: true
 
       - name: Compute SHA256
+        id: compute-sha256
         run: |
           cd dawn-bundle
           sha256sum dawn_webgpu_${{needs.get-dawn-source.outputs.chromium_dawn_suffix}}.zip > sha256sum.txt
           echo "sha256sum=$(cat sha256sum.txt)" >> $GITHUB_OUTPUT
 
       - name: Tag name
+        id: tag
         run: |
           TAG="dawn-chromium-${{env.DAWN_CHANNEL}}-${{needs.get-dawn-source.outputs.chromium_dawn_version}}"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
@@ -236,11 +240,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           release_name: Dawn WebGPU from Chromium ${{ needs.get-dawn-source.outputs.chromium_dawn_version }}
-          tag_name: ${{ needs.create-release.outputs.tag }}
+          tag_name: ${{ steps.tag.outputs.tag }}
           body: |
             Dawn WebGPU build matching Chromium ${{ needs.get-dawn-source.outputs.chromium_dawn_version }}.
             Built from Dawn hash: ${{ needs.get-dawn-source.outputs.chromium_dawn_hash }}
-            SHA256: ${{ needs.create-release.outputs.sha256sum }}
+            SHA256: ${{ steps.compute-sha256.outputs.sha256sum }}
 
             This release contains pre-built Dawn WebGPU libraries for multiple platforms:
             - linux (x86_64)
@@ -256,7 +260,7 @@ jobs:
 
       - name: Upload Release Assets
         run: |
-          TAG="${{ needs.create-release.outputs.tag }}"
+          TAG="${{ steps.tag.outputs.tag }}"
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "Release '$TAG' already exists. Skipping upload."
           else
