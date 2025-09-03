@@ -139,7 +139,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dawn-build-${{ matrix.target }}
-          path: Dawn/builds/
+          path: |
+            Dawn/builds/
+            !Dawn/builds/*/out
           retention-days: 1
 
   create-bundle:

@@ -31,6 +31,9 @@ def write_target_manifest(
         "libraryPath": str(target_dir / "lib"),
         "includePath": str(target_dir / "include"),
         "supportedTriples": target_config.triples(),
+        "libraryName": "libwebgpu_dawn.lib"
+        if target_config.os.is_windows()
+        else "libwebgpu_dawn.a",
     }
     manifest_file.write_text(json.dumps(manifest, indent=2))
 
@@ -62,7 +65,9 @@ def write_bundle_manifest(version: str) -> None:
 
     target_manifests = [
         {
-            "path": str(pathlib.Path(manifest["targetName"]) / "libwebgpu_dawn.a"),
+            "path": (
+                pathlib.Path(manifest["targetName"]) / manifest["libraryName"]
+            ).as_posix(),
             "staticLibraryMetadata": {"headerPaths": ["include"]},
             "supportedTriples": manifest["supportedTriples"],
         }
@@ -96,9 +101,9 @@ def build_bundle_target(target_config: TargetConfig) -> None:
     target_dir = build_dir / target_name / "install"
     target_dir.mkdir(exist_ok=True, parents=True)
 
-    manifset_dir = build_dir / "manifest"
-    manifset_dir.mkdir(exist_ok=True, parents=True)
-    manifest_file = manifset_dir / f"{target_name}.json"
+    manifest_dir = build_dir / "manifest"
+    manifest_dir.mkdir(exist_ok=True, parents=True)
+    manifest_file = manifest_dir / f"{target_name}.json"
 
     dawn_builder.build_dawn(dawn_path, target_dir, target_config)
     write_target_manifest(manifest_file, target_config)
