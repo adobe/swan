@@ -12,9 +12,18 @@ on:
           - stable
           - beta
           - canary
+      config:
+        description: "Configuration"
+        required: false
+        default: "release"
+        type: choice
+        options:
+          - release
+          - debug
 
 env:
   DAWN_CHANNEL: ${{ github.event.inputs.channel || 'canary' }}
+  DAWN_CONFIG: ${{ github.event.inputs.config || 'release' }}
 
 jobs:
   get-dawn-source:
@@ -124,7 +133,7 @@ jobs:
       - name: Build Dawn for ${{ matrix.target }}
         run: |
           cd Dawn
-          python ci_build_dawn.py build-target --target ${{ matrix.target }}
+          python ci_build_dawn.py build-target --target ${{ matrix.target }} --config ${{ env.DAWN_CONFIG }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

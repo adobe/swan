@@ -99,7 +99,7 @@ class TargetConfig:
     arch: List[Arch]
     sdk: Optional[str] = None
     deployment_target: Optional[str] = None
-    debug: bool = False
+    config: str = "release"
     build_tool: str = "Ninja"
 
     def __str__(self) -> str:
@@ -114,10 +114,7 @@ class TargetConfig:
             parts.append(arch.value)
         if self.sdk:
             parts.append(self.sdk)
-        if self.debug:
-            parts.append("debug")
-        else:
-            parts.append("release")
+        parts.append(self.config)
         return "_".join(parts)
 
     def triples(self) -> List[str]:
@@ -167,7 +164,7 @@ def cmake_flags(target_config: TargetConfig) -> List[str]:
             flags.append("-DDAWN_USE_GLFW=OFF")
             flags.append("-DCMAKE_SYSTEM_NAME=iOS")
 
-    if target_config.debug:
+    if target_config.config == "debug":
         flags.append("-DCMAKE_BUILD_TYPE=Debug")
     else:
         flags.append("-DCMAKE_BUILD_TYPE=Release")
@@ -292,7 +289,7 @@ def build_dawn(
                 "--build",
                 ".",
                 "--config",
-                "Debug" if target_config.debug else "Release",
+                "Debug" if target_config.config == "debug" else "Release",
             ],
             cwd=build_dir,
             check=True,
