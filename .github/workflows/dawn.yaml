@@ -163,6 +163,12 @@ jobs:
           cd Dawn
           pip install -r requirements.txt
 
+      - name: Download Dawn source
+        uses: actions/download-artifact@v5
+        with:
+          name: dawn-source
+          path: Dawn/dawn_source/
+
       - name: Download all build artifacts
         uses: actions/download-artifact@v5
         with:
