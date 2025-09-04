@@ -201,7 +201,7 @@ jobs:
 
       - name: List build artifacts
         run: |
-          ls -R Dawn/builds/
+          ls -R Dawn/dist/
 
       - name: Upload bundle artifact
         uses: actions/upload-artifact@v4
