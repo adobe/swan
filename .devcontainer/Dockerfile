@@ -25,7 +25,6 @@ RUN apt-get update && apt-get install -y \
     ninja-build \
     pkg-config \
     python3 \
-    python3-lldb-13 \
     python3-pip \
     python3-venv \
     tzdata \
