@@ -137,6 +137,7 @@ jobs:
         with:
           artifact-ids: ${{ needs.get-dawn-source.outputs.dawn-source-artifact-id }}
           path: Dawn/dawn_source/
+          merge-multiple: true
 
       - name: Build Dawn for ${{ matrix.target }}
         run: |
