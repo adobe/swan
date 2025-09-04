@@ -93,21 +93,21 @@ jobs:
     strategy:
       matrix:
         include:
-          - platform: ubuntu-latest
-            target: linux
-            python-version: "3.11"
-          - platform: macos-latest
-            target: macosx
-            python-version: "3.11"
+          # - platform: ubuntu-latest
+          #   target: linux
+          #   python-version: "3.11"
+          # - platform: macos-latest
+          #   target: macosx
+          #   python-version: "3.11"
           - platform: windows-latest
             target: windows
             python-version: "3.11"
-          - platform: macos-latest
-            target: iphoneos
-            python-version: "3.11"
-          - platform: macos-latest
-            target: iphonesimulator
-            python-version: "3.11"
+          # - platform: macos-latest
+          #   target: iphoneos
+          #   python-version: "3.11"
+          # - platform: macos-latest
+          #   target: iphonesimulator
+          #   python-version: "3.11"
 
     runs-on: ${{ matrix.platform }}
 
