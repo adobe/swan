@@ -87,7 +87,10 @@ def parse_args() -> argparse.Namespace:
         help="Chromium channel to use for Dawn",
     )
 
-    get_parser = subparsers.add_parser("get-source", help="Get the Dawn source")
+    get_parser = subparsers.add_parser(
+        "get-source",
+        help="Get the Dawn source"
+    )
     get_parser.add_argument(
         "--hash",
         required=True,
@@ -135,6 +138,7 @@ def main() -> int:
             "macosx",
             "iphoneos",
             "iphonesimulator",
+            "windows",
         ]:
             print(f"Invalid target: {args.target}")
             return _EXIT_FAILURE

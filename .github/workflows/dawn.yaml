@@ -99,9 +99,9 @@ jobs:
           - platform: macos-latest
             target: macosx
             python-version: "3.11"
-          # - platform: windows-latest
-          #   target: windows
-          #   python-version: "3.11"
+          - platform: windows-latest
+            target: windows
+            python-version: "3.11"
           - platform: macos-latest
             target: iphoneos
             python-version: "3.11"
