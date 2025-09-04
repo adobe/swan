@@ -181,20 +181,12 @@ jobs:
           path: Dawn/builds/
           merge-multiple: true
 
-      - name: List build artifacts
-        run: |
-          ls -R Dawn/builds/
-
       - name: Download Dawn version
         uses: actions/download-artifact@v5
         with:
           name: dawn-version
           path: Dawn/
           merge-multiple: true
-
-      - name: List build artifacts 2
-        run: |
-          ls -R Dawn/builds/
 
       - name: Create artifact bundle
         run: |
@@ -206,6 +198,10 @@ jobs:
         run: |
           BUNDLE_NAME="dawn_webgpu_${{needs.get-dawn-source.outputs.chromium_dawn_suffix}}.zip"
           echo "bundle_name=$BUNDLE_NAME" >> $GITHUB_OUTPUT
+
+      - name: List build artifacts
+        run: |
+          ls -R Dawn/builds/
 
       - name: Upload bundle artifact
         uses: actions/upload-artifact@v4
