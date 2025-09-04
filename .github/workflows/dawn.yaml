@@ -30,25 +30,15 @@ on:
   workflow_call:
     inputs:
       channel:
-        description: "Chromium channel for Dawn"
         required: false
         default: "canary"
-        type: choice
-        options:
-          - stable
-          - beta
-          - canary
+        description: "Chromium channel for Dawn (stable, beta, canary)"
+        type: string
       config:
-        description: "Configuration"
+        description: "Configuration (release or debug)"
         required: false
         default: "release"
-        type: choice
-        options:
-          - release
-          - debug
-    secrets:
-      GITHUB_TOKEN:
-        required: true
+        type: string
 
 jobs:
   get-dawn-version:
@@ -150,7 +140,7 @@ jobs:
       - name: Build Dawn for ${{ matrix.target }}
         run: |
           cd Dawn
-          python ci_build_dawn.py build-target --target ${{ matrix.target }} --config ${{ env.DAWN_CONFIG }}
+          python ci_build_dawn.py build-target --target ${{ matrix.target }} --config ${{ github.event.inputs.config }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -251,7 +241,7 @@ jobs:
       - name: Tag name
         id: tag
         run: |
-          TAG="dawn-chromium-${{github.event.inputs.channel}}-${{needs.get-dawn-version.outputs.chromium_dawn_version}}"
+          TAG="dawn-chromium-${{github.event.inputs.channel}}-${{needs.get-dawn-version.outputs.chromium_dawn_version}}-${{github.event.inputs.config}}"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: Create Release
