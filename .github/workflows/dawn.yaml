@@ -199,15 +199,11 @@ jobs:
           BUNDLE_NAME="dawn_webgpu_${{needs.get-dawn-source.outputs.chromium_dawn_suffix}}.zip"
           echo "bundle_name=$BUNDLE_NAME" >> $GITHUB_OUTPUT
 
-      - name: List build artifacts
-        run: |
-          ls -R Dawn/dist/
-
       - name: Upload bundle artifact
         uses: actions/upload-artifact@v4
         with:
           name: dawn-webgpu-bundle
-          path: Dawn/dist/dawn_webgpu_${{steps.set-bundle-name.outputs.bundle_name}}
+          path: Dawn/dist/${{steps.set-bundle-name.outputs.bundle_name}}
           retention-days: 30
 
   create-release:
@@ -228,7 +224,7 @@ jobs:
         id: compute-sha256
         run: |
           cd dawn-bundle
-          sha256sum dawn_webgpu_${{needs.create-bundle.outputs.bundle_name}} > sha256sum.txt
+          sha256sum ${{needs.create-bundle.outputs.bundle_name}} > sha256sum.txt
           echo "sha256sum=$(cat sha256sum.txt)" >> $GITHUB_OUTPUT
 
       - name: Tag name
@@ -269,7 +265,7 @@ jobs:
           else
             echo "Uploading to release: $TAG"
             cd dawn-bundle
-            gh release upload $TAG dawn_webgpu_${{needs.create-bundle.outputs.bundle_name}} --clobber
+            gh release upload $TAG ${{needs.create-bundle.outputs.bundle_name}} --clobber
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
