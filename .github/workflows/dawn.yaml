@@ -61,7 +61,7 @@ jobs:
         with:
           name: dawn-source
           path: |
-            Dawn/dawn_source/
+            Dawn/dawn_source/*.json
             !Dawn/dawn_source/.git
             !Dawn/dawn_source/**/*.git
             !Dawn/dawn_source/third_party/khronos/OpenGL-Registry/specs
@@ -137,7 +137,10 @@ jobs:
         with:
           artifact-ids: ${{ needs.get-dawn-source.outputs.dawn-source-artifact-id }}
           path: Dawn/dawn_source/
-          merge-multiple: true
+
+      - name: Debug Dawn source
+        run: |
+          ls -R Dawn/dawn_source/
 
       - name: Build Dawn for ${{ matrix.target }}
         run: |
