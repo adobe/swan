@@ -89,11 +89,15 @@ jobs:
         id: release_check
         run: |
           TAG="${{ steps.tag.outputs.tag }}"
+
+          echo "Checking for release: $TAG"
+          gh release view "$TAG"
+
           if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "Release '$TAG' already exists. Skipping upload."
+            echo "Release '$TAG' already exists. Skipping build."
             echo "needs_build=false" >> $GITHUB_OUTPUT
           else
-            echo "Uploading to release: $TAG"
+            echo "Starting build for release: $TAG"
             echo "needs_build=true" >> $GITHUB_OUTPUT
           fi
 
