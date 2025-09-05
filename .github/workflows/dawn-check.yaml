@@ -46,6 +46,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       needs_build: ${{ steps.release_check.outputs.needs_build }}
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -89,10 +91,6 @@ jobs:
         id: release_check
         run: |
           TAG="${{ steps.tag.outputs.tag }}"
-
-          echo "Checking for release: $TAG"
-          gh release view "$TAG"
-
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "Release '$TAG' already exists. Skipping build."
             echo "needs_build=false" >> $GITHUB_OUTPUT
