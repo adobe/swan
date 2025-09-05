@@ -30,25 +30,15 @@ on:
   workflow_call:
     inputs:
       channel:
-        description: "Chromium channel for Dawn"
         required: false
         default: "canary"
-        type: choice
-        options:
-          - stable
-          - beta
-          - canary
+        description: "Chromium channel for Dawn (stable, beta, canary)"
+        type: string
       config:
-        description: "Configuration"
+        description: "Configuration (release or debug)"
         required: false
         default: "release"
-        type: choice
-        options:
-          - release
-          - debug
-    secrets:
-      GITHUB_TOKEN:
-        required: true
+        type: string
 
 jobs:
   get-dawn-version:
@@ -109,9 +99,9 @@ jobs:
           - platform: macos-latest
             target: macosx
             python-version: "3.11"
-          # - platform: windows-latest
-          #   target: windows
-          #   python-version: "3.11"
+          - platform: windows-latest
+            target: windows
+            python-version: "3.11"
           - platform: macos-latest
             target: iphoneos
             python-version: "3.11"
@@ -150,7 +140,7 @@ jobs:
       - name: Build Dawn for ${{ matrix.target }}
         run: |
           cd Dawn
-          python ci_build_dawn.py build-target --target ${{ matrix.target }} --config ${{ env.DAWN_CONFIG }}
+          python ci_build_dawn.py build-target --target ${{ matrix.target }} --config ${{ github.event.inputs.config }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -220,69 +210,40 @@ jobs:
           BUNDLE_NAME="dawn_webgpu_${{needs.get-dawn-version.outputs.chromium_dawn_suffix}}.zip"
           echo "bundle_name=$BUNDLE_NAME" >> $GITHUB_OUTPUT
 
-      - name: Upload bundle artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dawn-webgpu-bundle
-          path: Dawn/dist/${{steps.set-bundle-name.outputs.bundle_name}}
-          retention-days: 30
-
-  create-release:
-    needs: [create-bundle, get-dawn-version]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download bundle artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: dawn-webgpu-bundle
-          path: dawn-bundle/
-          merge-multiple: true
-
       - name: Compute SHA256
         id: compute-sha256
         run: |
-          cd dawn-bundle
-          sha256sum ${{needs.create-bundle.outputs.bundle_name}} > sha256sum.txt
+          cd Dawn/dist
+          sha256sum ${{steps.set-bundle-name.outputs.bundle_name}} > sha256sum.txt
           echo "sha256sum=$(cat sha256sum.txt)" >> $GITHUB_OUTPUT
 
       - name: Tag name
         id: tag
         run: |
-          TAG="dawn-chromium-${{github.event.inputs.channel}}-${{needs.get-dawn-version.outputs.chromium_dawn_version}}"
+          TAG="dawn-chromium-${{github.event.inputs.channel}}-${{needs.get-dawn-version.outputs.chromium_dawn_version}}-${{github.event.inputs.config}}"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          release_name: Dawn WebGPU from Chromium ${{ needs.get-dawn-version.outputs.chromium_dawn_version }}
-          tag_name: ${{ steps.tag.outputs.tag }}
+          name: Dawn WebGPU from Chromium ${{ needs.get-dawn-version.outputs.chromium_dawn_version }} (${{ github.event.inputs.config }})
+          tag: ${{ steps.tag.outputs.tag }}
           body: |
-            Dawn WebGPU build matching Chromium ${{ needs.get-dawn-version.outputs.chromium_dawn_version }}.
-            Built from Dawn hash: ${{ needs.get-dawn-version.outputs.chromium_dawn_hash }}
-            SHA256: ${{ steps.compute-sha256.outputs.sha256sum }}
+            **Chromium channel:** ${{ github.event.inputs.channel }}
+            **Chromium version:** ${{ needs.get-dawn-version.outputs.chromium_dawn_version }}
+            **Configuration:** ${{ github.event.inputs.config }}
+            **Dawn hash:** ${{ needs.get-dawn-version.outputs.chromium_dawn_hash }}
+            **SHA256:** ${{ steps.compute-sha256.outputs.sha256sum }}
 
-            This release contains pre-built Dawn WebGPU libraries for multiple platforms:
+            This release contains pre-built Dawn WebGPU libraries in an archive bundle for multiple platforms:
+
             - linux (x86_64)
             - macosx (x86_64 + ARM64)
             - iphoneos (ARM64)
             - iphonesimulator (x86_64)
+            - windows (x86_64)
 
             These are just the raw Dawn libraries and do not include the Swift API layer.
-
-            Built from Chromium channel: ${{ github.event.inputs.channel }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Assets
-        run: |
-          TAG="${{ steps.tag.outputs.tag }}"
-          echo "Uploading to release: $TAG"
-          cd dawn-bundle
-          gh release upload $TAG ${{needs.create-bundle.outputs.bundle_name}} --clobber
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: Dawn/dist/${{steps.set-bundle-name.outputs.bundle_name}}
+          artifactErrorsFailBuild: true
+          removeArtifacts: true
