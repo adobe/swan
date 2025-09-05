@@ -50,7 +50,7 @@ jobs:
       chromium_dawn_suffix: ${{ steps.read-version.outputs.chromium_dawn_suffix }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -113,7 +113,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install prerequisites on Linux
         if: matrix.platform == 'ubuntu-latest'
@@ -166,7 +166,7 @@ jobs:
       bundle_name: ${{ steps.set-bundle-name.outputs.bundle_name }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
         uses: actions/setup-python@v4
