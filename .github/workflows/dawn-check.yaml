@@ -31,14 +31,12 @@ on:
   workflow_call:
     inputs:
       channel:
-        required: false
-        default: "canary"
         description: "Chromium channel for Dawn (stable, beta, canary)"
+        required: true
         type: string
       config:
         description: "Configuration (release or debug)"
-        required: false
-        default: "release"
+        required: true
         type: string
 
 jobs:
