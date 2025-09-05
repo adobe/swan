@@ -28,8 +28,8 @@ def write_target_manifest(
     target_dir = build_dir / str(target_config) / "install"
     manifest = {
         "targetName": str(target_config),
-        "libraryPath": str(target_dir / "lib"),
-        "includePath": str(target_dir / "include"),
+        "libraryPath": (target_dir / "lib").as_posix(),
+        "includePath": (target_dir / "include").as_posix(),
         "supportedTriples": target_config.triples(),
         "libraryName": "libwebgpu_dawn.lib"
         if target_config.os.is_windows()
@@ -165,7 +165,9 @@ def create_artifact_bundle(version: str, archive_name: str) -> pathlib.Path:
         archive_path.unlink()
 
     shutil.make_archive(
-        archive_path, "zip", root_dir=dist_directory(), base_dir=archive_dir.name
+        archive_path, "zip",
+        root_dir=dist_directory(),
+        base_dir=archive_dir.name,
     )
 
     return archive_path

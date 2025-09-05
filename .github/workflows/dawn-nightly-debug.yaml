@@ -1,0 +1,19 @@
+# Copyright 2025 Adobe
+# All Rights Reserved.
+#
+# NOTICE: Adobe permits you to use, modify, and distribute this file in
+# accordance with the terms of the Adobe license agreement accompanying
+# it.
+
+name: Dawn Nightly Debug Build
+
+on:
+  schedule:
+    - cron: "0 8 * * *"
+
+jobs:
+  build-dawn-if-needed:
+    uses: ./.github/workflows/dawn-check.yaml
+    with:
+      channel: canary
+      config: debug
