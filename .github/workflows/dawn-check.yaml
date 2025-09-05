@@ -28,6 +28,19 @@ on:
           - release
           - debug
 
+  workflow_call:
+    inputs:
+      channel:
+        required: false
+        default: "canary"
+        description: "Chromium channel for Dawn (stable, beta, canary)"
+        type: string
+      config:
+        description: "Configuration (release or debug)"
+        required: false
+        default: "release"
+        type: string
+
 jobs:
   check-dawn:
     runs-on: ubuntu-latest
@@ -83,7 +96,7 @@ jobs:
             echo "Uploading to release: $TAG"
             echo "needs_build=true" >> $GITHUB_OUTPUT
           fi
-  
+
   build-dawn:
     if: ${{ needs.check-dawn.outputs.needs_build == 'true' }}
     needs: check-dawn
