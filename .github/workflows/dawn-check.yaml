@@ -44,9 +44,17 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       needs_build: ${{ steps.release_check.outputs.needs_build }}
+      channel: ${{ steps.read-inputs.outputs.channel }}
+      config: ${{ steps.read-inputs.outputs.config }}
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
+      - name: Read inputs
+        id: read-inputs
+        run: |
+          echo "channel=${{ inputs.channel || github.event.inputs.channel }}" >> $GITHUB_OUTPUT
+          echo "config=${{ inputs.config || github.event.inputs.config }}" >> $GITHUB_OUTPUT
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -64,7 +72,7 @@ jobs:
       - name: Get Dawn version
         run: |
           cd Dawn
-          python ci_build_dawn.py get-dawn-version --channel ${{ github.event.inputs.channel }}
+          python ci_build_dawn.py get-dawn-version --channel ${{ steps.read-inputs.outputs.channel }}
 
       - name: Read Dawn version
         id: read-version
@@ -82,7 +90,7 @@ jobs:
       - name: Tag name
         id: tag
         run: |
-          TAG="dawn-chromium-${{github.event.inputs.channel}}-${{steps.read-version.outputs.chromium_dawn_version}}-${{github.event.inputs.config}}"
+          TAG="dawn-chromium-${{ steps.read-inputs.outputs.channel }}-${{steps.read-version.outputs.chromium_dawn_version}}-${{ steps.read-inputs.outputs.config }}"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: Run Dawn build if necessary
@@ -102,5 +110,5 @@ jobs:
     needs: check-dawn
     uses: ./.github/workflows/dawn.yaml
     with:
-      channel: ${{ github.event.inputs.channel }}
-      config: ${{ github.event.inputs.config }}
+      channel: ${{ needs.check-dawn.outputs.channel }}
+      config: ${{ needs.check-dawn.outputs.config }}
