@@ -20,7 +20,7 @@ let package = Package(
 			url: "https://github.com/swiftlang/swift-testing.git",
 			revision: "18c42c19cac3fafd61cab1156d4088664b7424ae"
 		),
-		.package(url: "https://github.com/apple/swift-log", from: "1.6.3"),
+		.package(url: "https://github.com/apple/swift-log", from: "1.6.4"),
 	],
 	targets: [
 		.executableTarget(
