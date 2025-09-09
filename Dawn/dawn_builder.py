@@ -281,6 +281,8 @@ def build_dawn(
         _subprocess_exception_message(e)
         raise CMakeError
 
+    config = "Debug" if target_config.config == "debug" else "Release"
+
     # Run the cmake build command
     try:
         subprocess.run(
@@ -289,7 +291,7 @@ def build_dawn(
                 "--build",
                 ".",
                 "--config",
-                "Debug" if target_config.config == "debug" else "Release",
+                config,
             ],
             cwd=build_dir,
             check=True,
@@ -301,7 +303,15 @@ def build_dawn(
     # Install the library and headers
     try:
         subprocess.run(
-            [cmake_exec, "--install", str(build_dir), "--prefix", str(output_dir)],
+            [
+                cmake_exec,
+                "--install",
+                str(build_dir),
+                "--prefix",
+                str(output_dir),
+                "--config",
+                config,
+            ],
             check=True,
             capture_output=True,
             text=True,

@@ -1,0 +1,80 @@
+# Copyright 2025 Adobe
+# All Rights Reserved.
+#
+# NOTICE: Adobe permits you to use, modify, and distribute this file in
+# accordance with the terms of the Adobe license agreement accompanying
+# it.
+
+name: Get info about latest Dawn for channel
+
+on:
+  workflow_call:
+    inputs:
+      channel:
+        description: "Chromium channel for Dawn"
+        required: true
+        type: string
+    outputs:
+      chromium_channel:
+        description: "Chromium channel for Dawn"
+        value: ${{ jobs.get-dawn-info.outputs.chromium_channel }}
+      chromium_dawn_version:
+        description: "Version of Chromium matching Dawn"
+        value: ${{ jobs.get-dawn-info.outputs.chromium_dawn_version }}
+      chromium_dawn_hash:
+        description: "Git hash of Dawn code"
+        value: ${{ jobs.get-dawn-info.outputs.chromium_dawn_hash }}
+      chromium_dawn_suffix:
+        description: "Suffix for Dawn tag"
+        value: ${{ jobs.get-dawn-info.outputs.chromium_dawn_suffix }}
+      tag:
+        description: "Tag for Dawn release"
+        value: ${{ jobs.get-dawn-info.outputs.dawn_tag }}
+
+jobs:
+  get-dawn-info:
+    runs-on: ubuntu-latest
+    outputs:
+      chromium_channel: ${{ steps.read-version.outputs.chromium_channel }}
+      chromium_dawn_version: ${{ steps.read-version.outputs.chromium_dawn_version }}
+      chromium_dawn_hash: ${{ steps.read-version.outputs.chromium_dawn_hash }}
+      chromium_dawn_suffix: ${{ steps.read-version.outputs.chromium_dawn_suffix }}
+      dawn_tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          cd Dawn
+          pip install -r requirements.txt
+
+      - name: Get Dawn version
+        run: |
+          cd Dawn
+          python ci_build_dawn.py get-dawn-version --channel ${{ inputs.channel }}
+
+      - name: Read Dawn version
+        id: read-version
+        run: |
+          cd Dawn
+          value=$(jq -r '.chromium_channel' dawn_version.json)
+          echo "chromium_channel=$value" >> $GITHUB_OUTPUT
+          value=$(jq -r '.chromium_dawn_version' dawn_version.json)
+          echo "chromium_dawn_version=$value" >> $GITHUB_OUTPUT
+          value=$(jq -r '.chromium_dawn_hash' dawn_version.json)
+          echo "chromium_dawn_hash=$value" >> $GITHUB_OUTPUT
+          value=$(jq -r '.chromium_dawn_suffix' dawn_version.json)
+          echo "chromium_dawn_suffix=$value" >> $GITHUB_OUTPUT
+
+      - name: Tag name
+        id: tag
+        run: |
+          TAG="dawn-chromium-${{ steps.read-version.outputs.chromium_channel }}-${{steps.read-version.outputs.chromium_dawn_version}}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT

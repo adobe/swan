@@ -109,12 +109,15 @@ def build_bundle_target(target_config: TargetConfig) -> None:
     write_target_manifest(manifest_file, target_config)
 
 
-def create_artifact_bundle(version: str, archive_name: str) -> pathlib.Path:
+def create_artifact_bundle(
+    chromium_version: str, dawn_hash: str, archive_name: str
+) -> pathlib.Path:
     """
     Create a complete artifact bundle with all built targets.
 
     Args:
-        version: Version string for the bundle
+        chromium_version: Chromium version string for the bundle
+        dawn_hash: Dawn hash string for the bundle
         archive_name: Name for the archive file
 
     Returns:
@@ -146,14 +149,13 @@ def create_artifact_bundle(version: str, archive_name: str) -> pathlib.Path:
     shutil.copy2(dawn_json, archive_dir / "dawn.json")
 
     # Write the archive manifest
-    write_bundle_manifest(version)
+    write_bundle_manifest(chromium_version)
 
     # Write the dawn version file
     dawn_version_file = archive_dir / "dawn_version.json"
-    dawn_version = dawn_source.get_version()
     version_data = {
-        "dawn_hash": dawn_version["chromium_dawn_hash"],
-        "chromium_version": dawn_version["chromium_dawn_version"],
+        "dawn_hash": dawn_hash,
+        "chromium_version": chromium_version,
     }
     dawn_version_file.write_text(json.dumps(version_data, indent=2))
 
@@ -165,7 +167,8 @@ def create_artifact_bundle(version: str, archive_name: str) -> pathlib.Path:
         archive_path.unlink()
 
     shutil.make_archive(
-        archive_path, "zip",
+        archive_path,
+        "zip",
         root_dir=dist_directory(),
         base_dir=archive_dir.name,
     )

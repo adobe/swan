@@ -26,7 +26,7 @@ pip3 install -r requirements.txt
 ./ci_build_dawn.py get-dawn-version
 
 # Download the Dawn source matching the given hash
-./ci_build_dawn.py get-source --hash ABC1234ABC
+./ci_build_dawn.py get-source --hash cc0a37d660cef88a78a751b9fc1431be3d1ce2eb
 
 # Build Dawn, running these commands on the appropriate platform
 # Note that macosx builds both Intel and Arm
@@ -38,6 +38,6 @@ pip3 install -r requirements.txt
 ./ci_build_dawn.py build-target --target linux
 
 # Combine the builds into an archive bundle (all build products need to be in the same filesystem)
-./ci_build_dawn.py bundle
+./ci_build_dawn.py bundle --chromium-version 142.0.7404.0 --dawn-hash cc0a37d660cef88a78a751b9fc1431be3d1ce2eb --bundle-name dawn_webgpu_chromium_142.0.7404.0_canary_cc0a37d660cef88a78a751b9fc1431be3d1ce2eb
 ```
 
