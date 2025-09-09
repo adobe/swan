@@ -7,10 +7,11 @@
 # accordance with the terms of the Adobe license agreement accompanying
 # it.
 
-import argparse
 from ci_targets import ci_target
-import dawn_source
 import archive_builder
+import argparse
+import dawn_source
+import json
 
 _EXIT_FAILURE = 1
 _EXIT_SUCCESS = 0
@@ -28,14 +29,14 @@ def build_target(target: str, config: str = "release") -> None:
     archive_builder.build_bundle_target(target_config)
 
 
-def bundle() -> None:
+def bundle(chromium_version: str, dawn_hash: str, bundle_name: str) -> None:
     """
     Create an artifact bundle from the current Dawn build.
     """
-    version_data = dawn_source.get_version()
     archive_path = archive_builder.create_artifact_bundle(
-        version_data["chromium_dawn_version"],
-        f"dawn_webgpu_{version_data['chromium_dawn_suffix']}",
+        chromium_version,
+        dawn_hash,
+        bundle_name,
     )
     print(f"Archive created: {archive_path}")
 
@@ -87,10 +88,7 @@ def parse_args() -> argparse.Namespace:
         help="Chromium channel to use for Dawn",
     )
 
-    get_parser = subparsers.add_parser(
-        "get-source",
-        help="Get the Dawn source"
-    )
+    get_parser = subparsers.add_parser("get-source", help="Get the Dawn source")
     get_parser.add_argument(
         "--hash",
         required=True,
@@ -111,7 +109,22 @@ def parse_args() -> argparse.Namespace:
         help="Configuration to build for",
     )
 
-    subparsers.add_parser("bundle", help="Bundle a target")
+    bundle_parser = subparsers.add_parser("bundle", help="Bundle a target")
+    bundle_parser.add_argument(
+        "--chromium-version",
+        required=True,
+        help="Chromium version to bundle",
+    )
+    bundle_parser.add_argument(
+        "--dawn-hash",
+        required=True,
+        help="Dawn hash to bundle",
+    )
+    bundle_parser.add_argument(
+        "--bundle-name",
+        required=True,
+        help="Name of the bundle",
+    )
 
     subparsers.add_parser("clean", help="Clean the build environment")
 
@@ -128,7 +141,7 @@ def main() -> int:
     args = parse_args()
     if args.command == "get-dawn-version":
         dawn_source.get_matching_dawn_for_chromium(args.channel)
-        print(dawn_source.get_version())
+        print(json.dumps(dawn_source.get_version(), indent=2))
     elif args.command == "get-source":
         dawn_source.fetch_dawn_source(args.hash)
     elif args.command == "build-target":
@@ -145,7 +158,7 @@ def main() -> int:
 
         build_target(args.target, args.config)
     elif args.command == "bundle":
-        bundle()
+        bundle(args.chromium_version, args.dawn_hash, args.bundle_name)
     elif args.command == "upload":
         upload(args.debug)
     elif args.command == "clean":

@@ -44,7 +44,7 @@ def get_matching_dawn_for_chromium(channel: str = "canary") -> None:
         get_latest_chromium_version(channel)
     )
     print(
-        f"Downloading Dawn matching Chromium version {chromium_dawn_version} ({chromium_dawn_hash})..."
+        f"Found Dawn matching Chromium version {chromium_dawn_version} ({chromium_dawn_hash})..."
     )
 
     version_data = {
