@@ -7,7 +7,7 @@
 
 import Testing
 
-@testable import UpdateDawnBindings
+@testable import DawnData
 
 struct NameTests {
 	@Test("Name initialization with single word")
@@ -70,6 +70,66 @@ struct NameTests {
 		#expect(name.CamelCase == "HELLOWorldTEST")
 	}
 
+	@Test("camelCaseIdentifier property with single word")
+	func testCamelCaseIdentifierSingleWord() {
+		let name = Name("hello")
+		#expect(name.camelCaseIdentifier == "hello")
+	}
+
+	@Test("camelCaseIdentifier property with multiple words")
+	func testCamelCaseIdentifierMultipleWords() {
+		let name = Name("get limits")
+		#expect(name.camelCaseIdentifier == "getLimits")
+	}
+
+	@Test("camelCaseIdentifier property with mixed case")
+	func testCamelCaseIdentifierMixedCase() {
+		let name = Name("HELLO world TEST")
+		#expect(name.camelCaseIdentifier == "HELLOWorldTEST")
+	}
+
+	@Test("camelCaseIdentifier property with number prefix")
+	func testCamelCaseIdentifierNumberPrefix() {
+		let name = Name("123 test")
+		#expect(name.camelCaseIdentifier == "_123Test")
+	}
+
+	@Test("camelCaseIdentifier property with number in middle")
+	func testCamelCaseIdentifierNumberInMiddle() {
+		let name = Name("test 123 number")
+		#expect(name.camelCaseIdentifier == "test123Number")
+	}
+
+	@Test("CamelCaseIdentifier property with single word")
+	func testCapitalCamelCaseIdentifierSingleWord() {
+		let name = Name("hello")
+		#expect(name.CamelCaseIdentifier == "Hello")
+	}
+
+	@Test("CamelCaseIdentifier property with multiple words")
+	func testCapitalCamelCaseIdentifierMultipleWords() {
+		let name = Name("get limits")
+		#expect(name.CamelCaseIdentifier == "GetLimits")
+	}
+
+	@Test("CamelCaseIdentifier property with mixed case")
+	func testCapitalCamelCaseIdentifierMixedCase() {
+		let name = Name("HELLO world TEST")
+		#expect(name.CamelCaseIdentifier == "HELLOWorldTEST")
+	}
+
+	@Test("CamelCaseIdentifier property with number prefix")
+	func testCapitalCamelCaseIdentifierNumberPrefix() {
+		let name = Name("123 test")
+		#expect(name.CamelCaseIdentifier == "_123Test")
+	}
+
+	@Test("CamelCaseIdentifier property with number in middle")
+	func testCapitalCamelCaseIdentifierNumberInMiddle() {
+		let name = Name("test 123 number")
+		#expect(name.CamelCaseIdentifier == "Test123Number")
+	}
+
 	@Test("lastPart property with single word")
 	func testLastPartSingleWord() {
 		let name = Name("hello")
@@ -92,5 +152,65 @@ struct NameTests {
 	func testFirstPartMultipleWords() {
 		let name = Name("get limits")
 		#expect(name.firstPart == "get")
+	}
+
+	@Test("count property with single word")
+	func testCountSingleWord() {
+		let name = Name("hello")
+		#expect(name.count == 1)
+	}
+
+	@Test("count property with multiple words")
+	func testCountMultipleWords() {
+		let name = Name("get limits")
+		#expect(name.count == 2)
+	}
+
+	@Test("count property with empty string")
+	func testCountEmptyString() {
+		let name = Name("")
+		#expect(name.count == 0)
+	}
+
+	@Test("count property with three words")
+	func testCountThreeWords() {
+		let name = Name("hello world test")
+		#expect(name.count == 3)
+	}
+
+	@Test("raw property with single word")
+	func testRawSingleWord() {
+		let name = Name("hello")
+		#expect(name.raw == "hello")
+	}
+
+	@Test("raw property with multiple words")
+	func testRawMultipleWords() {
+		let name = Name("hello world")
+		#expect(name.raw == "hello world")
+	}
+
+	@Test("raw property with mixed case")
+	func testRawMixedCase() {
+		let name = Name("HELLO world TEST")
+		#expect(name.raw == "HELLO world TEST")
+	}
+
+	@Test("raw property with numbers")
+	func testRawWithNumbers() {
+		let name = Name("test 123 number")
+		#expect(name.raw == "test 123 number")
+	}
+
+	@Test("raw property with empty string")
+	func testRawEmptyString() {
+		let name = Name("")
+		#expect(name.raw == "")
+	}
+
+	@Test("raw property with three words")
+	func testRawThreeWords() {
+		let name = Name("hello world test")
+		#expect(name.raw == "hello world test")
 	}
 }
