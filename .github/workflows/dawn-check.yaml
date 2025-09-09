@@ -19,14 +19,6 @@ on:
           - stable
           - beta
           - canary
-      config:
-        description: "Configuration"
-        required: false
-        default: "release"
-        type: choice
-        options:
-          - release
-          - debug
 
   workflow_call:
     inputs:
@@ -34,27 +26,23 @@ on:
         description: "Chromium channel for Dawn (stable, beta, canary)"
         required: true
         type: string
-      config:
-        description: "Configuration (release or debug)"
-        required: true
-        type: string
 
 jobs:
+  get-dawn-info:
+    uses: ./.github/workflows/dawn-info.yaml
+    with:
+      channel: ${{ inputs.channel || github.event.inputs.channel }}
+
   check-dawn:
+    needs: get-dawn-info
     runs-on: ubuntu-latest
     outputs:
       needs_build: ${{ steps.release_check.outputs.needs_build }}
-      channel: ${{ steps.read-inputs.outputs.channel }}
-      config: ${{ steps.read-inputs.outputs.config }}
+      channel: ${{ needs.get-dawn-info.outputs.chromium_channel }}
+      config: ${{ needs.get-dawn-info.outputs.chromium_dawn_suffix }}
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Read inputs
-        id: read-inputs
-        run: |
-          echo "channel=${{ inputs.channel || github.event.inputs.channel }}" >> $GITHUB_OUTPUT
-          echo "config=${{ inputs.config || github.event.inputs.config }}" >> $GITHUB_OUTPUT
-
       - name: Checkout code
         uses: actions/checkout@v5
 
@@ -72,43 +60,22 @@ jobs:
       - name: Get Dawn version
         run: |
           cd Dawn
-          python ci_build_dawn.py get-dawn-version --channel ${{ steps.read-inputs.outputs.channel }}
-
-      - name: Read Dawn version
-        id: read-version
-        run: |
-          cd Dawn
-          value=$(jq -r '.chromium_channel' dawn_version.json)
-          echo "chromium_channel=$value" >> $GITHUB_OUTPUT
-          value=$(jq -r '.chromium_dawn_version' dawn_version.json)
-          echo "chromium_dawn_version=$value" >> $GITHUB_OUTPUT
-          value=$(jq -r '.chromium_dawn_hash' dawn_version.json)
-          echo "chromium_dawn_hash=$value" >> $GITHUB_OUTPUT
-          value=$(jq -r '.chromium_dawn_suffix' dawn_version.json)
-          echo "chromium_dawn_suffix=$value" >> $GITHUB_OUTPUT
-
-      - name: Tag name
-        id: tag
-        run: |
-          TAG="dawn-chromium-${{ steps.read-inputs.outputs.channel }}-${{steps.read-version.outputs.chromium_dawn_version}}-${{ steps.read-inputs.outputs.config }}"
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          python ci_build_dawn.py get-dawn-version --channel ${{ needs.get-dawn-info.outputs.chromium_channel }}
 
       - name: Run Dawn build if necessary
         id: release_check
         run: |
-          TAG="${{ steps.tag.outputs.tag }}"
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "Release '$TAG' already exists. Skipping build."
+          if gh release view "${{ needs.get-dawn-info.outputs.tag }}" >/dev/null 2>&1; then
+            echo "Release '"${{ needs.get-dawn-info.outputs.tag }}"' already exists. Skipping build."
             echo "needs_build=false" >> $GITHUB_OUTPUT
           else
-            echo "Starting build for release: $TAG"
+            echo "Starting build for release: ${{ needs.get-dawn-info.outputs.tag }}"
             echo "needs_build=true" >> $GITHUB_OUTPUT
           fi
 
   build-dawn:
     if: ${{ needs.check-dawn.outputs.needs_build == 'true' }}
     needs: check-dawn
-    uses: ./.github/workflows/dawn.yaml
+    uses: ./.github/workflows/dawn-build-release.yaml
     with:
       channel: ${{ needs.check-dawn.outputs.channel }}
-      config: ${{ needs.check-dawn.outputs.config }}

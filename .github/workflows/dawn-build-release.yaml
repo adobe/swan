@@ -1,0 +1,88 @@
+# Copyright 2025 Adobe
+# All Rights Reserved.
+#
+# NOTICE: Adobe permits you to use, modify, and distribute this file in
+# accordance with the terms of the Adobe license agreement accompanying
+# it.
+name: Build Dawn WebGPU Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Chromium channel for Dawn"
+        required: false
+        default: "canary"
+        type: choice
+        options:
+          - stable
+          - beta
+          - canary
+
+  workflow_call:
+    inputs:
+      channel:
+        description: "Chromium channel for Dawn"
+        required: true
+        type: string
+
+jobs:
+  get-dawn-info:
+    uses: ./.github/workflows/dawn-info.yaml
+    with:
+      channel: ${{ inputs.channel || github.event.inputs.channel }}
+
+  build-dawn-debug:
+    needs: get-dawn-info
+    uses: ./.github/workflows/dawn.yaml
+    with:
+      channel: ${{ inputs.channel || github.event.inputs.channel }}
+      config: debug
+      dawn_hash: ${{ needs.get-dawn-info.outputs.chromium_dawn_hash }}
+      bundle_name: ${{ needs.get-dawn-info.outputs.tag }}-debug
+
+  build-dawn-release:
+    needs: get-dawn-info
+    uses: ./.github/workflows/dawn.yaml
+    with:
+      channel: ${{ inputs.channel || github.event.inputs.channel }}
+      config: release
+      dawn_hash: ${{ needs.get-dawn-info.outputs.chromium_dawn_hash }}
+      bundle_name: ${{ needs.get-dawn-info.outputs.tag }}-release
+
+  create-release:
+    needs: [build-dawn-debug, build-dawn-release, get-dawn-info]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact bundles
+        uses: actions/download-artifact@v5
+        with:
+          artifact-ids: ${{ needs.build-dawn-debug.outputs.artifact_id }},${{ needs.build-dawn-release.outputs.artifact_id }}
+          path: dawn-bundles
+          merge-multiple: true
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          name: Dawn WebGPU from Chromium ${{ needs.get-dawn-info.outputs.chromium_dawn_version }} (${{ needs.get-dawn-info.outputs.chromium_channel }})
+          tag: ${{ needs.get-dawn-info.outputs.tag }}
+          body: |
+            **Chromium channel:** ${{ needs.get-dawn-info.outputs.chromium_channel }}
+            **Chromium version:** ${{ needs.get-dawn-info.outputs.chromium_dawn_version }}
+            **Dawn hash:** ${{ needs.get-dawn-info.outputs.chromium_dawn_hash }}
+
+            **Debug SHA256:** ${{ needs.build-dawn-debug.outputs.artifact_digest }}
+            **Release SHA256:** ${{ needs.build-dawn-release.outputs.artifact_digest }}
+
+            This release contains pre-built Dawn WebGPU libraries in an archive bundle for multiple platforms:
+
+            - linux (x86_64)
+            - macosx (x86_64 + ARM64)
+            - iphoneos (ARM64)
+            - iphonesimulator (x86_64)
+            - windows (x86_64)
+
+            These are just the raw Dawn libraries and do not include the Swift API layer.
+          artifacts: dawn-bundles/*
+          artifactErrorsFailBuild: true
+          removeArtifacts: true

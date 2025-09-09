@@ -7,89 +7,34 @@
 name: Build Dawn WebGPU
 
 on:
-  workflow_dispatch:
-    inputs:
-      channel:
-        description: "Chromium channel for Dawn"
-        required: false
-        default: "canary"
-        type: choice
-        options:
-          - stable
-          - beta
-          - canary
-      config:
-        description: "Configuration"
-        required: false
-        default: "release"
-        type: choice
-        options:
-          - release
-          - debug
-
   workflow_call:
     inputs:
       channel:
-        required: false
-        default: "canary"
+        required: true
         description: "Chromium channel for Dawn (stable, beta, canary)"
         type: string
       config:
         description: "Configuration (release or debug)"
-        required: false
-        default: "release"
+        required: true
         type: string
+      dawn_hash:
+        description: "Git hash of Dawn code"
+        required: true
+        type: string
+      bundle_name:
+        description: "Name of the archive bundle"
+        required: true
+        type: string
+    outputs:
+      artifact_id:
+        description: "Artifact ID of the archive bundle"
+        value: ${{ jobs.create-bundle.outputs.artifact_id }}
+      artifact_digest:
+        description: "Artifact digest of the archive bundle"
+        value: ${{ jobs.create-bundle.outputs.artifact_digest }}
 
 jobs:
-  get-dawn-version:
-    runs-on: ubuntu-latest
-    outputs:
-      chromium_channel: ${{ steps.read-version.outputs.chromium_channel }}
-      chromium_dawn_version: ${{ steps.read-version.outputs.chromium_dawn_version }}
-      chromium_dawn_hash: ${{ steps.read-version.outputs.chromium_dawn_hash }}
-      chromium_dawn_suffix: ${{ steps.read-version.outputs.chromium_dawn_suffix }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.13"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          cd Dawn
-          pip install -r requirements.txt
-
-      - name: Get Dawn version
-        run: |
-          cd Dawn
-          python ci_build_dawn.py get-dawn-version --channel ${{ github.event.inputs.channel }}
-
-      - name: Upload Dawn Version
-        uses: actions/upload-artifact@v4
-        with:
-          name: dawn-version
-          path: Dawn/dawn_version.json
-          retention-days: 1
-
-      - name: Read Dawn version
-        id: read-version
-        run: |
-          cd Dawn
-          value=$(jq -r '.chromium_channel' dawn_version.json)
-          echo "chromium_channel=$value" >> $GITHUB_OUTPUT
-          value=$(jq -r '.chromium_dawn_version' dawn_version.json)
-          echo "chromium_dawn_version=$value" >> $GITHUB_OUTPUT
-          value=$(jq -r '.chromium_dawn_hash' dawn_version.json)
-          echo "chromium_dawn_hash=$value" >> $GITHUB_OUTPUT
-          value=$(jq -r '.chromium_dawn_suffix' dawn_version.json)
-          echo "chromium_dawn_suffix=$value" >> $GITHUB_OUTPUT
-
   build-dawn:
-    needs: get-dawn-version
     strategy:
       matrix:
         include:
@@ -135,12 +80,12 @@ jobs:
       - name: Download Dawn source
         run: |
           cd Dawn
-          python ci_build_dawn.py get-source --hash ${{ needs.get-dawn-version.outputs.chromium_dawn_hash }}
+          python ci_build_dawn.py get-source --hash ${{ inputs.dawn_hash }}
 
       - name: Build Dawn for ${{ matrix.target }}
         run: |
           cd Dawn
-          python ci_build_dawn.py build-target --target ${{ matrix.target }} --config ${{ github.event.inputs.config }}
+          python ci_build_dawn.py build-target --target ${{ matrix.target }} --config ${{ inputs.config }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -160,10 +105,12 @@ jobs:
           retention-days: 1
 
   create-bundle:
-    needs: [build-dawn, get-dawn-version]
+    needs: [build-dawn]
     runs-on: ubuntu-latest
     outputs:
       bundle_name: ${{ steps.set-bundle-name.outputs.bundle_name }}
+      artifact_id: ${{ steps.store-artifact-bundle.outputs.artifact-id }}
+      artifact_digest: ${{ steps.store-artifact-bundle.outputs.artifact-digest }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -207,43 +154,13 @@ jobs:
       - name: Set bundle name
         id: set-bundle-name
         run: |
-          BUNDLE_NAME="dawn_webgpu_${{needs.get-dawn-version.outputs.chromium_dawn_suffix}}.zip"
+          BUNDLE_NAME="dawn_webgpu_${{ inputs.bundle_name }}.zip"
           echo "bundle_name=$BUNDLE_NAME" >> $GITHUB_OUTPUT
 
-      - name: Compute SHA256
-        id: compute-sha256
-        run: |
-          cd Dawn/dist
-          sha256sum ${{steps.set-bundle-name.outputs.bundle_name}} > sha256sum.txt
-          echo "sha256sum=$(cat sha256sum.txt)" >> $GITHUB_OUTPUT
-
-      - name: Tag name
-        id: tag
-        run: |
-          TAG="dawn-chromium-${{github.event.inputs.channel}}-${{needs.get-dawn-version.outputs.chromium_dawn_version}}-${{github.event.inputs.config}}"
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-
-      - name: Create Release
-        uses: ncipollo/release-action@v1
+      - name: Store artifact bundle
+        id: store-artifact-bundle
+        uses: actions/upload-artifact@v4
         with:
-          name: Dawn WebGPU from Chromium ${{ needs.get-dawn-version.outputs.chromium_dawn_version }} (${{ github.event.inputs.config }})
-          tag: ${{ steps.tag.outputs.tag }}
-          body: |
-            **Chromium channel:** ${{ github.event.inputs.channel }}
-            **Chromium version:** ${{ needs.get-dawn-version.outputs.chromium_dawn_version }}
-            **Configuration:** ${{ github.event.inputs.config }}
-            **Dawn hash:** ${{ needs.get-dawn-version.outputs.chromium_dawn_hash }}
-            **SHA256:** ${{ steps.compute-sha256.outputs.sha256sum }}
-
-            This release contains pre-built Dawn WebGPU libraries in an archive bundle for multiple platforms:
-
-            - linux (x86_64)
-            - macosx (x86_64 + ARM64)
-            - iphoneos (ARM64)
-            - iphonesimulator (x86_64)
-            - windows (x86_64)
-
-            These are just the raw Dawn libraries and do not include the Swift API layer.
-          artifacts: Dawn/dist/${{steps.set-bundle-name.outputs.bundle_name}}
-          artifactErrorsFailBuild: true
-          removeArtifacts: true
+          name: dawn-bundle-${{ inputs.config }}
+          path: Dawn/dist/${{ steps.set-bundle-name.outputs.bundle_name }}
+          retention-days: 1
