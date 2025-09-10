@@ -71,9 +71,6 @@ jobs:
             **Chromium version:** ${{ needs.get-dawn-info.outputs.chromium_dawn_version }}
             **Dawn hash:** ${{ needs.get-dawn-info.outputs.chromium_dawn_hash }}
 
-            **Debug SHA256:** ${{ needs.build-dawn-debug.outputs.artifact_digest }}
-            **Release SHA256:** ${{ needs.build-dawn-release.outputs.artifact_digest }}
-
             This release contains pre-built Dawn WebGPU libraries in an archive bundle for multiple platforms:
 
             - linux (x86_64)
