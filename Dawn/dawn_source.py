@@ -13,7 +13,7 @@ import subprocess
 import sys
 from typing import Dict, Any, Tuple
 
-DAWN_GIT_URL = "https://dawn.googlesource.com/dawn"
+DAWN_GIT_URL = "https://github.com/google/dawn.git"
 
 # URL endpoint for latest release info from the Chromium version history page.
 # We arbitrarily select the Windows platform for fetching the information to reduce the payload size.

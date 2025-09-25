@@ -8,3 +8,4 @@ Dawn/dawn_source
 Dawn/dawn_version.json
 __pycache__
 .venv
+BindingsDebug

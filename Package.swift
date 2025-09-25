@@ -10,10 +10,20 @@
 import PackageDescription
 
 let package = Package(
-	name: "WebGPULife",
+	name: "Swan",
 	platforms: [
 		.macOS(.v15),  // macOS 15
 		.iOS(.v18),  // iOS 18 (or adjust the version as needed)
+	],
+	products: [
+		.plugin(
+			name: "GenerateDawnBindingsPlugin",
+			targets: ["GenerateDawnBindingsPlugin"],
+		),
+		.plugin(
+			name: "GenerateDawnAPINotesPlugin",
+			targets: ["GenerateDawnAPINotesPlugin"]
+		),
 	],
 	dependencies: [
 		.package(
@@ -21,31 +31,79 @@ let package = Package(
 			revision: "18c42c19cac3fafd61cab1156d4088664b7424ae"
 		),
 		.package(url: "https://github.com/apple/swift-log", from: "1.6.4"),
+		.package(url: "https://github.com/swiftlang/swift-syntax.git", branch: "swift-DEVELOPMENT-SNAPSHOT-2025-08-04-a"),
 	],
 	targets: [
-		.executableTarget(
-			name: "WebGPULife",
-			dependencies: [
-				"WebGPU"
-			],
-		),
 		.binaryTarget(
-			name: "DawnFramework",
-			path: "webgpu_dawn.xcframework"
+			name: "DawnLib",
+			url:
+				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-142.0.7404.0/dawn-chromium-canary-142.0.7404.0-release.zip",
+			checksum: "4843d01428cfefc9e6d56c5eac1199544ceb323fbf25680636e3b58800e51feb"
 		),
 		.executableTarget(
-			name: "UpdateDawnBindings",
+			name: "GenerateDawnBindings",
 			dependencies: [
-				.product(name: "Logging", package: "swift-log")
+				.product(name: "Logging", package: "swift-log"),
+				.product(name: "SwiftSyntax", package: "swift-syntax"),
+				.product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+				.product(name: "SwiftBasicFormat", package: "swift-syntax"),
+				"DawnData",
 			],
 			exclude: [
 				"README.md"
 			]
 		),
+		.executableTarget(
+			name: "GenerateDawnAPINotes",
+			dependencies: [
+				.product(name: "Logging", package: "swift-log"),
+				"DawnData",
+			],
+			exclude: [
+				"README.md"
+			]
+		),
+		.plugin(
+			name: "GenerateDawnBindingsPlugin",
+			capability: .buildTool(),
+			dependencies: [
+				"GenerateDawnBindings"
+			]
+		),
+		.plugin(
+			name: "GenerateDawnAPINotesPlugin",
+			capability: .command(
+				intent: .custom(
+					verb: "generate-dawn-apinotes",
+					description: "Generate Dawn APINotes from dawn.json"
+				),
+				permissions: [
+					.writeToPackageDirectory(reason: "Generate APINotes file")
+				]
+			),
+			dependencies: [
+				"GenerateDawnAPINotes"
+			]
+		),
+		.target(
+			name: "CDawn",
+			dependencies: [
+				"DawnLib"
+			],
+		),
+		.target(
+			name: "DawnData",
+			dependencies: [
+				.product(name: "Logging", package: "swift-log"),
+				"DawnLib",
+			],
+		),
 		.target(
 			name: "Dawn",
 			dependencies: [
-				"DawnFramework"
+				"CDawn",
+				"DawnLib",
+				"GenerateDawnBindingsPlugin",
 			],
 		),
 		.target(
@@ -55,10 +113,23 @@ let package = Package(
 			],
 		),
 		.testTarget(
-			name: "UpdateDawnBindingsTest",
+			name: "CodeGenerationTests",
 			dependencies: [
-				"UpdateDawnBindings",
+				"GenerateDawnBindings",
+				"GenerateDawnAPINotes",
 				.product(name: "Testing", package: "swift-testing"),
+			]
+		),
+		.testTarget(
+			name: "DawnTests",
+			dependencies: [
+				"Dawn",
+				.product(name: "Testing", package: "swift-testing"),
+			],
+			linkerSettings: [
+				.linkedFramework("IOSurface"),
+				.linkedFramework("Metal"),
+				.linkedFramework("QuartzCore"),
 			]
 		),
 	]

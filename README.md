@@ -46,6 +46,10 @@ let package = Package(
 
 TODO
 
+```sh
+swift package plugin --allow-writing-to-package-directory generate-dawn-apinotes
+```
+
 ### Alternatives
 
 - [swift-webgpu](https://github.com/henrybetts/swift-webgpu) is another binding
