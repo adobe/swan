@@ -5,4 +5,10 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-#include <dawn/webgpu.h>
+import DawnData
+
+extension DawnFunctionArgument: TypeDescriptor {
+	var isInOut: Bool {
+		return annotation == "void*" || annotation == "*"
+	}
+}

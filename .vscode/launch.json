@@ -22,22 +22,44 @@
             "type": "swift",
             "request": "launch",
             "args": [
-                "${workspaceFolder:CrossPlatform}/webgpu_dawn.xcframework/dawn.json",
-                "${workspaceFolder:CrossPlatform}/Sources/Dawn/Dawn.apinotes"
+                "--dawn-json",
+                "${workspaceFolder:swan}/.build/artifacts/swan/DawnLib/dawn_webgpu.artifactbundle/dawn.json",
+                "--output-directory",
+                "${workspaceFolder:swan}/BindingsDebug",
+                "--swift-format-config",
+                "${workspaceFolder:swan}/.swift-format",
             ],
             "cwd": "${workspaceFolder:swan}",
-            "name": "Debug UpdateDawnBindings",
-            "program": "${workspaceFolder:swan}/.build/debug/UpdateDawnBindings",
-            "preLaunchTask": "swift: Build Debug UpdateDawnBindings"
+            "name": "Debug GenerateDawnBindings",
+            "program": "${workspaceFolder:swan}/.build/debug/GenerateDawnBindings",
+            "preLaunchTask": "swift: Build Debug GenerateDawnBindings"
         },
         {
             "type": "swift",
             "request": "launch",
             "args": [],
             "cwd": "${workspaceFolder:swan}",
-            "name": "Release UpdateDawnBindings",
-            "program": "${workspaceFolder:swan}/.build/release/UpdateDawnBindings",
-            "preLaunchTask": "swift: Build Release UpdateDawnBindings"
+            "name": "Release GenerateDawnBindings",
+            "program": "${workspaceFolder:swan}/.build/release/GenerateDawnBindings",
+            "preLaunchTask": "swift: Build Release GenerateDawnBindings"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:swan}",
+            "name": "Debug GenerateDawnAPINotes",
+            "program": "${workspaceFolder:swan}/.build/debug/GenerateDawnAPINotes",
+            "preLaunchTask": "swift: Build Debug GenerateDawnAPINotes"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:swan}",
+            "name": "Release GenerateDawnAPINotes",
+            "program": "${workspaceFolder:swan}/.build/release/GenerateDawnAPINotes",
+            "preLaunchTask": "swift: Build Release GenerateDawnAPINotes"
         }
     ]
 }
