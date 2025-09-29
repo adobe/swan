@@ -34,18 +34,6 @@ extension UnsafePointer {
 	}
 }
 
-// extension UnsafePointer {
-// 	func unwrapObjectArrayWithCount(_ count: Int) -> [Pointee] {
-// 		return Array.init(unsafeUninitializedCapacity: count) {
-// 			(objectArrayBuffer: inout UnsafeMutableBufferPointer<Pointee>, initializedCount: inout Int) in
-// 			for i in 0..<count {
-// 				objectArrayBuffer[i] = self[i]
-// 			}
-// 			initializedCount = count
-// 		}
-// 	}
-// }
-
 extension UnsafePointer where Pointee: FloatingPoint {
 	func wrapTuple7() -> (Pointee, Pointee, Pointee, Pointee, Pointee, Pointee, Pointee) {
 		return (self[0], self[1], self[2], self[3], self[4], self[5], self[6])
@@ -92,6 +80,10 @@ extension Array where Element: Numeric {
 extension Array {
 	func unwrapWGPUObjectArray<R>(_ lambda: (UnsafePointer<Element?>) -> R) -> R {
 		fatalError("Unimplemented unwrapWGPUObjectArray")
+	}
+
+	func unwrapWGPUArray<R>(_ lambda: (UnsafePointer<Element>) -> R) -> R {
+		fatalError("Unimplemented unwrapWGPUArray")
 	}
 }
 

@@ -821,7 +821,7 @@ extension DawnMethod {
 	}
 
 	/// Unwrap the arguments for a method call, so that we can call the unwrapped WGPU method with the arguments.
-	func unwrapArgs(data: DawnData, args: [DawnFunctionArgument], expression: ExprSyntax) -> ExprSyntax {
+	func unwrapArgs(_ args: [DawnFunctionArgument], data: DawnData, expression: ExprSyntax) -> ExprSyntax {
 		if args.isEmpty {
 			return expression.indented(by: Trivia.tab)
 		}
@@ -836,7 +836,7 @@ extension DawnMethod {
 			lastArgDecl = expression
 		}
 		if args.count > 0 {
-			return unwrapArgs(data: data, args: args, expression: lastArgDecl)
+			return unwrapArgs(args, data: data, expression: lastArgDecl)
 		}
 		return lastArgDecl
 	}
@@ -854,7 +854,7 @@ extension DawnMethod {
 			"""
 
 		// We need to unwrap the arguments, eventually calling the WGPU method with the unwrapped arguments.
-		let unwrappedMethodCall = unwrapArgs(data: data, args: args, expression: wgpuMethodCall)
+		let unwrappedMethodCall = unwrapArgs(args, data: data, expression: wgpuMethodCall)
 		let wrappedReturns = returns != nil ? returns!.swiftTypeName(data: data) : "Void"
 
 		// Create the body of the method.
@@ -874,7 +874,7 @@ extension DawnMethod {
 			body = "return \(unwrappedMethodCall)"
 		}
 
-		let argumentSignature: FunctionParameterListSyntax = FunctionParameterListSyntax {
+		let argumentSignature = FunctionParameterListSyntax {
 			for arg in args {
 				FunctionParameterSyntax(
 					"\(raw: arg.name.camelCase): \(raw: arg.isInOut ? "inout " : "")\(raw: arg.swiftTypeName(data: data))"
@@ -1007,6 +1007,14 @@ extension DawnNativeType: DawnType {
 			"void *",
 			"void const *":
 			return expression
+		case "bool":
+			return
+				"""
+				{
+					let \(raw: identifier): WGPUBool = \(raw: identifier) ? 1 : 0
+					return \(expression)
+				}()
+				"""
 		default:
 			fatalError("Unimplemented unwrapValueOfType for type \(type.raw)")
 		}
@@ -1293,14 +1301,87 @@ extension DawnStructure: DawnType {
 			.map { try $0.getMemberInfo(data: data) }
 	}
 
-	func applyPropertiesMethod(cStructName: String) throws -> DeclSyntax {
+	func isSimpleWGPUStruct(_ member: DawnStructureMember, data: DawnData) -> Bool {
+		if !member.isWrappedType(data: data) || member.annotation != nil || member.type.raw == "string view" {
+			return false
+		}
+		let typeData = data.data[member.type]
+		guard let typeData = typeData else {
+			fatalError("Unknown type: \(member.type)")
+		}
+		if case .structure = typeData {
+			return true
+		}
+		return false
+	}
+
+	/// Unwrap the arguments for a method call, so that we can call the unwrapped WGPU method with the arguments.
+	func unwrapMembers(
+		_ members: [DawnStructureMember],
+		wgpuStructIdentifier: String,
+		data: DawnData,
+		expression: ExprSyntax
+	) -> ExprSyntax {
+		if members.isEmpty {
+			return expression.indented(by: Trivia.tab)
+		}
+
+		var members = members
+		let lastMember = members.removeLast()
+
+		let lastMemberDecl: ExprSyntax
+		if lastMember.isWrappedType(data: data) {
+			if isSimpleWGPUStruct(lastMember, data: data) {
+				lastMemberDecl =
+					"""
+					\(raw: lastMember.name.camelCase).applyPropertiesToWGPUStruct(&\(raw: wgpuStructIdentifier).\(raw: lastMember.name.camelCase)) { \(raw: lastMember.name.camelCase) in
+						\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+					}
+					"""
+			} else {
+				lastMemberDecl = lastMember.unwrapValueWithIdentifier(
+					lastMember.name.camelCase,
+					data: data,
+					expression: expression
+				)
+			}
+		} else {
+			lastMemberDecl = expression
+		}
+		if members.count > 0 {
+			return unwrapMembers(members, wgpuStructIdentifier: wgpuStructIdentifier, data: data, expression: lastMemberDecl)
+		}
+		return lastMemberDecl
+	}
+
+	func applyPropertiesMethod(cStructName: String, data: DawnData) throws -> DeclSyntax {
+		let memberAssignments = CodeBlockItemListSyntax {
+			for member in members where !isSimpleWGPUStruct(member, data: data) {
+				"wgpuStruct.\(raw: member.name.camelCase) = \(raw: member.name.camelCase)"
+			}
+		}
+		let memberAssignmentLambda: ExprSyntax =
+			"""
+			{
+				\(memberAssignments)
+				return lambda(&wgpuStruct)
+			}()
+			"""
+
+		let unwrappedMemberExpr = unwrapMembers(
+			members,
+			wgpuStructIdentifier: "wgpuStruct",
+			data: data,
+			expression: memberAssignmentLambda
+		)
+
 		return DeclSyntax(
 			"""
 			public func applyPropertiesToWGPUStruct<R>(
 				_ wgpuStruct: inout \(raw: cStructName),
 				_ lambda: (UnsafeMutablePointer<\(raw: cStructName)>) -> R
 			) -> R {
-				return lambda(&wgpuStruct)
+				\(unwrappedMemberExpr)
 			}
 			"""
 		)
@@ -1374,7 +1455,7 @@ extension DawnStructure: DawnType {
 
 					\(needsWrap ? initWithWGPUStructMethod(cStructName: cStructName, data: data) : nil)
 
-					\(try applyPropertiesMethod(cStructName: cStructName))
+					\(try applyPropertiesMethod(cStructName: cStructName, data: data))
 				}
 
 				"""
@@ -1396,8 +1477,24 @@ extension DawnStructure: DawnType {
 	) -> ExprSyntax {
 		// Check if this type of structure is normally wrapped.
 		let isWrapped = isWrappedType(type, data: data)
+		let optional = optional ?? false
 
 		if !isWrapped {
+			if length != nil {
+				if case .int = length! {
+					fatalError("Unimplemented unwrapValueOfType for type \(type.raw) with length \(length!)")
+				}
+				if case .name(let name) = length! {
+					return
+						"""
+						\(raw: identifier).unwrapWGPUArray { _\(raw: identifier) in
+							let \(raw: name.camelCase) = \(raw: identifier).count
+							let \(raw: identifier) = _\(raw: identifier)
+							return \(expression, format: TabFormat(initialIndentation: .tabs(1)))
+						}
+						"""
+				}
+			}
 			// Even though this type of structure is normally unwrapped, we still need to
 			// "unwrap" it into a pointer that we can pass to the WGPU API.
 			let withFunc: String
@@ -1406,6 +1503,24 @@ extension DawnStructure: DawnType {
 				withFunc = "withUnsafePointer"
 			default:
 				fatalError("Unimplemented unwrapValueOfType for type \(type.raw) with annotation \(annotation!)")
+			}
+			if optional {
+				return
+					"""
+					{
+						var _\(raw: identifier) = \(raw: identifier)
+						return if _\(raw: identifier) != nil {
+							\(raw: withFunc)(to: &_\(raw: identifier)!) { \(raw: identifier) in
+								\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+							}
+						} else {
+							{
+								let \(raw: identifier): UnsafePointer<WGPU\(raw: type.CamelCase)>! = nil
+								return \(expression, format: TabFormat(initialIndentation: .tabs(3)))
+							}()
+						}
+					}()
+					"""
 			}
 			return
 				"""
@@ -1418,13 +1533,13 @@ extension DawnStructure: DawnType {
 				"""
 		}
 
-		let withGPUStructMethod = annotation == "*" ? "withWGPUStructInOut" : "withWGPUStruct"
+		let withWGPUStructMethod = annotation == "*" ? "withWGPUStructInOut" : "withWGPUStruct"
 		if annotation != nil && annotation != "*" && annotation != "const*" {
 			fatalError("Unimplemented unwrapValueOfType with annotation of \(annotation!) for type \(type.raw)")
 		}
 		if length != nil {
 			assert(annotation == "*" || annotation == "const*")
-			if optional ?? false {
+			if optional {
 				// TODO: This needs to be more careful about mutable vs immutable pointers.
 				return
 					"""
@@ -1443,10 +1558,22 @@ extension DawnStructure: DawnType {
 				}
 				"""
 		}
-		if optional ?? false {
+		if optional {
+			if type.raw == "string view" {
+				// String views are special because we still have to initialize the WGPUStringView.
+				return
+					"""
+					\(raw: identifier) != nil ? \(raw: identifier)!.\(raw: withWGPUStructMethod) { \(raw: identifier) in
+						\(raw: expression.indented(by: Trivia.tab).formatted().description)
+					} : {
+						let \(raw: identifier) = WGPUStringView(data: nil, length: 0)
+						return \(raw: expression.indented(by: Trivia.tab).formatted().description)
+					}()
+					"""
+			}
 			return
 				"""
-				\(raw: identifier) != nil ? \(raw: identifier)!.\(raw: withGPUStructMethod) { \(raw: identifier) in
+				\(raw: identifier) != nil ? \(raw: identifier)!.\(raw: withWGPUStructMethod) { \(raw: identifier) in
 					\(raw: expression.indented(by: Trivia.tab).formatted().description)
 				} : {
 					let \(raw: identifier) = UnsafeMutablePointer<WGPU\(raw: type.CamelCase)>(nil)
@@ -1456,7 +1583,7 @@ extension DawnStructure: DawnType {
 		}
 		return
 			"""
-			\(raw: identifier).\(raw: withGPUStructMethod) { \(raw: identifier) in
+			\(raw: identifier).\(raw: withWGPUStructMethod) { \(raw: identifier) in
 				\(raw: expression.indented(by: Trivia.tab).formatted().description)
 			}
 			"""
