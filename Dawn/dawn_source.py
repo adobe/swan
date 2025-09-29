@@ -152,25 +152,6 @@ def fetch_dawn_source(hash: str) -> None:
     except subprocess.CalledProcessError as e:
         raise GitOperationError(f"Failed to checkout Dawn repository: {e.stderr}")
 
-    # Apply the patch to the Dawn source
-    print("Applying patch to Dawn source...")
-    try:
-        subprocess.run(
-            [
-                "git",
-                "apply",
-                "--ignore-space-change",
-                "--ignore-whitespace",
-                "../dawn_source.patch",
-            ],
-            cwd=str(get_dawn_path()),
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-    except subprocess.CalledProcessError as e:
-        raise GitOperationError(f"Failed to apply patch to Dawn repository: {e.stderr}")
-
     # Verify Dawn tools directory and fetch dawn dependencies
     dawn_source_tools = dest_dir / "tools" / "fetch_dawn_dependencies.py"
     if not dawn_source_tools.exists():
