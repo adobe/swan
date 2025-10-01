@@ -358,7 +358,17 @@ extension DawnEntity: DawnType {
 				data: data,
 				expression: expression
 			)
-		case .enum, .bitmask:
+		case .enum(let enumValue):
+			return enumValue.unwrapValueOfType(
+				type,
+				identifier: identifier,
+				annotation: annotation,
+				length: length,
+				optional: optional,
+				data: data,
+				expression: expression
+			)
+		case .bitmask:
 			// Pass through the expression for enums.
 			return expression
 		default:
@@ -464,6 +474,7 @@ extension DawnCallbackInfo: DawnType {
 		}
 
 		let swiftCallbackFunctionName = "GPU\(callbackMember.type.CamelCase)"
+		let initArgs = hasModeProperty ? "mode: GPUCallbackMode = .waitAnyOnly, " : ""
 
 		// TODO: Need to add lambda wrapper for callback function in applyPropertiesToWGPUStruct
 		return [
@@ -481,11 +492,10 @@ extension DawnCallbackInfo: DawnType {
 						self.callback = callback
 					}
 
-					public func applyPropertiesToWGPUStruct<R>(
-						_ wgpuStruct: inout \(raw: cStructName),
-						_ lambda: (UnsafeMutablePointer<\(raw: cStructName)>) -> R
+					public func withWGPUStruct<R>(
+						_ lambda: (inout \(raw: cStructName)) -> R
 					) -> R {
-						\(raw: hasModeProperty ? "wgpuStruct.mode = mode" : "")
+						var wgpuStruct = \(raw: cStructName)(\(raw: initArgs))
 						return lambda(&wgpuStruct)
 					}
 				}
@@ -509,8 +519,7 @@ extension DawnCallbackInfo: DawnType {
 		expression: ExprSyntax
 	) -> ExprSyntax {
 		return """
-			\(raw: identifier).withWGPUStruct { _\(raw: identifier) in
-				let \(raw: identifier) = _\(raw: identifier).pointee
+			\(raw: identifier).withWGPUStruct { \(raw: identifier) in
 				return \(raw: expression.indented(by: Trivia.tab).formatted().description)
 			}
 			"""
@@ -642,19 +651,17 @@ extension DawnDefaultValue {
 
 extension DawnEnum {
 	func declarations(name: Name, data: DawnData) throws -> [any DeclSyntaxProtocol] {
-		if hasInvalidIdentifier {
-			return [
-				DeclSyntax(
-					"""
-					@frozen public enum GPU\(raw: name.CamelCase) : UInt32, @unchecked Sendable {
-						\(raw: values.map { "case \($0.name.camelCaseIdentifier) = \($0.value)" }.joined(separator: "\n"))
-					}
-					"""
-				)
-			]
-		}
 		return [
-			DeclSyntax("public typealias GPU\(raw: name.CamelCase) = WGPU\(raw: name.CamelCase)")
+			DeclSyntax(
+				"""
+				public typealias GPU\(raw: name.CamelCase) = WGPU\(raw: name.CamelCase)
+				"""
+			),
+			DeclSyntax(
+				"""
+				extension WGPU\(raw: name.CamelCase): @retroactive RawRepresentable {}
+				"""
+			),
 		]
 	}
 
@@ -674,6 +681,35 @@ extension DawnEnum {
 		assert(annotation == "const*")
 		let parentIdentifier = identifier.split(separator: ".").dropLast().joined(separator: ".")
 		return "\(raw: identifier).wrapArrayWithCount(\(raw: length!.sizeWithIdentifier(parentIdentifier)))"
+	}
+
+	func unwrapValueOfType(
+		_ type: Name,
+		identifier: String,
+		annotation: String?,
+		length: ArraySize?,
+		optional: Bool?,
+		data: DawnData,
+		expression: ExprSyntax
+	) -> ExprSyntax {
+		if length == nil {
+			assert(annotation == nil)
+			return expression
+		}
+		let optional = optional ?? false
+		// Unpack an array of values.
+		let count: ExprSyntax = optional ? "\(raw: identifier)?.count ?? 0" : "\(raw: identifier).count"
+		guard case .name(let lengthName) = length! else {
+			fatalError("Unimplemented unwrapValueOfType for type \(type.raw) with length \(length!)")
+		}
+		return
+			"""
+			withWPGUArrayPointer(\(raw: identifier)) { (_\(raw: identifier): UnsafePointer<WGPU\(raw: type.CamelCase)>\(raw: optional ? "?" : "")) in
+				let \(raw: lengthName.camelCase) = \(count)
+				let \(raw: identifier) = _\(raw: identifier)
+				return \(expression, format: TabFormat(initialIndentation: .tabs(1)))
+			}
+			"""
 	}
 }
 
@@ -876,9 +912,7 @@ extension DawnMethod {
 
 		let argumentSignature = FunctionParameterListSyntax {
 			for arg in args {
-				FunctionParameterSyntax(
-					"\(raw: arg.name.camelCase): \(raw: arg.isInOut ? "inout " : "")\(raw: arg.swiftTypeName(data: data))"
-				)
+				"\(raw: arg.name.camelCase): \(raw: arg.isInOut ? "inout " : "")\(raw: arg.swiftTypeName(data: data))"
 			}
 		}
 
@@ -926,7 +960,7 @@ extension DawnNativeType: DawnType {
 			}
 		case "double": return "Double"
 		case "float": return "Float"
-		case "int": return "Int"
+		case "int": return "Int32"
 		case "uint8_t":
 			if length != nil {
 				if annotation == "const*" {
@@ -994,7 +1028,7 @@ extension DawnNativeType: DawnType {
 		if length != nil {
 			return
 				"""
-				\(raw: identifier).unwrapWGPUArray { \(raw: identifier) in
+				withWPGUArrayPointer(\(raw: identifier)) { \(raw: identifier) in
 					\(expression, format: TabFormat(initialIndentation: .tabs(0)))
 				}
 				"""
@@ -1138,7 +1172,7 @@ extension DawnObject: DawnType {
 			case .name:
 				return
 					"""
-					\(raw: identifier).unwrapWGPUObjectArray{ commands in
+					\(raw: identifier).unwrapWGPUObjectArray{ \(raw: identifier) in
 						\(expression, format: TabFormat(initialIndentation: .tabs(0)))
 					}
 					"""
@@ -1179,7 +1213,7 @@ extension DawnStructureMember: TypeDescriptor {
 		var defaultString: String? = nil
 		let isArray = length != nil
 
-		if isOptional {
+		if optional {
 			defaultString = "nil"
 		} else if isArray {
 			defaultString = "[]"
@@ -1199,7 +1233,7 @@ extension DawnStructureMember: TypeDescriptor {
 		if isArray {
 			swiftType = "[\(swiftType)]"
 		}
-		if isOptional {
+		if optional {
 			swiftType = "\(swiftType)?"
 		}
 		return (
@@ -1229,6 +1263,23 @@ extension DawnStructureMember: TypeDescriptor {
 }
 
 extension DawnStructure: DawnType {
+	enum ExtensibilityType {
+		case chained
+		case extensible
+		case none
+	}
+
+	/// The type of extensibility of the structure.
+	var extensibilityType: ExtensibilityType {
+		if extensible != .no {
+			return .extensible
+		}
+		if chained != .no && chained != nil {
+			return .chained
+		}
+		return .none
+	}
+
 	func isWrappedType(_ type: Name, data: DawnData) -> Bool {
 		// String views structs are wrapped with a String
 		if type.raw == "string view" {
@@ -1334,8 +1385,8 @@ extension DawnStructure: DawnType {
 			if isSimpleWGPUStruct(lastMember, data: data) {
 				lastMemberDecl =
 					"""
-					\(raw: lastMember.name.camelCase).applyPropertiesToWGPUStruct(&\(raw: wgpuStructIdentifier).\(raw: lastMember.name.camelCase)) { \(raw: lastMember.name.camelCase) in
-						\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+					\(raw: lastMember.name.camelCase).withWGPUStruct() {  \(raw: lastMember.name.camelCase) in
+						\(expression)
 					}
 					"""
 			} else {
@@ -1348,38 +1399,73 @@ extension DawnStructure: DawnType {
 		} else {
 			lastMemberDecl = expression
 		}
+		let formattedLastMemberDecl: ExprSyntax = "\(lastMemberDecl, format: TabFormat(initialIndentation: .tabs(0)))"
 		if members.count > 0 {
-			return unwrapMembers(members, wgpuStructIdentifier: wgpuStructIdentifier, data: data, expression: lastMemberDecl)
+			return unwrapMembers(
+				members,
+				wgpuStructIdentifier: wgpuStructIdentifier,
+				data: data,
+				expression: formattedLastMemberDecl
+			)
 		}
-		return lastMemberDecl
+		return formattedLastMemberDecl
 	}
 
-	func applyPropertiesMethod(cStructName: String, data: DawnData) throws -> DeclSyntax {
-		let memberAssignments = CodeBlockItemListSyntax {
-			for member in members where !isSimpleWGPUStruct(member, data: data) {
-				"wgpuStruct.\(raw: member.name.camelCase) = \(raw: member.name.camelCase)"
-			}
-		}
-		let memberAssignmentLambda: ExprSyntax =
-			"""
-			{
-				\(memberAssignments)
-				return lambda(&wgpuStruct)
-			}()
-			"""
+	func withWGPUStructMethod(cStructName: String, data: DawnData) throws -> DeclSyntax {
+		let initArgs = members.map { member in
+			"\(member.name.camelCase): \(member.name.camelCase)"
+		}.joined(separator: ", ")
 
+		// An expresion to construct the WGPU struct, passing in the member values.
+		let lambdaCallExpr: ExprSyntax
+		switch extensibilityType {
+		case .none:
+			lambdaCallExpr =
+				"""
+				{
+					var wgpuStruct = \(raw: cStructName)(\(raw: initArgs))
+					return lambda(&wgpuStruct)
+				}()
+				"""
+		case .chained:
+			lambdaCallExpr =
+				"""
+				{	
+					if nextInChain == nil {
+						var wgpuStruct = \(raw: cStructName)(chain: WGPUChainedStruct(next: nil, sType: sType), \(raw: initArgs))
+						return lambda(&wgpuStruct)
+					} else {
+						return nextInChain!.withNextInChain() { pointer in
+							var wgpuStruct = \(raw: cStructName)(chain: WGPUChainedStruct(next: pointer, sType: sType), \(raw: initArgs))
+							return lambda(&wgpuStruct)
+						}
+					}
+				}()
+				"""
+		case .extensible:
+			lambdaCallExpr =
+				"""
+				withWGPUStructChain { wgpuChainedStruct in
+					Swift.withUnsafeMutablePointer(to: &wgpuChainedStruct) { pointer in
+						var wgpuStruct = \(raw: cStructName)(nextInChain: pointer, \(raw: initArgs))
+						return lambda(&wgpuStruct)
+					}
+				}
+				"""
+		}
+
+		// Unwrap the members of the WGPU struct before calling the lambda.
 		let unwrappedMemberExpr = unwrapMembers(
 			members,
 			wgpuStructIdentifier: "wgpuStruct",
 			data: data,
-			expression: memberAssignmentLambda
+			expression: lambdaCallExpr
 		)
 
 		return DeclSyntax(
 			"""
-			public func applyPropertiesToWGPUStruct<R>(
-				_ wgpuStruct: inout \(raw: cStructName),
-				_ lambda: (UnsafeMutablePointer<\(raw: cStructName)>) -> R
+			public func withWGPUStruct<R>(
+				_ lambda: (inout \(raw: cStructName)) -> R
 			) -> R {
 				\(unwrappedMemberExpr)
 			}
@@ -1416,7 +1502,18 @@ extension DawnStructure: DawnType {
 
 		if !isWrappedType(name, data: data) {
 			return [
-				DeclSyntax("public typealias \(raw: swiftStructName) = \(raw: cStructName)")
+				DeclSyntax(
+					"""
+					public typealias \(raw: swiftStructName) = \(raw: cStructName)
+					"""
+				),
+				DeclSyntax(
+					"""
+					extension \(raw: swiftStructName): GPUSimpleStruct {
+						public typealias WGPUType = Self
+					}
+					"""
+				),
 			]
 		}
 
@@ -1424,10 +1521,10 @@ extension DawnStructure: DawnType {
 		var structProtocol: String
 
 		/// Assign the RootStruct or ChainedStruct protocol to the Dawn C struct as appropriate.
-		if extensible == .in {
+		if extensibilityType == .extensible {
 			decls.append(DeclSyntax("extension \(raw: cStructName): RootStruct {}"))
 			structProtocol = "GPURootStruct"
-		} else if chained == .in {
+		} else if extensibilityType == .chained {
 			decls.append(DeclSyntax("extension \(raw: cStructName): ChainedStruct {}"))
 			structProtocol = "GPUChainedStruct"
 			sType = ".\(name.camelCase)"
@@ -1441,6 +1538,9 @@ extension DawnStructure: DawnType {
 
 		let memberDecls = try members.flatMap { try $0.declarations(data: data) }
 
+		let chainMemberDecl: DeclSyntax? =
+			extensibilityType == .none ? nil : "public var nextInChain: (any GPUChainedStruct)? = nil"
+
 		/// Create a wrapper to eliminate complicated pointer wrangling
 		decls.append(
 			DeclSyntax(
@@ -1449,13 +1549,14 @@ extension DawnStructure: DawnType {
 					public typealias WGPUType = \(raw: cStructName)
 					\(sType != nil ? "public let sType: GPUSType = \(raw: sType!)" : "")
 					\(raw: memberDecls.map { $0.formatted().description }.joined(separator: "\n"))
-					public var chain: [any GPUChainedStruct] = []
+
+					\(chainMemberDecl)
 					
 					\(initDecl(data: data))
 
 					\(needsWrap ? initWithWGPUStructMethod(cStructName: cStructName, data: data) : nil)
 
-					\(try applyPropertiesMethod(cStructName: cStructName, data: data))
+					\(try withWGPUStructMethod(cStructName: cStructName, data: data))
 				}
 
 				"""
@@ -1484,11 +1585,12 @@ extension DawnStructure: DawnType {
 				if case .int = length! {
 					fatalError("Unimplemented unwrapValueOfType for type \(type.raw) with length \(length!)")
 				}
-				if case .name(let name) = length! {
+				if case .name(let lengthName) = length! {
+					let count: ExprSyntax = optional ? "\(raw: identifier)?.count ?? 0" : "\(raw: identifier).count"
 					return
 						"""
-						\(raw: identifier).unwrapWGPUArray { _\(raw: identifier) in
-							let \(raw: name.camelCase) = \(raw: identifier).count
+						withWPGUArrayPointer(\(raw: identifier)) { _\(raw: identifier) in
+							let \(raw: lengthName.camelCase) = \(count)
 							let \(raw: identifier) = _\(raw: identifier)
 							return \(expression, format: TabFormat(initialIndentation: .tabs(1)))
 						}
@@ -1497,36 +1599,20 @@ extension DawnStructure: DawnType {
 			}
 			// Even though this type of structure is normally unwrapped, we still need to
 			// "unwrap" it into a pointer that we can pass to the WGPU API.
-			let withFunc: String
-			switch annotation {
-			case "const*":
-				withFunc = "withUnsafePointer"
-			default:
-				fatalError("Unimplemented unwrapValueOfType for type \(type.raw) with annotation \(annotation!)")
-			}
+			assert(annotation == "const*")
 			if optional {
 				return
 					"""
-					{
-						var _\(raw: identifier) = \(raw: identifier)
-						return if _\(raw: identifier) != nil {
-							\(raw: withFunc)(to: &_\(raw: identifier)!) { \(raw: identifier) in
-								\(expression, format: TabFormat(initialIndentation: .tabs(0)))
-							}
-						} else {
-							{
-								let \(raw: identifier): UnsafePointer<WGPU\(raw: type.CamelCase)>! = nil
-								return \(expression, format: TabFormat(initialIndentation: .tabs(3)))
-							}()
-						}
-					}()
+					\(raw: identifier).withWGPUPointer() { \(raw: identifier) in
+						\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+					}
 					"""
 			}
 			return
 				"""
 				{
 					var _\(raw: identifier) = \(raw: identifier)
-					\(raw: withFunc)(to: &_\(raw: identifier)) { \(raw: identifier) in
+					_\(raw: identifier).withWGPUPointer() { \(raw: identifier) in
 						\(expression, format: TabFormat(initialIndentation: .tabs(0)))
 					}
 				}()
@@ -1539,52 +1625,26 @@ extension DawnStructure: DawnType {
 		}
 		if length != nil {
 			assert(annotation == "*" || annotation == "const*")
-			if optional {
-				// TODO: This needs to be more careful about mutable vs immutable pointers.
-				return
-					"""
-					\(raw: identifier) != nil ? \(raw: identifier)!.unwrapWGPUArray { \(raw: identifier) in
-						\(raw: expression.indented(by: Trivia.tab).formatted().description)
-					} : {
-						let \(raw: identifier) = UnsafeMutablePointer<WGPU\(raw: type.CamelCase)>(nil)
-						return \(raw: expression.indented(by: Trivia.tab).formatted().description)
-					}()
-					"""
-			}
 			return
 				"""
-				\(raw: identifier).unwrapWGPUArray { \(raw: identifier) in
-					\(raw: expression.indented(by: Trivia.tab).formatted().description)
+				withWPGUArrayPointer(\(raw: identifier)) { \(raw: identifier) in
+					\(expression, format: TabFormat(initialIndentation: .tabs(0)))
 				}
 				"""
 		}
-		if optional {
-			if type.raw == "string view" {
-				// String views are special because we still have to initialize the WGPUStringView.
-				return
-					"""
-					\(raw: identifier) != nil ? \(raw: identifier)!.\(raw: withWGPUStructMethod) { \(raw: identifier) in
-						\(raw: expression.indented(by: Trivia.tab).formatted().description)
-					} : {
-						let \(raw: identifier) = WGPUStringView(data: nil, length: 0)
-						return \(raw: expression.indented(by: Trivia.tab).formatted().description)
-					}()
-					"""
-			}
+		if optional && type.raw != "string view" {
+			let withPointerFn = annotation == "const*" ? "withWGPUPointer" : "withWGPUMutablePointer"
 			return
 				"""
-				\(raw: identifier) != nil ? \(raw: identifier)!.\(raw: withWGPUStructMethod) { \(raw: identifier) in
-					\(raw: expression.indented(by: Trivia.tab).formatted().description)
-				} : {
-					let \(raw: identifier) = UnsafeMutablePointer<WGPU\(raw: type.CamelCase)>(nil)
-					return \(raw: expression.indented(by: Trivia.tab).formatted().description)
-				}()
+				\(raw: identifier).\(raw: withPointerFn)() { \(raw: identifier) in
+					\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+				}
 				"""
 		}
 		return
 			"""
 			\(raw: identifier).\(raw: withWGPUStructMethod) { \(raw: identifier) in
-				\(raw: expression.indented(by: Trivia.tab).formatted().description)
+				\(expression, format: TabFormat(initialIndentation: .tabs(0)))
 			}
 			"""
 	}
@@ -1670,7 +1730,7 @@ func swiftTypeInformationForName(
 			}
 		case "double": return ("Double", dawnDefault ?? "0.0")
 		case "float": return ("Float", dawnDefault ?? "0.0")
-		case "int": return ("Int", dawnDefault ?? "0")
+		case "int": return ("Int32", dawnDefault ?? "0")
 		case "int16_t": return ("Int16", dawnDefault ?? "0")
 		case "int32_t": return ("Int32", dawnDefault ?? "0")
 		case "int64_t": return ("Int64", dawnDefault ?? "0")

@@ -197,7 +197,6 @@ public struct DawnStructureMember: Decodable {
 	public let `default`: DawnDefaultValue?
 	public let annotation: String?
 	public let length: ArraySize?
-	public let isOptional: Bool
 
 	enum CodingKeys: String, CodingKey {
 		case name
@@ -213,12 +212,9 @@ public struct DawnStructureMember: Decodable {
 		name = try container.decode(Name.self, forKey: .name)
 		type = try container.decode(Name.self, forKey: .type)
 		`default` = try container.decodeIfPresent(DawnDefaultValue.self, forKey: .default)
-		optional = try container.decodeIfPresent(Bool.self, forKey: .optional) ?? false
+		optional = try container.decodeIfPresent(Bool.self, forKey: .optional) ?? `default`?.isNullPointer ?? false
 		annotation = try container.decodeIfPresent(String.self, forKey: .annotation)
 		length = try container.decodeIfPresent(ArraySize.self, forKey: .length)
-
-		// Optional if it is explicitly set or if the default value is a null pointer.
-		isOptional = optional || `default`?.isNullPointer ?? false
 	}
 }
 

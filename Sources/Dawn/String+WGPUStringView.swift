@@ -32,3 +32,12 @@ extension String {
 		self.init(string)
 	}
 }
+
+extension Optional where Wrapped == String {
+	func withWGPUStruct<R>(_ lambda: (WGPUStringView) throws -> R) rethrows -> R {
+		guard let self = self else {
+			return try lambda(WGPUStringView(data: nil, length: 0))
+		}
+		return try self.withWGPUStruct(lambda)
+	}
+}
