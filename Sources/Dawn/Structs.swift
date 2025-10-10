@@ -7,9 +7,7 @@
 //
 
 /// A WGPU struct from the Dawn C API
-public protocol WGPUStruct {
-	init()
-}
+public protocol WGPUStruct {}
 
 /// A root structure from the Dawn C API
 ///

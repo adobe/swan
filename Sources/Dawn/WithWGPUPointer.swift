@@ -59,36 +59,68 @@ public extension Optional where Wrapped: WithWGPUPointer {
 	}
 }
 
-public func withWPGUArrayPointer<E: GPUStruct, R>(_ array: [E], _ lambda: (UnsafePointer<E.WGPUType>) -> R) -> R {
-	fatalError("Unimplemented withWPGUArrayPointer")
+public func withWGPUArrayPointer<E: GPUStruct, R>(_ array: [E], _ lambda: (UnsafePointer<E.WGPUType>) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
 }
 
-public func withWPGUArrayPointer<E: GPUStruct, R>(_ array: [E]?, _ lambda: (UnsafePointer<E.WGPUType>?) -> R) -> R {
-	fatalError("Unimplemented withWPGUArrayPointer")
+public func withWGPUArrayPointer<E: GPUStruct, R>(_ array: [E]?, _ lambda: (UnsafePointer<E.WGPUType>?) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
 }
 
-public func withWPGUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E], _ lambda: (UnsafePointer<E.WGPUType>) -> R) -> R {
-	fatalError("Unimplemented withWPGUArrayPointer")
+public func withWGPUMutableArrayPointer<E: GPUStruct, R>(_ array: [E], _ lambda: (UnsafeMutablePointer<E.WGPUType>) -> R) -> R {
+	fatalError("Unimplemented withWGPUMutableArrayPointer")
 }
 
-public func withWPGUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E]?, _ lambda: (UnsafePointer<E.WGPUType>?) -> R) -> R {
-	fatalError("Unimplemented withWPGUArrayPointer")
+public func withWGPUMutableArrayPointer<E: GPUStruct, R>(_ array: [E]?, _ lambda: (UnsafeMutablePointer<E.WGPUType>?) -> R) -> R {
+	fatalError("Unimplemented withWGPUMutableArrayPointer")
 }
 
-public func withWPGUArrayPointer<E: Numeric, R>(_ array: [E], _ lambda: (UnsafePointer<E>) -> R) -> R {
-	fatalError("Unimplemented withWPGUArrayPointer")
+public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E], _ lambda: (UnsafePointer<E.WGPUType>) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
 }
 
-public func withWPGUArrayPointer<E: Numeric, R>(_ array: [E]?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
-	fatalError("Unimplemented withWPGUArrayPointer")
+public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E]?, _ lambda: (UnsafePointer<E.WGPUType>?) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
 }
 
-public func withWPGUArrayPointer<E: RawRepresentable, R>(_ array: [E], _ lambda: (UnsafePointer<E>) -> R) -> R {
-	fatalError("Unimplemented withWPGUArrayPointer")
+public func withWGPUArrayPointer<E: Numeric, R>(_ array: [E], _ lambda: (UnsafePointer<E>) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
 }
 
-public func withWPGUArrayPointer<E: RawRepresentable, R>(_ array: [E]?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
-	fatalError("Unimplemented withWPGUArrayPointer")
+public func withWGPUArrayPointer<E: Numeric, R>(_ array: [E]?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
+}
+
+public func withWGPUArrayPointer<E: RawRepresentable, R>(_ array: [E], _ lambda: (UnsafePointer<E>) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
+}
+
+public func withWGPUArrayPointer<E: RawRepresentable, R>(_ array: [E]?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
+}
+
+public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E), _ lambda: (UnsafePointer<E>) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
+}
+
+public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E, E), _ lambda: (UnsafePointer<E>) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
+}
+
+public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E, E, E, E, E), _ lambda: (UnsafePointer<E>) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
+}
+
+public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E)?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
+}
+
+public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E, E)?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
+}
+
+public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E, E, E, E, E)?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
 }
 
 extension UnsafePointer where Pointee: WGPUStruct {

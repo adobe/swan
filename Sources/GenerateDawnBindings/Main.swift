@@ -5,57 +5,65 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
+import ArgumentParser
 import DawnData
 import Foundation
+import SwiftFormat
 
 @main
-struct Main {
-	static func main() {
-		let arguments = CommandLine.arguments
+struct Main: ParsableCommand {
+	static let configuration = CommandConfiguration(
+		commandName: "generate-dawn-bindings",
+		abstract: "Generate Swift wrapper bindings from dawn.json"
+	)
 
-		guard arguments.count == 3 else {
-			print("Usage: \(arguments[0]) <dawn.json-path> <output-directory>")
-			exit(1)
+	@Option(name: .long, help: "Path to the dawn.json file")
+	var dawnJson: String
+
+	@Option(name: .long, help: "Directory to write the generated Swift files")
+	var outputDirectory: String
+
+	@Option(name: .long, help: "Path to the swift-format configuration file")
+	var swiftFormatConfig: String?
+
+	mutating func run() throws {
+		guard let jsonData = try? Data(contentsOf: URL(fileURLWithPath: dawnJson)) else {
+			throw ValidationError("Failed to read file at \(dawnJson)")
 		}
 
-		let dawnJsonPath = arguments[1]
-		let outputWrappersPath = arguments[2]
-
-		guard let jsonData = try? Data(contentsOf: URL(fileURLWithPath: dawnJsonPath)) else {
-			print("Failed to read file at \(dawnJsonPath)")
-			exit(1)
-		}
 		let decoder = JSONDecoder()
 		decoder.keyDecodingStrategy = .convertFromSnakeCase
 		let dawnData: DawnData
 		do {
 			dawnData = try decoder.decode(DawnData.self, from: jsonData)
-			// print(dawnData)
 		} catch {
-			print("Failed to decode dawn.json: \(error)")
-			exit(1)
+			throw ValidationError("Failed to decode dawn.json: \(error)")
+		}
+
+		let swiftFormatConfiguration: Configuration?
+		if let swiftFormatConfig {
+			let swiftFormatConfigData = try Data(contentsOf: URL(fileURLWithPath: swiftFormatConfig))
+			swiftFormatConfiguration = try JSONDecoder().decode(Configuration.self, from: swiftFormatConfigData)
+		} else {
+			swiftFormatConfiguration = nil
 		}
 
 		let wrappers: [String: String]
 		do {
-			wrappers = try dawnData.generateWrappers()
+			wrappers = try dawnData.generateWrappers(swiftFormatConfiguration: swiftFormatConfiguration)
 		} catch {
-			print("Failed to generate wrappers: \(error)")
-			exit(1)
+			throw ValidationError("Failed to generate wrappers: \(error)")
 		}
 
 		do {
 			for (key, value) in wrappers {
-				let url = URL(fileURLWithPath: outputWrappersPath).appendingPathComponent("\(key).swift")
+				let url = URL(fileURLWithPath: outputDirectory).appendingPathComponent("\(key).swift")
 				try value.write(to: url, atomically: true, encoding: .utf8)
 			}
 		} catch {
-			print("Failed to write to \(outputWrappersPath): \(error)")
-			exit(1)
+			throw ValidationError("Failed to write to \(outputDirectory): \(error)")
 		}
 
 		print("Processing complete!")
-
-		// dawnData.printStats()
 	}
 }

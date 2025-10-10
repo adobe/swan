@@ -22,8 +22,12 @@
             "type": "swift",
             "request": "launch",
             "args": [
+                "--dawn-json",
                 "${workspaceFolder:swan}/.build/artifacts/swan/DawnLib/dawn_webgpu.artifactbundle/dawn.json",
+                "--output-directory",
                 "${workspaceFolder:swan}/BindingsDebug",
+                "--swift-format-config",
+                "${workspaceFolder:swan}/.swift-format",
             ],
             "cwd": "${workspaceFolder:swan}",
             "name": "Debug GenerateDawnBindings",

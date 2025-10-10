@@ -28,10 +28,12 @@ let package = Package(
 	dependencies: [
 		.package(
 			url: "https://github.com/swiftlang/swift-testing.git",
-			revision: "18c42c19cac3fafd61cab1156d4088664b7424ae"
+			from: "6.2.0"
 		),
 		.package(url: "https://github.com/apple/swift-log", from: "1.6.4"),
-		.package(url: "https://github.com/swiftlang/swift-syntax.git", branch: "swift-DEVELOPMENT-SNAPSHOT-2025-08-04-a"),
+		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0"),
+		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0-latest"),
+		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0-latest"),
 	],
 	targets: [
 		.binaryTarget(
@@ -44,9 +46,11 @@ let package = Package(
 			name: "GenerateDawnBindings",
 			dependencies: [
 				.product(name: "Logging", package: "swift-log"),
+				.product(name: "ArgumentParser", package: "swift-argument-parser"),
 				.product(name: "SwiftSyntax", package: "swift-syntax"),
 				.product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
 				.product(name: "SwiftBasicFormat", package: "swift-syntax"),
+				.product(name: "SwiftFormat", package: "swift-format"),
 				"DawnData",
 			],
 			exclude: [

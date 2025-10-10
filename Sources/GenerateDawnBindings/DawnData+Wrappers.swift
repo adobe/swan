@@ -9,6 +9,7 @@ import DawnData
 import Foundation
 import Logging
 import SwiftBasicFormat
+import SwiftFormat
 import SwiftSyntax
 import SwiftSyntaxBuilder
 
@@ -42,7 +43,7 @@ enum SwiftTypeNameError: Error {
 /// A record that describes a Dawn C type.
 protocol DawnType {
 	/// The name of the type in the Swan Swift API.
-	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool?) -> String
+	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool) -> String
 
 	/// The C API name of the type.
 	func cTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool?) -> String
@@ -77,7 +78,9 @@ extension DawnData {
 	/// comfortable to use from Swift
 	/// - Throws: An error if generation of wrappers fails
 	/// - Returns: A dictionary of file names -> swift code
-	func generateWrappers() throws -> [String: String] {
+	func generateWrappers(swiftFormatConfiguration: Configuration?) throws -> [String: String] {
+		let formatter = Formatter(config: swiftFormatConfiguration)
+
 		var aliasDecls: [any DeclSyntaxProtocol] = []
 		var bitmaskDecls: [any DeclSyntaxProtocol] = []
 		var callbackFunctionDecls: [any DeclSyntaxProtocol] = []
@@ -91,7 +94,7 @@ extension DawnData {
 		var result: [String: String] = [:]
 		var structureDecls: [any DeclSyntaxProtocol] = []
 
-		let wrappableStructures = structuredRequiringWrapping()
+		let wrappableStructures = structuresRequiringWrapping()
 
 		let entityNames = data.keys.sorted()
 		for name in entityNames {
@@ -133,38 +136,45 @@ extension DawnData {
 			}
 		}
 
+		func format(decls: [any DeclSyntaxProtocol]) throws -> String {
+			let code = decls.map { $0.formatted().description }.joined(separator: "\n\n")
+			var output = ""
+			try formatter.format(code: code, filename: "output.swift", output: &output)
+			return output
+		}
+
 		if aliasDecls.count > 0 {
 			fatalError("Aliases not implemented")
 		}
 		if bitmaskDecls.count > 0 {
-			result["Bitmasks"] = bitmaskDecls.map { $0.formatted().description }.joined(separator: "\n\n")
+			result["Bitmasks"] = try format(decls: bitmaskDecls)
 		}
 		if callbackFunctionDecls.count > 0 {
-			result["CallbackFunctions"] = callbackFunctionDecls.map { $0.formatted().description }.joined(separator: "\n\n")
+			result["CallbackFunctions"] = try format(decls: callbackFunctionDecls)
 		}
 		if callbackInfoDecls.count > 0 {
-			result["CallbackInfo"] = callbackInfoDecls.map { $0.formatted().description }.joined(separator: "\n\n")
+			result["CallbackInfo"] = try format(decls: callbackInfoDecls)
 		}
 		if constantDecls.count > 0 {
 			fatalError("Constants not implemented")
 		}
 		if enumDecls.count > 0 {
-			result["Enums"] = enumDecls.map { $0.formatted().description }.joined(separator: "\n\n")
+			result["Enums"] = try format(decls: enumDecls)
 		}
 		if functionDecls.count > 0 {
 			fatalError("Functions not implemented")
 		}
 		if functionPointerDecls.count > 0 {
-			result["FunctionPointers"] = functionPointerDecls.map { $0.formatted().description }.joined(separator: "\n\n")
+			result["FunctionPointers"] = try format(decls: functionPointerDecls)
 		}
 		if nativeDecls.count > 0 {
 			fatalError("NativeTypes not implemented")
 		}
 		if objectDecls.count > 0 {
-			result["Objects"] = objectDecls.map { $0.formatted().description }.joined(separator: "\n\n")
+			result["Objects"] = try format(decls: objectDecls)
 		}
 		if structureDecls.count > 0 {
-			result["Structures"] = structureDecls.map { $0.formatted().description }.joined(separator: "\n\n")
+			result["Structures"] = try format(decls: structureDecls)
 		}
 		return result
 	}
@@ -173,7 +183,7 @@ extension DawnData {
 	///
 	/// This is used to determine which structures to support being wrapped back into Swift API types.
 	/// - Returns: A set of structure names
-	func structuredRequiringWrapping() -> Set<Name> {
+	func structuresRequiringWrapping() -> Set<Name> {
 		var structureNames: Set<Name> = []
 
 		// Iterate over all entities in the data
@@ -217,6 +227,9 @@ extension DawnData {
 				{
 					structureNames.insert(returnType)
 				}
+			case .callbackFunction(let callbackFunction):
+				// Check callback function arguments for structure types
+				addArgumentStructures(arguments: callbackFunction.args, structureNames: &structureNames)
 			default:
 				// Skip other entity types
 				break
@@ -227,7 +240,7 @@ extension DawnData {
 			for argument in arguments {
 				if let structureEntity = data[argument.type],
 					case .structure = structureEntity,
-					argument.annotation == "*"
+					argument.annotation == "*" || argument.annotation == "const*"
 				{
 					structureNames.insert(argument.type)
 				}
@@ -263,7 +276,7 @@ extension DawnData {
 extension DawnEntity: DawnType {
 	func isWrappedType(name: Name, data: DawnData) -> Bool {
 		switch self {
-		case .callbackInfo:
+		case .callbackInfo, .callbackFunction:
 			return true
 		case .structure(let structure):
 			return structure.isWrappedType(name, data: data)
@@ -274,7 +287,7 @@ extension DawnEntity: DawnType {
 		}
 	}
 
-	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool?) -> String {
+	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool) -> String {
 		switch self {
 		case .callbackInfo(let callbackInfo):
 			return callbackInfo.swiftTypeNameForType(type, annotation: annotation, length: length, optional: optional)
@@ -284,6 +297,8 @@ extension DawnEntity: DawnType {
 			return object.swiftTypeNameForType(type, annotation: annotation, length: length, optional: optional)
 		case .structure(let structure):
 			return structure.swiftTypeNameForType(type, annotation: annotation, length: length, optional: optional)
+		case .functionPointer(let functionPointer):
+			return functionPointer.swiftTypeNameForType(type, annotation: annotation, length: length, optional: optional)
 		case .enum, .bitmask:
 			return "GPU\(type.CamelCase)"
 		default:
@@ -318,6 +333,16 @@ extension DawnEntity: DawnType {
 		expression: ExprSyntax
 	) -> ExprSyntax {
 		switch self {
+		case .callbackFunction(let callbackFunction):
+			return callbackFunction.unwrapValueOfType(
+				type,
+				identifier: identifier,
+				annotation: annotation,
+				length: length,
+				optional: optional,
+				data: data,
+				expression: expression
+			)
 		case .callbackInfo(let callbackInfo):
 			return callbackInfo.unwrapValueOfType(
 				type,
@@ -461,9 +486,58 @@ extension DawnCallbackFunction {
 			DeclSyntax("public typealias GPU\(raw: name.CamelCase) = (\(raw: argumentTypes.joined(separator: ", "))) -> Void")
 		]
 	}
+
+	func wrapArgs(_ args: [DawnFunctionArgument], data: DawnData) -> [CodeBlockItemSyntax] {
+		if args.isEmpty {
+			return []
+		}
+
+		return args.filter { $0.isWrappedType(data: data) }.map { arg in
+			CodeBlockItemSyntax(
+				"let \(raw: arg.name.camelCase) = \(arg.wrapValueWithIdentifier(arg.name.camelCase, data: data))"
+			)
+		}
+	}
+
+	/// Unwrap a callback function wrapper to get a callback function compatible with the WGPU API.
+	func unwrapValueOfType(
+		_ type: Name,
+		identifier: String,
+		annotation: String?,
+		length: ArraySize?,
+		optional: Bool?,
+		data: DawnData,
+		expression: ExprSyntax
+	) -> ExprSyntax {
+		let argumentSignature = FunctionParameterListSyntax {
+			for arg in args {
+				"_ \(raw: arg.name.camelCase): \(raw: arg.isInOut ? "inout " : "")\(raw: arg.cTypeName(data: data))"
+			}
+			"_ userdata1: UnsafeMutableRawPointer?"
+			"_ userdata2: UnsafeMutableRawPointer?"
+		}
+		return """
+			{ (\(argumentSignature)) in
+					\(raw: wrapArgs(args, data: data).map { $0.formatted().description }.joined(separator: "\n"))
+					return callback(\(raw: args.map { "\($0.name.camelCase)" }.joined(separator: ", ")))
+			}
+			"""
+	}
 }
 
 extension DawnCallbackInfo: DawnType {
+	/// Generate an init method that takes a WGPU struct, making the new struct a wrapper for
+	/// the WGPU struct's data.
+	func initWithWGPUStructMethod(cStructName: String, data: DawnData) -> DeclSyntax {
+		return
+			"""
+			public init(wgpuStruct: \(raw: cStructName)) {
+				\(raw: hasModeProperty ? "self.mode = wgpuStruct.mode" : "")
+				self.callback = wgpuStruct.callback
+			}
+			"""
+	}
+
 	func declarations(name: Name, data: DawnData) throws -> [any DeclSyntaxProtocol] {
 		let cStructName: String = "WGPU\(name.CamelCase)"
 		let swiftStructName = "GPU\(name.CamelCase)"
@@ -474,9 +548,33 @@ extension DawnCallbackInfo: DawnType {
 		}
 
 		let swiftCallbackFunctionName = "GPU\(callbackMember.type.CamelCase)"
-		let initArgs = hasModeProperty ? "mode: GPUCallbackMode = .waitAnyOnly, " : ""
+		let initArgsSignature = hasModeProperty ? "mode: GPUCallbackMode = .waitAnyOnly, " : ""
 
-		// TODO: Need to add lambda wrapper for callback function in applyPropertiesToWGPUStruct
+		let callbackEntity: DawnEntity? = data.data[callbackMember.type]
+		guard let callbackEntity = callbackEntity else {
+			fatalError("Unknown callback type: \(callbackMember.type)")
+		}
+		let lambdaLiteral = callbackEntity.unwrapValueOfType(
+			callbackMember.type,
+			identifier: "callback",
+			annotation: nil,
+			length: nil,
+			optional: nil,
+			data: data,
+			expression: ""
+		)
+
+		let initArgs =
+			"nextInChain: nil, \(hasModeProperty ? "mode: mode, " : "")callback: wgpuCallback, userdata1: nil, userdata2: nil"
+		let lambdaCallExpr: ExprSyntax =
+			"""
+			{
+				let wgpuCallback: WGPU\(raw: callbackMember.type.CamelCase) = \(lambdaLiteral)
+				var wgpuStruct = \(raw: cStructName)(\(raw: initArgs))
+				return lambda(&wgpuStruct)
+			}()
+			"""
+
 		return [
 			DeclSyntax("extension \(raw: cStructName): WGPUStruct {}"),
 			DeclSyntax(
@@ -487,7 +585,7 @@ extension DawnCallbackInfo: DawnType {
 					\(raw: hasModeProperty ? "public let mode: GPUCallbackMode" : "")
 					public let callback: \(raw: swiftCallbackFunctionName)
 
-					public init(\(raw: hasModeProperty ? "mode: GPUCallbackMode = .waitAnyOnly, " : "")callback: @escaping \(raw: swiftCallbackFunctionName)) {
+					public init(\(raw: initArgsSignature)callback: @escaping \(raw: swiftCallbackFunctionName)) {
 						\(raw: hasModeProperty ? "self.mode = mode" : "")
 						self.callback = callback
 					}
@@ -495,8 +593,7 @@ extension DawnCallbackInfo: DawnType {
 					public func withWGPUStruct<R>(
 						_ lambda: (inout \(raw: cStructName)) -> R
 					) -> R {
-						var wgpuStruct = \(raw: cStructName)(\(raw: initArgs))
-						return lambda(&wgpuStruct)
+						\(lambdaCallExpr)
 					}
 				}
 				"""
@@ -520,7 +617,7 @@ extension DawnCallbackInfo: DawnType {
 	) -> ExprSyntax {
 		return """
 			\(raw: identifier).withWGPUStruct { \(raw: identifier) in
-				return \(raw: expression.indented(by: Trivia.tab).formatted().description)
+				return \(expression, format: TabFormat(initialIndentation: .tabs(0)))
 			}
 			"""
 	}
@@ -533,10 +630,14 @@ extension DawnCallbackInfo: DawnType {
 		optional: Bool?,
 		data: DawnData
 	) -> ExprSyntax {
-		fatalError("Unimplemented wrapValueOfType for type \(type.raw)")
+		assert(length == nil)
+		if annotation == "const*" {
+			return "GPU\(raw: type.CamelCase)(wgpuStruct: \(raw: identifier).pointee)"
+		}
+		return "GPU\(raw: type.CamelCase)(wgpuStruct: \(raw: identifier))"
 	}
 
-	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool? = false) -> String {
+	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool = false) -> String {
 		var name = "GPU\(type.CamelCase)"
 		if length != nil {
 			if case .name = length {
@@ -546,7 +647,7 @@ extension DawnCallbackInfo: DawnType {
 				fatalError("Unimplemented swiftTypeNameForType with numeric length for type \(type.raw)")
 			}
 		}
-		if optional ?? false {
+		if optional {
 			name = "\(name)?"
 		}
 		return name
@@ -704,7 +805,7 @@ extension DawnEnum {
 		}
 		return
 			"""
-			withWPGUArrayPointer(\(raw: identifier)) { (_\(raw: identifier): UnsafePointer<WGPU\(raw: type.CamelCase)>\(raw: optional ? "?" : "")) in
+			withWGPUArrayPointer(\(raw: identifier)) { (_\(raw: identifier): UnsafePointer<WGPU\(raw: type.CamelCase)>\(raw: optional ? "?" : "")) in
 				let \(raw: lengthName.camelCase) = \(count)
 				let \(raw: identifier) = _\(raw: identifier)
 				return \(expression, format: TabFormat(initialIndentation: .tabs(1)))
@@ -722,6 +823,7 @@ extension DawnFunction {
 protocol TypeDescriptor {
 	var type: Name { get }
 	var optional: Bool { get }
+	var `default`: DawnDefaultValue? { get }
 	var annotation: String? { get }
 	var length: ArraySize? { get }
 
@@ -770,6 +872,7 @@ extension TypeDescriptor {
 		if entity == nil {
 			fatalError("Unknown type: \(type)")
 		}
+		let optional = optional || (`default`?.isNullPointer ?? false)
 		return entity!.swiftTypeNameForType(type, annotation: annotation, length: length, optional: optional)
 	}
 
@@ -825,6 +928,10 @@ extension DawnFunctionArgument: TypeDescriptor {
 }
 
 extension DawnMethodReturnType: TypeDescriptor {
+	var `default`: DawnDefaultValue? {
+		return nil
+	}
+
 	var annotation: String? {
 		return nil
 	}
@@ -839,6 +946,10 @@ extension DawnFunctionPointer {
 		return [
 			DeclSyntax("public typealias GPU\(raw: name.CamelCase) = WGPU\(raw: name.CamelCase)")
 		]
+	}
+
+	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool = false) -> String {
+		return "GPU\(type.CamelCase)?"
 	}
 }
 
@@ -871,10 +982,11 @@ extension DawnMethod {
 		} else {
 			lastArgDecl = expression
 		}
+		let lastArgFormatted: ExprSyntax = "\(lastArgDecl, format: TabFormat(initialIndentation: .tabs(0)))"
 		if args.count > 0 {
-			return unwrapArgs(args, data: data, expression: lastArgDecl)
+			return unwrapArgs(args, data: data, expression: lastArgFormatted)
 		}
-		return lastArgDecl
+		return lastArgFormatted
 	}
 
 	/// Create a wrapper for a method call that will unwrap the arguments and call the WGPU method.
@@ -943,7 +1055,9 @@ extension DawnNativeType: DawnType {
 	}
 
 	/// The name of the type in the Swan Swift API.
-	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool?) -> String {
+	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool) -> String {
+		var numericType: String?
+
 		switch type.raw {
 		case "bool": return "Bool"
 		case "char":
@@ -958,9 +1072,9 @@ extension DawnNativeType: DawnType {
 			default:
 				fatalError("Unhandled annotation: \(annotation)")
 			}
-		case "double": return "Double"
-		case "float": return "Float"
-		case "int": return "Int32"
+		case "double": numericType = "Double"
+		case "float": numericType = "Float"
+		case "int": numericType = "Int32"
 		case "uint8_t":
 			if length != nil {
 				if annotation == "const*" {
@@ -970,34 +1084,44 @@ extension DawnNativeType: DawnType {
 					"Unimplemented swiftTypeNameForType for type \(type.raw) with annotation \(annotation!) and length \(length!)"
 				)
 			}
-			return "UInt8"
-		case "int16_t": return "Int16"
-		case "int32_t": return "Int32"
-		case "int64_t": return "Int64"
-		case "size_t": return "Int"
-		case "uint16_t": return "UInt16"
-		case "uint32_t":
-			if length != nil {
-				return "[UInt32]"
-			}
-			return "UInt32"
-		case "uint64_t": return "UInt64"
+			numericType = "UInt8"
+		case "int16_t": numericType = "Int16"
+		case "int32_t": numericType = "Int32"
+		case "int64_t": numericType = "Int64"
+		case "size_t": numericType = "Int"
+		case "uint16_t": numericType = "UInt16"
+		case "uint32_t": numericType = "UInt32"
+		case "uint64_t": numericType = "UInt64"
 		case "void":
 			switch annotation {
 			case "*":
-				return "UnsafeMutableRawPointer"
+				return "UnsafeMutableRawPointer?"
 			case "const*":
 				return "UnsafeRawPointer"
 			default:
 				return "Void"
 			}
 		case "void *":
-			return "UnsafeMutableRawPointer"
+			return "UnsafeMutableRawPointer?"
 		case "void const *":
 			return "UnsafeRawPointer"
 		default:
 			fatalError("Unhandled native type: \(type.raw)")
 		}
+		if var numericType {
+			if length != nil {
+				if case .int(let count) = length {
+					numericType = "(\(Array(repeating: numericType, count: count).joined(separator: ", ")))"
+				} else {
+					numericType = "[\(numericType)]"
+				}
+			}
+			if optional || annotation == "const*" {
+				numericType = "\(numericType)?"
+			}
+			return numericType
+		}
+		fatalError("Unhandled native type: \(type.raw)")
 	}
 
 	/// The C API name of the type.
@@ -1028,7 +1152,7 @@ extension DawnNativeType: DawnType {
 		if length != nil {
 			return
 				"""
-				withWPGUArrayPointer(\(raw: identifier)) { \(raw: identifier) in
+				withWGPUArrayPointer(\(raw: identifier)) { \(raw: identifier) in
 					\(expression, format: TabFormat(initialIndentation: .tabs(0)))
 				}
 				"""
@@ -1135,7 +1259,7 @@ extension DawnObject: DawnType {
 		return declarations
 	}
 
-	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool? = false) -> String {
+	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool = false) -> String {
 		if case .int(let count) = length {
 			if count == 1 && annotation == "const*" {
 				return "UnsafePointer<GPU\(type.CamelCase)?>?"
@@ -1148,14 +1272,21 @@ extension DawnObject: DawnType {
 				fatalError("Unimplemented swiftTypeNameForType for type \(type.raw) with annotation \(annotation!)")
 			}
 		}
-		if optional ?? false {
+		if optional {
 			name = "\(name)?"
 		}
 		return name
 	}
 
 	func cTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool? = false) -> String {
-		fatalError("Unimplemented cTypeNameForType for type \(type.raw)")
+		if annotation == "const*" {
+			return "UnsafePointer<GPU\(type.CamelCase)?>?"
+		}
+		if optional ?? false {
+			return "GPU\(type.CamelCase)?"
+		}
+
+		return "GPU\(type.CamelCase)"
 	}
 
 	func unwrapValueOfType(
@@ -1202,7 +1333,10 @@ extension DawnObject: DawnType {
 			let parentIdentifier = identifier.split(separator: ".").dropLast().joined(separator: ".")
 			return "\(raw: identifier).wrapWGPUArrayWithCount(\(raw: length!.sizeWithIdentifier(parentIdentifier)))"
 		case .int(let count):
-			fatalError("Unimplemented wrapValueOfType for type \(type.raw) with length \(count)")
+			if count == 1 {
+				return "\(raw: identifier)"
+			}
+			return "\(raw: identifier).wrapTuple\(raw: count)()"
 		}
 	}
 }
@@ -1211,9 +1345,10 @@ extension DawnStructureMember: TypeDescriptor {
 
 	func getMemberInfo(data: DawnData) throws -> (name: String, swiftType: String, defaultValue: String?) {
 		var defaultString: String? = nil
-		let isArray = length != nil
+		let isArray = if case .name = length { true } else { false }
+		let isTuple = if case .int(let count) = length { count > 1 } else { false }
 
-		if optional {
+		if optional || isTuple {
 			defaultString = "nil"
 		} else if isArray {
 			defaultString = "[]"
@@ -1227,15 +1362,17 @@ extension DawnStructureMember: TypeDescriptor {
 			type,
 			dawnDefault: defaultString,
 			annotation: annotation,
+			length: length,
 			data: data,
 		)
-		var swiftType = typeInfo.swiftType
-		if isArray {
-			swiftType = "[\(swiftType)]"
-		}
-		if optional {
-			swiftType = "\(swiftType)?"
-		}
+		// var swiftType = typeInfo.swiftType
+		// if isArray {
+		// 	swiftType = "[\(swiftType)]"
+		// }
+		// if optional {
+		// 	swiftType = "\(swiftType)?"
+		// }
+		let swiftType = swiftTypeName(data: data)
 		return (
 			name: self.name.camelCase, swiftType: swiftType,
 			defaultValue: typeInfo.defaultValue
@@ -1293,7 +1430,7 @@ extension DawnStructure: DawnType {
 		return members.contains { $0.isWrappedType(data: data) }
 	}
 
-	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool? = false) -> String {
+	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool = false) -> String {
 		var name = "GPU\(type.CamelCase)"
 		if type.raw == "string view" {
 			name = "String"
@@ -1306,7 +1443,7 @@ extension DawnStructure: DawnType {
 				fatalError("Unimplemented swiftTypeNameForType with numeric length for type \(type.raw)")
 			}
 		}
-		if optional ?? false {
+		if optional {
 			name = "\(name)?"
 		}
 		return name
@@ -1323,6 +1460,9 @@ extension DawnStructure: DawnType {
 			} else if case .int = length {
 				fatalError("Unimplemented cTypeNameForType with numeric length for type \(type.raw)")
 			}
+		}
+		if annotation == "const*" {
+			return "UnsafePointer<\(baseName)>?"
 		}
 		return baseName
 	}
@@ -1473,7 +1613,7 @@ extension DawnStructure: DawnType {
 		)
 	}
 
-	/// Generate an init method that takes a WGPU struct, making this struct a wrapper for
+	/// Generate an init method that takes a WGPU struct, making the new struct a wrapper for
 	/// the WGPU struct's data.
 	func initWithWGPUStructMethod(cStructName: String, data: DawnData) -> DeclSyntax {
 		let memberAssignments: CodeBlockItemListSyntax = CodeBlockItemListSyntax {
@@ -1589,7 +1729,7 @@ extension DawnStructure: DawnType {
 					let count: ExprSyntax = optional ? "\(raw: identifier)?.count ?? 0" : "\(raw: identifier).count"
 					return
 						"""
-						withWPGUArrayPointer(\(raw: identifier)) { _\(raw: identifier) in
+						withWGPUArrayPointer(\(raw: identifier)) { _\(raw: identifier) in
 							let \(raw: lengthName.camelCase) = \(count)
 							let \(raw: identifier) = _\(raw: identifier)
 							return \(expression, format: TabFormat(initialIndentation: .tabs(1)))
@@ -1610,43 +1750,63 @@ extension DawnStructure: DawnType {
 			}
 			return
 				"""
-				{
-					var _\(raw: identifier) = \(raw: identifier)
-					_\(raw: identifier).withWGPUPointer() { \(raw: identifier) in
-						\(expression, format: TabFormat(initialIndentation: .tabs(0)))
-					}
-				}()
+				\(raw: identifier).withWGPUPointer() { \(raw: identifier) in
+					\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+				}
 				"""
 		}
 
-		let withWGPUStructMethod = annotation == "*" ? "withWGPUStructInOut" : "withWGPUStruct"
 		if annotation != nil && annotation != "*" && annotation != "const*" {
 			fatalError("Unimplemented unwrapValueOfType with annotation of \(annotation!) for type \(type.raw)")
 		}
 		if length != nil {
-			assert(annotation == "*" || annotation == "const*")
-			return
-				"""
-				withWPGUArrayPointer(\(raw: identifier)) { \(raw: identifier) in
-					\(expression, format: TabFormat(initialIndentation: .tabs(0)))
-				}
-				"""
-		}
-		if optional && type.raw != "string view" {
-			let withPointerFn = annotation == "const*" ? "withWGPUPointer" : "withWGPUMutablePointer"
-			return
-				"""
-				\(raw: identifier).\(raw: withPointerFn)() { \(raw: identifier) in
-					\(expression, format: TabFormat(initialIndentation: .tabs(0)))
-				}
-				"""
-		}
-		return
-			"""
-			\(raw: identifier).\(raw: withWGPUStructMethod) { \(raw: identifier) in
-				\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+			switch annotation {
+			case "const*":
+				return
+					"""
+					withWGPUArrayPointer(\(raw: identifier)) { \(raw: identifier) in
+						\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+					}
+					"""
+			case "*":
+				return
+					"""
+					withWGPUMutableArrayPointer(\(raw: identifier)) { \(raw: identifier) in
+						\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+					}
+					"""
+			default:
+				fatalError("Unimplemented unwrapValueOfType with annotation of \(annotation!) for type \(type.raw)")
 			}
-			"""
+		}
+		switch annotation {
+		case nil:
+			// Without an annotation, we just provide a struct instance on the stack.
+			return
+				"""
+				\(raw: identifier).withWGPUStruct { \(raw: identifier) in
+					\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+				}
+				"""
+		case "const*":
+			// For const pointers, we need to get a pointer to the struct.
+			return
+				"""
+				\(raw: identifier).withWGPUPointer { \(raw: identifier) in
+					\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+				}
+				"""
+		case "*":
+			// For mutable pointers, we need to get a mutable pointer to the struct.
+			return
+				"""
+				\(raw: identifier).withWGPUMutablePointer { \(raw: identifier) in
+					\(expression, format: TabFormat(initialIndentation: .tabs(0)))
+				}
+				"""
+		default:
+			fatalError("Unimplemented unwrapValueOfType for type \(type.raw) with annotation \(annotation!)")
+		}
 	}
 
 	/// Wrap a WGPU struct with our Swift wrapper struct.
@@ -1666,7 +1826,7 @@ extension DawnStructure: DawnType {
 				"\(raw: identifier).wrapArrayWithCount(\(raw: length!.sizeWithIdentifier(parentIdentifier))) as [GPU\(raw: type.CamelCase)]"
 		}
 		if annotation == "const*" {
-			return "GPU\(raw: type.CamelCase)(wgpuStruct: \(raw: identifier).pointee)"
+			return "GPU\(raw: type.CamelCase)(wgpuStruct: \(raw: identifier)!.pointee)"
 		}
 		return "GPU\(raw: type.CamelCase)(wgpuStruct: \(raw: identifier))"
 	}
@@ -1729,7 +1889,11 @@ func swiftTypeInformationForName(
 				throw SwiftTypeNameError.unhandledAnnotation(annotation!)
 			}
 		case "double": return ("Double", dawnDefault ?? "0.0")
-		case "float": return ("Float", dawnDefault ?? "0.0")
+		case "float":
+			if case .int(let count) = length {
+				return ("(\(Array(repeating: "Float", count: count).joined(separator: ", ")))", dawnDefault)
+			}
+			return ("Float", dawnDefault ?? "0.0")
 		case "int": return ("Int32", dawnDefault ?? "0")
 		case "int16_t": return ("Int16", dawnDefault ?? "0")
 		case "int32_t": return ("Int32", dawnDefault ?? "0")

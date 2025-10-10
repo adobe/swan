@@ -18,17 +18,20 @@ struct TestTypeDescriptor: TypeDescriptor {
 	var optional: Bool
 	var annotation: String?
 	var length: ArraySize?
+	var `default`: DawnDefaultValue?
 
 	init(
 		type: Name,
 		optional: Bool = false,
 		annotation: String? = nil,
-		length: ArraySize? = nil
+		length: ArraySize? = nil,
+		`default`: DawnDefaultValue? = nil
 	) {
 		self.type = type
 		self.optional = optional
 		self.annotation = annotation
 		self.length = length
+		self.default = `default`
 	}
 }
 
@@ -61,7 +64,7 @@ struct TestTypeDescriptor: TypeDescriptor {
 			Issue.record("Failed to decode data")
 			return
 		}
-		let wrappers = try? data.generateWrappers()
+		let wrappers = try? data.generateWrappers(swiftFormatConfiguration: nil)
 		#expect(wrappers!.count > 0)
 	}
 

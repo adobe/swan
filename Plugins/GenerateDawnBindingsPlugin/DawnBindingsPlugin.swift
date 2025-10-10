@@ -31,6 +31,9 @@ struct DawnBindingsPlugin: BuildToolPlugin {
 		print("Dawn JSON path: \(dawnJsonURL)")
 
 		let workingDirectoryURL = context.pluginWorkDirectoryURL
+		let targetDirectoryURL = context.package.directoryURL
+
+		print("Project directory: \(targetDirectoryURL)")
 
 		let generatorTool = try context.tool(named: "GenerateDawnBindings")
 
@@ -48,7 +51,11 @@ struct DawnBindingsPlugin: BuildToolPlugin {
 			.buildCommand(
 				displayName: "Generate Dawn Bindings",
 				executable: generatorTool.url,
-				arguments: [dawnJsonURL.path, workingDirectoryURL.path],
+				arguments: [
+					"--dawn-json", dawnJsonURL.path,
+					"--output-directory", workingDirectoryURL.path,
+					"--swift-format-config", targetDirectoryURL.appending(path: ".swift-format").path,
+				],
 				environment: [:],
 				inputFiles: [dawnJsonURL],
 				outputFiles: outputs
