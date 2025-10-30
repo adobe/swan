@@ -1,4 +1,4 @@
-module Dawn [system] {
+module CDawn [system] {
     header "Dawn.h"
     export *
 }

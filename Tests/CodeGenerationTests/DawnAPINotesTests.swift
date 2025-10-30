@@ -7,7 +7,7 @@
 
 import Testing
 
-@testable import UpdateDawnBindings
+@testable import GenerateDawnAPINotes
 
 @Suite struct DawnAPINotesTests {
 
@@ -132,7 +132,7 @@ import Testing
 
 		let expectedYAML = """
 			---
-			Name: Dawn
+			Name: DawnC
 			Functions:
 			- Name: wgpuAdapterAddRef
 			  SwiftName: WGPUAdapterImpl.addRef(self:)

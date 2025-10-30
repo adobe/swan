@@ -1,0 +1,46 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--build-tests",
+				"-Xswiftc",
+				"-diagnostic-style=llvm",
+				"--triple",
+				"arm64-apple-macosx15.0"
+			],
+			"env": {
+				"DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+			},
+			"cwd": "/Users/mitaylor/Developer/Adobe/photoshop/swan",
+			"disableTaskQueue": true,
+			"group": "build",
+			"problemMatcher": [],
+			"label": "swift: Build All",
+			"detail": "swift build --build-tests -Xswiftc -diagnostic-style=llvm --triple arm64-apple-macosx15.0"
+		},
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--build-tests",
+				"-Xswiftc",
+				"-diagnostic-style=llvm"
+			],
+			"env": {
+				"DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+			},
+			"cwd": "/Users/mitaylor/Developer/Adobe/photoshop/swan",
+			"disableTaskQueue": true,
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"label": "swift: Build All",
+			"detail": "swift build --build-tests -Xswiftc -diagnostic-style=llvm"
+		}
+	]
+}
