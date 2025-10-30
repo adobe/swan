@@ -4,6 +4,7 @@
 // NOTICE: Adobe permits you to use, modify, and distribute this file in
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
+import DawnData
 
 /// A single API note for and apinotes YAML file
 @dynamicMemberLookup
@@ -13,6 +14,7 @@ struct APINote {
 		case typedef
 		case function
 		case global
+		case enumerator
 
 		var description: String {
 			switch self {
@@ -24,6 +26,8 @@ struct APINote {
 				return "Functions"
 			case .global:
 				return "Globals"
+			case .enumerator:
+				return "Enumerators"
 			}
 		}
 	}
@@ -69,7 +73,7 @@ extension DawnData {
 
 extension DawnEnum {
 	func apiNotesWithName(_ name: Name) -> [APINote] {
-		return [
+		var notes: [APINote] = [
 			APINote(
 				category: .tag,
 				name: "WGPU\(name.CamelCase)",
@@ -78,12 +82,23 @@ extension DawnEnum {
 				]
 			)
 		]
+		for value in values {
+			notes.append(
+				APINote(
+					category: .enumerator,
+					name: "WGPU\(name.CamelCase)_\(value.name.CamelCase)",
+					values: [
+						"SwiftName": value.name.camelCaseIdentifier
+					]
+				)
+			)
+		}
+		return notes
 	}
 }
 
 extension DawnStructure {
 	func apiNotesWithName(_ name: Name) -> [APINote] {
-		// let structName = "WGPU\(name.CamelCase)Impl"
 		return []
 	}
 }
@@ -126,7 +141,7 @@ extension DawnMethod {
 	func apiNotesWithObjectName(_ objectName: Name) -> [APINote] {
 		let functionName = "wgpu\(objectName.CamelCase)\(name.CamelCase)"
 		let argumentsString: String
-		if let args = args {
+		if let args = args, args.count > 0 {
 			let argumentLabels = args.map { $0.name.camelCase }
 			argumentsString = argumentLabels.joined(separator: ":") + ":"
 		} else {
@@ -146,20 +161,7 @@ extension DawnMethod {
 				)
 			]
 		}
-		// Methods acting as setters are special-cased.
-		if let args = args, args.count == 1 && name.firstPart == "set" {
-			let subName = name.subName(from: 1)
-			return [
-				APINote(
-					category: .function,
-					name: functionName,
-					values: [
-						"SwiftName":
-							"setter:WGPU\(objectName.CamelCase)Impl.\(subName.camelCase)(self:\(argumentsString))"
-					]
-				)
-			]
-		}
+
 		// Treat all other functions as normal.
 		return [
 			APINote(
@@ -206,7 +208,8 @@ extension DawnBitmask {
 				category: .typedef,
 				name: bitmaskName,
 				values: [
-					"SwiftWrapper": "struct"
+					"SwiftWrapper": "struct",
+					"SwiftConformsTo": "Swift.OptionSet",
 				]
 			)
 		]
@@ -215,9 +218,7 @@ extension DawnBitmask {
 					category: .global,
 					name: "\(bitmaskName)_\(value.name.CamelCase)",
 					values: [
-						"SwiftName": "\(bitmaskName).\(value.name.camelCase)",
-						"SwiftConformsTo": "Swift.OptionSet",
-						"SwiftWrapper": "struct",
+						"SwiftName": "\(bitmaskName).\(value.name.camelCase)"
 					]
 				)
 			}
@@ -243,7 +244,7 @@ extension DawnEntity {
 
 /// Generate a text representation of the API notes.
 func yamlFromAPINotes(_ apinotes: [APINote]) -> String {
-	var text = "---\nName: Dawn\n"
+	var text = "---\nName: DawnC\n"
 	var notesByCategory: [APINote.Category: [APINote]] = [:]
 	for apinote in apinotes {
 		notesByCategory[apinote.category, default: []].append(apinote)

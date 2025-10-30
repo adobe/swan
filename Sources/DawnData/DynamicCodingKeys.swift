@@ -9,13 +9,13 @@
 ///
 /// This is useful for decoding dictionaries with keys that are not known at compile time.
 ///
-struct DynamicCodingKeys: CodingKey {
-	var stringValue: String
-	init?(stringValue: String) {
+public struct DynamicCodingKeys: CodingKey {
+	public var stringValue: String
+	public init?(stringValue: String) {
 		self.stringValue = stringValue
 	}
-	var intValue: Int?
-	init?(intValue: Int) {
+	public var intValue: Int?
+	public init?(intValue: Int) {
 		return nil
 	}
 }

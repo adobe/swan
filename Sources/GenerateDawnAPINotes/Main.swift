@@ -5,6 +5,7 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
+import DawnData
 import Foundation
 
 @main
@@ -14,15 +15,12 @@ struct Main {
 
 		guard arguments.count == 3 else {
 			print("Usage: \(arguments[0]) <dawn.json-path> <output-apinotes-path>")
-			print("Example: \(arguments[0]) ./webgpu_dawn.xcframework/dawn.json ./WebGPU.apinotes")
 			exit(1)
 		}
 
 		let dawnJsonPath = arguments[1]
-		let outputPath = arguments[2]
+		let apiNotesURL = URL(fileURLWithPath: arguments[2])
 
-		print("Dawn JSON path: \(dawnJsonPath)")
-		print("Output apinotes path: \(outputPath)")
 		guard let jsonData = try? Data(contentsOf: URL(fileURLWithPath: dawnJsonPath)) else {
 			print("Failed to read file at \(dawnJsonPath)")
 			exit(1)
@@ -41,9 +39,9 @@ struct Main {
 		let apinotes = dawnData.apiNotes()
 		let yaml = yamlFromAPINotes(apinotes)
 		do {
-			try yaml.write(to: URL(fileURLWithPath: outputPath), atomically: true, encoding: .utf8)
+			try yaml.write(to: apiNotesURL, atomically: true, encoding: .utf8)
 		} catch {
-			print("Failed to write to \(outputPath): \(error)")
+			print("Failed to write to \(apiNotesURL.path): \(error)")
 			exit(1)
 		}
 

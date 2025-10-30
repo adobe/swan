@@ -1,0 +1,2000 @@
+---
+Name: DawnC
+Enumerators:
+  - Name: WGPUExternalTextureRotation_Rotate0Degrees
+    SwiftName: rotate0Degrees
+  - Name: WGPUExternalTextureRotation_Rotate90Degrees
+    SwiftName: rotate90Degrees
+  - Name: WGPUExternalTextureRotation_Rotate180Degrees
+    SwiftName: rotate180Degrees
+  - Name: WGPUExternalTextureRotation_Rotate270Degrees
+    SwiftName: rotate270Degrees
+  - Name: WGPUCallbackMode_WaitAnyOnly
+    SwiftName: waitAnyOnly
+  - Name: WGPUCallbackMode_AllowProcessEvents
+    SwiftName: allowProcessEvents
+  - Name: WGPUCallbackMode_AllowSpontaneous
+    SwiftName: allowSpontaneous
+  - Name: WGPUDynamicBindingKind_Undefined
+    SwiftName: undefined
+  - Name: WGPUDynamicBindingKind_SampledTexture
+    SwiftName: sampledTexture
+  - Name: WGPUCompilationInfoRequestStatus_Success
+    SwiftName: success
+  - Name: WGPUCompilationInfoRequestStatus_CallbackCancelled
+    SwiftName: callbackCancelled
+  - Name: WGPUCreatePipelineAsyncStatus_Success
+    SwiftName: success
+  - Name: WGPUCreatePipelineAsyncStatus_CallbackCancelled
+    SwiftName: callbackCancelled
+  - Name: WGPUCreatePipelineAsyncStatus_ValidationError
+    SwiftName: validationError
+  - Name: WGPUCreatePipelineAsyncStatus_InternalError
+    SwiftName: internalError
+  - Name: WGPUTextureFormat_Undefined
+    SwiftName: undefined
+  - Name: WGPUTextureFormat_R8Unorm
+    SwiftName: R8Unorm
+  - Name: WGPUTextureFormat_R8Snorm
+    SwiftName: R8Snorm
+  - Name: WGPUTextureFormat_R8Uint
+    SwiftName: R8Uint
+  - Name: WGPUTextureFormat_R8Sint
+    SwiftName: R8Sint
+  - Name: WGPUTextureFormat_R16Unorm
+    SwiftName: R16Unorm
+  - Name: WGPUTextureFormat_R16Snorm
+    SwiftName: R16Snorm
+  - Name: WGPUTextureFormat_R16Uint
+    SwiftName: R16Uint
+  - Name: WGPUTextureFormat_R16Sint
+    SwiftName: R16Sint
+  - Name: WGPUTextureFormat_R16Float
+    SwiftName: R16Float
+  - Name: WGPUTextureFormat_RG8Unorm
+    SwiftName: RG8Unorm
+  - Name: WGPUTextureFormat_RG8Snorm
+    SwiftName: RG8Snorm
+  - Name: WGPUTextureFormat_RG8Uint
+    SwiftName: RG8Uint
+  - Name: WGPUTextureFormat_RG8Sint
+    SwiftName: RG8Sint
+  - Name: WGPUTextureFormat_R32Float
+    SwiftName: R32Float
+  - Name: WGPUTextureFormat_R32Uint
+    SwiftName: R32Uint
+  - Name: WGPUTextureFormat_R32Sint
+    SwiftName: R32Sint
+  - Name: WGPUTextureFormat_RG16Unorm
+    SwiftName: RG16Unorm
+  - Name: WGPUTextureFormat_RG16Snorm
+    SwiftName: RG16Snorm
+  - Name: WGPUTextureFormat_RG16Uint
+    SwiftName: RG16Uint
+  - Name: WGPUTextureFormat_RG16Sint
+    SwiftName: RG16Sint
+  - Name: WGPUTextureFormat_RG16Float
+    SwiftName: RG16Float
+  - Name: WGPUTextureFormat_RGBA8Unorm
+    SwiftName: RGBA8Unorm
+  - Name: WGPUTextureFormat_RGBA8UnormSrgb
+    SwiftName: RGBA8UnormSrgb
+  - Name: WGPUTextureFormat_RGBA8Snorm
+    SwiftName: RGBA8Snorm
+  - Name: WGPUTextureFormat_RGBA8Uint
+    SwiftName: RGBA8Uint
+  - Name: WGPUTextureFormat_RGBA8Sint
+    SwiftName: RGBA8Sint
+  - Name: WGPUTextureFormat_BGRA8Unorm
+    SwiftName: BGRA8Unorm
+  - Name: WGPUTextureFormat_BGRA8UnormSrgb
+    SwiftName: BGRA8UnormSrgb
+  - Name: WGPUTextureFormat_RGB10A2Uint
+    SwiftName: RGB10A2Uint
+  - Name: WGPUTextureFormat_RGB10A2Unorm
+    SwiftName: RGB10A2Unorm
+  - Name: WGPUTextureFormat_RG11B10Ufloat
+    SwiftName: RG11B10Ufloat
+  - Name: WGPUTextureFormat_RGB9E5Ufloat
+    SwiftName: RGB9E5Ufloat
+  - Name: WGPUTextureFormat_RG32Float
+    SwiftName: RG32Float
+  - Name: WGPUTextureFormat_RG32Uint
+    SwiftName: RG32Uint
+  - Name: WGPUTextureFormat_RG32Sint
+    SwiftName: RG32Sint
+  - Name: WGPUTextureFormat_RGBA16Unorm
+    SwiftName: RGBA16Unorm
+  - Name: WGPUTextureFormat_RGBA16Snorm
+    SwiftName: RGBA16Snorm
+  - Name: WGPUTextureFormat_RGBA16Uint
+    SwiftName: RGBA16Uint
+  - Name: WGPUTextureFormat_RGBA16Sint
+    SwiftName: RGBA16Sint
+  - Name: WGPUTextureFormat_RGBA16Float
+    SwiftName: RGBA16Float
+  - Name: WGPUTextureFormat_RGBA32Float
+    SwiftName: RGBA32Float
+  - Name: WGPUTextureFormat_RGBA32Uint
+    SwiftName: RGBA32Uint
+  - Name: WGPUTextureFormat_RGBA32Sint
+    SwiftName: RGBA32Sint
+  - Name: WGPUTextureFormat_Stencil8
+    SwiftName: stencil8
+  - Name: WGPUTextureFormat_Depth16Unorm
+    SwiftName: depth16Unorm
+  - Name: WGPUTextureFormat_Depth24Plus
+    SwiftName: depth24Plus
+  - Name: WGPUTextureFormat_Depth24PlusStencil8
+    SwiftName: depth24PlusStencil8
+  - Name: WGPUTextureFormat_Depth32Float
+    SwiftName: depth32Float
+  - Name: WGPUTextureFormat_Depth32FloatStencil8
+    SwiftName: depth32FloatStencil8
+  - Name: WGPUTextureFormat_BC1RGBAUnorm
+    SwiftName: BC1RGBAUnorm
+  - Name: WGPUTextureFormat_BC1RGBAUnormSrgb
+    SwiftName: BC1RGBAUnormSrgb
+  - Name: WGPUTextureFormat_BC2RGBAUnorm
+    SwiftName: BC2RGBAUnorm
+  - Name: WGPUTextureFormat_BC2RGBAUnormSrgb
+    SwiftName: BC2RGBAUnormSrgb
+  - Name: WGPUTextureFormat_BC3RGBAUnorm
+    SwiftName: BC3RGBAUnorm
+  - Name: WGPUTextureFormat_BC3RGBAUnormSrgb
+    SwiftName: BC3RGBAUnormSrgb
+  - Name: WGPUTextureFormat_BC4RUnorm
+    SwiftName: BC4RUnorm
+  - Name: WGPUTextureFormat_BC4RSnorm
+    SwiftName: BC4RSnorm
+  - Name: WGPUTextureFormat_BC5RGUnorm
+    SwiftName: BC5RGUnorm
+  - Name: WGPUTextureFormat_BC5RGSnorm
+    SwiftName: BC5RGSnorm
+  - Name: WGPUTextureFormat_BC6HRGBUfloat
+    SwiftName: BC6HRGBUfloat
+  - Name: WGPUTextureFormat_BC6HRGBFloat
+    SwiftName: BC6HRGBFloat
+  - Name: WGPUTextureFormat_BC7RGBAUnorm
+    SwiftName: BC7RGBAUnorm
+  - Name: WGPUTextureFormat_BC7RGBAUnormSrgb
+    SwiftName: BC7RGBAUnormSrgb
+  - Name: WGPUTextureFormat_ETC2RGB8Unorm
+    SwiftName: ETC2RGB8Unorm
+  - Name: WGPUTextureFormat_ETC2RGB8UnormSrgb
+    SwiftName: ETC2RGB8UnormSrgb
+  - Name: WGPUTextureFormat_ETC2RGB8A1Unorm
+    SwiftName: ETC2RGB8A1Unorm
+  - Name: WGPUTextureFormat_ETC2RGB8A1UnormSrgb
+    SwiftName: ETC2RGB8A1UnormSrgb
+  - Name: WGPUTextureFormat_ETC2RGBA8Unorm
+    SwiftName: ETC2RGBA8Unorm
+  - Name: WGPUTextureFormat_ETC2RGBA8UnormSrgb
+    SwiftName: ETC2RGBA8UnormSrgb
+  - Name: WGPUTextureFormat_EACR11Unorm
+    SwiftName: EACR11Unorm
+  - Name: WGPUTextureFormat_EACR11Snorm
+    SwiftName: EACR11Snorm
+  - Name: WGPUTextureFormat_EACRG11Unorm
+    SwiftName: EACRG11Unorm
+  - Name: WGPUTextureFormat_EACRG11Snorm
+    SwiftName: EACRG11Snorm
+  - Name: WGPUTextureFormat_ASTC4x4Unorm
+    SwiftName: ASTC4x4Unorm
+  - Name: WGPUTextureFormat_ASTC4x4UnormSrgb
+    SwiftName: ASTC4x4UnormSrgb
+  - Name: WGPUTextureFormat_ASTC5x4Unorm
+    SwiftName: ASTC5x4Unorm
+  - Name: WGPUTextureFormat_ASTC5x4UnormSrgb
+    SwiftName: ASTC5x4UnormSrgb
+  - Name: WGPUTextureFormat_ASTC5x5Unorm
+    SwiftName: ASTC5x5Unorm
+  - Name: WGPUTextureFormat_ASTC5x5UnormSrgb
+    SwiftName: ASTC5x5UnormSrgb
+  - Name: WGPUTextureFormat_ASTC6x5Unorm
+    SwiftName: ASTC6x5Unorm
+  - Name: WGPUTextureFormat_ASTC6x5UnormSrgb
+    SwiftName: ASTC6x5UnormSrgb
+  - Name: WGPUTextureFormat_ASTC6x6Unorm
+    SwiftName: ASTC6x6Unorm
+  - Name: WGPUTextureFormat_ASTC6x6UnormSrgb
+    SwiftName: ASTC6x6UnormSrgb
+  - Name: WGPUTextureFormat_ASTC8x5Unorm
+    SwiftName: ASTC8x5Unorm
+  - Name: WGPUTextureFormat_ASTC8x5UnormSrgb
+    SwiftName: ASTC8x5UnormSrgb
+  - Name: WGPUTextureFormat_ASTC8x6Unorm
+    SwiftName: ASTC8x6Unorm
+  - Name: WGPUTextureFormat_ASTC8x6UnormSrgb
+    SwiftName: ASTC8x6UnormSrgb
+  - Name: WGPUTextureFormat_ASTC8x8Unorm
+    SwiftName: ASTC8x8Unorm
+  - Name: WGPUTextureFormat_ASTC8x8UnormSrgb
+    SwiftName: ASTC8x8UnormSrgb
+  - Name: WGPUTextureFormat_ASTC10x5Unorm
+    SwiftName: ASTC10x5Unorm
+  - Name: WGPUTextureFormat_ASTC10x5UnormSrgb
+    SwiftName: ASTC10x5UnormSrgb
+  - Name: WGPUTextureFormat_ASTC10x6Unorm
+    SwiftName: ASTC10x6Unorm
+  - Name: WGPUTextureFormat_ASTC10x6UnormSrgb
+    SwiftName: ASTC10x6UnormSrgb
+  - Name: WGPUTextureFormat_ASTC10x8Unorm
+    SwiftName: ASTC10x8Unorm
+  - Name: WGPUTextureFormat_ASTC10x8UnormSrgb
+    SwiftName: ASTC10x8UnormSrgb
+  - Name: WGPUTextureFormat_ASTC10x10Unorm
+    SwiftName: ASTC10x10Unorm
+  - Name: WGPUTextureFormat_ASTC10x10UnormSrgb
+    SwiftName: ASTC10x10UnormSrgb
+  - Name: WGPUTextureFormat_ASTC12x10Unorm
+    SwiftName: ASTC12x10Unorm
+  - Name: WGPUTextureFormat_ASTC12x10UnormSrgb
+    SwiftName: ASTC12x10UnormSrgb
+  - Name: WGPUTextureFormat_ASTC12x12Unorm
+    SwiftName: ASTC12x12Unorm
+  - Name: WGPUTextureFormat_ASTC12x12UnormSrgb
+    SwiftName: ASTC12x12UnormSrgb
+  - Name: WGPUTextureFormat_R8BG8Biplanar420Unorm
+    SwiftName: R8BG8Biplanar420Unorm
+  - Name: WGPUTextureFormat_R10X6BG10X6Biplanar420Unorm
+    SwiftName: R10X6BG10X6Biplanar420Unorm
+  - Name: WGPUTextureFormat_R8BG8A8Triplanar420Unorm
+    SwiftName: R8BG8A8Triplanar420Unorm
+  - Name: WGPUTextureFormat_R8BG8Biplanar422Unorm
+    SwiftName: R8BG8Biplanar422Unorm
+  - Name: WGPUTextureFormat_R8BG8Biplanar444Unorm
+    SwiftName: R8BG8Biplanar444Unorm
+  - Name: WGPUTextureFormat_R10X6BG10X6Biplanar422Unorm
+    SwiftName: R10X6BG10X6Biplanar422Unorm
+  - Name: WGPUTextureFormat_R10X6BG10X6Biplanar444Unorm
+    SwiftName: R10X6BG10X6Biplanar444Unorm
+  - Name: WGPUTextureFormat_External
+    SwiftName: External
+  - Name: WGPUCompilationMessageType_Error
+    SwiftName: error
+  - Name: WGPUCompilationMessageType_Warning
+    SwiftName: warning
+  - Name: WGPUCompilationMessageType_Info
+    SwiftName: info
+  - Name: WGPUIndexFormat_Undefined
+    SwiftName: undefined
+  - Name: WGPUIndexFormat_Uint16
+    SwiftName: uint16
+  - Name: WGPUIndexFormat_Uint32
+    SwiftName: uint32
+  - Name: WGPUSType_ShaderSourceSPIRV
+    SwiftName: shaderSourceSPIRV
+  - Name: WGPUSType_ShaderSourceWGSL
+    SwiftName: shaderSourceWGSL
+  - Name: WGPUSType_RenderPassMaxDrawCount
+    SwiftName: renderPassMaxDrawCount
+  - Name: WGPUSType_SurfaceSourceMetalLayer
+    SwiftName: surfaceSourceMetalLayer
+  - Name: WGPUSType_SurfaceSourceWindowsHWND
+    SwiftName: surfaceSourceWindowsHWND
+  - Name: WGPUSType_SurfaceSourceXlibWindow
+    SwiftName: surfaceSourceXlibWindow
+  - Name: WGPUSType_SurfaceSourceWaylandSurface
+    SwiftName: surfaceSourceWaylandSurface
+  - Name: WGPUSType_SurfaceSourceAndroidNativeWindow
+    SwiftName: surfaceSourceAndroidNativeWindow
+  - Name: WGPUSType_SurfaceSourceXCBWindow
+    SwiftName: surfaceSourceXCBWindow
+  - Name: WGPUSType_SurfaceColorManagement
+    SwiftName: surfaceColorManagement
+  - Name: WGPUSType_RequestAdapterWebXROptions
+    SwiftName: requestAdapterWebXROptions
+  - Name: WGPUSType_CompatibilityModeLimits
+    SwiftName: compatibilityModeLimits
+  - Name: WGPUSType_TextureBindingViewDimensionDescriptor
+    SwiftName: textureBindingViewDimensionDescriptor
+  - Name: WGPUSType_EmscriptenSurfaceSourceCanvasHTMLSelector
+    SwiftName: emscriptenSurfaceSourceCanvasHTMLSelector
+  - Name: WGPUSType_SurfaceDescriptorFromWindowsCoreWindow
+    SwiftName: surfaceDescriptorFromWindowsCoreWindow
+  - Name: WGPUSType_ExternalTextureBindingEntry
+    SwiftName: externalTextureBindingEntry
+  - Name: WGPUSType_ExternalTextureBindingLayout
+    SwiftName: externalTextureBindingLayout
+  - Name: WGPUSType_SurfaceDescriptorFromWindowsUWPSwapChainPanel
+    SwiftName: surfaceDescriptorFromWindowsUWPSwapChainPanel
+  - Name: WGPUSType_DawnTextureInternalUsageDescriptor
+    SwiftName: dawnTextureInternalUsageDescriptor
+  - Name: WGPUSType_DawnEncoderInternalUsageDescriptor
+    SwiftName: dawnEncoderInternalUsageDescriptor
+  - Name: WGPUSType_DawnInstanceDescriptor
+    SwiftName: dawnInstanceDescriptor
+  - Name: WGPUSType_DawnCacheDeviceDescriptor
+    SwiftName: dawnCacheDeviceDescriptor
+  - Name: WGPUSType_DawnAdapterPropertiesPowerPreference
+    SwiftName: dawnAdapterPropertiesPowerPreference
+  - Name: WGPUSType_DawnBufferDescriptorErrorInfoFromWireClient
+    SwiftName: dawnBufferDescriptorErrorInfoFromWireClient
+  - Name: WGPUSType_DawnTogglesDescriptor
+    SwiftName: dawnTogglesDescriptor
+  - Name: WGPUSType_DawnShaderModuleSPIRVOptionsDescriptor
+    SwiftName: dawnShaderModuleSPIRVOptionsDescriptor
+  - Name: WGPUSType_RequestAdapterOptionsLUID
+    SwiftName: requestAdapterOptionsLUID
+  - Name: WGPUSType_RequestAdapterOptionsGetGLProc
+    SwiftName: requestAdapterOptionsGetGLProc
+  - Name: WGPUSType_RequestAdapterOptionsD3D11Device
+    SwiftName: requestAdapterOptionsD3D11Device
+  - Name: WGPUSType_DawnRenderPassColorAttachmentRenderToSingleSampled
+    SwiftName: dawnRenderPassColorAttachmentRenderToSingleSampled
+  - Name: WGPUSType_RenderPassPixelLocalStorage
+    SwiftName: renderPassPixelLocalStorage
+  - Name: WGPUSType_PipelineLayoutPixelLocalStorage
+    SwiftName: pipelineLayoutPixelLocalStorage
+  - Name: WGPUSType_BufferHostMappedPointer
+    SwiftName: bufferHostMappedPointer
+  - Name: WGPUSType_AdapterPropertiesMemoryHeaps
+    SwiftName: adapterPropertiesMemoryHeaps
+  - Name: WGPUSType_AdapterPropertiesD3D
+    SwiftName: adapterPropertiesD3D
+  - Name: WGPUSType_AdapterPropertiesVk
+    SwiftName: adapterPropertiesVk
+  - Name: WGPUSType_DawnWireWGSLControl
+    SwiftName: dawnWireWGSLControl
+  - Name: WGPUSType_DawnWGSLBlocklist
+    SwiftName: dawnWGSLBlocklist
+  - Name: WGPUSType_DawnDrmFormatCapabilities
+    SwiftName: dawnDrmFormatCapabilities
+  - Name: WGPUSType_ShaderModuleCompilationOptions
+    SwiftName: shaderModuleCompilationOptions
+  - Name: WGPUSType_ColorTargetStateExpandResolveTextureDawn
+    SwiftName: colorTargetStateExpandResolveTextureDawn
+  - Name: WGPUSType_RenderPassDescriptorExpandResolveRect
+    SwiftName: renderPassDescriptorExpandResolveRect
+  - Name: WGPUSType_SharedTextureMemoryVkDedicatedAllocationDescriptor
+    SwiftName: sharedTextureMemoryVkDedicatedAllocationDescriptor
+  - Name: WGPUSType_SharedTextureMemoryAHardwareBufferDescriptor
+    SwiftName: sharedTextureMemoryAHardwareBufferDescriptor
+  - Name: WGPUSType_SharedTextureMemoryDmaBufDescriptor
+    SwiftName: sharedTextureMemoryDmaBufDescriptor
+  - Name: WGPUSType_SharedTextureMemoryOpaqueFDDescriptor
+    SwiftName: sharedTextureMemoryOpaqueFDDescriptor
+  - Name: WGPUSType_SharedTextureMemoryZirconHandleDescriptor
+    SwiftName: sharedTextureMemoryZirconHandleDescriptor
+  - Name: WGPUSType_SharedTextureMemoryDXGISharedHandleDescriptor
+    SwiftName: sharedTextureMemoryDXGISharedHandleDescriptor
+  - Name: WGPUSType_SharedTextureMemoryD3D11Texture2DDescriptor
+    SwiftName: sharedTextureMemoryD3D11Texture2DDescriptor
+  - Name: WGPUSType_SharedTextureMemoryIOSurfaceDescriptor
+    SwiftName: sharedTextureMemoryIOSurfaceDescriptor
+  - Name: WGPUSType_SharedTextureMemoryEGLImageDescriptor
+    SwiftName: sharedTextureMemoryEGLImageDescriptor
+  - Name: WGPUSType_SharedTextureMemoryInitializedBeginState
+    SwiftName: sharedTextureMemoryInitializedBeginState
+  - Name: WGPUSType_SharedTextureMemoryInitializedEndState
+    SwiftName: sharedTextureMemoryInitializedEndState
+  - Name: WGPUSType_SharedTextureMemoryVkImageLayoutBeginState
+    SwiftName: sharedTextureMemoryVkImageLayoutBeginState
+  - Name: WGPUSType_SharedTextureMemoryVkImageLayoutEndState
+    SwiftName: sharedTextureMemoryVkImageLayoutEndState
+  - Name: WGPUSType_SharedTextureMemoryD3DSwapchainBeginState
+    SwiftName: sharedTextureMemoryD3DSwapchainBeginState
+  - Name: WGPUSType_SharedFenceVkSemaphoreOpaqueFDDescriptor
+    SwiftName: sharedFenceVkSemaphoreOpaqueFDDescriptor
+  - Name: WGPUSType_SharedFenceVkSemaphoreOpaqueFDExportInfo
+    SwiftName: sharedFenceVkSemaphoreOpaqueFDExportInfo
+  - Name: WGPUSType_SharedFenceSyncFDDescriptor
+    SwiftName: sharedFenceSyncFDDescriptor
+  - Name: WGPUSType_SharedFenceSyncFDExportInfo
+    SwiftName: sharedFenceSyncFDExportInfo
+  - Name: WGPUSType_SharedFenceVkSemaphoreZirconHandleDescriptor
+    SwiftName: sharedFenceVkSemaphoreZirconHandleDescriptor
+  - Name: WGPUSType_SharedFenceVkSemaphoreZirconHandleExportInfo
+    SwiftName: sharedFenceVkSemaphoreZirconHandleExportInfo
+  - Name: WGPUSType_SharedFenceDXGISharedHandleDescriptor
+    SwiftName: sharedFenceDXGISharedHandleDescriptor
+  - Name: WGPUSType_SharedFenceDXGISharedHandleExportInfo
+    SwiftName: sharedFenceDXGISharedHandleExportInfo
+  - Name: WGPUSType_SharedFenceMTLSharedEventDescriptor
+    SwiftName: sharedFenceMTLSharedEventDescriptor
+  - Name: WGPUSType_SharedFenceMTLSharedEventExportInfo
+    SwiftName: sharedFenceMTLSharedEventExportInfo
+  - Name: WGPUSType_SharedBufferMemoryD3D12ResourceDescriptor
+    SwiftName: sharedBufferMemoryD3D12ResourceDescriptor
+  - Name: WGPUSType_StaticSamplerBindingLayout
+    SwiftName: staticSamplerBindingLayout
+  - Name: WGPUSType_YCbCrVkDescriptor
+    SwiftName: yCbCrVkDescriptor
+  - Name: WGPUSType_SharedTextureMemoryAHardwareBufferProperties
+    SwiftName: sharedTextureMemoryAHardwareBufferProperties
+  - Name: WGPUSType_AHardwareBufferProperties
+    SwiftName: aHardwareBufferProperties
+  - Name: WGPUSType_DawnTexelCopyBufferRowAlignmentLimits
+    SwiftName: dawnTexelCopyBufferRowAlignmentLimits
+  - Name: WGPUSType_AdapterPropertiesSubgroupMatrixConfigs
+    SwiftName: adapterPropertiesSubgroupMatrixConfigs
+  - Name: WGPUSType_SharedFenceEGLSyncDescriptor
+    SwiftName: sharedFenceEGLSyncDescriptor
+  - Name: WGPUSType_SharedFenceEGLSyncExportInfo
+    SwiftName: sharedFenceEGLSyncExportInfo
+  - Name: WGPUSType_DawnInjectedInvalidSType
+    SwiftName: dawnInjectedInvalidSType
+  - Name: WGPUSType_DawnCompilationMessageUtf16
+    SwiftName: dawnCompilationMessageUtf16
+  - Name: WGPUSType_DawnFakeBufferOOMForTesting
+    SwiftName: dawnFakeBufferOOMForTesting
+  - Name: WGPUSType_SurfaceDescriptorFromWindowsWinUISwapChainPanel
+    SwiftName: surfaceDescriptorFromWindowsWinUISwapChainPanel
+  - Name: WGPUSType_DawnDeviceAllocatorControl
+    SwiftName: dawnDeviceAllocatorControl
+  - Name: WGPUSType_DawnHostMappedPointerLimits
+    SwiftName: dawnHostMappedPointerLimits
+  - Name: WGPUSType_RenderPassDescriptorResolveRect
+    SwiftName: renderPassDescriptorResolveRect
+  - Name: WGPUSType_RequestAdapterWebGPUBackendOptions
+    SwiftName: requestAdapterWebGPUBackendOptions
+  - Name: WGPUSType_DawnFakeDeviceInitializeErrorForTesting
+    SwiftName: dawnFakeDeviceInitializeErrorForTesting
+  - Name: WGPUSType_TextureComponentSwizzleDescriptor
+    SwiftName: textureComponentSwizzleDescriptor
+  - Name: WGPUSType_SharedTextureMemoryD3D11BeginState
+    SwiftName: sharedTextureMemoryD3D11BeginState
+  - Name: WGPUSType_DawnConsumeAdapterDescriptor
+    SwiftName: dawnConsumeAdapterDescriptor
+  - Name: WGPUSType_BindGroupLayoutDynamicBindingArray
+    SwiftName: bindGroupLayoutDynamicBindingArray
+  - Name: WGPUSType_DynamicBindingArrayLimits
+    SwiftName: dynamicBindingArrayLimits
+  - Name: WGPUSType_BindGroupDynamicBindingArray
+    SwiftName: bindGroupDynamicBindingArray
+  - Name: WGPUSType_TexelBufferBindingEntry
+    SwiftName: texelBufferBindingEntry
+  - Name: WGPUSType_TexelBufferBindingLayout
+    SwiftName: texelBufferBindingLayout
+  - Name: WGPUStorageTextureAccess_BindingNotUsed
+    SwiftName: bindingNotUsed
+  - Name: WGPUStorageTextureAccess_Undefined
+    SwiftName: undefined
+  - Name: WGPUStorageTextureAccess_WriteOnly
+    SwiftName: writeOnly
+  - Name: WGPUStorageTextureAccess_ReadOnly
+    SwiftName: readOnly
+  - Name: WGPUStorageTextureAccess_ReadWrite
+    SwiftName: readWrite
+  - Name: WGPUCompositeAlphaMode_Auto
+    SwiftName: auto
+  - Name: WGPUCompositeAlphaMode_Opaque
+    SwiftName: opaque
+  - Name: WGPUCompositeAlphaMode_Premultiplied
+    SwiftName: premultiplied
+  - Name: WGPUCompositeAlphaMode_Unpremultiplied
+    SwiftName: unpremultiplied
+  - Name: WGPUCompositeAlphaMode_Inherit
+    SwiftName: inherit
+  - Name: WGPUSubgroupMatrixComponentType_F32
+    SwiftName: f32
+  - Name: WGPUSubgroupMatrixComponentType_F16
+    SwiftName: f16
+  - Name: WGPUSubgroupMatrixComponentType_U32
+    SwiftName: u32
+  - Name: WGPUSubgroupMatrixComponentType_I32
+    SwiftName: i32
+  - Name: WGPUSubgroupMatrixComponentType_U8
+    SwiftName: u8
+  - Name: WGPUSubgroupMatrixComponentType_I8
+    SwiftName: i8
+  - Name: WGPUWGSLLanguageFeatureName_ReadonlyAndReadwriteStorageTextures
+    SwiftName: readonlyAndReadwriteStorageTextures
+  - Name: WGPUWGSLLanguageFeatureName_Packed4x8IntegerDotProduct
+    SwiftName: packed4x8IntegerDotProduct
+  - Name: WGPUWGSLLanguageFeatureName_UnrestrictedPointerParameters
+    SwiftName: unrestrictedPointerParameters
+  - Name: WGPUWGSLLanguageFeatureName_PointerCompositeAccess
+    SwiftName: pointerCompositeAccess
+  - Name: WGPUWGSLLanguageFeatureName_SizedBindingArray
+    SwiftName: sizedBindingArray
+  - Name: WGPUWGSLLanguageFeatureName_TexelBuffers
+    SwiftName: texelBuffers
+  - Name: WGPUWGSLLanguageFeatureName_ChromiumPrint
+    SwiftName: chromiumPrint
+  - Name: WGPUWGSLLanguageFeatureName_ChromiumTestingUnimplemented
+    SwiftName: chromiumTestingUnimplemented
+  - Name: WGPUWGSLLanguageFeatureName_ChromiumTestingUnsafeExperimental
+    SwiftName: chromiumTestingUnsafeExperimental
+  - Name: WGPUWGSLLanguageFeatureName_ChromiumTestingExperimental
+    SwiftName: chromiumTestingExperimental
+  - Name: WGPUWGSLLanguageFeatureName_ChromiumTestingShippedWithKillswitch
+    SwiftName: chromiumTestingShippedWithKillswitch
+  - Name: WGPUWGSLLanguageFeatureName_ChromiumTestingShipped
+    SwiftName: chromiumTestingShipped
+  - Name: WGPUInstanceFeatureName_TimedWaitAny
+    SwiftName: timedWaitAny
+  - Name: WGPUInstanceFeatureName_ShaderSourceSPIRV
+    SwiftName: shaderSourceSPIRV
+  - Name: WGPUInstanceFeatureName_MultipleDevicesPerAdapter
+    SwiftName: multipleDevicesPerAdapter
+  - Name: WGPUTextureAspect_Undefined
+    SwiftName: undefined
+  - Name: WGPUTextureAspect_All
+    SwiftName: all
+  - Name: WGPUTextureAspect_StencilOnly
+    SwiftName: stencilOnly
+  - Name: WGPUTextureAspect_DepthOnly
+    SwiftName: depthOnly
+  - Name: WGPUTextureAspect_Plane0Only
+    SwiftName: plane0Only
+  - Name: WGPUTextureAspect_Plane1Only
+    SwiftName: plane1Only
+  - Name: WGPUTextureAspect_Plane2Only
+    SwiftName: plane2Only
+  - Name: WGPUAdapterType_DiscreteGPU
+    SwiftName: discreteGPU
+  - Name: WGPUAdapterType_IntegratedGPU
+    SwiftName: integratedGPU
+  - Name: WGPUAdapterType_CPU
+    SwiftName: CPU
+  - Name: WGPUAdapterType_Unknown
+    SwiftName: unknown
+  - Name: WGPURequestDeviceStatus_Success
+    SwiftName: success
+  - Name: WGPURequestDeviceStatus_CallbackCancelled
+    SwiftName: callbackCancelled
+  - Name: WGPURequestDeviceStatus_Error
+    SwiftName: error
+  - Name: WGPUToneMappingMode_Standard
+    SwiftName: standard
+  - Name: WGPUToneMappingMode_Extended
+    SwiftName: extended
+  - Name: WGPUAlphaMode_Opaque
+    SwiftName: opaque
+  - Name: WGPUAlphaMode_Premultiplied
+    SwiftName: premultiplied
+  - Name: WGPUAlphaMode_Unpremultiplied
+    SwiftName: unpremultiplied
+  - Name: WGPUTextureViewDimension_Undefined
+    SwiftName: undefined
+  - Name: WGPUTextureViewDimension_1D
+    SwiftName: _1D
+  - Name: WGPUTextureViewDimension_2D
+    SwiftName: _2D
+  - Name: WGPUTextureViewDimension_2DArray
+    SwiftName: _2DArray
+  - Name: WGPUTextureViewDimension_Cube
+    SwiftName: cube
+  - Name: WGPUTextureViewDimension_CubeArray
+    SwiftName: cubeArray
+  - Name: WGPUTextureViewDimension_3D
+    SwiftName: _3D
+  - Name: WGPUVertexStepMode_Undefined
+    SwiftName: undefined
+  - Name: WGPUVertexStepMode_Vertex
+    SwiftName: vertex
+  - Name: WGPUVertexStepMode_Instance
+    SwiftName: instance
+  - Name: WGPUStoreOp_Undefined
+    SwiftName: undefined
+  - Name: WGPUStoreOp_Store
+    SwiftName: store
+  - Name: WGPUStoreOp_Discard
+    SwiftName: discard
+  - Name: WGPUSamplerBindingType_BindingNotUsed
+    SwiftName: bindingNotUsed
+  - Name: WGPUSamplerBindingType_Undefined
+    SwiftName: undefined
+  - Name: WGPUSamplerBindingType_Filtering
+    SwiftName: filtering
+  - Name: WGPUSamplerBindingType_NonFiltering
+    SwiftName: nonFiltering
+  - Name: WGPUSamplerBindingType_Comparison
+    SwiftName: comparison
+  - Name: WGPUPrimitiveTopology_Undefined
+    SwiftName: undefined
+  - Name: WGPUPrimitiveTopology_PointList
+    SwiftName: pointList
+  - Name: WGPUPrimitiveTopology_LineList
+    SwiftName: lineList
+  - Name: WGPUPrimitiveTopology_LineStrip
+    SwiftName: lineStrip
+  - Name: WGPUPrimitiveTopology_TriangleList
+    SwiftName: triangleList
+  - Name: WGPUPrimitiveTopology_TriangleStrip
+    SwiftName: triangleStrip
+  - Name: WGPUFrontFace_Undefined
+    SwiftName: undefined
+  - Name: WGPUFrontFace_CCW
+    SwiftName: CCW
+  - Name: WGPUFrontFace_CW
+    SwiftName: CW
+  - Name: WGPUErrorFilter_Validation
+    SwiftName: validation
+  - Name: WGPUErrorFilter_OutOfMemory
+    SwiftName: outOfMemory
+  - Name: WGPUErrorFilter_Internal
+    SwiftName: internal
+  - Name: WGPUComponentSwizzle_Undefined
+    SwiftName: undefined
+  - Name: WGPUComponentSwizzle_Zero
+    SwiftName: zero
+  - Name: WGPUComponentSwizzle_One
+    SwiftName: one
+  - Name: WGPUComponentSwizzle_R
+    SwiftName: r
+  - Name: WGPUComponentSwizzle_G
+    SwiftName: g
+  - Name: WGPUComponentSwizzle_B
+    SwiftName: b
+  - Name: WGPUComponentSwizzle_A
+    SwiftName: a
+  - Name: WGPUSharedFenceType_VkSemaphoreOpaqueFD
+    SwiftName: vkSemaphoreOpaqueFD
+  - Name: WGPUSharedFenceType_SyncFD
+    SwiftName: syncFD
+  - Name: WGPUSharedFenceType_VkSemaphoreZirconHandle
+    SwiftName: vkSemaphoreZirconHandle
+  - Name: WGPUSharedFenceType_DXGISharedHandle
+    SwiftName: DXGISharedHandle
+  - Name: WGPUSharedFenceType_MTLSharedEvent
+    SwiftName: MTLSharedEvent
+  - Name: WGPUSharedFenceType_EGLSync
+    SwiftName: EGLSync
+  - Name: WGPUMapAsyncStatus_Success
+    SwiftName: success
+  - Name: WGPUMapAsyncStatus_CallbackCancelled
+    SwiftName: callbackCancelled
+  - Name: WGPUMapAsyncStatus_Error
+    SwiftName: error
+  - Name: WGPUMapAsyncStatus_Aborted
+    SwiftName: aborted
+  - Name: WGPUOptionalBool_False
+    SwiftName: false
+  - Name: WGPUOptionalBool_True
+    SwiftName: true
+  - Name: WGPUOptionalBool_Undefined
+    SwiftName: undefined
+  - Name: WGPUTextureDimension_Undefined
+    SwiftName: undefined
+  - Name: WGPUTextureDimension_1D
+    SwiftName: _1D
+  - Name: WGPUTextureDimension_2D
+    SwiftName: _2D
+  - Name: WGPUTextureDimension_3D
+    SwiftName: _3D
+  - Name: WGPUQueueWorkDoneStatus_Success
+    SwiftName: success
+  - Name: WGPUQueueWorkDoneStatus_CallbackCancelled
+    SwiftName: callbackCancelled
+  - Name: WGPUQueueWorkDoneStatus_Error
+    SwiftName: error
+  - Name: WGPUWaitStatus_Success
+    SwiftName: success
+  - Name: WGPUWaitStatus_TimedOut
+    SwiftName: timedOut
+  - Name: WGPUWaitStatus_Error
+    SwiftName: error
+  - Name: WGPUMipmapFilterMode_Undefined
+    SwiftName: undefined
+  - Name: WGPUMipmapFilterMode_Nearest
+    SwiftName: nearest
+  - Name: WGPUMipmapFilterMode_Linear
+    SwiftName: linear
+  - Name: WGPUErrorType_NoError
+    SwiftName: noError
+  - Name: WGPUErrorType_Validation
+    SwiftName: validation
+  - Name: WGPUErrorType_OutOfMemory
+    SwiftName: outOfMemory
+  - Name: WGPUErrorType_Internal
+    SwiftName: internal
+  - Name: WGPUErrorType_Unknown
+    SwiftName: unknown
+  - Name: WGPUFilterMode_Undefined
+    SwiftName: undefined
+  - Name: WGPUFilterMode_Nearest
+    SwiftName: nearest
+  - Name: WGPUFilterMode_Linear
+    SwiftName: linear
+  - Name: WGPUPopErrorScopeStatus_Success
+    SwiftName: success
+  - Name: WGPUPopErrorScopeStatus_CallbackCancelled
+    SwiftName: callbackCancelled
+  - Name: WGPUPopErrorScopeStatus_Error
+    SwiftName: error
+  - Name: WGPUFeatureLevel_Undefined
+    SwiftName: undefined
+  - Name: WGPUFeatureLevel_Compatibility
+    SwiftName: compatibility
+  - Name: WGPUFeatureLevel_Core
+    SwiftName: core
+  - Name: WGPUPredefinedColorSpace_SRGB
+    SwiftName: sRGB
+  - Name: WGPUPredefinedColorSpace_DisplayP3
+    SwiftName: displayP3
+  - Name: WGPUTextureSampleType_BindingNotUsed
+    SwiftName: bindingNotUsed
+  - Name: WGPUTextureSampleType_Undefined
+    SwiftName: undefined
+  - Name: WGPUTextureSampleType_Float
+    SwiftName: float
+  - Name: WGPUTextureSampleType_UnfilterableFloat
+    SwiftName: unfilterableFloat
+  - Name: WGPUTextureSampleType_Depth
+    SwiftName: depth
+  - Name: WGPUTextureSampleType_Sint
+    SwiftName: sint
+  - Name: WGPUTextureSampleType_Uint
+    SwiftName: uint
+  - Name: WGPUVertexFormat_Uint8
+    SwiftName: uint8
+  - Name: WGPUVertexFormat_Uint8x2
+    SwiftName: uint8x2
+  - Name: WGPUVertexFormat_Uint8x4
+    SwiftName: uint8x4
+  - Name: WGPUVertexFormat_Sint8
+    SwiftName: sint8
+  - Name: WGPUVertexFormat_Sint8x2
+    SwiftName: sint8x2
+  - Name: WGPUVertexFormat_Sint8x4
+    SwiftName: sint8x4
+  - Name: WGPUVertexFormat_Unorm8
+    SwiftName: unorm8
+  - Name: WGPUVertexFormat_Unorm8x2
+    SwiftName: unorm8x2
+  - Name: WGPUVertexFormat_Unorm8x4
+    SwiftName: unorm8x4
+  - Name: WGPUVertexFormat_Snorm8
+    SwiftName: snorm8
+  - Name: WGPUVertexFormat_Snorm8x2
+    SwiftName: snorm8x2
+  - Name: WGPUVertexFormat_Snorm8x4
+    SwiftName: snorm8x4
+  - Name: WGPUVertexFormat_Uint16
+    SwiftName: uint16
+  - Name: WGPUVertexFormat_Uint16x2
+    SwiftName: uint16x2
+  - Name: WGPUVertexFormat_Uint16x4
+    SwiftName: uint16x4
+  - Name: WGPUVertexFormat_Sint16
+    SwiftName: sint16
+  - Name: WGPUVertexFormat_Sint16x2
+    SwiftName: sint16x2
+  - Name: WGPUVertexFormat_Sint16x4
+    SwiftName: sint16x4
+  - Name: WGPUVertexFormat_Unorm16
+    SwiftName: unorm16
+  - Name: WGPUVertexFormat_Unorm16x2
+    SwiftName: unorm16x2
+  - Name: WGPUVertexFormat_Unorm16x4
+    SwiftName: unorm16x4
+  - Name: WGPUVertexFormat_Snorm16
+    SwiftName: snorm16
+  - Name: WGPUVertexFormat_Snorm16x2
+    SwiftName: snorm16x2
+  - Name: WGPUVertexFormat_Snorm16x4
+    SwiftName: snorm16x4
+  - Name: WGPUVertexFormat_Float16
+    SwiftName: float16
+  - Name: WGPUVertexFormat_Float16x2
+    SwiftName: float16x2
+  - Name: WGPUVertexFormat_Float16x4
+    SwiftName: float16x4
+  - Name: WGPUVertexFormat_Float32
+    SwiftName: float32
+  - Name: WGPUVertexFormat_Float32x2
+    SwiftName: float32x2
+  - Name: WGPUVertexFormat_Float32x3
+    SwiftName: float32x3
+  - Name: WGPUVertexFormat_Float32x4
+    SwiftName: float32x4
+  - Name: WGPUVertexFormat_Uint32
+    SwiftName: uint32
+  - Name: WGPUVertexFormat_Uint32x2
+    SwiftName: uint32x2
+  - Name: WGPUVertexFormat_Uint32x3
+    SwiftName: uint32x3
+  - Name: WGPUVertexFormat_Uint32x4
+    SwiftName: uint32x4
+  - Name: WGPUVertexFormat_Sint32
+    SwiftName: sint32
+  - Name: WGPUVertexFormat_Sint32x2
+    SwiftName: sint32x2
+  - Name: WGPUVertexFormat_Sint32x3
+    SwiftName: sint32x3
+  - Name: WGPUVertexFormat_Sint32x4
+    SwiftName: sint32x4
+  - Name: WGPUVertexFormat_Unorm10_10_10_2
+    SwiftName: unorm10_10_10_2
+  - Name: WGPUVertexFormat_Unorm8x4BGRA
+    SwiftName: unorm8x4BGRA
+  - Name: WGPUFeatureName_CoreFeaturesAndLimits
+    SwiftName: coreFeaturesAndLimits
+  - Name: WGPUFeatureName_DepthClipControl
+    SwiftName: depthClipControl
+  - Name: WGPUFeatureName_Depth32FloatStencil8
+    SwiftName: depth32FloatStencil8
+  - Name: WGPUFeatureName_TextureCompressionBC
+    SwiftName: textureCompressionBC
+  - Name: WGPUFeatureName_TextureCompressionBCSliced3D
+    SwiftName: textureCompressionBCSliced3D
+  - Name: WGPUFeatureName_TextureCompressionETC2
+    SwiftName: textureCompressionETC2
+  - Name: WGPUFeatureName_TextureCompressionASTC
+    SwiftName: textureCompressionASTC
+  - Name: WGPUFeatureName_TextureCompressionASTCSliced3D
+    SwiftName: textureCompressionASTCSliced3D
+  - Name: WGPUFeatureName_TimestampQuery
+    SwiftName: timestampQuery
+  - Name: WGPUFeatureName_IndirectFirstInstance
+    SwiftName: indirectFirstInstance
+  - Name: WGPUFeatureName_ShaderF16
+    SwiftName: shaderF16
+  - Name: WGPUFeatureName_RG11B10UfloatRenderable
+    SwiftName: RG11B10UfloatRenderable
+  - Name: WGPUFeatureName_BGRA8UnormStorage
+    SwiftName: BGRA8UnormStorage
+  - Name: WGPUFeatureName_Float32Filterable
+    SwiftName: float32Filterable
+  - Name: WGPUFeatureName_Float32Blendable
+    SwiftName: float32Blendable
+  - Name: WGPUFeatureName_ClipDistances
+    SwiftName: clipDistances
+  - Name: WGPUFeatureName_DualSourceBlending
+    SwiftName: dualSourceBlending
+  - Name: WGPUFeatureName_Subgroups
+    SwiftName: subgroups
+  - Name: WGPUFeatureName_TextureFormatsTier1
+    SwiftName: textureFormatsTier1
+  - Name: WGPUFeatureName_TextureFormatsTier2
+    SwiftName: textureFormatsTier2
+  - Name: WGPUFeatureName_PrimitiveIndex
+    SwiftName: primitiveIndex
+  - Name: WGPUFeatureName_DawnInternalUsages
+    SwiftName: dawnInternalUsages
+  - Name: WGPUFeatureName_DawnMultiPlanarFormats
+    SwiftName: dawnMultiPlanarFormats
+  - Name: WGPUFeatureName_DawnNative
+    SwiftName: dawnNative
+  - Name: WGPUFeatureName_ChromiumExperimentalTimestampQueryInsidePasses
+    SwiftName: chromiumExperimentalTimestampQueryInsidePasses
+  - Name: WGPUFeatureName_ImplicitDeviceSynchronization
+    SwiftName: implicitDeviceSynchronization
+  - Name: WGPUFeatureName_TransientAttachments
+    SwiftName: transientAttachments
+  - Name: WGPUFeatureName_MSAARenderToSingleSampled
+    SwiftName: MSAARenderToSingleSampled
+  - Name: WGPUFeatureName_D3D11MultithreadProtected
+    SwiftName: D3D11MultithreadProtected
+  - Name: WGPUFeatureName_ANGLETextureSharing
+    SwiftName: ANGLETextureSharing
+  - Name: WGPUFeatureName_PixelLocalStorageCoherent
+    SwiftName: pixelLocalStorageCoherent
+  - Name: WGPUFeatureName_PixelLocalStorageNonCoherent
+    SwiftName: pixelLocalStorageNonCoherent
+  - Name: WGPUFeatureName_Unorm16TextureFormats
+    SwiftName: unorm16TextureFormats
+  - Name: WGPUFeatureName_Snorm16TextureFormats
+    SwiftName: snorm16TextureFormats
+  - Name: WGPUFeatureName_MultiPlanarFormatExtendedUsages
+    SwiftName: multiPlanarFormatExtendedUsages
+  - Name: WGPUFeatureName_MultiPlanarFormatP010
+    SwiftName: multiPlanarFormatP010
+  - Name: WGPUFeatureName_HostMappedPointer
+    SwiftName: hostMappedPointer
+  - Name: WGPUFeatureName_MultiPlanarRenderTargets
+    SwiftName: multiPlanarRenderTargets
+  - Name: WGPUFeatureName_MultiPlanarFormatNv12a
+    SwiftName: multiPlanarFormatNv12a
+  - Name: WGPUFeatureName_FramebufferFetch
+    SwiftName: framebufferFetch
+  - Name: WGPUFeatureName_BufferMapExtendedUsages
+    SwiftName: bufferMapExtendedUsages
+  - Name: WGPUFeatureName_AdapterPropertiesMemoryHeaps
+    SwiftName: adapterPropertiesMemoryHeaps
+  - Name: WGPUFeatureName_AdapterPropertiesD3D
+    SwiftName: adapterPropertiesD3D
+  - Name: WGPUFeatureName_AdapterPropertiesVk
+    SwiftName: adapterPropertiesVk
+  - Name: WGPUFeatureName_R8UnormStorage
+    SwiftName: r8UnormStorage
+  - Name: WGPUFeatureName_DawnFormatCapabilities
+    SwiftName: dawnFormatCapabilities
+  - Name: WGPUFeatureName_DawnDrmFormatCapabilities
+    SwiftName: dawnDrmFormatCapabilities
+  - Name: WGPUFeatureName_Norm16TextureFormats
+    SwiftName: norm16TextureFormats
+  - Name: WGPUFeatureName_MultiPlanarFormatNv16
+    SwiftName: multiPlanarFormatNv16
+  - Name: WGPUFeatureName_MultiPlanarFormatNv24
+    SwiftName: multiPlanarFormatNv24
+  - Name: WGPUFeatureName_MultiPlanarFormatP210
+    SwiftName: multiPlanarFormatP210
+  - Name: WGPUFeatureName_MultiPlanarFormatP410
+    SwiftName: multiPlanarFormatP410
+  - Name: WGPUFeatureName_SharedTextureMemoryVkDedicatedAllocation
+    SwiftName: sharedTextureMemoryVkDedicatedAllocation
+  - Name: WGPUFeatureName_SharedTextureMemoryAHardwareBuffer
+    SwiftName: sharedTextureMemoryAHardwareBuffer
+  - Name: WGPUFeatureName_SharedTextureMemoryDmaBuf
+    SwiftName: sharedTextureMemoryDmaBuf
+  - Name: WGPUFeatureName_SharedTextureMemoryOpaqueFD
+    SwiftName: sharedTextureMemoryOpaqueFD
+  - Name: WGPUFeatureName_SharedTextureMemoryZirconHandle
+    SwiftName: sharedTextureMemoryZirconHandle
+  - Name: WGPUFeatureName_SharedTextureMemoryDXGISharedHandle
+    SwiftName: sharedTextureMemoryDXGISharedHandle
+  - Name: WGPUFeatureName_SharedTextureMemoryD3D11Texture2D
+    SwiftName: sharedTextureMemoryD3D11Texture2D
+  - Name: WGPUFeatureName_SharedTextureMemoryIOSurface
+    SwiftName: sharedTextureMemoryIOSurface
+  - Name: WGPUFeatureName_SharedTextureMemoryEGLImage
+    SwiftName: sharedTextureMemoryEGLImage
+  - Name: WGPUFeatureName_SharedFenceVkSemaphoreOpaqueFD
+    SwiftName: sharedFenceVkSemaphoreOpaqueFD
+  - Name: WGPUFeatureName_SharedFenceSyncFD
+    SwiftName: sharedFenceSyncFD
+  - Name: WGPUFeatureName_SharedFenceVkSemaphoreZirconHandle
+    SwiftName: sharedFenceVkSemaphoreZirconHandle
+  - Name: WGPUFeatureName_SharedFenceDXGISharedHandle
+    SwiftName: sharedFenceDXGISharedHandle
+  - Name: WGPUFeatureName_SharedFenceMTLSharedEvent
+    SwiftName: sharedFenceMTLSharedEvent
+  - Name: WGPUFeatureName_SharedBufferMemoryD3D12Resource
+    SwiftName: sharedBufferMemoryD3D12Resource
+  - Name: WGPUFeatureName_StaticSamplers
+    SwiftName: staticSamplers
+  - Name: WGPUFeatureName_YCbCrVulkanSamplers
+    SwiftName: yCbCrVulkanSamplers
+  - Name: WGPUFeatureName_ShaderModuleCompilationOptions
+    SwiftName: shaderModuleCompilationOptions
+  - Name: WGPUFeatureName_DawnLoadResolveTexture
+    SwiftName: dawnLoadResolveTexture
+  - Name: WGPUFeatureName_DawnPartialLoadResolveTexture
+    SwiftName: dawnPartialLoadResolveTexture
+  - Name: WGPUFeatureName_MultiDrawIndirect
+    SwiftName: multiDrawIndirect
+  - Name: WGPUFeatureName_DawnTexelCopyBufferRowAlignment
+    SwiftName: dawnTexelCopyBufferRowAlignment
+  - Name: WGPUFeatureName_FlexibleTextureViews
+    SwiftName: flexibleTextureViews
+  - Name: WGPUFeatureName_ChromiumExperimentalSubgroupMatrix
+    SwiftName: chromiumExperimentalSubgroupMatrix
+  - Name: WGPUFeatureName_SharedFenceEGLSync
+    SwiftName: sharedFenceEGLSync
+  - Name: WGPUFeatureName_DawnDeviceAllocatorControl
+    SwiftName: dawnDeviceAllocatorControl
+  - Name: WGPUFeatureName_TextureComponentSwizzle
+    SwiftName: textureComponentSwizzle
+  - Name: WGPUFeatureName_ChromiumExperimentalBindless
+    SwiftName: chromiumExperimentalBindless
+  - Name: WGPUBlendOperation_Undefined
+    SwiftName: undefined
+  - Name: WGPUBlendOperation_Add
+    SwiftName: add
+  - Name: WGPUBlendOperation_Subtract
+    SwiftName: subtract
+  - Name: WGPUBlendOperation_ReverseSubtract
+    SwiftName: reverseSubtract
+  - Name: WGPUBlendOperation_Min
+    SwiftName: min
+  - Name: WGPUBlendOperation_Max
+    SwiftName: max
+  - Name: WGPULoggingType_Verbose
+    SwiftName: verbose
+  - Name: WGPULoggingType_Info
+    SwiftName: info
+  - Name: WGPULoggingType_Warning
+    SwiftName: warning
+  - Name: WGPULoggingType_Error
+    SwiftName: error
+  - Name: WGPUAddressMode_Undefined
+    SwiftName: undefined
+  - Name: WGPUAddressMode_ClampToEdge
+    SwiftName: clampToEdge
+  - Name: WGPUAddressMode_Repeat
+    SwiftName: repeat
+  - Name: WGPUAddressMode_MirrorRepeat
+    SwiftName: mirrorRepeat
+  - Name: WGPULoadOp_Undefined
+    SwiftName: undefined
+  - Name: WGPULoadOp_Load
+    SwiftName: load
+  - Name: WGPULoadOp_Clear
+    SwiftName: clear
+  - Name: WGPULoadOp_ExpandResolveTexture
+    SwiftName: expandResolveTexture
+  - Name: WGPUBufferMapState_Unmapped
+    SwiftName: unmapped
+  - Name: WGPUBufferMapState_Pending
+    SwiftName: pending
+  - Name: WGPUBufferMapState_Mapped
+    SwiftName: mapped
+  - Name: WGPUPowerPreference_Undefined
+    SwiftName: undefined
+  - Name: WGPUPowerPreference_LowPower
+    SwiftName: lowPower
+  - Name: WGPUPowerPreference_HighPerformance
+    SwiftName: highPerformance
+  - Name: WGPURequestAdapterStatus_Success
+    SwiftName: success
+  - Name: WGPURequestAdapterStatus_CallbackCancelled
+    SwiftName: callbackCancelled
+  - Name: WGPURequestAdapterStatus_Unavailable
+    SwiftName: unavailable
+  - Name: WGPURequestAdapterStatus_Error
+    SwiftName: error
+  - Name: WGPUTexelBufferAccess_Undefined
+    SwiftName: undefined
+  - Name: WGPUTexelBufferAccess_ReadOnly
+    SwiftName: readOnly
+  - Name: WGPUTexelBufferAccess_ReadWrite
+    SwiftName: readWrite
+  - Name: WGPUCompareFunction_Undefined
+    SwiftName: undefined
+  - Name: WGPUCompareFunction_Never
+    SwiftName: never
+  - Name: WGPUCompareFunction_Less
+    SwiftName: less
+  - Name: WGPUCompareFunction_Equal
+    SwiftName: equal
+  - Name: WGPUCompareFunction_LessEqual
+    SwiftName: lessEqual
+  - Name: WGPUCompareFunction_Greater
+    SwiftName: greater
+  - Name: WGPUCompareFunction_NotEqual
+    SwiftName: notEqual
+  - Name: WGPUCompareFunction_GreaterEqual
+    SwiftName: greaterEqual
+  - Name: WGPUCompareFunction_Always
+    SwiftName: always
+  - Name: WGPUBlendFactor_Undefined
+    SwiftName: undefined
+  - Name: WGPUBlendFactor_Zero
+    SwiftName: zero
+  - Name: WGPUBlendFactor_One
+    SwiftName: one
+  - Name: WGPUBlendFactor_Src
+    SwiftName: src
+  - Name: WGPUBlendFactor_OneMinusSrc
+    SwiftName: oneMinusSrc
+  - Name: WGPUBlendFactor_SrcAlpha
+    SwiftName: srcAlpha
+  - Name: WGPUBlendFactor_OneMinusSrcAlpha
+    SwiftName: oneMinusSrcAlpha
+  - Name: WGPUBlendFactor_Dst
+    SwiftName: dst
+  - Name: WGPUBlendFactor_OneMinusDst
+    SwiftName: oneMinusDst
+  - Name: WGPUBlendFactor_DstAlpha
+    SwiftName: dstAlpha
+  - Name: WGPUBlendFactor_OneMinusDstAlpha
+    SwiftName: oneMinusDstAlpha
+  - Name: WGPUBlendFactor_SrcAlphaSaturated
+    SwiftName: srcAlphaSaturated
+  - Name: WGPUBlendFactor_Constant
+    SwiftName: constant
+  - Name: WGPUBlendFactor_OneMinusConstant
+    SwiftName: oneMinusConstant
+  - Name: WGPUBlendFactor_Src1
+    SwiftName: src1
+  - Name: WGPUBlendFactor_OneMinusSrc1
+    SwiftName: oneMinusSrc1
+  - Name: WGPUBlendFactor_Src1Alpha
+    SwiftName: src1Alpha
+  - Name: WGPUBlendFactor_OneMinusSrc1Alpha
+    SwiftName: oneMinusSrc1Alpha
+  - Name: WGPUCullMode_Undefined
+    SwiftName: undefined
+  - Name: WGPUCullMode_None
+    SwiftName: none
+  - Name: WGPUCullMode_Front
+    SwiftName: front
+  - Name: WGPUCullMode_Back
+    SwiftName: back
+  - Name: WGPUBufferBindingType_BindingNotUsed
+    SwiftName: bindingNotUsed
+  - Name: WGPUBufferBindingType_Undefined
+    SwiftName: undefined
+  - Name: WGPUBufferBindingType_Uniform
+    SwiftName: uniform
+  - Name: WGPUBufferBindingType_Storage
+    SwiftName: storage
+  - Name: WGPUBufferBindingType_ReadOnlyStorage
+    SwiftName: readOnlyStorage
+  - Name: WGPUStatus_Success
+    SwiftName: success
+  - Name: WGPUStatus_Error
+    SwiftName: error
+  - Name: WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal
+    SwiftName: successOptimal
+  - Name: WGPUSurfaceGetCurrentTextureStatus_SuccessSuboptimal
+    SwiftName: successSuboptimal
+  - Name: WGPUSurfaceGetCurrentTextureStatus_Timeout
+    SwiftName: timeout
+  - Name: WGPUSurfaceGetCurrentTextureStatus_Outdated
+    SwiftName: outdated
+  - Name: WGPUSurfaceGetCurrentTextureStatus_Lost
+    SwiftName: lost
+  - Name: WGPUSurfaceGetCurrentTextureStatus_Error
+    SwiftName: error
+  - Name: WGPUDeviceLostReason_Unknown
+    SwiftName: unknown
+  - Name: WGPUDeviceLostReason_Destroyed
+    SwiftName: destroyed
+  - Name: WGPUDeviceLostReason_CallbackCancelled
+    SwiftName: callbackCancelled
+  - Name: WGPUDeviceLostReason_FailedCreation
+    SwiftName: failedCreation
+  - Name: WGPUQueryType_Occlusion
+    SwiftName: occlusion
+  - Name: WGPUQueryType_Timestamp
+    SwiftName: timestamp
+  - Name: WGPUPresentMode_Undefined
+    SwiftName: undefined
+  - Name: WGPUPresentMode_Fifo
+    SwiftName: fifo
+  - Name: WGPUPresentMode_FifoRelaxed
+    SwiftName: fifoRelaxed
+  - Name: WGPUPresentMode_Immediate
+    SwiftName: immediate
+  - Name: WGPUPresentMode_Mailbox
+    SwiftName: mailbox
+  - Name: WGPUBackendType_Undefined
+    SwiftName: undefined
+  - Name: WGPUBackendType_Null
+    SwiftName: null
+  - Name: WGPUBackendType_WebGPU
+    SwiftName: WebGPU
+  - Name: WGPUBackendType_D3D11
+    SwiftName: D3D11
+  - Name: WGPUBackendType_D3D12
+    SwiftName: D3D12
+  - Name: WGPUBackendType_Metal
+    SwiftName: metal
+  - Name: WGPUBackendType_Vulkan
+    SwiftName: vulkan
+  - Name: WGPUBackendType_OpenGL
+    SwiftName: openGL
+  - Name: WGPUBackendType_OpenGLES
+    SwiftName: openGLES
+  - Name: WGPUStencilOperation_Undefined
+    SwiftName: undefined
+  - Name: WGPUStencilOperation_Keep
+    SwiftName: keep
+  - Name: WGPUStencilOperation_Zero
+    SwiftName: zero
+  - Name: WGPUStencilOperation_Replace
+    SwiftName: replace
+  - Name: WGPUStencilOperation_Invert
+    SwiftName: invert
+  - Name: WGPUStencilOperation_IncrementClamp
+    SwiftName: incrementClamp
+  - Name: WGPUStencilOperation_DecrementClamp
+    SwiftName: decrementClamp
+  - Name: WGPUStencilOperation_IncrementWrap
+    SwiftName: incrementWrap
+  - Name: WGPUStencilOperation_DecrementWrap
+    SwiftName: decrementWrap
+Functions:
+  - Name: wgpuRenderPassEncoderAddRef
+    SwiftName: WGPURenderPassEncoderImpl.addRef(self:)
+  - Name: wgpuRenderPassEncoderRelease
+    SwiftName: WGPURenderPassEncoderImpl.release(self:)
+  - Name: wgpuRenderPassEncoderSetPipeline
+    SwiftName: WGPURenderPassEncoderImpl.setPipeline(self:pipeline:)
+  - Name: wgpuRenderPassEncoderSetBindGroup
+    SwiftName: WGPURenderPassEncoderImpl.setBindGroup(self:groupIndex:group:dynamicOffsetCount:dynamicOffsets:)
+  - Name: wgpuRenderPassEncoderDraw
+    SwiftName: WGPURenderPassEncoderImpl.draw(self:vertexCount:instanceCount:firstVertex:firstInstance:)
+  - Name: wgpuRenderPassEncoderDrawIndexed
+    SwiftName: WGPURenderPassEncoderImpl.drawIndexed(self:indexCount:instanceCount:firstIndex:baseVertex:firstInstance:)
+  - Name: wgpuRenderPassEncoderDrawIndirect
+    SwiftName: WGPURenderPassEncoderImpl.drawIndirect(self:indirectBuffer:indirectOffset:)
+  - Name: wgpuRenderPassEncoderDrawIndexedIndirect
+    SwiftName: WGPURenderPassEncoderImpl.drawIndexedIndirect(self:indirectBuffer:indirectOffset:)
+  - Name: wgpuRenderPassEncoderMultiDrawIndirect
+    SwiftName: WGPURenderPassEncoderImpl.multiDrawIndirect(self:indirectBuffer:indirectOffset:maxDrawCount:drawCountBuffer:drawCountBufferOffset:)
+  - Name: wgpuRenderPassEncoderMultiDrawIndexedIndirect
+    SwiftName: WGPURenderPassEncoderImpl.multiDrawIndexedIndirect(self:indirectBuffer:indirectOffset:maxDrawCount:drawCountBuffer:drawCountBufferOffset:)
+  - Name: wgpuRenderPassEncoderExecuteBundles
+    SwiftName: WGPURenderPassEncoderImpl.executeBundles(self:bundleCount:bundles:)
+  - Name: wgpuRenderPassEncoderInsertDebugMarker
+    SwiftName: WGPURenderPassEncoderImpl.insertDebugMarker(self:markerLabel:)
+  - Name: wgpuRenderPassEncoderPopDebugGroup
+    SwiftName: WGPURenderPassEncoderImpl.popDebugGroup(self:)
+  - Name: wgpuRenderPassEncoderPushDebugGroup
+    SwiftName: WGPURenderPassEncoderImpl.pushDebugGroup(self:groupLabel:)
+  - Name: wgpuRenderPassEncoderSetStencilReference
+    SwiftName: WGPURenderPassEncoderImpl.setStencilReference(self:reference:)
+  - Name: wgpuRenderPassEncoderSetBlendConstant
+    SwiftName: WGPURenderPassEncoderImpl.setBlendConstant(self:color:)
+  - Name: wgpuRenderPassEncoderSetViewport
+    SwiftName: WGPURenderPassEncoderImpl.setViewport(self:x:y:width:height:minDepth:maxDepth:)
+  - Name: wgpuRenderPassEncoderSetScissorRect
+    SwiftName: WGPURenderPassEncoderImpl.setScissorRect(self:x:y:width:height:)
+  - Name: wgpuRenderPassEncoderSetVertexBuffer
+    SwiftName: WGPURenderPassEncoderImpl.setVertexBuffer(self:slot:buffer:offset:size:)
+  - Name: wgpuRenderPassEncoderSetIndexBuffer
+    SwiftName: WGPURenderPassEncoderImpl.setIndexBuffer(self:buffer:format:offset:size:)
+  - Name: wgpuRenderPassEncoderBeginOcclusionQuery
+    SwiftName: WGPURenderPassEncoderImpl.beginOcclusionQuery(self:queryIndex:)
+  - Name: wgpuRenderPassEncoderEndOcclusionQuery
+    SwiftName: WGPURenderPassEncoderImpl.endOcclusionQuery(self:)
+  - Name: wgpuRenderPassEncoderWriteTimestamp
+    SwiftName: WGPURenderPassEncoderImpl.writeTimestamp(self:querySet:queryIndex:)
+  - Name: wgpuRenderPassEncoderPixelLocalStorageBarrier
+    SwiftName: WGPURenderPassEncoderImpl.pixelLocalStorageBarrier(self:)
+  - Name: wgpuRenderPassEncoderEnd
+    SwiftName: WGPURenderPassEncoderImpl.end(self:)
+  - Name: wgpuRenderPassEncoderSetLabel
+    SwiftName: WGPURenderPassEncoderImpl.setLabel(self:label:)
+  - Name: wgpuRenderPassEncoderSetImmediateData
+    SwiftName: WGPURenderPassEncoderImpl.setImmediateData(self:offset:data:size:)
+  - Name: wgpuPipelineLayoutAddRef
+    SwiftName: WGPUPipelineLayoutImpl.addRef(self:)
+  - Name: wgpuPipelineLayoutRelease
+    SwiftName: WGPUPipelineLayoutImpl.release(self:)
+  - Name: wgpuPipelineLayoutSetLabel
+    SwiftName: WGPUPipelineLayoutImpl.setLabel(self:label:)
+  - Name: wgpuSurfaceAddRef
+    SwiftName: WGPUSurfaceImpl.addRef(self:)
+  - Name: wgpuSurfaceRelease
+    SwiftName: WGPUSurfaceImpl.release(self:)
+  - Name: wgpuSurfaceConfigure
+    SwiftName: WGPUSurfaceImpl.configure(self:config:)
+  - Name: wgpuSurfaceGetCapabilities
+    SwiftName: WGPUSurfaceImpl.getCapabilities(self:adapter:capabilities:)
+  - Name: wgpuSurfaceGetCurrentTexture
+    SwiftName: WGPUSurfaceImpl.getCurrentTexture(self:surfaceTexture:)
+  - Name: wgpuSurfacePresent
+    SwiftName: WGPUSurfaceImpl.present(self:)
+  - Name: wgpuSurfaceUnconfigure
+    SwiftName: WGPUSurfaceImpl.unconfigure(self:)
+  - Name: wgpuSurfaceSetLabel
+    SwiftName: WGPUSurfaceImpl.setLabel(self:label:)
+  - Name: wgpuBindGroupAddRef
+    SwiftName: WGPUBindGroupImpl.addRef(self:)
+  - Name: wgpuBindGroupRelease
+    SwiftName: WGPUBindGroupImpl.release(self:)
+  - Name: wgpuBindGroupDestroy
+    SwiftName: WGPUBindGroupImpl.destroy(self:)
+  - Name: wgpuBindGroupSetLabel
+    SwiftName: WGPUBindGroupImpl.setLabel(self:label:)
+  - Name: wgpuTextureViewAddRef
+    SwiftName: WGPUTextureViewImpl.addRef(self:)
+  - Name: wgpuTextureViewRelease
+    SwiftName: WGPUTextureViewImpl.release(self:)
+  - Name: wgpuTextureViewSetLabel
+    SwiftName: WGPUTextureViewImpl.setLabel(self:label:)
+  - Name: wgpuBindGroupLayoutAddRef
+    SwiftName: WGPUBindGroupLayoutImpl.addRef(self:)
+  - Name: wgpuBindGroupLayoutRelease
+    SwiftName: WGPUBindGroupLayoutImpl.release(self:)
+  - Name: wgpuBindGroupLayoutSetLabel
+    SwiftName: WGPUBindGroupLayoutImpl.setLabel(self:label:)
+  - Name: wgpuCommandBufferAddRef
+    SwiftName: WGPUCommandBufferImpl.addRef(self:)
+  - Name: wgpuCommandBufferRelease
+    SwiftName: WGPUCommandBufferImpl.release(self:)
+  - Name: wgpuCommandBufferSetLabel
+    SwiftName: WGPUCommandBufferImpl.setLabel(self:label:)
+  - Name: wgpuTexelBufferViewAddRef
+    SwiftName: WGPUTexelBufferViewImpl.addRef(self:)
+  - Name: wgpuTexelBufferViewRelease
+    SwiftName: WGPUTexelBufferViewImpl.release(self:)
+  - Name: wgpuTexelBufferViewSetLabel
+    SwiftName: WGPUTexelBufferViewImpl.setLabel(self:label:)
+  - Name: wgpuBufferAddRef
+    SwiftName: WGPUBufferImpl.addRef(self:)
+  - Name: wgpuBufferRelease
+    SwiftName: WGPUBufferImpl.release(self:)
+  - Name: wgpuBufferMapAsync
+    SwiftName: WGPUBufferImpl.mapAsync(self:mode:offset:size:callbackInfo:)
+  - Name: wgpuBufferGetMappedRange
+    SwiftName: WGPUBufferImpl.getMappedRange(self:offset:size:)
+  - Name: wgpuBufferGetConstMappedRange
+    SwiftName: WGPUBufferImpl.getConstMappedRange(self:offset:size:)
+  - Name: wgpuBufferWriteMappedRange
+    SwiftName: WGPUBufferImpl.writeMappedRange(self:offset:data:size:)
+  - Name: wgpuBufferReadMappedRange
+    SwiftName: WGPUBufferImpl.readMappedRange(self:offset:data:size:)
+  - Name: wgpuBufferCreateTexelView
+    SwiftName: WGPUBufferImpl.createTexelView(self:descriptor:)
+  - Name: wgpuBufferSetLabel
+    SwiftName: WGPUBufferImpl.setLabel(self:label:)
+  - Name: wgpuBufferGetUsage
+    SwiftName: getter:WGPUBufferImpl.usage(self:)
+  - Name: wgpuBufferGetSize
+    SwiftName: getter:WGPUBufferImpl.size(self:)
+  - Name: wgpuBufferGetMapState
+    SwiftName: getter:WGPUBufferImpl.mapState(self:)
+  - Name: wgpuBufferUnmap
+    SwiftName: WGPUBufferImpl.unmap(self:)
+  - Name: wgpuBufferDestroy
+    SwiftName: WGPUBufferImpl.destroy(self:)
+  - Name: wgpuRenderBundleAddRef
+    SwiftName: WGPURenderBundleImpl.addRef(self:)
+  - Name: wgpuRenderBundleRelease
+    SwiftName: WGPURenderBundleImpl.release(self:)
+  - Name: wgpuRenderBundleSetLabel
+    SwiftName: WGPURenderBundleImpl.setLabel(self:label:)
+  - Name: wgpuCommandEncoderAddRef
+    SwiftName: WGPUCommandEncoderImpl.addRef(self:)
+  - Name: wgpuCommandEncoderRelease
+    SwiftName: WGPUCommandEncoderImpl.release(self:)
+  - Name: wgpuCommandEncoderFinish
+    SwiftName: WGPUCommandEncoderImpl.finish(self:descriptor:)
+  - Name: wgpuCommandEncoderBeginComputePass
+    SwiftName: WGPUCommandEncoderImpl.beginComputePass(self:descriptor:)
+  - Name: wgpuCommandEncoderBeginRenderPass
+    SwiftName: WGPUCommandEncoderImpl.beginRenderPass(self:descriptor:)
+  - Name: wgpuCommandEncoderCopyBufferToBuffer
+    SwiftName: WGPUCommandEncoderImpl.copyBufferToBuffer(self:source:sourceOffset:destination:destinationOffset:size:)
+  - Name: wgpuCommandEncoderCopyBufferToTexture
+    SwiftName: WGPUCommandEncoderImpl.copyBufferToTexture(self:source:destination:copySize:)
+  - Name: wgpuCommandEncoderCopyTextureToBuffer
+    SwiftName: WGPUCommandEncoderImpl.copyTextureToBuffer(self:source:destination:copySize:)
+  - Name: wgpuCommandEncoderCopyTextureToTexture
+    SwiftName: WGPUCommandEncoderImpl.copyTextureToTexture(self:source:destination:copySize:)
+  - Name: wgpuCommandEncoderClearBuffer
+    SwiftName: WGPUCommandEncoderImpl.clearBuffer(self:buffer:offset:size:)
+  - Name: wgpuCommandEncoderInjectValidationError
+    SwiftName: WGPUCommandEncoderImpl.injectValidationError(self:message:)
+  - Name: wgpuCommandEncoderInsertDebugMarker
+    SwiftName: WGPUCommandEncoderImpl.insertDebugMarker(self:markerLabel:)
+  - Name: wgpuCommandEncoderPopDebugGroup
+    SwiftName: WGPUCommandEncoderImpl.popDebugGroup(self:)
+  - Name: wgpuCommandEncoderPushDebugGroup
+    SwiftName: WGPUCommandEncoderImpl.pushDebugGroup(self:groupLabel:)
+  - Name: wgpuCommandEncoderResolveQuerySet
+    SwiftName: WGPUCommandEncoderImpl.resolveQuerySet(self:querySet:firstQuery:queryCount:destination:destinationOffset:)
+  - Name: wgpuCommandEncoderWriteBuffer
+    SwiftName: WGPUCommandEncoderImpl.writeBuffer(self:buffer:bufferOffset:data:size:)
+  - Name: wgpuCommandEncoderWriteTimestamp
+    SwiftName: WGPUCommandEncoderImpl.writeTimestamp(self:querySet:queryIndex:)
+  - Name: wgpuCommandEncoderSetLabel
+    SwiftName: WGPUCommandEncoderImpl.setLabel(self:label:)
+  - Name: wgpuExternalTextureAddRef
+    SwiftName: WGPUExternalTextureImpl.addRef(self:)
+  - Name: wgpuExternalTextureRelease
+    SwiftName: WGPUExternalTextureImpl.release(self:)
+  - Name: wgpuExternalTextureSetLabel
+    SwiftName: WGPUExternalTextureImpl.setLabel(self:label:)
+  - Name: wgpuExternalTextureDestroy
+    SwiftName: WGPUExternalTextureImpl.destroy(self:)
+  - Name: wgpuExternalTextureExpire
+    SwiftName: WGPUExternalTextureImpl.expire(self:)
+  - Name: wgpuExternalTextureRefresh
+    SwiftName: WGPUExternalTextureImpl.refresh(self:)
+  - Name: wgpuCreateInstance
+    SwiftName: WGPUInstanceImpl.init(descriptor:)
+    SwiftReturnOwnership: retained
+  - Name: wgpuComputePassEncoderAddRef
+    SwiftName: WGPUComputePassEncoderImpl.addRef(self:)
+  - Name: wgpuComputePassEncoderRelease
+    SwiftName: WGPUComputePassEncoderImpl.release(self:)
+  - Name: wgpuComputePassEncoderInsertDebugMarker
+    SwiftName: WGPUComputePassEncoderImpl.insertDebugMarker(self:markerLabel:)
+  - Name: wgpuComputePassEncoderPopDebugGroup
+    SwiftName: WGPUComputePassEncoderImpl.popDebugGroup(self:)
+  - Name: wgpuComputePassEncoderPushDebugGroup
+    SwiftName: WGPUComputePassEncoderImpl.pushDebugGroup(self:groupLabel:)
+  - Name: wgpuComputePassEncoderSetPipeline
+    SwiftName: WGPUComputePassEncoderImpl.setPipeline(self:pipeline:)
+  - Name: wgpuComputePassEncoderSetBindGroup
+    SwiftName: WGPUComputePassEncoderImpl.setBindGroup(self:groupIndex:group:dynamicOffsetCount:dynamicOffsets:)
+  - Name: wgpuComputePassEncoderWriteTimestamp
+    SwiftName: WGPUComputePassEncoderImpl.writeTimestamp(self:querySet:queryIndex:)
+  - Name: wgpuComputePassEncoderDispatchWorkgroups
+    SwiftName: WGPUComputePassEncoderImpl.dispatchWorkgroups(self:workgroupCountX:workgroupCountY:workgroupCountZ:)
+  - Name: wgpuComputePassEncoderDispatchWorkgroupsIndirect
+    SwiftName: WGPUComputePassEncoderImpl.dispatchWorkgroupsIndirect(self:indirectBuffer:indirectOffset:)
+  - Name: wgpuComputePassEncoderEnd
+    SwiftName: WGPUComputePassEncoderImpl.end(self:)
+  - Name: wgpuComputePassEncoderSetLabel
+    SwiftName: WGPUComputePassEncoderImpl.setLabel(self:label:)
+  - Name: wgpuComputePassEncoderSetImmediateData
+    SwiftName: WGPUComputePassEncoderImpl.setImmediateData(self:offset:data:size:)
+  - Name: wgpuInstanceAddRef
+    SwiftName: WGPUInstanceImpl.addRef(self:)
+  - Name: wgpuInstanceRelease
+    SwiftName: WGPUInstanceImpl.release(self:)
+  - Name: wgpuInstanceCreateSurface
+    SwiftName: WGPUInstanceImpl.createSurface(self:descriptor:)
+  - Name: wgpuInstanceProcessEvents
+    SwiftName: WGPUInstanceImpl.processEvents(self:)
+  - Name: wgpuInstanceWaitAny
+    SwiftName: WGPUInstanceImpl.waitAny(self:futureCount:futures:timeoutNS:)
+  - Name: wgpuInstanceRequestAdapter
+    SwiftName: WGPUInstanceImpl.requestAdapter(self:options:callbackInfo:)
+  - Name: wgpuInstanceHasWGSLLanguageFeature
+    SwiftName: WGPUInstanceImpl.hasWGSLLanguageFeature(self:feature:)
+  - Name: wgpuInstanceGetWGSLLanguageFeatures
+    SwiftName: WGPUInstanceImpl.getWGSLLanguageFeatures(self:features:)
+  - Name: wgpuQuerySetAddRef
+    SwiftName: WGPUQuerySetImpl.addRef(self:)
+  - Name: wgpuQuerySetRelease
+    SwiftName: WGPUQuerySetImpl.release(self:)
+  - Name: wgpuQuerySetSetLabel
+    SwiftName: WGPUQuerySetImpl.setLabel(self:label:)
+  - Name: wgpuQuerySetGetType
+    SwiftName: getter:WGPUQuerySetImpl.type(self:)
+  - Name: wgpuQuerySetGetCount
+    SwiftName: getter:WGPUQuerySetImpl.count(self:)
+  - Name: wgpuQuerySetDestroy
+    SwiftName: WGPUQuerySetImpl.destroy(self:)
+  - Name: wgpuSharedFenceAddRef
+    SwiftName: WGPUSharedFenceImpl.addRef(self:)
+  - Name: wgpuSharedFenceRelease
+    SwiftName: WGPUSharedFenceImpl.release(self:)
+  - Name: wgpuSharedFenceExportInfo
+    SwiftName: WGPUSharedFenceImpl.exportInfo(self:info:)
+  - Name: wgpuRenderBundleEncoderAddRef
+    SwiftName: WGPURenderBundleEncoderImpl.addRef(self:)
+  - Name: wgpuRenderBundleEncoderRelease
+    SwiftName: WGPURenderBundleEncoderImpl.release(self:)
+  - Name: wgpuRenderBundleEncoderSetPipeline
+    SwiftName: WGPURenderBundleEncoderImpl.setPipeline(self:pipeline:)
+  - Name: wgpuRenderBundleEncoderSetBindGroup
+    SwiftName: WGPURenderBundleEncoderImpl.setBindGroup(self:groupIndex:group:dynamicOffsetCount:dynamicOffsets:)
+  - Name: wgpuRenderBundleEncoderDraw
+    SwiftName: WGPURenderBundleEncoderImpl.draw(self:vertexCount:instanceCount:firstVertex:firstInstance:)
+  - Name: wgpuRenderBundleEncoderDrawIndexed
+    SwiftName: WGPURenderBundleEncoderImpl.drawIndexed(self:indexCount:instanceCount:firstIndex:baseVertex:firstInstance:)
+  - Name: wgpuRenderBundleEncoderDrawIndirect
+    SwiftName: WGPURenderBundleEncoderImpl.drawIndirect(self:indirectBuffer:indirectOffset:)
+  - Name: wgpuRenderBundleEncoderDrawIndexedIndirect
+    SwiftName: WGPURenderBundleEncoderImpl.drawIndexedIndirect(self:indirectBuffer:indirectOffset:)
+  - Name: wgpuRenderBundleEncoderInsertDebugMarker
+    SwiftName: WGPURenderBundleEncoderImpl.insertDebugMarker(self:markerLabel:)
+  - Name: wgpuRenderBundleEncoderPopDebugGroup
+    SwiftName: WGPURenderBundleEncoderImpl.popDebugGroup(self:)
+  - Name: wgpuRenderBundleEncoderPushDebugGroup
+    SwiftName: WGPURenderBundleEncoderImpl.pushDebugGroup(self:groupLabel:)
+  - Name: wgpuRenderBundleEncoderSetVertexBuffer
+    SwiftName: WGPURenderBundleEncoderImpl.setVertexBuffer(self:slot:buffer:offset:size:)
+  - Name: wgpuRenderBundleEncoderSetIndexBuffer
+    SwiftName: WGPURenderBundleEncoderImpl.setIndexBuffer(self:buffer:format:offset:size:)
+  - Name: wgpuRenderBundleEncoderFinish
+    SwiftName: WGPURenderBundleEncoderImpl.finish(self:descriptor:)
+  - Name: wgpuRenderBundleEncoderSetLabel
+    SwiftName: WGPURenderBundleEncoderImpl.setLabel(self:label:)
+  - Name: wgpuRenderBundleEncoderSetImmediateData
+    SwiftName: WGPURenderBundleEncoderImpl.setImmediateData(self:offset:data:size:)
+  - Name: wgpuTextureAddRef
+    SwiftName: WGPUTextureImpl.addRef(self:)
+  - Name: wgpuTextureRelease
+    SwiftName: WGPUTextureImpl.release(self:)
+  - Name: wgpuTextureCreateView
+    SwiftName: WGPUTextureImpl.createView(self:descriptor:)
+  - Name: wgpuTextureCreateErrorView
+    SwiftName: WGPUTextureImpl.createErrorView(self:descriptor:)
+  - Name: wgpuTextureSetLabel
+    SwiftName: WGPUTextureImpl.setLabel(self:label:)
+  - Name: wgpuTextureGetWidth
+    SwiftName: getter:WGPUTextureImpl.width(self:)
+  - Name: wgpuTextureGetHeight
+    SwiftName: getter:WGPUTextureImpl.height(self:)
+  - Name: wgpuTextureGetDepthOrArrayLayers
+    SwiftName: getter:WGPUTextureImpl.depthOrArrayLayers(self:)
+  - Name: wgpuTextureGetMipLevelCount
+    SwiftName: getter:WGPUTextureImpl.mipLevelCount(self:)
+  - Name: wgpuTextureGetSampleCount
+    SwiftName: getter:WGPUTextureImpl.sampleCount(self:)
+  - Name: wgpuTextureGetDimension
+    SwiftName: getter:WGPUTextureImpl.dimension(self:)
+  - Name: wgpuTextureGetFormat
+    SwiftName: getter:WGPUTextureImpl.format(self:)
+  - Name: wgpuTextureGetUsage
+    SwiftName: getter:WGPUTextureImpl.usage(self:)
+  - Name: wgpuTextureDestroy
+    SwiftName: WGPUTextureImpl.destroy(self:)
+  - Name: wgpuTexturePin
+    SwiftName: WGPUTextureImpl.pin(self:usage:)
+  - Name: wgpuTextureUnpin
+    SwiftName: WGPUTextureImpl.unpin(self:)
+  - Name: wgpuRenderPipelineAddRef
+    SwiftName: WGPURenderPipelineImpl.addRef(self:)
+  - Name: wgpuRenderPipelineRelease
+    SwiftName: WGPURenderPipelineImpl.release(self:)
+  - Name: wgpuRenderPipelineGetBindGroupLayout
+    SwiftName: WGPURenderPipelineImpl.getBindGroupLayout(self:groupIndex:)
+  - Name: wgpuRenderPipelineSetLabel
+    SwiftName: WGPURenderPipelineImpl.setLabel(self:label:)
+  - Name: wgpuAdapterAddRef
+    SwiftName: WGPUAdapterImpl.addRef(self:)
+  - Name: wgpuAdapterRelease
+    SwiftName: WGPUAdapterImpl.release(self:)
+  - Name: wgpuAdapterGetInstance
+    SwiftName: getter:WGPUAdapterImpl.instance(self:)
+  - Name: wgpuAdapterGetLimits
+    SwiftName: WGPUAdapterImpl.getLimits(self:limits:)
+  - Name: wgpuAdapterGetInfo
+    SwiftName: WGPUAdapterImpl.getInfo(self:info:)
+  - Name: wgpuAdapterHasFeature
+    SwiftName: WGPUAdapterImpl.hasFeature(self:feature:)
+  - Name: wgpuAdapterGetFeatures
+    SwiftName: WGPUAdapterImpl.getFeatures(self:features:)
+  - Name: wgpuAdapterRequestDevice
+    SwiftName: WGPUAdapterImpl.requestDevice(self:descriptor:callbackInfo:)
+  - Name: wgpuAdapterCreateDevice
+    SwiftName: WGPUAdapterImpl.createDevice(self:descriptor:)
+  - Name: wgpuAdapterGetFormatCapabilities
+    SwiftName: WGPUAdapterImpl.getFormatCapabilities(self:format:capabilities:)
+  - Name: wgpuDeviceAddRef
+    SwiftName: WGPUDeviceImpl.addRef(self:)
+  - Name: wgpuDeviceRelease
+    SwiftName: WGPUDeviceImpl.release(self:)
+  - Name: wgpuDeviceCreateBindGroup
+    SwiftName: WGPUDeviceImpl.createBindGroup(self:descriptor:)
+  - Name: wgpuDeviceCreateBindGroupLayout
+    SwiftName: WGPUDeviceImpl.createBindGroupLayout(self:descriptor:)
+  - Name: wgpuDeviceCreateBuffer
+    SwiftName: WGPUDeviceImpl.createBuffer(self:descriptor:)
+  - Name: wgpuDeviceCreateErrorBuffer
+    SwiftName: WGPUDeviceImpl.createErrorBuffer(self:descriptor:)
+  - Name: wgpuDeviceCreateCommandEncoder
+    SwiftName: WGPUDeviceImpl.createCommandEncoder(self:descriptor:)
+  - Name: wgpuDeviceCreateComputePipeline
+    SwiftName: WGPUDeviceImpl.createComputePipeline(self:descriptor:)
+  - Name: wgpuDeviceCreateComputePipelineAsync
+    SwiftName: WGPUDeviceImpl.createComputePipelineAsync(self:descriptor:callbackInfo:)
+  - Name: wgpuDeviceCreateExternalTexture
+    SwiftName: WGPUDeviceImpl.createExternalTexture(self:externalTextureDescriptor:)
+  - Name: wgpuDeviceCreateErrorExternalTexture
+    SwiftName: WGPUDeviceImpl.createErrorExternalTexture(self:)
+  - Name: wgpuDeviceCreatePipelineLayout
+    SwiftName: WGPUDeviceImpl.createPipelineLayout(self:descriptor:)
+  - Name: wgpuDeviceCreateQuerySet
+    SwiftName: WGPUDeviceImpl.createQuerySet(self:descriptor:)
+  - Name: wgpuDeviceCreateRenderPipelineAsync
+    SwiftName: WGPUDeviceImpl.createRenderPipelineAsync(self:descriptor:callbackInfo:)
+  - Name: wgpuDeviceCreateRenderBundleEncoder
+    SwiftName: WGPUDeviceImpl.createRenderBundleEncoder(self:descriptor:)
+  - Name: wgpuDeviceCreateRenderPipeline
+    SwiftName: WGPUDeviceImpl.createRenderPipeline(self:descriptor:)
+  - Name: wgpuDeviceCreateSampler
+    SwiftName: WGPUDeviceImpl.createSampler(self:descriptor:)
+  - Name: wgpuDeviceCreateShaderModule
+    SwiftName: WGPUDeviceImpl.createShaderModule(self:descriptor:)
+  - Name: wgpuDeviceCreateErrorShaderModule
+    SwiftName: WGPUDeviceImpl.createErrorShaderModule(self:descriptor:errorMessage:)
+  - Name: wgpuDeviceCreateTexture
+    SwiftName: WGPUDeviceImpl.createTexture(self:descriptor:)
+  - Name: wgpuDeviceImportSharedBufferMemory
+    SwiftName: WGPUDeviceImpl.importSharedBufferMemory(self:descriptor:)
+  - Name: wgpuDeviceImportSharedTextureMemory
+    SwiftName: WGPUDeviceImpl.importSharedTextureMemory(self:descriptor:)
+  - Name: wgpuDeviceImportSharedFence
+    SwiftName: WGPUDeviceImpl.importSharedFence(self:descriptor:)
+  - Name: wgpuDeviceCreateErrorTexture
+    SwiftName: WGPUDeviceImpl.createErrorTexture(self:descriptor:)
+  - Name: wgpuDeviceDestroy
+    SwiftName: WGPUDeviceImpl.destroy(self:)
+  - Name: wgpuDeviceGetAHardwareBufferProperties
+    SwiftName: WGPUDeviceImpl.getAHardwareBufferProperties(self:handle:properties:)
+  - Name: wgpuDeviceGetLimits
+    SwiftName: WGPUDeviceImpl.getLimits(self:limits:)
+  - Name: wgpuDeviceGetLostFuture
+    SwiftName: getter:WGPUDeviceImpl.lostFuture(self:)
+  - Name: wgpuDeviceHasFeature
+    SwiftName: WGPUDeviceImpl.hasFeature(self:feature:)
+  - Name: wgpuDeviceGetFeatures
+    SwiftName: WGPUDeviceImpl.getFeatures(self:features:)
+  - Name: wgpuDeviceGetAdapterInfo
+    SwiftName: WGPUDeviceImpl.getAdapterInfo(self:adapterInfo:)
+  - Name: wgpuDeviceGetAdapter
+    SwiftName: getter:WGPUDeviceImpl.adapter(self:)
+  - Name: wgpuDeviceGetQueue
+    SwiftName: getter:WGPUDeviceImpl.queue(self:)
+  - Name: wgpuDeviceInjectError
+    SwiftName: WGPUDeviceImpl.injectError(self:type:message:)
+  - Name: wgpuDeviceForceLoss
+    SwiftName: WGPUDeviceImpl.forceLoss(self:type:message:)
+  - Name: wgpuDeviceTick
+    SwiftName: WGPUDeviceImpl.tick(self:)
+  - Name: wgpuDeviceSetLoggingCallback
+    SwiftName: WGPUDeviceImpl.setLoggingCallback(self:callbackInfo:)
+  - Name: wgpuDevicePushErrorScope
+    SwiftName: WGPUDeviceImpl.pushErrorScope(self:filter:)
+  - Name: wgpuDevicePopErrorScope
+    SwiftName: WGPUDeviceImpl.popErrorScope(self:callbackInfo:)
+  - Name: wgpuDeviceSetLabel
+    SwiftName: WGPUDeviceImpl.setLabel(self:label:)
+  - Name: wgpuDeviceValidateTextureDescriptor
+    SwiftName: WGPUDeviceImpl.validateTextureDescriptor(self:descriptor:)
+  - Name: wgpuShaderModuleAddRef
+    SwiftName: WGPUShaderModuleImpl.addRef(self:)
+  - Name: wgpuShaderModuleRelease
+    SwiftName: WGPUShaderModuleImpl.release(self:)
+  - Name: wgpuShaderModuleGetCompilationInfo
+    SwiftName: WGPUShaderModuleImpl.getCompilationInfo(self:callbackInfo:)
+  - Name: wgpuShaderModuleSetLabel
+    SwiftName: WGPUShaderModuleImpl.setLabel(self:label:)
+  - Name: wgpuQueueAddRef
+    SwiftName: WGPUQueueImpl.addRef(self:)
+  - Name: wgpuQueueRelease
+    SwiftName: WGPUQueueImpl.release(self:)
+  - Name: wgpuQueueSubmit
+    SwiftName: WGPUQueueImpl.submit(self:commandCount:commands:)
+  - Name: wgpuQueueOnSubmittedWorkDone
+    SwiftName: WGPUQueueImpl.onSubmittedWorkDone(self:callbackInfo:)
+  - Name: wgpuQueueWriteBuffer
+    SwiftName: WGPUQueueImpl.writeBuffer(self:buffer:bufferOffset:data:size:)
+  - Name: wgpuQueueWriteTexture
+    SwiftName: WGPUQueueImpl.writeTexture(self:destination:data:dataSize:dataLayout:writeSize:)
+  - Name: wgpuQueueCopyTextureForBrowser
+    SwiftName: WGPUQueueImpl.copyTextureForBrowser(self:source:destination:copySize:options:)
+  - Name: wgpuQueueCopyExternalTextureForBrowser
+    SwiftName: WGPUQueueImpl.copyExternalTextureForBrowser(self:source:destination:copySize:options:)
+  - Name: wgpuQueueSetLabel
+    SwiftName: WGPUQueueImpl.setLabel(self:label:)
+  - Name: wgpuSharedTextureMemoryAddRef
+    SwiftName: WGPUSharedTextureMemoryImpl.addRef(self:)
+  - Name: wgpuSharedTextureMemoryRelease
+    SwiftName: WGPUSharedTextureMemoryImpl.release(self:)
+  - Name: wgpuSharedTextureMemorySetLabel
+    SwiftName: WGPUSharedTextureMemoryImpl.setLabel(self:label:)
+  - Name: wgpuSharedTextureMemoryGetProperties
+    SwiftName: WGPUSharedTextureMemoryImpl.getProperties(self:properties:)
+  - Name: wgpuSharedTextureMemoryCreateTexture
+    SwiftName: WGPUSharedTextureMemoryImpl.createTexture(self:descriptor:)
+  - Name: wgpuSharedTextureMemoryBeginAccess
+    SwiftName: WGPUSharedTextureMemoryImpl.beginAccess(self:texture:descriptor:)
+  - Name: wgpuSharedTextureMemoryEndAccess
+    SwiftName: WGPUSharedTextureMemoryImpl.endAccess(self:texture:descriptor:)
+  - Name: wgpuSharedTextureMemoryIsDeviceLost
+    SwiftName: WGPUSharedTextureMemoryImpl.isDeviceLost(self:)
+  - Name: wgpuComputePipelineAddRef
+    SwiftName: WGPUComputePipelineImpl.addRef(self:)
+  - Name: wgpuComputePipelineRelease
+    SwiftName: WGPUComputePipelineImpl.release(self:)
+  - Name: wgpuComputePipelineGetBindGroupLayout
+    SwiftName: WGPUComputePipelineImpl.getBindGroupLayout(self:groupIndex:)
+  - Name: wgpuComputePipelineSetLabel
+    SwiftName: WGPUComputePipelineImpl.setLabel(self:label:)
+  - Name: wgpuSharedBufferMemoryAddRef
+    SwiftName: WGPUSharedBufferMemoryImpl.addRef(self:)
+  - Name: wgpuSharedBufferMemoryRelease
+    SwiftName: WGPUSharedBufferMemoryImpl.release(self:)
+  - Name: wgpuSharedBufferMemorySetLabel
+    SwiftName: WGPUSharedBufferMemoryImpl.setLabel(self:label:)
+  - Name: wgpuSharedBufferMemoryGetProperties
+    SwiftName: WGPUSharedBufferMemoryImpl.getProperties(self:properties:)
+  - Name: wgpuSharedBufferMemoryCreateBuffer
+    SwiftName: WGPUSharedBufferMemoryImpl.createBuffer(self:descriptor:)
+  - Name: wgpuSharedBufferMemoryBeginAccess
+    SwiftName: WGPUSharedBufferMemoryImpl.beginAccess(self:buffer:descriptor:)
+  - Name: wgpuSharedBufferMemoryEndAccess
+    SwiftName: WGPUSharedBufferMemoryImpl.endAccess(self:buffer:descriptor:)
+  - Name: wgpuSharedBufferMemoryIsDeviceLost
+    SwiftName: WGPUSharedBufferMemoryImpl.isDeviceLost(self:)
+  - Name: wgpuSamplerAddRef
+    SwiftName: WGPUSamplerImpl.addRef(self:)
+  - Name: wgpuSamplerRelease
+    SwiftName: WGPUSamplerImpl.release(self:)
+  - Name: wgpuSamplerSetLabel
+    SwiftName: WGPUSamplerImpl.setLabel(self:label:)
+Globals:
+  - Name: WGPUHeapProperty_None
+    SwiftName: WGPUHeapProperty.none
+  - Name: WGPUHeapProperty_DeviceLocal
+    SwiftName: WGPUHeapProperty.deviceLocal
+  - Name: WGPUHeapProperty_HostVisible
+    SwiftName: WGPUHeapProperty.hostVisible
+  - Name: WGPUHeapProperty_HostCoherent
+    SwiftName: WGPUHeapProperty.hostCoherent
+  - Name: WGPUHeapProperty_HostUncached
+    SwiftName: WGPUHeapProperty.hostUncached
+  - Name: WGPUHeapProperty_HostCached
+    SwiftName: WGPUHeapProperty.hostCached
+  - Name: WGPUShaderStage_None
+    SwiftName: WGPUShaderStage.none
+  - Name: WGPUShaderStage_Vertex
+    SwiftName: WGPUShaderStage.vertex
+  - Name: WGPUShaderStage_Fragment
+    SwiftName: WGPUShaderStage.fragment
+  - Name: WGPUShaderStage_Compute
+    SwiftName: WGPUShaderStage.compute
+  - Name: WGPUTextureUsage_None
+    SwiftName: WGPUTextureUsage.none
+  - Name: WGPUTextureUsage_CopySrc
+    SwiftName: WGPUTextureUsage.copySrc
+  - Name: WGPUTextureUsage_CopyDst
+    SwiftName: WGPUTextureUsage.copyDst
+  - Name: WGPUTextureUsage_TextureBinding
+    SwiftName: WGPUTextureUsage.textureBinding
+  - Name: WGPUTextureUsage_StorageBinding
+    SwiftName: WGPUTextureUsage.storageBinding
+  - Name: WGPUTextureUsage_RenderAttachment
+    SwiftName: WGPUTextureUsage.renderAttachment
+  - Name: WGPUTextureUsage_TransientAttachment
+    SwiftName: WGPUTextureUsage.transientAttachment
+  - Name: WGPUTextureUsage_StorageAttachment
+    SwiftName: WGPUTextureUsage.storageAttachment
+  - Name: WGPUMapMode_None
+    SwiftName: WGPUMapMode.none
+  - Name: WGPUMapMode_Read
+    SwiftName: WGPUMapMode.read
+  - Name: WGPUMapMode_Write
+    SwiftName: WGPUMapMode.write
+  - Name: WGPUBufferUsage_None
+    SwiftName: WGPUBufferUsage.none
+  - Name: WGPUBufferUsage_MapRead
+    SwiftName: WGPUBufferUsage.mapRead
+  - Name: WGPUBufferUsage_MapWrite
+    SwiftName: WGPUBufferUsage.mapWrite
+  - Name: WGPUBufferUsage_CopySrc
+    SwiftName: WGPUBufferUsage.copySrc
+  - Name: WGPUBufferUsage_CopyDst
+    SwiftName: WGPUBufferUsage.copyDst
+  - Name: WGPUBufferUsage_Index
+    SwiftName: WGPUBufferUsage.index
+  - Name: WGPUBufferUsage_Vertex
+    SwiftName: WGPUBufferUsage.vertex
+  - Name: WGPUBufferUsage_Uniform
+    SwiftName: WGPUBufferUsage.uniform
+  - Name: WGPUBufferUsage_Storage
+    SwiftName: WGPUBufferUsage.storage
+  - Name: WGPUBufferUsage_Indirect
+    SwiftName: WGPUBufferUsage.indirect
+  - Name: WGPUBufferUsage_QueryResolve
+    SwiftName: WGPUBufferUsage.queryResolve
+  - Name: WGPUBufferUsage_TexelBuffer
+    SwiftName: WGPUBufferUsage.texelBuffer
+  - Name: WGPUColorWriteMask_None
+    SwiftName: WGPUColorWriteMask.none
+  - Name: WGPUColorWriteMask_Red
+    SwiftName: WGPUColorWriteMask.red
+  - Name: WGPUColorWriteMask_Green
+    SwiftName: WGPUColorWriteMask.green
+  - Name: WGPUColorWriteMask_Blue
+    SwiftName: WGPUColorWriteMask.blue
+  - Name: WGPUColorWriteMask_Alpha
+    SwiftName: WGPUColorWriteMask.alpha
+  - Name: WGPUColorWriteMask_All
+    SwiftName: WGPUColorWriteMask.all
+Tags:
+  - Name: WGPUExternalTextureRotation
+    EnumExtensibility: closed
+  - Name: WGPURenderPassEncoderImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuRenderPassEncoderRelease
+    SwiftRetainOp: wgpuRenderPassEncoderAddRef
+  - Name: WGPUPipelineLayoutImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuPipelineLayoutRelease
+    SwiftRetainOp: wgpuPipelineLayoutAddRef
+  - Name: WGPUCallbackMode
+    EnumExtensibility: closed
+  - Name: WGPUSurfaceImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuSurfaceRelease
+    SwiftRetainOp: wgpuSurfaceAddRef
+  - Name: WGPUBindGroupImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuBindGroupRelease
+    SwiftRetainOp: wgpuBindGroupAddRef
+  - Name: WGPUTextureViewImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuTextureViewRelease
+    SwiftRetainOp: wgpuTextureViewAddRef
+  - Name: WGPUDynamicBindingKind
+    EnumExtensibility: closed
+  - Name: WGPUBindGroupLayoutImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuBindGroupLayoutRelease
+    SwiftRetainOp: wgpuBindGroupLayoutAddRef
+  - Name: WGPUCommandBufferImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuCommandBufferRelease
+    SwiftRetainOp: wgpuCommandBufferAddRef
+  - Name: WGPUTexelBufferViewImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuTexelBufferViewRelease
+    SwiftRetainOp: wgpuTexelBufferViewAddRef
+  - Name: WGPUBufferImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuBufferRelease
+    SwiftRetainOp: wgpuBufferAddRef
+  - Name: WGPUCompilationInfoRequestStatus
+    EnumExtensibility: closed
+  - Name: WGPUCreatePipelineAsyncStatus
+    EnumExtensibility: closed
+  - Name: WGPUTextureFormat
+    EnumExtensibility: closed
+  - Name: WGPUCompilationMessageType
+    EnumExtensibility: closed
+  - Name: WGPUIndexFormat
+    EnumExtensibility: closed
+  - Name: WGPUSType
+    EnumExtensibility: closed
+  - Name: WGPUStorageTextureAccess
+    EnumExtensibility: closed
+  - Name: WGPUCompositeAlphaMode
+    EnumExtensibility: closed
+  - Name: WGPUSubgroupMatrixComponentType
+    EnumExtensibility: closed
+  - Name: WGPUWGSLLanguageFeatureName
+    EnumExtensibility: closed
+  - Name: WGPURenderBundleImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuRenderBundleRelease
+    SwiftRetainOp: wgpuRenderBundleAddRef
+  - Name: WGPUCommandEncoderImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuCommandEncoderRelease
+    SwiftRetainOp: wgpuCommandEncoderAddRef
+  - Name: WGPUExternalTextureImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuExternalTextureRelease
+    SwiftRetainOp: wgpuExternalTextureAddRef
+  - Name: WGPUInstanceFeatureName
+    EnumExtensibility: closed
+  - Name: WGPUTextureAspect
+    EnumExtensibility: closed
+  - Name: WGPUAdapterType
+    EnumExtensibility: closed
+  - Name: WGPURequestDeviceStatus
+    EnumExtensibility: closed
+  - Name: WGPUToneMappingMode
+    EnumExtensibility: closed
+  - Name: WGPUAlphaMode
+    EnumExtensibility: closed
+  - Name: WGPUTextureViewDimension
+    EnumExtensibility: closed
+  - Name: WGPUVertexStepMode
+    EnumExtensibility: closed
+  - Name: WGPUComputePassEncoderImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuComputePassEncoderRelease
+    SwiftRetainOp: wgpuComputePassEncoderAddRef
+  - Name: WGPUStoreOp
+    EnumExtensibility: closed
+  - Name: WGPUSamplerBindingType
+    EnumExtensibility: closed
+  - Name: WGPUPrimitiveTopology
+    EnumExtensibility: closed
+  - Name: WGPUInstanceImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuInstanceRelease
+    SwiftRetainOp: wgpuInstanceAddRef
+  - Name: WGPUQuerySetImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuQuerySetRelease
+    SwiftRetainOp: wgpuQuerySetAddRef
+  - Name: WGPUFrontFace
+    EnumExtensibility: closed
+  - Name: WGPUSharedFenceImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuSharedFenceRelease
+    SwiftRetainOp: wgpuSharedFenceAddRef
+  - Name: WGPUErrorFilter
+    EnumExtensibility: closed
+  - Name: WGPUComponentSwizzle
+    EnumExtensibility: closed
+  - Name: WGPUSharedFenceType
+    EnumExtensibility: closed
+  - Name: WGPUMapAsyncStatus
+    EnumExtensibility: closed
+  - Name: WGPURenderBundleEncoderImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuRenderBundleEncoderRelease
+    SwiftRetainOp: wgpuRenderBundleEncoderAddRef
+  - Name: WGPUTextureImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuTextureRelease
+    SwiftRetainOp: wgpuTextureAddRef
+  - Name: WGPURenderPipelineImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuRenderPipelineRelease
+    SwiftRetainOp: wgpuRenderPipelineAddRef
+  - Name: WGPUOptionalBool
+    EnumExtensibility: closed
+  - Name: WGPUTextureDimension
+    EnumExtensibility: closed
+  - Name: WGPUQueueWorkDoneStatus
+    EnumExtensibility: closed
+  - Name: WGPUWaitStatus
+    EnumExtensibility: closed
+  - Name: WGPUAdapterImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuAdapterRelease
+    SwiftRetainOp: wgpuAdapterAddRef
+  - Name: WGPUMipmapFilterMode
+    EnumExtensibility: closed
+  - Name: WGPUErrorType
+    EnumExtensibility: closed
+  - Name: WGPUFilterMode
+    EnumExtensibility: closed
+  - Name: WGPUPopErrorScopeStatus
+    EnumExtensibility: closed
+  - Name: WGPUFeatureLevel
+    EnumExtensibility: closed
+  - Name: WGPUPredefinedColorSpace
+    EnumExtensibility: closed
+  - Name: WGPUTextureSampleType
+    EnumExtensibility: closed
+  - Name: WGPUVertexFormat
+    EnumExtensibility: closed
+  - Name: WGPUFeatureName
+    EnumExtensibility: closed
+  - Name: WGPUBlendOperation
+    EnumExtensibility: closed
+  - Name: WGPUDeviceImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuDeviceRelease
+    SwiftRetainOp: wgpuDeviceAddRef
+  - Name: WGPULoggingType
+    EnumExtensibility: closed
+  - Name: WGPUAddressMode
+    EnumExtensibility: closed
+  - Name: WGPULoadOp
+    EnumExtensibility: closed
+  - Name: WGPUBufferMapState
+    EnumExtensibility: closed
+  - Name: WGPUPowerPreference
+    EnumExtensibility: closed
+  - Name: WGPURequestAdapterStatus
+    EnumExtensibility: closed
+  - Name: WGPUTexelBufferAccess
+    EnumExtensibility: closed
+  - Name: WGPUCompareFunction
+    EnumExtensibility: closed
+  - Name: WGPUShaderModuleImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuShaderModuleRelease
+    SwiftRetainOp: wgpuShaderModuleAddRef
+  - Name: WGPUQueueImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuQueueRelease
+    SwiftRetainOp: wgpuQueueAddRef
+  - Name: WGPUSharedTextureMemoryImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuSharedTextureMemoryRelease
+    SwiftRetainOp: wgpuSharedTextureMemoryAddRef
+  - Name: WGPUBlendFactor
+    EnumExtensibility: closed
+  - Name: WGPUComputePipelineImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuComputePipelineRelease
+    SwiftRetainOp: wgpuComputePipelineAddRef
+  - Name: WGPUCullMode
+    EnumExtensibility: closed
+  - Name: WGPUBufferBindingType
+    EnumExtensibility: closed
+  - Name: WGPUStatus
+    EnumExtensibility: closed
+  - Name: WGPUSurfaceGetCurrentTextureStatus
+    EnumExtensibility: closed
+  - Name: WGPUSharedBufferMemoryImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuSharedBufferMemoryRelease
+    SwiftRetainOp: wgpuSharedBufferMemoryAddRef
+  - Name: WGPUSamplerImpl
+    SwiftImportAs: reference
+    SwiftReleaseOp: wgpuSamplerRelease
+    SwiftRetainOp: wgpuSamplerAddRef
+  - Name: WGPUDeviceLostReason
+    EnumExtensibility: closed
+  - Name: WGPUQueryType
+    EnumExtensibility: closed
+  - Name: WGPUPresentMode
+    EnumExtensibility: closed
+  - Name: WGPUBackendType
+    EnumExtensibility: closed
+  - Name: WGPUStencilOperation
+    EnumExtensibility: closed
+Typedefs:
+  - Name: WGPUHeapProperty
+    SwiftConformsTo: Swift.OptionSet
+    SwiftWrapper: struct
+  - Name: WGPUShaderStage
+    SwiftConformsTo: Swift.OptionSet
+    SwiftWrapper: struct
+  - Name: WGPUTextureUsage
+    SwiftConformsTo: Swift.OptionSet
+    SwiftWrapper: struct
+  - Name: WGPUMapMode
+    SwiftConformsTo: Swift.OptionSet
+    SwiftWrapper: struct
+  - Name: WGPUBufferUsage
+    SwiftConformsTo: Swift.OptionSet
+    SwiftWrapper: struct
+  - Name: WGPUColorWriteMask
+    SwiftConformsTo: Swift.OptionSet
+    SwiftWrapper: struct
