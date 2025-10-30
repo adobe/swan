@@ -85,7 +85,7 @@ jobs:
           python ci_build_dawn.py build-target --target ${{ matrix.target }} --config ${{ inputs.config }}
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dawn-build-${{ matrix.target }}-${{ inputs.config }}
           path: |
@@ -95,7 +95,7 @@ jobs:
 
       - name: Upload dawn.json
         if: matrix.platform == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dawn-json
           path: Dawn/dawn_source/src/dawn/dawn.json
@@ -124,13 +124,13 @@ jobs:
           pip install -r requirements.txt
 
       - name: Download dawn.json
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: dawn-json
           path: Dawn/dawn_source/src/dawn
 
       - name: Download all build artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           pattern: dawn-build-*-${{ inputs.config }}
           path: Dawn/builds/
@@ -143,7 +143,7 @@ jobs:
 
       - name: Store artifact bundle
         id: store-artifact-bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dawn-bundle-${{ inputs.config }}
           path: Dawn/dist/${{ inputs.bundle_name }}.zip
