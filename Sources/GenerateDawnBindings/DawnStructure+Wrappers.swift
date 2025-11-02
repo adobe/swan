@@ -33,7 +33,7 @@ extension DawnStructure: DawnType {
 			return true
 		}
 		// All structures that support chaining are wrapped.
-		if extensible != .no {
+		if extensible != .no || chainRoots != nil || chained != .no {
 			return true
 		}
 		// If any of the members are wrapped, the structure is wrapped.

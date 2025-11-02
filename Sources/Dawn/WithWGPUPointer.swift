@@ -44,10 +44,6 @@ public extension Array where Element: GPUStruct {
 	func withWGPUPointer<R>(_ lambda: (UnsafePointer<Element.WGPUType>) -> R) -> R {
 		fatalError("Unimplemented withWGPUPointer")
 	}
-
-	// mutating func withWGPUMutablePointer<R>(_ lambda: (UnsafeMutablePointer<WGPUType>) -> R) -> R {
-	// 	fatalError("Unimplemented withWGPUMutablePointer")
-	// }
 }
 
 public extension Optional where Wrapped: WithWGPUPointer {
@@ -57,6 +53,10 @@ public extension Optional where Wrapped: WithWGPUPointer {
 	mutating func withWGPUMutablePointer<R>(_ lambda: (UnsafeMutablePointer<Wrapped.WGPUType>?) -> R) -> R {
 		return self?.withWGPUMutablePointer(lambda) ?? lambda(nil)
 	}
+}
+
+public func withWGPUArrayPointer<R>(_ array: [String], _ lambda: (UnsafePointer<UnsafePointer<CChar>?>) -> R) -> R {
+	fatalError("Unimplemented withWGPUArrayPointer")
 }
 
 public func withWGPUArrayPointer<E: GPUStruct, R>(_ array: [E], _ lambda: (UnsafePointer<E.WGPUType>) -> R) -> R {
