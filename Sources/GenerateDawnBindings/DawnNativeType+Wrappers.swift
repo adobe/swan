@@ -34,7 +34,7 @@ extension DawnNativeType: DawnType {
 			case "const*":
 				return "UnsafePointer<CChar>"
 			case "const*const*":
-				return "UnsafePointer<UnsafePointer<CChar>>"
+				return "[String]"
 			default:
 				fatalError("Unhandled annotation: \(annotation)")
 			}
@@ -106,6 +106,9 @@ extension DawnNativeType: DawnType {
 		case "char":
 			if annotation == nil {
 				return "0"
+			}
+			if annotation == "const*const*" {
+				return "[]"
 			}
 			return nil
 		case "double": return "0.0"
@@ -199,7 +202,7 @@ extension DawnNativeType: DawnType {
 			default:
 				fatalError("Unhandled annotation: \(annotation!)")
 			}
-		case "float", "uint64_t":
+		case "float", "uint64_t", "uint32_t":
 			if annotation == nil {
 				return "\(raw: identifier)"
 			}
