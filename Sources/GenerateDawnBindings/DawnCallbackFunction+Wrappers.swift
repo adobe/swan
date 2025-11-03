@@ -13,7 +13,8 @@ import SwiftSyntaxBuilder
 extension DawnCallbackFunction {
 	func declarations(name: Name, data: DawnData) throws -> [any DeclSyntaxProtocol] {
 		let argumentTypes = args.map { arg in
-			"\(arg.swiftTypeName(data: data))"
+			let type = arg.swiftTypeName(data: data)
+			return type == "String" ? "String?" : type
 		}
 
 		return [

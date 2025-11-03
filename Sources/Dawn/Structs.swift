@@ -48,8 +48,6 @@ public protocol GPUChainedStruct: GPUStruct where WGPUType: ChainedStruct {
 
 	/// Chained structure providing extra parameters to the root structure
 	var nextInChain: (any GPUChainedStruct)? { get }
-
-	func withNextInChain<R>(_ lambda: (UnsafeMutablePointer<WGPUChainedStruct>) -> R) -> R
 }
 
 extension GPUSimpleStruct {
@@ -72,30 +70,46 @@ extension GPUStructWrappable {
 }
 
 public extension GPUChainedStruct {
-	func withNextInChain<R>(_ lambda: (UnsafeMutablePointer<WGPUChainedStruct>) -> R) -> R {
-		fatalError("Unimplemented withNextInChain")
+	/// Construct the linked chain of WGPUChainedStructs from the chain of wrapper structs
+	func withNextInChain<R>(_ lambda: (UnsafeMutablePointer<WGPUChainedStruct>?) -> R) -> R {
+		return self.withWGPUStruct({ wgpuStruct in
+			return withUnsafeMutablePointer(
+				to: &wgpuStruct,
+				{ pointer in
+					if nextInChain != nil {
+						return nextInChain!.withNextInChain({ nextPointer in
+							pointer.pointee.chain.next = nextPointer
+							return pointer.withMemoryRebound(
+								to: WGPUChainedStruct.self,
+								capacity: 1,
+								{
+									pointer in
+									lambda(pointer)
+								}
+							)
+						})
+					}
+					return pointer.withMemoryRebound(
+						to: WGPUChainedStruct.self,
+						capacity: 1,
+						{
+							pointer in
+							lambda(pointer)
+						}
+					)
+				}
+			)
+		})
 	}
 }
 
 public extension GPURootStruct {
 	/// Construct the linked chain of WGPUChainedStructs from the chain of wrapper structs
-	func withWGPUStructChain<R>(_ lambda: (inout WGPUChainedStruct) -> R) -> R {
-		fatalError("Unimplemented withWGPUStructChain")
-		// let chain = chain
-
-		// func nextChainedStruct(index: Int, next: UnsafeMutablePointer<WGPUChainedStruct>?) {
-		// 	chain[index].withWGPUChainedStruct { chainedStruct in
-		// 		chainedStruct.pointee.next = next
-
-		// 		if index > 0 {
-		// 			nextChainedStruct(index: index - 1, next: chainedStruct)
-		// 		} else {
-		// 			lambda(chainedStruct)
-		// 		}
-		// 	}
-		// }
-
-		// nextChainedStruct(index: chain.count - 1, next: nil)
+	func withWGPUStructChain<R>(_ lambda: (UnsafeMutablePointer<WGPUChainedStruct>?) -> R) -> R {
+		guard let nextInChain = nextInChain else {
+			return lambda(nil)
+		}
+		return nextInChain.withNextInChain(lambda)
 	}
 
 	/// Construct the WGPU struct including the linked chain of WGPUChainedStructs

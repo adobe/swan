@@ -205,11 +205,9 @@ extension DawnStructure: DawnType {
 		case .extensible:
 			lambdaCallExpr =
 				"""
-				withWGPUStructChain { wgpuChainedStruct in
-					Swift.withUnsafeMutablePointer(to: &wgpuChainedStruct) { pointer in
-						var wgpuStruct = \(raw: cStructName)(nextInChain: pointer, \(raw: initArgs))
-						return lambda(&wgpuStruct)
-					}
+				withWGPUStructChain { pointer in
+					var wgpuStruct = \(raw: cStructName)(nextInChain: pointer, \(raw: initArgs))
+					return lambda(&wgpuStruct)
 				}
 				"""
 		}
@@ -238,7 +236,9 @@ extension DawnStructure: DawnType {
 	func initWithWGPUStructMethod(cStructName: String, data: DawnData) -> DeclSyntax {
 		let memberAssignments: CodeBlockItemListSyntax = CodeBlockItemListSyntax {
 			for member in members {
-				if member.isWrappedType(data: data) {
+				if member.type.raw == "string view" {
+					"self.\(raw: member.name.camelCase) = String(wgpuStringView: wgpuStruct.\(raw: member.name.camelCase))!"
+				} else if member.isWrappedType(data: data) {
 					"self.\(raw: member.name.camelCase) = \(member.wrapValueWithIdentifier("wgpuStruct.\(member.name.camelCase)", data: data))"
 				} else {
 					"self.\(raw: member.name.camelCase) = wgpuStruct.\(raw: member.name.camelCase)"

@@ -14,3 +14,11 @@ public extension Array {
 		return UInt64(count * MemoryLayout<Element>.size)
 	}
 }
+
+public extension GPUShaderModuleDescriptor {
+	// Init compatible with the web version
+	init(label: String, code: String) {
+		self.init(label: label)
+		nextInChain = GPUShaderSourceWGSL(code: code)
+	}
+}
