@@ -116,6 +116,31 @@ let package = Package(
 				"Dawn"
 			],
 		),
+		.target(
+			name: "RGFW",
+			path: "Demos/RGFW",
+		),
+		.target(
+			name: "DemoUtils",
+			dependencies: [
+				"RGFW",
+				"WebGPU",
+			],
+			path: "Demos/DemoUtils",
+		),
+		.executableTarget(
+			name: "GameOfLife",
+			dependencies: [
+				"DemoUtils"
+			],
+			path: "Demos/GameOfLife",
+			linkerSettings: [
+				.linkedFramework("Cocoa"),
+				.linkedFramework("IOKit"),
+				.linkedFramework("Metal"),
+				.linkedLibrary("c++"),
+			]
+		),
 		.testTarget(
 			name: "CodeGenerationTests",
 			dependencies: [

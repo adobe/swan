@@ -41,6 +41,24 @@
 			"problemMatcher": [],
 			"label": "swift: Build All",
 			"detail": "swift build --build-tests -Xswiftc -diagnostic-style=llvm"
+		},
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--product",
+				"GameOfLife"
+			],
+			"env": {
+				"DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+			},
+			"cwd": "/Users/mitaylor/Developer/Adobe/photoshop/swan",
+			"disableTaskQueue": true,
+			"dontTriggerTestDiscovery": true,
+			"group": "build",
+			"problemMatcher": [],
+			"label": "swift: Build Debug GameOfLife",
+			"detail": "swift build --product GameOfLife"
 		}
 	]
 }

@@ -22,3 +22,18 @@ public extension GPUShaderModuleDescriptor {
 		nextInChain = GPUShaderSourceWGSL(code: code)
 	}
 }
+
+public extension GPUSurface {
+	/// Get the current texture from the surface.
+	func getCurrentTexture() -> GPUTexture {
+		var surfaceTexture = WGPUSurfaceTexture()
+		getCurrentTexture(surfaceTexture: &surfaceTexture)
+		return surfaceTexture.texture
+	}
+}
+
+public extension GPUTexture {
+	func createView() -> GPUTextureView {
+		createView(descriptor: nil)
+	}
+}

@@ -27,7 +27,7 @@
                 "--output-directory",
                 "${workspaceFolder:swan}/BindingsDebug",
                 "--swift-format-config",
-                "${workspaceFolder:swan}/.swift-format",
+                "${workspaceFolder:swan}/.swift-format"
             ],
             "cwd": "${workspaceFolder:swan}",
             "name": "Debug GenerateDawnBindings",
@@ -60,6 +60,24 @@
             "name": "Release GenerateDawnAPINotes",
             "program": "${workspaceFolder:swan}/.build/release/GenerateDawnAPINotes",
             "preLaunchTask": "swift: Build Release GenerateDawnAPINotes"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:swan}",
+            "name": "Debug GameOfLife",
+            "program": "${workspaceFolder:swan}/.build/debug/GameOfLife",
+            "preLaunchTask": "swift: Build Debug GameOfLife"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:swan}",
+            "name": "Release GameOfLife",
+            "program": "${workspaceFolder:swan}/.build/release/GameOfLife",
+            "preLaunchTask": "swift: Build Release GameOfLife"
         }
     ]
 }
