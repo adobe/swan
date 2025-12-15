@@ -5,21 +5,20 @@ name: Build and Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
+    name: Build and Test
     runs-on: macos-latest
-
     steps:
-    - uses: actions/checkout@v4
-    - uses: swift-actions/setup-swift@v3
-      with:
-        swift-version: "main-snapshot"
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+      - uses: actions/checkout@v4
+      - uses: swift-actions/setup-swift@v3
+        with:
+          swift-version: "main-snapshot"
+      - name: Build
+        run: swift build -v
+      - name: Run tests
+        run: swift test -v
