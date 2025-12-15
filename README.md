@@ -44,7 +44,15 @@ let package = Package(
 
 ### Usage
 
-TODO
+You can run the demo by:
+
+```sh
+swift run GameOfLife
+```
+
+### Updating Dawn
+
+More docs to come...
 
 ```sh
 swift package plugin --allow-writing-to-package-directory generate-dawn-apinotes

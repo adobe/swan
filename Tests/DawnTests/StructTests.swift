@@ -9,21 +9,23 @@ import Testing
 
 @testable import Dawn
 
-// struct StructsTest {
-// 	@Test("Constructing a GPUShaderModuleDescriptor")
-// 	func testConstructingAGPUShaderModuleDescriptor() {
-// 		let descriptor = GPUShaderModuleDescriptor(label: "test", code: "fn main() -> void { }")
+struct StructsTest {
+	@Test("Constructing a GPUShaderModuleDescriptor")
+	func testConstructingAGPUShaderModuleDescriptor() {
+		let descriptor = GPUShaderModuleDescriptor(label: "test", code: "fn main() -> void { }")
 
-// 		descriptor.withWGPUStruct { wgpuStruct in
-// 			let label = String(cString: wgpuStruct.pointee.label.data!)
-// 			#expect(wgpuStruct.pointee.label.length == 4)
-// 			let chainPointer = wgpuStruct.pointee.nextInChain
-// 			let rawChainPointer = UnsafeRawPointer(chainPointer)!
-// 			let codePointer = rawChainPointer.load(as: WGPUShaderSourceWGSL.self)
-// 			let code = String(cString: codePointer.code.data!)
-// 			#expect(codePointer.code.length == 21)
-// 			#expect(label == "test")
-// 			#expect(code == "fn main() -> void { }")
-// 		}
-// 	}
-// }
+		descriptor.withWGPUStruct { wgpuStruct in
+			let label = String(cString: wgpuStruct.label.data!)
+			#expect(wgpuStruct.label.length == 4)
+			let chainPointer = wgpuStruct.nextInChain
+			let rawChainPointer = UnsafeRawPointer(chainPointer)!
+			let codePointer = rawChainPointer.load(as: WGPUShaderSourceWGSL.self)
+			let code = String(cString: codePointer.code.data!)
+			#expect(codePointer.code.length == 21)
+			#expect(label == "test")
+			#expect(code == "fn main() -> void { }")
+			#expect(chainPointer?.pointee.next == nil)
+			#expect(chainPointer?.pointee.sType == .shaderSourceWGSL)
+		}
+	}
+}

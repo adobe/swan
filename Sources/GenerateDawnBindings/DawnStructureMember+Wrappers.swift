@@ -17,7 +17,7 @@ extension DawnStructureMember: TypeDescriptor {
 
 		if optional || isTuple {
 			defaultString = "nil"
-		} else if isArray {
+		} else if isArray && annotation != "const*const*" {
 			defaultString = "[]"
 		} else if let defaultValue = `default` {
 			// There is a default value record for this member in the dawn.json file.

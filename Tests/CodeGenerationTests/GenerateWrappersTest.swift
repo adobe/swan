@@ -56,6 +56,13 @@ struct TestTypeDescriptor: TypeDescriptor {
 			            {"name": "code", "type": "string view"}
 			        ]
 			    },
+				"string view": {
+					"category": "structure",
+					"members": [
+						{"name": "data", "type": "char", "annotation": "const*", "optional": true},
+						{"name": "length", "type": "size_t", "default": "strlen"}
+					]
+				},
 			}
 			"""
 
@@ -123,7 +130,7 @@ struct TestTypeDescriptor: TypeDescriptor {
 		let expected = DeclSyntax(
 			"""
 			public func createShaderModule(descriptor: GPUShaderModuleDescriptor) -> GPUShaderModule {
-					return descriptor.withWGPUStruct { descriptor in
+					return descriptor.withWGPUPointer { descriptor in
 						createShaderModule(descriptor: descriptor)
 					}
 			}
@@ -165,9 +172,9 @@ struct TestTypeDescriptor: TypeDescriptor {
 
 		let expected = DeclSyntax(
 			"""
-			extension WGPUAdapterInfo: WGPUStruct {
+			extension WGPUAdapterInfo: RootStruct {
 			}
-			public struct GPUAdapterInfo: GPUStruct {
+			public struct GPUAdapterInfo: GPURootStruct {
 				public typealias WGPUType = WGPUAdapterInfo
 
 				public var vendor: String
@@ -180,7 +187,8 @@ struct TestTypeDescriptor: TypeDescriptor {
 				public var deviceID: UInt32
 				public var subgroupMinSize: UInt32
 				public var subgroupMaxSize: UInt32
-				public var chain: [any GPUChainedStruct] = []
+
+				public var nextInChain: (any GPUChainedStruct)? = nil
 
 				public init(vendor: String = "", architecture: String = "", device: String = "", description: String = "", backendType: GPUBackendType = .undefined, adapterType: GPUAdapterType = .discreteGPU, vendorID: UInt32 = 0, deviceID: UInt32 = 0, subgroupMinSize: UInt32 = 0, subgroupMaxSize: UInt32 = 0) {
 					self.vendor = vendor
@@ -197,11 +205,21 @@ struct TestTypeDescriptor: TypeDescriptor {
 
 
 
-				public func applyPropertiesToWGPUStruct<R>(
-					_ wgpuStruct: inout WGPUAdapterInfo,
-					_ lambda: (UnsafeMutablePointer<WGPUAdapterInfo>) -> R
+				public func withWGPUStruct<R>(
+					_ lambda: (inout WGPUAdapterInfo) -> R
 				) -> R {
-					return lambda(&wgpuStruct)
+					vendor.withWGPUStruct { vendor in
+						architecture.withWGPUStruct { architecture in
+							device.withWGPUStruct { device in
+								description.withWGPUStruct { description in
+									withWGPUStructChain { pointer in
+										var wgpuStruct = WGPUAdapterInfo(nextInChain: pointer, vendor: vendor, architecture: architecture, device: device, description: description, backendType: backendType, adapterType: adapterType, vendorID: vendorID, deviceID: deviceID, subgroupMinSize: subgroupMinSize, subgroupMaxSize: subgroupMaxSize)
+										return lambda(&wgpuStruct)
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 

@@ -1,0 +1,7 @@
+---
+Name: RGFW
+Typedefs:
+  - Name: RGFW_windowFlags
+    SwiftName: WindowFlags
+    SwiftConformsTo: Swift.OptionSet
+    SwiftWrapper: struct

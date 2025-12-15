@@ -127,7 +127,7 @@ extension DawnData {
 		var structureNames: Set<Name> = []
 
 		// Iterate over all entities in the data
-		for (_, entity) in data {
+		for (name, entity) in data {
 			switch entity {
 			case .function(let function):
 				// Check function return type for structure types
@@ -162,6 +162,10 @@ extension DawnData {
 			case .callbackFunction(let callbackFunction):
 				// Check callback function arguments for structure types
 				addArgumentStructures(arguments: callbackFunction.args, structureNames: &structureNames)
+			case .structure(let structure):
+				if structure.chainRoots != nil {
+					structureNames.insert(name)
+				}
 			default:
 				// Skip other entity types
 				break

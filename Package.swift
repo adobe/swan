@@ -32,15 +32,15 @@ let package = Package(
 		),
 		.package(url: "https://github.com/apple/swift-log", from: "1.6.4"),
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.6.2"),
-		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
-		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
+		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0-latest"),
+		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0-latest"),
 	],
 	targets: [
 		.binaryTarget(
 			name: "DawnLib",
 			url:
-				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-142.0.7404.0/dawn-chromium-canary-142.0.7404.0-release.zip",
-			checksum: "4843d01428cfefc9e6d56c5eac1199544ceb323fbf25680636e3b58800e51feb"
+				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-144.0.7548.0/dawn-chromium-canary-144.0.7548.0-release.zip",
+			checksum: "c9c5d1548146e00b51d203dcc907156fccfd937664d7b56f0d48972e9da4eb75"
 		),
 		.executableTarget(
 			name: "GenerateDawnBindings",
@@ -115,6 +115,31 @@ let package = Package(
 			dependencies: [
 				"Dawn"
 			],
+		),
+		.target(
+			name: "RGFW",
+			path: "Demos/RGFW",
+		),
+		.target(
+			name: "DemoUtils",
+			dependencies: [
+				"RGFW",
+				"WebGPU",
+			],
+			path: "Demos/DemoUtils",
+		),
+		.executableTarget(
+			name: "GameOfLife",
+			dependencies: [
+				"DemoUtils"
+			],
+			path: "Demos/GameOfLife",
+			linkerSettings: [
+				.linkedFramework("Cocoa"),
+				.linkedFramework("IOKit"),
+				.linkedFramework("Metal"),
+				.linkedLibrary("c++"),
+			]
 		),
 		.testTarget(
 			name: "CodeGenerationTests",
