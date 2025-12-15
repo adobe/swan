@@ -241,7 +241,7 @@ struct Main {
 				computePass.dispatchWorkgroups(
 					workgroupCountX: workgroupCount,
 					workgroupCountY: workgroupCount,
-					workgroupCountZ: 0
+					workgroupCountZ: 1
 				)
 				computePass.end()
 
