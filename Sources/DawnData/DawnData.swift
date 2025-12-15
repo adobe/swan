@@ -243,6 +243,7 @@ public struct DawnStructure: Decodable, HasTags {
 	public let category: String
 	public let extensible: Extensible
 	public let chained: Chained?
+	public let chainRoots: [Name]?
 	public let members: [DawnStructureMember]
 	public let _comment: String?
 	public let tags: Tags?
@@ -251,6 +252,7 @@ public struct DawnStructure: Decodable, HasTags {
 		case category
 		case extensible
 		case chained
+		case chainRoots
 		case members
 		case _comment
 		case tags
@@ -260,10 +262,11 @@ public struct DawnStructure: Decodable, HasTags {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		category = try container.decode(String.self, forKey: .category)
 		extensible = try container.decodeIfPresent(Extensible.self, forKey: .extensible) ?? .no
-		chained = try container.decodeIfPresent(Chained.self, forKey: .chained)
+		chained = try container.decodeIfPresent(Chained.self, forKey: .chained) ?? .no
 		members = try container.decode([DawnStructureMember].self, forKey: .members)
 		_comment = try container.decodeIfPresent(String.self, forKey: ._comment)
 		tags = try container.decodeIfPresent(Tags.self, forKey: .tags)
+		chainRoots = try container.decodeIfPresent([Name].self, forKey: .chainRoots)
 	}
 }
 

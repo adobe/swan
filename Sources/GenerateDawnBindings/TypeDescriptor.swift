@@ -51,6 +51,10 @@ extension TypeDescriptor {
 				return false
 			}
 		}
+		// Special case for string arrays.
+		if type.raw == "char" && annotation == "const*const*" {
+			return true
+		}
 		return isWrapped
 	}
 
