@@ -4,7 +4,7 @@ import Foundation
 
 let workgroupSize: UInt32 = 8
 let gridSize: Int = 32
-let updateInterval: Double = 200  // Update every 200ms (5 times/sec)
+let updateInterval: Double = 0.2  // Update every 200ms (5 times/sec)
 
 @main
 struct Main {
@@ -17,7 +17,7 @@ struct Main {
 			let vertexBuffer = device.createBuffer(
 				descriptor: .init(
 					label: "vertex buffer",
-					usage: .vertex,
+					usage: [.vertex, .copyDst],
 					size: vertices.lengthInBytes,
 					mappedAtCreation: false
 				)
@@ -78,14 +78,21 @@ struct Main {
 				bufferOffset: 0,
 				data: .init(cellStateArray),
 				// TODO: Shouldn't have to pass size
-				size: cellStateArray.count
+				size: Int(cellStateArray.lengthInBytes)
 			)
+			let cellStateArray2 = Array(unsafeUninitializedCapacity: gridCount) {
+				(arrayBuffer: inout UnsafeMutableBufferPointer<UInt32>, initializedCount: inout Int) in
+				for i: Int in 0..<gridCount {
+					arrayBuffer[i] = Double.random(in: 0...1) > 0.6 ? 1 : 0
+				}
+				initializedCount = gridCount
+			}
 			device.queue.writeBuffer(
 				buffer: cellStateStorage[1],
 				bufferOffset: 0,
-				data: .init(cellStateArray),
+				data: .init(cellStateArray2),
 				// TODO: Shouldn't have to pass size
-				size: cellStateArray.count
+				size: Int(cellStateArray2.lengthInBytes)
 			)
 
 			// Create shader modules
@@ -100,6 +107,7 @@ struct Main {
 			let bindGroupLayout = device.createBindGroupLayout(
 				descriptor: .init(
 					label: "Cell Bind Group Layout",
+					entryCount: 3,
 					entries: [
 						.init(
 							binding: 0,
@@ -126,6 +134,7 @@ struct Main {
 					descriptor: .init(
 						label: "Cell renderer bind group A",
 						layout: bindGroupLayout,
+						entryCount: 3,
 						entries: [
 							.init(binding: 0, buffer: uniformBuffer),
 							.init(binding: 1, buffer: cellStateStorage[0]),
@@ -137,6 +146,7 @@ struct Main {
 					descriptor: .init(
 						label: "Cell renderer bind group B",
 						layout: bindGroupLayout,
+						entryCount: 3,
 						entries: [
 							.init(binding: 0, buffer: uniformBuffer),
 							.init(binding: 1, buffer: cellStateStorage[1]),
@@ -150,6 +160,7 @@ struct Main {
 			let pipelineLayout = device.createPipelineLayout(
 				descriptor: .init(
 					label: "Cell Pipeline Layout",
+					bindGroupLayoutCount: 1,
 					bindGroupLayouts: [bindGroupLayout]
 				)
 			)
@@ -162,9 +173,11 @@ struct Main {
 					vertex: .init(
 						module: cellShaderModule,
 						entryPoint: "vertexMain",
+						bufferCount: 1,
 						buffers: [
 							.init(
 								arrayStride: 8,
+								attributeCount: 1,
 								attributes: [
 									.init(format: .float32x2, offset: 0, shaderLocation: 0)
 								]
@@ -185,6 +198,7 @@ struct Main {
 					fragment: .init(
 						module: cellShaderModule,
 						entryPoint: "fragmentMain",
+						targetCount: 1,
 						targets: [.init(format: format)]
 					)
 				)
@@ -237,6 +251,7 @@ struct Main {
 				let pass = encoder.beginRenderPass(
 					descriptor: .init(
 						label: "render pass",
+						colorAttachmentCount: 1,
 						colorAttachments: [
 							GPURenderPassColorAttachment(
 								view: surface.getCurrentTexture().createView(),
@@ -261,6 +276,8 @@ struct Main {
 
 				let commandBuffer = encoder.finish(descriptor: nil)!
 				device.queue.submit(commandCount: 1, commands: [commandBuffer])
+
+				surface.present()
 			}
 		}
 	}

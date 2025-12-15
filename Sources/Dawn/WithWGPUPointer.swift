@@ -224,12 +224,20 @@ extension Array where Element: AnyObject {
 		if count == 0 {
 			return lambda(nil)
 		}
-		// Convert array of objects to array of optionals and get a pointer to it
-		// Create a temporary array of optionals that will exist for the duration of the lambda
-		let optionalArray = self.map { Optional($0) }
-		return optionalArray.withUnsafeBufferPointer { buffer in
-			return lambda(buffer.baseAddress!)
+		var result: R!
+		_ = Array<Element?>(unsafeUninitializedCapacity: count) { buffer, initializedCount in
+			func process(index: Int) -> R {
+				if index >= count {
+					initializedCount = count
+					let pointer = UnsafePointer(buffer.baseAddress!)
+					return lambda(pointer)
+				}
+				buffer[index] = Optional(self[index])
+				return process(index: index + 1)
+			}
+			result = process(index: 0)
 		}
+		return result
 	}
 
 	func unwrapWGPUArray<R>(_ lambda: (UnsafePointer<Element>) -> R) -> R {

@@ -33,8 +33,32 @@ public func runDemo(
 
 	var device: GPUDevice? = nil;
 
+	let deviceDescriptor = GPUDeviceDescriptor(
+		defaultQueue: GPUQueueDescriptor(),
+		deviceLostCallbackInfo: .init(
+			mode: .allowProcessEvents,
+			callback: { device, reason, message in
+				print("🚨 Device Lost!")
+				print("  Reason: \(reason)")
+				if let message = message {
+					print("  Message: \(message)")
+				}
+			}
+		),
+		uncapturedErrorCallbackInfo: .init(
+			callback: { device, type, message in
+				print("❌ Uncaptured Error!")
+				print("  Type: \(type)")
+				if let message = message {
+					print("  Message: \(message)")
+				}
+				fatalError("Terminating due to uncaptured error")
+			}
+		)
+	)
+
 	_ = adapter!.requestDevice(
-		descriptor: nil,
+		descriptor: deviceDescriptor,
 		callbackInfo: .init(
 			mode: .allowProcessEvents,
 			callback: { status, inDevice, message in
@@ -57,31 +81,13 @@ public func runDemo(
 		fatalError("Failed to create window")
 	}
 
-	let surface = instance.createSurface(descriptor: getSurfaceDescriptor(window: window))
-	surface.configure(config: .init(device: device!, format: format, width: UInt32(width), height: UInt32(height)))
-
-	try lambda(
-		surface,
-		device!,
-		{ lambda in
-			while RGFW_window_shouldClose(window) == RGFW_FALSE {
-				RGFW_pollEvents()
-				try lambda()
-			}
-		},
-		format
-	)
-}
-
-@MainActor
-func getSurfaceDescriptor(window: OpaquePointer) -> GPUSurfaceDescriptor {
-	let device = MTLCreateSystemDefaultDevice()
-	guard let device else {
+	let metalDevice = MTLCreateSystemDefaultDevice()
+	guard let metalDevice else {
 		fatalError("Failed to create device")
 	}
 
 	let layer = CAMetalLayer()
-	layer.device = device
+	layer.device = metalDevice
 	layer.pixelFormat = .bgra8Unorm
 
 	let viewPointer = RGFW_window_getView_OSX(window)
@@ -95,5 +101,27 @@ func getSurfaceDescriptor(window: OpaquePointer) -> GPUSurfaceDescriptor {
 	var surfaceDescriptor = GPUSurfaceDescriptor()
 	surfaceDescriptor.nextInChain = GPUSurfaceSourceMetalLayer(layer: Unmanaged.passUnretained(layer).toOpaque())
 
-	return surfaceDescriptor
+	let surface = instance.createSurface(descriptor: surfaceDescriptor)
+	surface.configure(config: .init(device: device!, format: format, width: UInt32(width), height: UInt32(height)))
+
+	try lambda(
+		surface,
+		device!,
+		{ lambda in
+			while RGFW_window_shouldClose(window) == RGFW_FALSE {
+				RGFW_pollEvents()
+
+				var w: Int32 = 0
+				var h: Int32 = 0
+				RGFW_window_getSize(window, &w, &h)
+
+				layer.drawableSize = CGSize(width: CGFloat(w), height: CGFloat(h))
+
+				surface.configure(config: .init(device: device!, format: format, width: UInt32(w), height: UInt32(h)))
+
+				try lambda()
+			}
+		},
+		format
+	)
 }

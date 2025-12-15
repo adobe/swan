@@ -1,4 +1,4 @@
-import WebGPU
+import Dawn
 
 /// Initialize a GPU adapter and device for testing purposes.
 /// Returns a tuple containing the instance, adapter, and device.

@@ -5,29 +5,7 @@
 			"type": "swift",
 			"args": [
 				"build",
-				"--build-tests",
-				"-Xswiftc",
-				"-diagnostic-style=llvm",
-				"--triple",
-				"arm64-apple-macosx15.0"
-			],
-			"env": {
-				"DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
-			},
-			"cwd": "/Users/mitaylor/Developer/Adobe/photoshop/swan",
-			"disableTaskQueue": true,
-			"group": "build",
-			"problemMatcher": [],
-			"label": "swift: Build All",
-			"detail": "swift build --build-tests -Xswiftc -diagnostic-style=llvm --triple arm64-apple-macosx15.0"
-		},
-		{
-			"type": "swift",
-			"args": [
-				"build",
-				"--build-tests",
-				"-Xswiftc",
-				"-diagnostic-style=llvm"
+				"--build-tests"
 			],
 			"env": {
 				"DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
@@ -40,25 +18,7 @@
 			},
 			"problemMatcher": [],
 			"label": "swift: Build All",
-			"detail": "swift build --build-tests -Xswiftc -diagnostic-style=llvm"
-		},
-		{
-			"type": "swift",
-			"args": [
-				"build",
-				"--product",
-				"GameOfLife"
-			],
-			"env": {
-				"DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
-			},
-			"cwd": "/Users/mitaylor/Developer/Adobe/photoshop/swan",
-			"disableTaskQueue": true,
-			"dontTriggerTestDiscovery": true,
-			"group": "build",
-			"problemMatcher": [],
-			"label": "swift: Build Debug GameOfLife",
-			"detail": "swift build --product GameOfLife"
+			"detail": "swift build --build-tests"
 		}
 	]
 }

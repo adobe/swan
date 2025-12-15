@@ -5,33 +5,29 @@
             "request": "launch",
             "args": [],
             "cwd": "${workspaceFolder:swan}",
-            "name": "Debug WebGPULife",
-            "program": "${workspaceFolder:swan}/.build/debug/WebGPULife",
-            "preLaunchTask": "swift: Build Debug WebGPULife"
+            "name": "Debug RedClear",
+            "target": "RedClear",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug RedClear"
         },
         {
             "type": "swift",
             "request": "launch",
             "args": [],
             "cwd": "${workspaceFolder:swan}",
-            "name": "Release WebGPULife",
-            "program": "${workspaceFolder:swan}/.build/release/WebGPULife",
-            "preLaunchTask": "swift: Build Release WebGPULife"
+            "name": "Release RedClear",
+            "target": "RedClear",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release RedClear"
         },
         {
             "type": "swift",
             "request": "launch",
-            "args": [
-                "--dawn-json",
-                "${workspaceFolder:swan}/.build/artifacts/swan/DawnLib/dawn_webgpu.artifactbundle/dawn.json",
-                "--output-directory",
-                "${workspaceFolder:swan}/BindingsDebug",
-                "--swift-format-config",
-                "${workspaceFolder:swan}/.swift-format"
-            ],
+            "args": [],
             "cwd": "${workspaceFolder:swan}",
             "name": "Debug GenerateDawnBindings",
-            "program": "${workspaceFolder:swan}/.build/debug/GenerateDawnBindings",
+            "target": "GenerateDawnBindings",
+            "configuration": "debug",
             "preLaunchTask": "swift: Build Debug GenerateDawnBindings"
         },
         {
@@ -40,7 +36,8 @@
             "args": [],
             "cwd": "${workspaceFolder:swan}",
             "name": "Release GenerateDawnBindings",
-            "program": "${workspaceFolder:swan}/.build/release/GenerateDawnBindings",
+            "target": "GenerateDawnBindings",
+            "configuration": "release",
             "preLaunchTask": "swift: Build Release GenerateDawnBindings"
         },
         {
@@ -49,7 +46,8 @@
             "args": [],
             "cwd": "${workspaceFolder:swan}",
             "name": "Debug GenerateDawnAPINotes",
-            "program": "${workspaceFolder:swan}/.build/debug/GenerateDawnAPINotes",
+            "target": "GenerateDawnAPINotes",
+            "configuration": "debug",
             "preLaunchTask": "swift: Build Debug GenerateDawnAPINotes"
         },
         {
@@ -58,7 +56,8 @@
             "args": [],
             "cwd": "${workspaceFolder:swan}",
             "name": "Release GenerateDawnAPINotes",
-            "program": "${workspaceFolder:swan}/.build/release/GenerateDawnAPINotes",
+            "target": "GenerateDawnAPINotes",
+            "configuration": "release",
             "preLaunchTask": "swift: Build Release GenerateDawnAPINotes"
         },
         {
@@ -67,7 +66,8 @@
             "args": [],
             "cwd": "${workspaceFolder:swan}",
             "name": "Debug GameOfLife",
-            "program": "${workspaceFolder:swan}/.build/debug/GameOfLife",
+            "target": "GameOfLife",
+            "configuration": "debug",
             "preLaunchTask": "swift: Build Debug GameOfLife"
         },
         {
@@ -76,7 +76,8 @@
             "args": [],
             "cwd": "${workspaceFolder:swan}",
             "name": "Release GameOfLife",
-            "program": "${workspaceFolder:swan}/.build/release/GameOfLife",
+            "target": "GameOfLife",
+            "configuration": "release",
             "preLaunchTask": "swift: Build Release GameOfLife"
         }
     ]
