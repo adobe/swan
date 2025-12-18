@@ -31,7 +31,7 @@ def write_target_manifest(
         "libraryPath": (target_dir / "lib").as_posix(),
         "includePath": (target_dir / "include").as_posix(),
         "supportedTriples": target_config.triples(),
-        "libraryName": "libwebgpu_dawn.lib"
+        "libraryName": "webgpu_dawn.lib"
         if target_config.os.is_windows()
         else "libwebgpu_dawn.a",
     }
@@ -63,10 +63,15 @@ def write_bundle_manifest(version: str) -> None:
     archive_dir.mkdir(exist_ok=True, parents=True)
     archive_manifest_file = archive_dir / "info.json"
 
+    def add_lib_prefix(library_name: str) -> str:
+        if not library_name.startswith("lib"):
+            return "lib" + library_name
+        return library_name
+
     target_manifests = [
         {
             "path": (
-                pathlib.Path(manifest["targetName"]) / manifest["libraryName"]
+                pathlib.Path(manifest["targetName"]) / add_lib_prefix(manifest["libraryName"])
             ).as_posix(),
             "staticLibraryMetadata": {"headerPaths": ["include"]},
             "supportedTriples": manifest["supportedTriples"],
@@ -144,6 +149,14 @@ def create_artifact_bundle(
         library_path = manifest["libraryPath"]
         target_dir = archive_dir / manifest["targetName"]
         shutil.copytree(library_path, target_dir)
+        
+        # Rename library to have "lib" prefix if needed
+        library_name = manifest["libraryName"]
+        if not library_name.startswith("lib"):
+            old_path = target_dir / library_name
+            new_path = target_dir / ("lib" + library_name)
+            old_path.rename(new_path)
+                
 
     # Copy the dawn.json file to the archive directory
     shutil.copy2(dawn_json, archive_dir / "dawn.json")
