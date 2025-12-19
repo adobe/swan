@@ -226,9 +226,6 @@ struct TestTypeDescriptor: TypeDescriptor {
 			"""
 		).formatted(using: TabFormat(initialIndentation: .tabs(0)))
 
-		print(combined.description)
-		print(expected.description)
-
 		#expect(
 			combined.description == expected.description
 		)
