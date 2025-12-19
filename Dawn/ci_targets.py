@@ -61,7 +61,7 @@ def ci_target(name: str, config: str = "release") -> TargetConfig:
             return TargetConfig(
                 os=OS.WINDOWS,
                 arch=[Arch.X86_64],
-                sdk="msvc",
+                runtime="msvc",
                 config=config,
                 build_tool="Visual Studio 17 2022",
             )
