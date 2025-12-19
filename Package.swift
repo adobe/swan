@@ -39,8 +39,8 @@ let package = Package(
 		.binaryTarget(
 			name: "DawnLib",
 			url:
-				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-144.0.7548.0/dawn-chromium-canary-144.0.7548.0-release.zip",
-			checksum: "c9c5d1548146e00b51d203dcc907156fccfd937664d7b56f0d48972e9da4eb75"
+				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-145.0.7585.0/dawn-chromium-canary-145.0.7585.0-release.zip",
+			checksum: "0f4f3e0de29680bc0c7216dfbb357a2ff1b7c4007149c0ff4811510abcbf498f"
 		),
 		.executableTarget(
 			name: "GenerateDawnBindings",
