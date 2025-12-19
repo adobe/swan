@@ -98,6 +98,7 @@ class TargetConfig:
     os: OS
     arch: List[Arch]
     sdk: Optional[str] = None
+    runtime: Optional[str] = None
     deployment_target: Optional[str] = None
     config: str = "release"
     build_tool: str = "Ninja"
@@ -126,7 +127,10 @@ class TargetConfig:
         """
         vendor = "apple" if self.os.is_apple() else "unknown"
         os = self.os.value
-        return [f"{arch.value}-{vendor}-{os}" for arch in self.arch]
+        return [
+            f"{arch.value}-{vendor}-{os}{'-' + self.runtime if self.runtime else ''}"
+            for arch in self.arch
+        ]
 
 
 _DAWN_COMMON_FLAGS = [
