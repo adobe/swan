@@ -1,4 +1,3 @@
-import AppKit
 import RGFW
 import WebGPU
 
@@ -81,27 +80,7 @@ public func runDemo(
 		fatalError("Failed to create window")
 	}
 
-	let metalDevice = MTLCreateSystemDefaultDevice()
-	guard let metalDevice else {
-		fatalError("Failed to create device")
-	}
-
-	let layer = CAMetalLayer()
-	layer.device = metalDevice
-	layer.pixelFormat = .bgra8Unorm
-
-	let viewPointer = RGFW_window_getView_OSX(window)
-	guard let viewPointer else {
-		fatalError("Failed to get view")
-	}
-
-	let view = Unmanaged<NSView>.fromOpaque(viewPointer).takeUnretainedValue()
-	view.layer = layer
-
-	var surfaceDescriptor = GPUSurfaceDescriptor()
-	surfaceDescriptor.nextInChain = GPUSurfaceSourceMetalLayer(layer: Unmanaged.passUnretained(layer).toOpaque())
-
-	let surface = instance.createSurface(descriptor: surfaceDescriptor)
+	let surface = getSurface(window: window, instance: instance)
 	surface.configure(config: .init(device: device!, format: format, width: UInt32(width), height: UInt32(height)))
 
 	try lambda(
@@ -111,13 +90,7 @@ public func runDemo(
 			while RGFW_window_shouldClose(window) == RGFW_FALSE {
 				RGFW_pollEvents()
 
-				var w: Int32 = 0
-				var h: Int32 = 0
-				RGFW_window_getSize(window, &w, &h)
-
-				layer.drawableSize = CGSize(width: CGFloat(w), height: CGFloat(h))
-
-				surface.configure(config: .init(device: device!, format: format, width: UInt32(w), height: UInt32(h)))
+				updateSurface(surface: surface, window: window, device: device!, format: format)
 
 				try lambda()
 			}
