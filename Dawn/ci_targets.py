@@ -77,7 +77,7 @@ def ci_target(name: str, config: str = "release") -> TargetConfig:
             return TargetConfig(os=OS.LINUX, arch=[get_current_arch()], config=config)
         case "linux:x86_64":
             return TargetConfig(os=OS.LINUX, arch=[Arch.X86_64], config=config)
-        case "linux:aarch64":
+        case "linux:arm64":
             return TargetConfig(os=OS.LINUX, arch=[Arch.ARM64], config=config)
         case "windows":
             return TargetConfig(
@@ -95,7 +95,7 @@ def ci_target(name: str, config: str = "release") -> TargetConfig:
                 config=config,
                 build_tool="Visual Studio 17 2022",
             )
-        case "windows:aarch64":
+        case "windows:arm64":
             return TargetConfig(
                 os=OS.WINDOWS,
                 arch=[Arch.ARM64],
