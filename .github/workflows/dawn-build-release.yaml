@@ -73,11 +73,11 @@ jobs:
 
             This release contains pre-built Dawn WebGPU libraries in an archive bundle for multiple platforms:
 
-            - linux (x86_64)
-            - macosx (x86_64 + ARM64)
-            - iphoneos (ARM64)
-            - iphonesimulator (x86_64)
-            - windows (x86_64)
+            - linux (x86_64, arm64)
+            - macosx (x86_64 + arm64 universal)
+            - iphoneos (arm64)
+            - iphonesimulator (arm64)
+            - windows (x86_64, arm64)
 
             These are just the raw Dawn libraries and do not include the Swift API layer.
           artifacts: dawn-bundles/*
