@@ -133,17 +133,6 @@ class TargetConfig:
         ]
 
 
-_DAWN_COMMON_FLAGS = [
-    "-DDAWN_ENABLE_PIC=ON",
-    "-DDAWN_BUILD_SAMPLES=OFF",
-    "-DTINT_BUILD_TESTS=OFF",
-    "-DTINT_BUILD_CMD_TOOLS=OFF",
-    "-DDAWN_ENABLE_INSTALL=ON",
-    "-DDAWN_FETCH_DEPENDENCIES=ON",
-    "-DDAWN_BUILD_MONOLITHIC_LIBRARY=STATIC",
-]
-
-
 def cmake_flags(target_config: TargetConfig) -> List[str]:
     """
     Generate CMake flags for the given target configuration.
@@ -154,7 +143,7 @@ def cmake_flags(target_config: TargetConfig) -> List[str]:
     Returns:
         List of CMake flags
     """
-    flags = _DAWN_COMMON_FLAGS.copy()
+    flags = []
 
     if target_config.os.is_apple():
         flags.append(
@@ -271,10 +260,13 @@ def build_dawn(
 
     cmake_exec = shutil.which("cmake", path=os.environ.get("PATH"))
 
+    # Use the CMakeLists.txt wrapper in the parent directory of dawn_source
+    cmake_wrapper_path = dawn_path.parent
+    
     # Run cmake command to create the build files
     try:
         subprocess.run(
-            [cmake_exec, f"-G{target_config.build_tool}", *flags, str(dawn_path)],
+            [cmake_exec, f"-G{target_config.build_tool}", *flags, str(cmake_wrapper_path)],
             env=os.environ,
             cwd=build_dir,
             capture_output=True,
@@ -323,85 +315,3 @@ def build_dawn(
     except subprocess.CalledProcessError as e:
         _subprocess_exception_message(e)
         raise CMakeError
-
-
-# Main #
-
-
-def parse_args() -> argparse.Namespace:
-    """
-    Parse command line arguments for the Dawn builder.
-
-    Returns:
-        Parsed command line arguments
-    """
-    current_os = get_current_os()
-    current_arch = os.uname().machine
-
-    parser = argparse.ArgumentParser(description="Build Dawn")
-    parser.add_argument("--dawn", required=True, help="Path to Dawn source")
-    parser.add_argument(
-        "--output-dir", action="store", default=None, help="Path to output directory"
-    )
-    parser.add_argument(
-        "--sdk",
-        action="store",
-        default=None,
-        help="SDK to build against (Apple only e.g. macosx15.5)",
-    )
-    parser.add_argument(
-        "--arch",
-        action="append",
-        default=[current_arch],
-        help="Architecture to build for",
-    )
-    parser.add_argument(
-        "--os", action="store", default=current_os, help="OS to build for"
-    )
-    parser.add_argument(
-        "--deployment-target",
-        action="store",
-        default=None,
-        help="Deploy target to build for (Apple only e.g. 15.0)",
-    )
-    parser.add_argument("--debug", action="store_true", help="Build in debug mode")
-    parser.add_argument(
-        "--version-suffix",
-        help="Optional version suffix to append to the output filename",
-    )
-
-    parsed_args = parser.parse_args()
-    if parsed_args.os == OS.MACOS:
-        if not parsed_args.sdk:
-            print("SDK is required for macOS (e.g. --sdk macosx15.5)")
-            sys.exit(_EXIT_FAILURE)
-
-    return parsed_args
-
-
-def main() -> int:
-    """
-    Main entry point for the Dawn builder.
-
-    Returns:
-        Exit code (0 for success, 1 for failure)
-    """
-    args = parse_args()
-
-    dawn_path = pathlib.Path(args.dawn).resolve()
-    arch_list = [Arch(arch) for arch in dict.fromkeys(args.arch)]
-
-    target_config = TargetConfig(
-        os=OS(args.os),
-        arch=arch_list,
-        sdk=args.sdk,
-        deployment_target=args.deployment_target,
-        debug=args.debug,
-    )
-    build_dawn(dawn_path, target_config)
-
-    return _EXIT_SUCCESS
-
-
-if __name__ == "__main__":
-    sys.exit(main())
