@@ -1,5 +1,16 @@
 # Swan
-> **Warning:** This project is not ready for use. It is currently under development and intended only for feedback and experimentation.
+
+---
+
+## ⚠️ WARNINGS
+
+> [!WARNING]
+> **This project is not ready for use.** It is currently under development and intended only for feedback and experimentation.
+
+> [!IMPORTANT]
+> **Swift Requirement:** You must use a recent mainline build of Swift. This project may not work with released versions of Swift.
+
+---
 
 ## Swift WebGPU Bindings for Dawn and Web
 

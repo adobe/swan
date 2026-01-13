@@ -31,7 +31,7 @@ def write_target_manifest(
         "libraryPath": (target_dir / "lib").as_posix(),
         "includePath": (target_dir / "include").as_posix(),
         "supportedTriples": target_config.triples(),
-        "libraryName": "webgpu_dawn.lib"
+        "libraryName": "libwebgpu_dawn.lib"
         if target_config.os.is_windows()
         else "libwebgpu_dawn.a",
     }
@@ -144,7 +144,7 @@ def create_artifact_bundle(
         library_path = manifest["libraryPath"]
         target_dir = archive_dir / manifest["targetName"]
         shutil.copytree(library_path, target_dir)
-
+        
     # Copy the dawn.json file to the archive directory
     shutil.copy2(dawn_json, archive_dir / "dawn.json")
 
