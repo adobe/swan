@@ -98,7 +98,7 @@ def parse_args() -> argparse.Namespace:
     build_parser = subparsers.add_parser("build-target", help="Build a target")
     build_parser.add_argument(
         "--target",
-        choices=["windows", "linux", "macosx", "iphoneos", "iphonesimulator"],
+        choices=["windows", "windows:x86_64", "windows:arm64", "linux", "linux:x86_64", "linux:arm64", "macosx", "iphoneos", "iphonesimulator"],
         required=True,
         help="Target platform to build for",
     )
@@ -146,12 +146,15 @@ def main() -> int:
         dawn_source.fetch_dawn_source(args.hash)
     elif args.command == "build-target":
         if args.target not in [
-            "windows",
             "linux",
+            "linux:x86_64",
+            "linux:arm64",
             "macosx",
             "iphoneos",
             "iphonesimulator",
             "windows",
+            "windows:x86_64",
+            "windows:arm64",
         ]:
             print(f"Invalid target: {args.target}")
             return _EXIT_FAILURE
