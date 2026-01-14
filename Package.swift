@@ -30,7 +30,7 @@ let package = Package(
 			url: "https://github.com/swiftlang/swift-testing.git",
 			from: "6.2.1"
 		),
-		.package(url: "https://github.com/apple/swift-log", from: "1.6.4"),
+		.package(url: "https://github.com/apple/swift-log", from: "1.9.0"),
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.6.2"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0-latest"),
