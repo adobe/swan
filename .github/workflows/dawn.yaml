@@ -37,24 +37,31 @@ jobs:
         include:
           - platform: ubuntu-latest
             target: linux
+            arch: x86_64
             python-version: "3.11"
           - platform: ubuntu-22.04-arm
-            target: linux:arm64
+            target: linux
+            arch: arm64
             python-version: "3.11"
           - platform: macos-latest
             target: macosx
+            arch: universal
             python-version: "3.11"
           - platform: windows-latest
-            target: windows:x86_64
+            target: windows
+            arch: x86_64
             python-version: "3.11"
           - platform: windows-11-arm
-            target: windows:arm64
+            target: windows
+            arch: arm64
             python-version: "3.11"
           - platform: macos-latest
             target: iphoneos
+            arch: arm64
             python-version: "3.11"
           - platform: macos-latest
             target: iphonesimulator
+            arch: x86_64
             python-version: "3.11"
 
     runs-on: ${{ matrix.platform }}
@@ -85,15 +92,15 @@ jobs:
           cd Dawn
           python ci_build_dawn.py get-source --hash ${{ inputs.dawn_hash }}
 
-      - name: Build Dawn for ${{ matrix.target }}
+      - name: Build Dawn for ${{ matrix.target }} (${{ matrix.arch }})
         run: |
           cd Dawn
-          python ci_build_dawn.py build-target --target ${{ matrix.target }} --config ${{ inputs.config }}
+          python ci_build_dawn.py build-target --target ${{ matrix.target }} --arch ${{ matrix.arch }} --config ${{ inputs.config }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v5
         with:
-          name: dawn-build-${{ matrix.target }}-${{ inputs.config }}
+          name: dawn-build-${{ matrix.target }}-${{ matrix.arch }}-${{ inputs.config }}
           path: |
             Dawn/builds/
             !Dawn/builds/*/out
@@ -138,7 +145,7 @@ jobs:
       - name: Download all build artifacts
         uses: actions/download-artifact@v6
         with:
-          pattern: dawn-build-*-${{ inputs.config }}
+          pattern: dawn-build-*-*-${{ inputs.config }}
           path: Dawn/builds/
           merge-multiple: true
 
