@@ -32,14 +32,14 @@ jobs:
     with:
       channel: ${{ inputs.channel }}
 
-  build-dawn-debug:
-    needs: get-dawn-info
-    uses: ./.github/workflows/dawn.yaml
-    with:
-      config: debug
-      dawn_hash: ${{ needs.get-dawn-info.outputs.chromium_dawn_hash }}
-      bundle_name: ${{ needs.get-dawn-info.outputs.tag }}-debug
-      chromium_version: ${{ needs.get-dawn-info.outputs.chromium_dawn_version }}
+  # build-dawn-debug:
+  #   needs: get-dawn-info
+  #   uses: ./.github/workflows/dawn.yaml
+  #   with:
+  #     config: debug
+  #     dawn_hash: ${{ needs.get-dawn-info.outputs.chromium_dawn_hash }}
+  #     bundle_name: ${{ needs.get-dawn-info.outputs.tag }}-debug
+  #     chromium_version: ${{ needs.get-dawn-info.outputs.chromium_dawn_version }}
 
   build-dawn-release:
     needs: get-dawn-info
@@ -51,13 +51,13 @@ jobs:
       chromium_version: ${{ needs.get-dawn-info.outputs.chromium_dawn_version }}
 
   create-release:
-    needs: [build-dawn-debug, build-dawn-release, get-dawn-info]
+    needs: [build-dawn-release, get-dawn-info]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact bundles
         uses: actions/download-artifact@v6
         with:
-          artifact-ids: ${{ needs.build-dawn-debug.outputs.artifact_id }},${{ needs.build-dawn-release.outputs.artifact_id }}
+          artifact-ids: ${{ needs.build-dawn-release.outputs.artifact_id }}
           path: dawn-bundles
           merge-multiple: true
 
