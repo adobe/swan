@@ -12,20 +12,22 @@ import archive_builder
 import argparse
 import dawn_source
 import json
+import platform
 
 _EXIT_FAILURE = 1
 _EXIT_SUCCESS = 0
 
 
-def build_target(target: str, config: str = "release") -> None:
+def build_target(target: str, archs: list[str], config: str = "release") -> None:
     """
     Build a target using the specified configuration.
 
     Args:
-        target: The target platform to build for
+        target: The target OS to build for
+        archs: List of architectures to build for
         config: The configuration to build for
     """
-    target_config = ci_target(target, config)
+    target_config = ci_target(target, archs, config)
     archive_builder.build_bundle_target(target_config)
 
 
@@ -98,9 +100,15 @@ def parse_args() -> argparse.Namespace:
     build_parser = subparsers.add_parser("build-target", help="Build a target")
     build_parser.add_argument(
         "--target",
-        choices=["windows", "windows:x86_64", "windows:arm64", "linux", "linux:x86_64", "linux:arm64", "macosx", "iphoneos", "iphonesimulator"],
+        choices=["windows", "linux", "macosx", "iphoneos", "iphonesimulator"],
         required=True,
-        help="Target platform to build for",
+        help="Target OS to build for",
+    )
+    build_parser.add_argument(
+        "--arch",
+        action="append",
+        choices=["x86_64", "arm64", "universal"],
+        help="Target architecture(s) to build for. Can be specified multiple times. Use 'universal' for both x86_64 and arm64.",
     )
     build_parser.add_argument(
         "--config",
@@ -145,21 +153,31 @@ def main() -> int:
     elif args.command == "get-source":
         dawn_source.fetch_dawn_source(args.hash)
     elif args.command == "build-target":
-        if args.target not in [
-            "linux",
-            "linux:x86_64",
-            "linux:arm64",
-            "macosx",
-            "iphoneos",
-            "iphonesimulator",
-            "windows",
-            "windows:x86_64",
-            "windows:arm64",
-        ]:
-            print(f"Invalid target: {args.target}")
-            return _EXIT_FAILURE
-
-        build_target(args.target, args.config)
+        # Determine architectures to build
+        archs = args.arch if args.arch else []
+        
+        # Handle "universal" architecture
+        if "universal" in archs:
+            archs = [a for a in archs if a != "universal"]
+            archs.extend(["x86_64", "arm64"])
+        
+        # Apply defaults if no architectures specified
+        if not archs:
+            if args.target == "macosx":
+                # macOS defaults to universal (both x86_64 and arm64)
+                archs = ["x86_64", "arm64"]
+            else:
+                # Other platforms default to current machine architecture
+                machine = platform.machine().lower()
+                if machine in ('amd64', 'x86_64', 'x64'):
+                    archs = ["x86_64"]
+                elif machine in ('arm64', 'aarch64'):
+                    archs = ["arm64"]
+                else:
+                    # Default to x86_64 if unknown
+                    archs = ["x86_64"]
+        
+        build_target(args.target, archs, args.config)
     elif args.command == "bundle":
         bundle(args.chromium_version, args.dawn_hash, args.bundle_name)
     elif args.command == "upload":

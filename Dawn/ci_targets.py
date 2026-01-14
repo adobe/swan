@@ -26,12 +26,13 @@ def get_current_arch() -> Arch:
         return Arch.X86_64
 
 
-def ci_target(name: str, config: str = "release") -> TargetConfig:
+def ci_target(target: str, archs: list[str], config: str = "release") -> TargetConfig:
     """
-    Create a TargetConfig for the specified target name and debug mode.
+    Create a TargetConfig for the specified target OS, architectures, and configuration.
 
     Args:
-        name: The target platform name (macosx, iphoneos, iphonesimulator, ipados, linux, windows)
+        target: The target OS name (macosx, iphoneos, iphonesimulator, ipados, linux, windows)
+        archs: List of architecture strings (x86_64, arm64)
         config: The configuration to build for
 
     Returns:
@@ -40,11 +41,21 @@ def ci_target(name: str, config: str = "release") -> TargetConfig:
     Raises:
         ValueError: If the target name is not recognized
     """
-    match name:
+    # Convert architecture strings to Arch enums
+    arch_enums = []
+    for arch_str in archs:
+        if arch_str == "x86_64":
+            arch_enums.append(Arch.X86_64)
+        elif arch_str == "arm64":
+            arch_enums.append(Arch.ARM64)
+        else:
+            raise ValueError(f"Invalid architecture: {arch_str}")
+    
+    match target:
         case "macosx":
             return TargetConfig(
                 os=OS.MACOS,
-                arch=[get_current_arch()],
+                arch=arch_enums,
                 sdk="macosx15.5",
                 deployment_target="15.0",
                 config=config,
@@ -52,7 +63,7 @@ def ci_target(name: str, config: str = "release") -> TargetConfig:
         case "iphoneos":
             return TargetConfig(
                 os=OS.IPHONE,
-                arch=[Arch.ARM64],
+                arch=arch_enums,
                 sdk="iphoneos18.5",
                 deployment_target="18.0",
                 config=config,
@@ -60,7 +71,7 @@ def ci_target(name: str, config: str = "release") -> TargetConfig:
         case "iphonesimulator":
             return TargetConfig(
                 os=OS.IPHONE,
-                arch=[Arch.X86_64],
+                arch=arch_enums,
                 sdk="iphonesimulator18.5",
                 deployment_target="18.0",
                 config=config,
@@ -68,40 +79,20 @@ def ci_target(name: str, config: str = "release") -> TargetConfig:
         case "ipados":
             return TargetConfig(
                 os=OS.IPADOS,
-                arch=[Arch.ARM64],
+                arch=arch_enums,
                 sdk="ipados18.5",
                 deployment_target="18.0",
                 config=config,
             )
         case "linux":
-            return TargetConfig(os=OS.LINUX, arch=[get_current_arch()], config=config)
-        case "linux:x86_64":
-            return TargetConfig(os=OS.LINUX, arch=[Arch.X86_64], config=config)
-        case "linux:arm64":
-            return TargetConfig(os=OS.LINUX, arch=[Arch.ARM64], config=config)
+            return TargetConfig(os=OS.LINUX, arch=arch_enums, config=config)
         case "windows":
             return TargetConfig(
                 os=OS.WINDOWS,
-                arch=[get_current_arch()],
-                runtime="msvc",
-                config=config,
-                build_tool="Visual Studio 17 2022",
-            )
-        case "windows:x86_64":
-            return TargetConfig(
-                os=OS.WINDOWS,
-                arch=[Arch.X86_64],
-                runtime="msvc",
-                config=config,
-                build_tool="Visual Studio 17 2022",
-            )
-        case "windows:arm64":
-            return TargetConfig(
-                os=OS.WINDOWS,
-                arch=[Arch.ARM64],
+                arch=arch_enums,
                 runtime="msvc",
                 config=config,
                 build_tool="Visual Studio 17 2022",
             )
         case _:
-            raise ValueError(f"Invalid target name: {name}")
+            raise ValueError(f"Invalid target name: {target}")
