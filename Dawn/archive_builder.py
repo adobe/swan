@@ -10,6 +10,8 @@ import json
 import shutil
 import dawn_source
 import dawn_builder
+import urllib.request
+import zipfile
 from typing import List, Dict, Any
 from dawn_builder import TargetConfig
 
@@ -81,7 +83,35 @@ def write_bundle_manifest(version: str) -> None:
                 "version": version,
                 "type": "staticLibrary",
                 "variants": target_manifests,
-            }
+            },
+            "dxcompiler": {
+                "type": "staticLibrary",
+                "version": "1.0.0",
+                "variants": [
+                    {
+                        "path": "dxc/bin/arm64/dxcompiler.dll",
+                        "supportedTriples": ["arm64-unknown-windows-msvc"],
+                    },
+                    {
+                        "path": "dxc/bin/x64/dxcompiler.dll",
+                        "supportedTriples": ["x86_64-unknown-windows-msvc"],
+                    },
+                ],
+            },
+            "dxil": {
+                "type": "staticLibrary",
+                "version": "1.0.0",
+                "variants": [
+                    {
+                        "path": "dxc/bin/arm64/dxil.dll",
+                        "supportedTriples": ["arm64-unknown-windows-msvc"],
+                    },
+                    {
+                        "path": "dxc/bin/x64/dxil.dll",
+                        "supportedTriples": ["x86_64-unknown-windows-msvc"],
+                    },
+                ],
+            },
         },
     }
     archive_manifest_file.write_text(json.dumps(archive_manifest, indent=2))
@@ -107,6 +137,64 @@ def build_bundle_target(target_config: TargetConfig) -> None:
 
     dawn_builder.build_dawn(dawn_path, target_dir, target_config)
     write_target_manifest(manifest_file, target_config)
+
+
+def addDXSupportLibraries(artifact_bundle_dir: pathlib.Path) -> None:
+    """
+    Add the DX support libraries to the artifact bundle.
+
+    Fetches the latest DirectX Shader Compiler release from GitHub,
+    downloads the dxc zip file, extracts it to the artifact bundle,
+    and removes x86 directories.
+
+    Args:
+        artifact_bundle_dir: Path to the artifact bundle directory
+    """
+    # GitHub API endpoint for latest release
+    api_url = (
+        "https://api.github.com/repos/microsoft/DirectXShaderCompiler/releases/latest"
+    )
+
+    # Fetch the latest release info
+    with urllib.request.urlopen(api_url) as response:
+        release_data = json.loads(response.read().decode())
+
+    # Find the zip asset whose name begins with "dxc"
+    dxc_asset = None
+    for asset in release_data.get("assets", []):
+        if asset["name"].startswith("dxc") and asset["name"].endswith(".zip"):
+            dxc_asset = asset
+            break
+
+    if not dxc_asset:
+        raise ValueError("No dxc zip file found in the latest release")
+
+    # Download the zip file
+    download_url = dxc_asset["browser_download_url"]
+    zip_filename = artifact_bundle_dir / f"{dxc_asset['name']}"
+
+    print(f"Downloading {dxc_asset['name']} from {download_url}")
+    urllib.request.urlretrieve(download_url, zip_filename)
+
+    # Create dxc directory in artifact bundle
+    dxc_dir = artifact_bundle_dir / "dxc"
+    dxc_dir.mkdir(exist_ok=True, parents=True)
+
+    # Extract the zip file
+    with zipfile.ZipFile(zip_filename, "r") as zip_ref:
+        zip_ref.extractall(dxc_dir)
+
+    # Remove the downloaded zip file
+    zip_filename.unlink()
+
+    # Remove unneeded x86 directories
+    x86_paths = [dxc_dir / "bin" / "x86", dxc_dir / "lib" / "x86"]
+
+    for x86_path in x86_paths:
+        if x86_path.exists():
+            shutil.rmtree(x86_path)
+
+    print("DX support libraries added successfully")
 
 
 def create_artifact_bundle(
@@ -144,9 +232,12 @@ def create_artifact_bundle(
         library_path = manifest["libraryPath"]
         target_dir = archive_dir / manifest["targetName"]
         shutil.copytree(library_path, target_dir)
-        
+
     # Copy the dawn.json file to the archive directory
     shutil.copy2(dawn_json, archive_dir / "dawn.json")
+
+    # Add the DX support libraries to the artifact bundle
+    addDXSupportLibraries(archive_dir)
 
     # Write the archive manifest
     write_bundle_manifest(chromium_version)
