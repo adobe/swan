@@ -9,3 +9,4 @@ Dawn/dawn_version.json
 __pycache__
 .venv
 BindingsDebug
+.venv/
