@@ -27,7 +27,7 @@ struct GameOfLifeDemo: DemoProvider {
 			-0.8, -0.8, 0.8, -0.8, 0.8, 0.8, -0.8, -0.8, 0.8, 0.8, -0.8, 0.8,
 		]
 		self.vertexBuffer = device.createBuffer(
-			descriptor: .init(
+			descriptor: GPUBufferDescriptor(
 				label: "vertex buffer",
 				usage: [.vertex, .copyDst],
 				size: vertices.lengthInBytes,
@@ -37,14 +37,14 @@ struct GameOfLifeDemo: DemoProvider {
 		device.queue.writeBuffer(
 			buffer: vertexBuffer!,
 			bufferOffset: 0,
-			data: .init(vertices),
+			data: vertices,
 			size: Int(vertices.lengthInBytes)
 		)
 
 		// Create uniform buffer
 		let uniformArray = [Float32(gridSize), Float32(gridSize)]
 		self.uniformBuffer = device.createBuffer(
-			descriptor: .init(
+			descriptor: GPUBufferDescriptor(
 				label: "Grid Uniforms",
 				usage: [.uniform, .copyDst],
 				size: UInt64(uniformArray.lengthInBytes),
@@ -53,7 +53,7 @@ struct GameOfLifeDemo: DemoProvider {
 		device.queue.writeBuffer(
 			buffer: uniformBuffer!,
 			bufferOffset: 0,
-			data: .init(uniformArray),
+			data: uniformArray,
 			// TODO: Shouldn't have to pass size
 			size: Int(uniformArray.lengthInBytes)
 		)
@@ -62,14 +62,14 @@ struct GameOfLifeDemo: DemoProvider {
 		let cellStateArraySize: UInt64 = UInt64(gridSize * gridSize * MemoryLayout<Float32>.size)
 		self.cellStateStorage = [
 			device.createBuffer(
-				descriptor: .init(
+				descriptor: GPUBufferDescriptor(
 					label: "Cell State A",
 					usage: [.storage, .copyDst],
 					size: cellStateArraySize
 				)
 			)!,
 			device.createBuffer(
-				descriptor: .init(
+				descriptor: GPUBufferDescriptor(
 					label: "Cell State B",
 					usage: [.storage, .copyDst],
 					size: cellStateArraySize
@@ -88,7 +88,7 @@ struct GameOfLifeDemo: DemoProvider {
 		device.queue.writeBuffer(
 			buffer: cellStateStorage[0],
 			bufferOffset: 0,
-			data: .init(cellStateArray),
+			data: cellStateArray,
 			// TODO: Shouldn't have to pass size
 			size: Int(cellStateArray.lengthInBytes)
 		)
@@ -102,39 +102,39 @@ struct GameOfLifeDemo: DemoProvider {
 		device.queue.writeBuffer(
 			buffer: cellStateStorage[1],
 			bufferOffset: 0,
-			data: .init(cellStateArray2),
+			data: cellStateArray2,
 			// TODO: Shouldn't have to pass size
 			size: Int(cellStateArray2.lengthInBytes)
 		)
 
 		// Create shader modules
 		let cellShaderModule = device.createShaderModule(
-			descriptor: .init(label: "Cell shader", code: cellShader)
+			descriptor: GPUShaderModuleDescriptor(label: "Cell shader", code: cellShader)
 		)
 		let simulationShaderModule = device.createShaderModule(
-			descriptor: .init(label: "Game of Life simulation shader", code: simulationComputeShader)
+			descriptor: GPUShaderModuleDescriptor(label: "Game of Life simulation shader", code: simulationComputeShader)
 		)
 
 		// Create bind group layout
 		let bindGroupLayout = device.createBindGroupLayout(
-			descriptor: .init(
+			descriptor: GPUBindGroupLayoutDescriptor(
 				label: "Cell Bind Group Layout",
 				entryCount: 3,
 				entries: [
-					.init(
+					GPUBindGroupLayoutEntry(
 						binding: 0,
 						visibility: GPUShaderStage([.vertex, .compute, .fragment]),
-						buffer: .init()
+						buffer: GPUBufferBindingLayout()
 					),
-					.init(
+					GPUBindGroupLayoutEntry(
 						binding: 1,
 						visibility: GPUShaderStage([.vertex, .compute]),
-						buffer: .init(type: .readOnlyStorage)
+						buffer: GPUBufferBindingLayout(type: .readOnlyStorage)
 					),
-					.init(
+					GPUBindGroupLayoutEntry(
 						binding: 2,
 						visibility: GPUShaderStage([.compute]),
-						buffer: .init(type: .storage)
+						buffer: GPUBufferBindingLayout(type: .storage)
 					),
 				]
 			)
@@ -143,26 +143,26 @@ struct GameOfLifeDemo: DemoProvider {
 		// Create bind groups
 		self.bindGroups = [
 			device.createBindGroup(
-				descriptor: .init(
+				descriptor: GPUBindGroupDescriptor(
 					label: "Cell renderer bind group A",
 					layout: bindGroupLayout,
 					entryCount: 3,
 					entries: [
-						.init(binding: 0, buffer: uniformBuffer!),
-						.init(binding: 1, buffer: cellStateStorage[0]),
-						.init(binding: 2, buffer: cellStateStorage[1]),
+						GPUBindGroupEntry(binding: 0, buffer: uniformBuffer!),
+						GPUBindGroupEntry(binding: 1, buffer: cellStateStorage[0]),
+						GPUBindGroupEntry(binding: 2, buffer: cellStateStorage[1]),
 					]
 				)
 			),
 			device.createBindGroup(
-				descriptor: .init(
+				descriptor: GPUBindGroupDescriptor(
 					label: "Cell renderer bind group B",
 					layout: bindGroupLayout,
 					entryCount: 3,
 					entries: [
-						.init(binding: 0, buffer: uniformBuffer!),
-						.init(binding: 1, buffer: cellStateStorage[1]),
-						.init(binding: 2, buffer: cellStateStorage[0]),
+						GPUBindGroupEntry(binding: 0, buffer: uniformBuffer!),
+						GPUBindGroupEntry(binding: 1, buffer: cellStateStorage[1]),
+						GPUBindGroupEntry(binding: 2, buffer: cellStateStorage[0]),
 					]
 				)
 			),
@@ -170,7 +170,7 @@ struct GameOfLifeDemo: DemoProvider {
 
 		// Create pipeline layout
 		let pipelineLayout = device.createPipelineLayout(
-			descriptor: .init(
+			descriptor: GPUPipelineLayoutDescriptor(
 				label: "Cell Pipeline Layout",
 				bindGroupLayoutCount: 1,
 				bindGroupLayouts: [bindGroupLayout]
@@ -179,49 +179,49 @@ struct GameOfLifeDemo: DemoProvider {
 
 		// Create render pipeline
 		self.cellPipeline = device.createRenderPipeline(
-			descriptor: .init(
+			descriptor: GPURenderPipelineDescriptor(
 				label: "Cell pipeline",
-				layout: .init(pipelineLayout),
-				vertex: .init(
+				layout: pipelineLayout,
+				vertex: GPUVertexState(
 					module: cellShaderModule,
 					entryPoint: "vertexMain",
 					bufferCount: 1,
 					buffers: [
-						.init(
+						GPUVertexBufferLayout(
 							arrayStride: 8,
 							attributeCount: 1,
 							attributes: [
-								.init(format: .float32x2, offset: 0, shaderLocation: 0)
+								GPUVertexAttribute(format: .float32x2, offset: 0, shaderLocation: 0)
 							]
 						)
 					]
 				),
-				primitive: .init(
+				primitive: GPUPrimitiveState(
 					topology: .triangleList,
 					stripIndexFormat: .undefined,
 					frontFace: .CCW,
 					cullMode: .none
 				),
-				multisample: .init(
+				multisample: GPUMultisampleState(
 					count: 1,
 					mask: 0xFFFFFFFF,
 					alphaToCoverageEnabled: false
 				),
-				fragment: .init(
+				fragment: GPUFragmentState(
 					module: cellShaderModule,
 					entryPoint: "fragmentMain",
 					targetCount: 1,
-					targets: [.init(format: format)]
+					targets: [GPUColorTargetState(format: format)]
 				)
 			)
 		)
 
 		// Create compute pipeline
 		self.simulationPipeline = device.createComputePipeline(
-			descriptor: .init(
+			descriptor: GPUComputePipelineDescriptor(
 				// label: "Simulation pipeline",
-				layout: .init(pipelineLayout),
-				compute: .init(
+				layout: pipelineLayout,
+				compute: GPUComputeState(
 					module: simulationShaderModule,
 					entryPoint: "computeMain"
 				)
@@ -244,10 +244,10 @@ struct GameOfLifeDemo: DemoProvider {
 			return true
 		}
 
-		let encoder = device.createCommandEncoder(descriptor: .init(label: "command encoder"))
+		let encoder = device.createCommandEncoder(descriptor: GPUCommandEncoderDescriptor(label: "command encoder"))
 
 		// Compute pass
-		let computePass = encoder.beginComputePass(descriptor: .init(label: "compute pass"))
+		let computePass = encoder.beginComputePass(descriptor: GPUComputePassDescriptor(label: "compute pass"))
 		computePass.setPipeline(pipeline: simulationPipeline!)
 		computePass.setBindGroup(
 			groupIndex: 0,
@@ -267,7 +267,7 @@ struct GameOfLifeDemo: DemoProvider {
 
 		// Render pass
 		let pass = encoder.beginRenderPass(
-			descriptor: .init(
+			descriptor: GPURenderPassDescriptor(
 				label: "render pass",
 				colorAttachmentCount: 1,
 				colorAttachments: [
@@ -275,7 +275,7 @@ struct GameOfLifeDemo: DemoProvider {
 						view: surface.getCurrentTexture().createView(),
 						loadOp: .clear,
 						storeOp: .store,
-						clearValue: .init(r: 0, g: 0, b: 0.4, a: 1)
+						clearValue: GPUColor(r: 0, g: 0, b: 0.4, a: 1)
 					)
 				]
 			)

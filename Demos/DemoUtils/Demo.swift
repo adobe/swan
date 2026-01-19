@@ -26,7 +26,7 @@ public func runDemo<Provider: DemoProvider>(
 
 	_ = instance.requestAdapter(
 		options: nil,
-		callbackInfo: .init(
+		callbackInfo: GPURequestAdapterCallbackInfo(
 			mode: .allowProcessEvents,
 			callback: { status, inAdapter, message in
 				guard inAdapter != nil else { fatalError("Failed to get adapter") }
@@ -43,7 +43,7 @@ public func runDemo<Provider: DemoProvider>(
 
 	let deviceDescriptor: GPUDeviceDescriptor = GPUDeviceDescriptor(
 		defaultQueue: GPUQueueDescriptor(),
-		deviceLostCallbackInfo: .init(
+		deviceLostCallbackInfo: GPUDeviceLostCallbackInfo(
 			mode: .allowProcessEvents,
 			callback: { device, reason, message in
 				print("🚨 Device Lost!")
@@ -53,7 +53,7 @@ public func runDemo<Provider: DemoProvider>(
 				}
 			}
 		),
-		uncapturedErrorCallbackInfo: .init(
+		uncapturedErrorCallbackInfo: GPUUncapturedErrorCallbackInfo(
 			callback: { device, type, message in
 				print("❌ Uncaptured Error!")
 				print("  Type: \(type)")
@@ -67,7 +67,7 @@ public func runDemo<Provider: DemoProvider>(
 
 	_ = adapter!.requestDevice(
 		descriptor: deviceDescriptor,
-		callbackInfo: .init(
+		callbackInfo: GPURequestDeviceCallbackInfo(
 			mode: .allowProcessEvents,
 			callback: { status, inDevice, message in
 				guard inDevice != nil else { fatalError("Failed to get device") }
@@ -90,7 +90,7 @@ public func runDemo<Provider: DemoProvider>(
 	}
 
 	let surface: GPUSurface = getSurface(window: window, instance: instance)
-	surface.configure(config: .init(device: device!, format: format, width: UInt32(width), height: UInt32(height)))
+	surface.configure(config: GPUSurfaceConfiguration(device: device!, format: format, width: UInt32(width), height: UInt32(height)))
 
 	mutableProvider.initialize(device: device!, format: format, surface: surface)
 
