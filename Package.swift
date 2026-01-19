@@ -28,7 +28,7 @@ let package = Package(
 	dependencies: [
 		.package(
 			url: "https://github.com/swiftlang/swift-testing.git",
-			from: "6.2.1"
+			from: "6.2.3"
 		),
 		.package(url: "https://github.com/apple/swift-log", from: "1.9.1"),
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
