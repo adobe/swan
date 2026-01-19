@@ -1,19 +1,28 @@
+import Foundation
 import RGFW
 import WebGPU
 
+public protocol DemoProvider {
+	@MainActor
+	mutating func initialize(device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface)
+	@MainActor
+	mutating func frame(time: Double) throws -> Bool
+}
+
 @MainActor
-public func runDemo(
+public func runDemo<Provider: DemoProvider>(
 	x: Int32 = 0,
 	y: Int32 = 0,
 	width: Int32 = 800,
 	height: Int32 = 600,
 	title: String,
 	format: GPUTextureFormat = .BGRA8Unorm,
-	_ lambda: (GPUSurface, GPUDevice, (() throws -> Void) throws -> Void, GPUTextureFormat) throws -> Void
-) rethrows {
+	provider: Provider
+) throws {
+	var mutableProvider = provider
 	let instance = GPUInstance(descriptor: nil)!
 
-	var adapter: GPUAdapter? = nil;
+	var adapter: GPUAdapter? = nil
 
 	_ = instance.requestAdapter(
 		options: nil,
@@ -21,16 +30,16 @@ public func runDemo(
 			mode: .allowProcessEvents,
 			callback: { status, inAdapter, message in
 				guard inAdapter != nil else { fatalError("Failed to get adapter") }
-				adapter = inAdapter;
+				adapter = inAdapter
 			}
 		)
-	);
+	)
 
-	while (adapter == nil) {
+	while adapter == nil {
 		instance.processEvents()
 	}
 
-	var device: GPUDevice? = nil;
+	var device: GPUDevice? = nil
 
 	let deviceDescriptor = GPUDeviceDescriptor(
 		defaultQueue: GPUQueueDescriptor(),
@@ -83,18 +92,16 @@ public func runDemo(
 	let surface = getSurface(window: window, instance: instance)
 	surface.configure(config: .init(device: device!, format: format, width: UInt32(width), height: UInt32(height)))
 
-	try lambda(
-		surface,
-		device!,
-		{ lambda in
-			while RGFW_window_shouldClose(window) == RGFW_FALSE {
-				RGFW_pollEvents()
+	mutableProvider.initialize(device: device!, format: format, surface: surface)
 
-				updateSurface(surface: surface, window: window, device: device!, format: format)
+	while RGFW_window_shouldClose(window) == RGFW_FALSE {
+		RGFW_pollEvents()
 
-				try lambda()
-			}
-		},
-		format
-	)
+		updateSurface(surface: surface, window: window, device: device!, format: format)
+
+		let shouldContinue = try mutableProvider.frame(time: Date().timeIntervalSinceReferenceDate)
+		if !shouldContinue {
+			break
+		}
+	}
 }
