@@ -19,8 +19,8 @@ public func runDemo<Provider: DemoProvider>(
 	format: GPUTextureFormat = .BGRA8Unorm,
 	provider: Provider
 ) throws {
-	var mutableProvider = provider
-	let instance = GPUInstance(descriptor: nil)!
+	var mutableProvider: Provider = provider
+	let instance: GPUInstance = GPUInstance(descriptor: nil)!
 
 	var adapter: GPUAdapter? = nil
 
@@ -41,7 +41,7 @@ public func runDemo<Provider: DemoProvider>(
 
 	var device: GPUDevice? = nil
 
-	let deviceDescriptor = GPUDeviceDescriptor(
+	let deviceDescriptor: GPUDeviceDescriptor = GPUDeviceDescriptor(
 		defaultQueue: GPUQueueDescriptor(),
 		deviceLostCallbackInfo: .init(
 			mode: .allowProcessEvents,
@@ -89,7 +89,7 @@ public func runDemo<Provider: DemoProvider>(
 		fatalError("Failed to create window")
 	}
 
-	let surface = getSurface(window: window, instance: instance)
+	let surface: GPUSurface = getSurface(window: window, instance: instance)
 	surface.configure(config: .init(device: device!, format: format, width: UInt32(width), height: UInt32(height)))
 
 	mutableProvider.initialize(device: device!, format: format, surface: surface)
@@ -99,7 +99,7 @@ public func runDemo<Provider: DemoProvider>(
 
 		updateSurface(surface: surface, window: window, device: device!, format: format)
 
-		let shouldContinue = try mutableProvider.frame(time: Date().timeIntervalSinceReferenceDate)
+		let shouldContinue: Bool = try mutableProvider.frame(time: Date().timeIntervalSinceReferenceDate)
 		if !shouldContinue {
 			break
 		}
