@@ -1,6 +1,7 @@
 import Dawn
 import DemoUtils
 import Foundation
+import RGFW
 
 let workgroupSize: UInt32 = 8
 let gridSize: Int = 32
@@ -343,7 +344,9 @@ struct GameOfLifeDemo: DemoProvider {
 			fatalError("Surface not initialized")
 		}
 
-		if time >= nextUpdateTime {
+		let sPressed = RGFW_isKeyReleased(UInt8(RGFW_s)) != 0;
+
+		if time >= nextUpdateTime || sPressed {
 			nextUpdateTime = time + updateInterval
 		} else {
 			return true
@@ -376,7 +379,8 @@ struct GameOfLifeDemo: DemoProvider {
 		var screenShotRenderedBuffer : GPUBuffer?;
 		let screenShotW = 1024;
 		let screenShotH = 600;
-		if ( step == 2 ) {
+
+		if ( sPressed ) {
 			print ( "Screen shot!")
 			screenShotRenderedBuffer = self.screenShotRender(encoder: encoder, w: screenShotW, h: screenShotH, format: backbuffer.format)
 		}
