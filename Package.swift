@@ -148,10 +148,10 @@ let package = Package(
 			path: "Demos/GameOfLife",
 			swiftSettings: strictSwiftSettings,
 			linkerSettings: [
-				.linkedFramework("Cocoa"),
-				.linkedFramework("IOKit"),
-				.linkedFramework("Metal"),
-				.linkedLibrary("c++"),
+				.linkedFramework("Cocoa", .when(platforms: [.macOS])),
+				.linkedFramework("IOKit", .when(platforms: [.macOS])),
+				.linkedFramework("Metal", .when(platforms: [.macOS])),
+				.linkedLibrary("c++", .when(platforms: [.macOS])),
 			]
 		),
 		.testTarget(
@@ -171,9 +171,9 @@ let package = Package(
 			],
 			swiftSettings: strictSwiftSettings,
 			linkerSettings: [
-				.linkedFramework("IOSurface"),
-				.linkedFramework("Metal"),
-				.linkedFramework("QuartzCore"),
+				.linkedFramework("IOSurface", .when(platforms: [.macOS])),
+				.linkedFramework("Metal", .when(platforms: [.macOS])),
+				.linkedFramework("QuartzCore", .when(platforms: [.macOS])),
 			]
 		),
 	]
