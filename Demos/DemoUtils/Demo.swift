@@ -1,40 +1,49 @@
+import Foundation
 import RGFW
 import WebGPU
 
+public protocol DemoProvider {
+	@MainActor
+	mutating func initialize(device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface)
+	@MainActor
+	mutating func frame(time: Double) throws -> Bool
+}
+
 @MainActor
-public func runDemo(
+public func runDemo<Provider: DemoProvider>(
 	x: Int32 = 0,
 	y: Int32 = 0,
 	width: Int32 = 800,
 	height: Int32 = 600,
 	title: String,
 	format: GPUTextureFormat = .BGRA8Unorm,
-	_ lambda: (GPUSurface, GPUDevice, (() throws -> Void) throws -> Void, GPUTextureFormat) throws -> Void
-) rethrows {
-	let instance = GPUInstance(descriptor: nil)!
+	provider: Provider
+) throws {
+	var mutableProvider: Provider = provider
+	let instance: GPUInstance = GPUInstance(descriptor: nil)!
 
-	var adapter: GPUAdapter? = nil;
+	var adapter: GPUAdapter? = nil
 
 	_ = instance.requestAdapter(
 		options: nil,
-		callbackInfo: .init(
+		callbackInfo: GPURequestAdapterCallbackInfo(
 			mode: .allowProcessEvents,
 			callback: { status, inAdapter, message in
 				guard inAdapter != nil else { fatalError("Failed to get adapter") }
-				adapter = inAdapter;
+				adapter = inAdapter
 			}
 		)
-	);
+	)
 
-	while (adapter == nil) {
+	while adapter == nil {
 		instance.processEvents()
 	}
 
-	var device: GPUDevice? = nil;
+	var device: GPUDevice? = nil
 
-	let deviceDescriptor = GPUDeviceDescriptor(
+	let deviceDescriptor: GPUDeviceDescriptor = GPUDeviceDescriptor(
 		defaultQueue: GPUQueueDescriptor(),
-		deviceLostCallbackInfo: .init(
+		deviceLostCallbackInfo: GPUDeviceLostCallbackInfo(
 			mode: .allowProcessEvents,
 			callback: { device, reason, message in
 				print("🚨 Device Lost!")
@@ -44,7 +53,7 @@ public func runDemo(
 				}
 			}
 		),
-		uncapturedErrorCallbackInfo: .init(
+		uncapturedErrorCallbackInfo: GPUUncapturedErrorCallbackInfo(
 			callback: { device, type, message in
 				print("❌ Uncaptured Error!")
 				print("  Type: \(type)")
@@ -58,7 +67,7 @@ public func runDemo(
 
 	_ = adapter!.requestDevice(
 		descriptor: deviceDescriptor,
-		callbackInfo: .init(
+		callbackInfo: GPURequestDeviceCallbackInfo(
 			mode: .allowProcessEvents,
 			callback: { status, inDevice, message in
 				guard inDevice != nil else { fatalError("Failed to get device") }
@@ -80,21 +89,19 @@ public func runDemo(
 		fatalError("Failed to create window")
 	}
 
-	let surface = getSurface(window: window, instance: instance)
-	surface.configure(config: .init(device: device!, format: format, width: UInt32(width), height: UInt32(height)))
+	let surface: GPUSurface = getSurface(window: window, instance: instance)
+	surface.configure(config: GPUSurfaceConfiguration(device: device!, format: format, width: UInt32(width), height: UInt32(height)))
 
-	try lambda(
-		surface,
-		device!,
-		{ lambda in
-			while RGFW_window_shouldClose(window) == RGFW_FALSE {
-				RGFW_pollEvents()
+	mutableProvider.initialize(device: device!, format: format, surface: surface)
 
-				updateSurface(surface: surface, window: window, device: device!, format: format)
+	while RGFW_window_shouldClose(window) == RGFW_FALSE {
+		RGFW_pollEvents()
 
-				try lambda()
-			}
-		},
-		format
-	)
+		updateSurface(surface: surface, window: window, device: device!, format: format)
+
+		let shouldContinue: Bool = try mutableProvider.frame(time: Date().timeIntervalSinceReferenceDate)
+		if !shouldContinue {
+			break
+		}
+	}
 }
