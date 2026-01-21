@@ -9,6 +9,10 @@
 
 import PackageDescription
 
+let strictSwiftSettings: [SwiftSetting] = [
+	.unsafeFlags(["-warnings-as-errors"])
+]
+
 let package = Package(
 	name: "Swan",
 	platforms: [
@@ -55,7 +59,8 @@ let package = Package(
 			],
 			exclude: [
 				"README.md"
-			]
+			],
+			swiftSettings: strictSwiftSettings
 		),
 		.executableTarget(
 			name: "GenerateDawnAPINotes",
@@ -65,7 +70,8 @@ let package = Package(
 			],
 			exclude: [
 				"README.md"
-			]
+			],
+			swiftSettings: strictSwiftSettings
 		),
 		.plugin(
 			name: "GenerateDawnBindingsPlugin",
@@ -94,6 +100,7 @@ let package = Package(
 			dependencies: [
 				"DawnLib"
 			],
+			swiftSettings: strictSwiftSettings
 		),
 		.target(
 			name: "DawnData",
@@ -101,6 +108,7 @@ let package = Package(
 				.product(name: "Logging", package: "swift-log"),
 				"DawnLib",
 			],
+			swiftSettings: strictSwiftSettings
 		),
 		.target(
 			name: "Dawn",
@@ -109,16 +117,19 @@ let package = Package(
 				"DawnLib",
 				"GenerateDawnBindingsPlugin",
 			],
+			swiftSettings: strictSwiftSettings
 		),
 		.target(
 			name: "WebGPU",
 			dependencies: [
 				"Dawn"
 			],
+			swiftSettings: strictSwiftSettings
 		),
 		.target(
 			name: "RGFW",
 			path: "Demos/RGFW",
+			swiftSettings: strictSwiftSettings
 		),
 		.target(
 			name: "DemoUtils",
@@ -127,6 +138,7 @@ let package = Package(
 				"WebGPU",
 			],
 			path: "Demos/DemoUtils",
+			swiftSettings: strictSwiftSettings
 		),
 		.executableTarget(
 			name: "GameOfLife",
@@ -134,6 +146,7 @@ let package = Package(
 				"DemoUtils"
 			],
 			path: "Demos/GameOfLife",
+			swiftSettings: strictSwiftSettings,
 			linkerSettings: [
 				.linkedFramework("Cocoa"),
 				.linkedFramework("IOKit"),
@@ -147,7 +160,8 @@ let package = Package(
 				"GenerateDawnBindings",
 				"GenerateDawnAPINotes",
 				.product(name: "Testing", package: "swift-testing"),
-			]
+			],
+			swiftSettings: strictSwiftSettings
 		),
 		.testTarget(
 			name: "DawnTests",
@@ -155,6 +169,7 @@ let package = Package(
 				"Dawn",
 				.product(name: "Testing", package: "swift-testing"),
 			],
+			swiftSettings: strictSwiftSettings,
 			linkerSettings: [
 				.linkedFramework("IOSurface"),
 				.linkedFramework("Metal"),
