@@ -104,10 +104,10 @@ extension DawnStructure {
 }
 
 extension DawnObject {
-	func apiNotesWithName(_ name: Name) -> [APINote] {
+	func apiNotesWithName(_ name: Name, data: DawnData) -> [APINote] {
 		let objectName = "WGPU\(name.CamelCase)Impl"
 		let methodNotes: [APINote] = methods.flatMap { method in
-			return method.apiNotesWithObjectName(name)
+			return method.apiNotesWithObjectName(name, data: data)
 		}
 		return [
 			APINote(
@@ -138,7 +138,18 @@ extension DawnObject {
 }
 
 extension DawnMethod {
-	func apiNotesWithObjectName(_ objectName: Name) -> [APINote] {
+
+	func returnsObject(data: DawnData) -> Bool {
+		if let returns = returns {
+			if let dawnEntity = data.data[returns.type], case .object = dawnEntity {
+				return true
+			}
+			return false
+		}
+		return false
+	}
+
+	func apiNotesWithObjectName(_ objectName: Name, data: DawnData) -> [APINote] {
 		let functionName = "wgpu\(objectName.CamelCase)\(name.CamelCase)"
 		let argumentsString: String
 		if let args = args, args.count > 0 {
@@ -163,13 +174,17 @@ extension DawnMethod {
 		}
 
 		// Treat all other functions as normal.
+		var values: [String: String] = [
+			"SwiftName": "WGPU\(objectName.CamelCase)Impl.\(name.camelCase)(self:\(argumentsString))"
+		]
+		if returnsObject(data: data) {
+			values["SwiftReturnOwnership"] = "retained"
+		}
 		return [
 			APINote(
 				category: .function,
 				name: functionName,
-				values: [
-					"SwiftName": "WGPU\(objectName.CamelCase)Impl.\(name.camelCase)(self:\(argumentsString))"
-				]
+				values: values
 			)
 		]
 	}
@@ -231,7 +246,7 @@ extension DawnEntity {
 		case .enum(let `enum`):
 			return `enum`.apiNotesWithName(name)
 		case .object(let object):
-			return object.apiNotesWithName(name)
+			return object.apiNotesWithName(name, data: data)
 		case .function(let function):
 			return function.apiNotesWithName(name, data: data)
 		case .bitmask(let bitmask):
