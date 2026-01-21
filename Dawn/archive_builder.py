@@ -35,6 +35,10 @@ def write_target_manifest(
         if target_config.os.is_windows()
         else "libwebgpu_dawn.a",
     }
+    
+    if target_config.os.is_windows():
+        manifest["binPath"] = (target_dir / "bin").as_posix()
+    
     manifest_file.write_text(json.dumps(manifest, indent=2))
 
 
@@ -81,6 +85,34 @@ def write_bundle_manifest(version: str) -> None:
                 "version": version,
                 "type": "staticLibrary",
                 "variants": target_manifests,
+            },
+            "dxcompiler": {
+                "type": "staticLibrary",
+                "version": "1.0.0",
+                "variants": [
+                    {
+                        "path": "windows_arm64_release/bin/dxcompiler.dll",
+                        "supportedTriples": ["arm64-unknown-windows-msvc"]
+                    },
+                    {
+                        "path": "windows_x86_64_release/bin/dxcompiler.dll",
+                        "supportedTriples": ["x86_64-unknown-windows-msvc"]
+                    },
+                ]
+            },
+            "dxil": {
+                "type": "staticLibrary",
+                "version": "1.0.0",
+                "variants": [
+                    {
+                        "path": "windows_arm64_release/bin/dxil.dll",
+                        "supportedTriples": ["arm64-unknown-windows-msvc"]
+                    },
+                    {
+                        "path": "windows_x86_64_release/bin/dxil.dll",
+                        "supportedTriples": ["x86_64-unknown-windows-msvc"]
+                    }
+                ]
             }
         },
     }
@@ -144,6 +176,13 @@ def create_artifact_bundle(
         library_path = manifest["libraryPath"]
         target_dir = archive_dir / manifest["targetName"]
         shutil.copytree(library_path, target_dir)
+        
+        # Copy the bin directory if it exists (Windows targets)
+        if "binPath" in manifest:
+            bin_path = manifest["binPath"]
+            bin_target_dir = target_dir / "bin"
+            shutil.copytree(bin_path, bin_target_dir)
+        
         
     # Copy the dawn.json file to the archive directory
     shutil.copy2(dawn_json, archive_dir / "dawn.json")
