@@ -12,6 +12,7 @@ set(TINT_BUILD_CMD_TOOLS OFF CACHE BOOL "Disable Tint command line tools")
 set(DAWN_ENABLE_INSTALL ON CACHE BOOL "Enable Dawn install target")
 set(DAWN_FETCH_DEPENDENCIES ON CACHE BOOL "Fetch Dawn dependencies")
 set(DAWN_BUILD_MONOLITHIC_LIBRARY STATIC CACHE STRING "Build Dawn as static monolithic library")
+set(DAWN_USE_BUILT_DXC ON CACHE BOOL "Use built DXC")
 
 # Add Dawn from source
 add_subdirectory(dawn_source)
