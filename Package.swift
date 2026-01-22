@@ -8,6 +8,25 @@
 // swift-tools-version: 6.1
 
 import PackageDescription
+import Foundation
+
+let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"] != nil
+
+let dawnTarget: Target = {
+	if swanLocalDawn {
+		return .binaryTarget(
+			name: "DawnLib",
+			path: "Dawn/dist/dawn_webgpu.artifactbundle"
+		)
+	} else {
+		return .binaryTarget(
+			name: "DawnLib",
+			url:
+				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-146.0.7647.0/dawn-chromium-canary-146.0.7647.0-release.zip",
+			checksum: "4f2c20051e08bd60101e8c8079d658ea9f0fa6c8421c54ba0a425d2174634985"
+		)
+	}
+}()
 
 let strictSwiftSettings: [SwiftSetting] = [
 	.unsafeFlags(["-warnings-as-errors"])
@@ -40,12 +59,7 @@ let package = Package(
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0-latest"),
 	],
 	targets: [
-		.binaryTarget(
-			name: "DawnLib",
-			url:
-				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-145.0.7591.0/dawn-chromium-canary-145.0.7591.0-release.zip",
-			checksum: "54097cc610bd8f2d853c03b95733229f59cec5e45028da05945b46c3714495b1"
-		),
+		dawnTarget,
 		.executableTarget(
 			name: "GenerateDawnBindings",
 			dependencies: [
@@ -138,7 +152,12 @@ let package = Package(
 				"WebGPU",
 			],
 			path: "Demos/DemoUtils",
-			swiftSettings: strictSwiftSettings
+			swiftSettings: strictSwiftSettings,
+			linkerSettings: [
+				.linkedLibrary("dxgi", .when(platforms: [.windows])),
+				.linkedLibrary("d3d12", .when(platforms: [.windows])),
+				.linkedLibrary("dxguid", .when(platforms: [.windows])),
+			]
 		),
 		.executableTarget(
 			name: "GameOfLife",
@@ -174,6 +193,9 @@ let package = Package(
 				.linkedFramework("IOSurface", .when(platforms: [.macOS])),
 				.linkedFramework("Metal", .when(platforms: [.macOS])),
 				.linkedFramework("QuartzCore", .when(platforms: [.macOS])),
+				.linkedLibrary("dxgi", .when(platforms: [.windows])),
+				.linkedLibrary("d3d12", .when(platforms: [.windows])),
+				.linkedLibrary("dxguid", .when(platforms: [.windows])),
 			]
 		),
 	]

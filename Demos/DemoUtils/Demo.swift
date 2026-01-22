@@ -1,5 +1,6 @@
 import RGFW
 import WebGPU
+import Foundation
 
 public protocol DemoProvider {
 	@MainActor
@@ -24,7 +25,7 @@ public func runDemo<Provider: DemoProvider>(
 	var adapter: GPUAdapter? = nil
 
 	_ = instance.requestAdapter(
-		options: nil,
+		options: adapterOptions(),
 		callbackInfo: GPURequestAdapterCallbackInfo(
 			mode: .allowProcessEvents,
 			callback: { status, inAdapter, message in
