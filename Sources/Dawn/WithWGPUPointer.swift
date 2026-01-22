@@ -62,20 +62,22 @@ public func withWGPUArrayPointer<R>(_ array: [String], _ lambda: (UnsafePointer<
 /// Given an array of Swift structs, convert it to an array of WGPU structs and call the lambda with the pointer to the WGPU array.
 public func withWGPUArrayPointer<E: GPUStruct, R>(_ array: [E], _ lambda: (UnsafePointer<E.WGPUType>) -> R) -> R {
 	var result: R!
-	_ = Array<E.WGPUType>(unsafeUninitializedCapacity: array.count) { buffer, initializedCount in
-		func process(index: Int) -> R {
-			if index >= array.count {
-				initializedCount = array.count
+	var wgpuArray = Array<E.WGPUType>()
+	wgpuArray.reserveCapacity(array.count)
+
+	func process(index: Int) -> R {
+		if index >= array.count {
+			return wgpuArray.withUnsafeBufferPointer { buffer in
 				let pointer = UnsafePointer(buffer.baseAddress!)
 				return lambda(pointer)
 			}
-			return array[index].withWGPUStruct { wgpuStruct in
-				buffer[index] = wgpuStruct
-				return process(index: index + 1)
-			}
 		}
-		result = process(index: 0)
+		return array[index].withWGPUStruct { wgpuStruct in
+			wgpuArray.append(wgpuStruct)
+			return process(index: index + 1)
+		}
 	}
+	result = process(index: 0)
 	return result
 }
 
