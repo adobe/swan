@@ -897,7 +897,7 @@ For simple cases, regex search & replace can help:
 1. 🔄 Add helper methods to `DawnMethod+Wrappers.swift`
    - ✅ `isSizeParameter(_:in:data:)`
    - ⬜ `publicArgs(data:)`
-   - ⬜ `arrayForSize(_:in:)`
+   - ✅ `arrayForSize(_:in:)`
 2. ⬜ Add extraction methods
    - `generateSizeExtractions(data:)`
    - `wrapWithSizeExtraction(_:data:)`
