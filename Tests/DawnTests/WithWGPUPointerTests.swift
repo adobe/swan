@@ -55,6 +55,124 @@ struct WithWGPUPointerTests {
 		#expect(result == 3)
 	}
 
+	@Test("withWGPUArrayPointer with single GPUBindGroupLayoutEntry")
+	func testWithWGPUArrayPointerSingleGPUBindGroupLayoutEntry() {
+		let entries: [GPUBindGroupLayoutEntry] = [
+			.init(
+				binding: 42,
+				visibility: GPUShaderStage([.fragment]),
+				buffer: .init(type: .uniform)
+			)
+		]
+
+		let result = withWGPUArrayPointer(entries) { pointer in
+			// Verify we can access the single entry
+			#expect(pointer[0].binding == 42)
+			#expect(pointer[0].visibility.contains(.fragment))
+			#expect(!pointer[0].visibility.contains(.vertex))
+
+			// Verify buffer type
+			let bufferPointer = UnsafeBufferPointer(start: pointer, count: entries.count)
+			#expect(bufferPointer.count == 1)
+
+			return "success"
+		}
+
+		#expect(result == "success")
+	}
+
+	@Test("withWGPUArrayPointer with empty GPUBindGroupLayoutEntry array")
+	func testWithWGPUArrayPointerEmptyGPUBindGroupLayoutEntry() {
+		let entries: [GPUBindGroupLayoutEntry] = []
+
+		let result = withWGPUArrayPointer(entries) { pointer in
+			// Verify we get a valid pointer even for empty array
+			let bufferPointer = UnsafeBufferPointer(start: pointer, count: entries.count)
+			#expect(bufferPointer.count == 0)
+
+			return true
+		}
+
+		#expect(result == true)
+	}
+
+	@Test("withWGPUArrayPointer with GPUVertexAttribute array")
+	func testWithWGPUArrayPointerGPUVertexAttribute() {
+		let attributes: [GPUVertexAttribute] = [
+			.init(format: .float32x2, offset: 0, shaderLocation: 0),
+			.init(format: .float32x3, offset: 8, shaderLocation: 1),
+			.init(format: .float32x4, offset: 20, shaderLocation: 2),
+		]
+
+		let result = withWGPUArrayPointer(attributes) { pointer in
+			// Verify we can access all attributes
+			#expect(pointer[0].offset == 0)
+			#expect(pointer[0].shaderLocation == 0)
+
+			#expect(pointer[1].offset == 8)
+			#expect(pointer[1].shaderLocation == 1)
+
+			#expect(pointer[2].offset == 20)
+			#expect(pointer[2].shaderLocation == 2)
+
+			// Verify buffer pointer works
+			let bufferPointer = UnsafeBufferPointer(start: pointer, count: attributes.count)
+			#expect(bufferPointer.count == 3)
+
+			return attributes.count
+		}
+
+		#expect(result == 3)
+	}
+
+	@Test("withWGPUArrayPointer recursion test - large array")
+	func testWithWGPUArrayPointerLargeArray() {
+		// Create a larger array to test the recursive processing
+		let entries: [GPUBindGroupLayoutEntry] = (0..<100).map { index in
+			.init(
+				binding: UInt32(index),
+				visibility: GPUShaderStage([.compute]),
+				buffer: .init()
+			)
+		}
+
+		let result = withWGPUArrayPointer(entries) { pointer in
+			// Verify first and last elements
+			#expect(pointer[0].binding == 0)
+			#expect(pointer[99].binding == 99)
+
+			// Verify all elements are correctly converted
+			for i in 0..<entries.count {
+				#expect(pointer[i].binding == UInt32(i))
+			}
+
+			return entries.count
+		}
+
+		#expect(result == 100)
+	}
+
+	@Test("withWGPUArrayPointer return type test")
+	func testWithWGPUArrayPointerReturnTypes() {
+		let entries: [GPUBindGroupLayoutEntry] = [
+			.init(binding: 0, visibility: GPUShaderStage([.vertex]), buffer: .init())
+		]
+
+		// Test returning different types
+		let intResult: Int = withWGPUArrayPointer(entries) { _ in 42 }
+		#expect(intResult == 42)
+
+		let stringResult: String = withWGPUArrayPointer(entries) { _ in "test" }
+		#expect(stringResult == "test")
+
+		let tupleResult: (Int, String) = withWGPUArrayPointer(entries) { _ in (1, "value") }
+		#expect(tupleResult.0 == 1)
+		#expect(tupleResult.1 == "value")
+
+		let optionalResult: Int? = withWGPUArrayPointer(entries) { _ in Optional(123) }
+		#expect(optionalResult == 123)
+	}
+
 	@Test("unwrapWGPUObjectArray with empty array")
 	func testUnwrapWGPUObjectArrayEmpty() {
 		// Create an empty array of GPU objects
