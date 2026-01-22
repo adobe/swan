@@ -49,6 +49,61 @@ extension DawnMethod {
 		}
 	}
 
+	/// If the given parameter is a size parameter, return the array that we are the size parameter for.
+	/// TODO: bmedina - can this be combined with isSizeParameter so we aren't searching twice?
+	internal func arrayForSizeParameter(
+		_ sizeParameter: DawnFunctionArgument,
+		in args: [DawnFunctionArgument],
+		data: DawnData
+	) -> DawnFunctionArgument? {
+		if !isSizeParameter(sizeParameter, in: args, data: data) {
+			return nil
+		}
+		// Search for the array that has a length that matches the size parameter's name.
+		return args.first { arg in
+			/// TODO: bmedina - use the more concise syntax from isSizeParameter
+			guard let length = arg.length else {
+				return false
+			}
+			if case .name(let lengthName) = length {
+				return lengthName == sizeParameter.name
+			}
+			return false
+		}
+	}
+
+	/// For any of our args that are size parameters for an array, generate a let statement that contains the size
+	/// of the array so that we can call the Dawn API that requires a separate parameter for the size.
+	/// Example
+	/// "args": [
+	/// 	{"name": "command count", "type": "size_t"},
+	/// 	{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
+	/// ]
+	/// "command count" is the size parameter for the "commands" array, so we would generate the following:
+	/// let commandCount = commands.count
+	func generateArraySizeExtractions(data: DawnData) -> String {
+		let allArgs = self.args ?? []
+		var extractions = [String]()
+
+		for arg in allArgs {
+			// TODO: bmedina - don't really like `in` as the label here. Can we think of a better name?
+			// TODO: bmedina - include the if clause as a `where` in the loop statement
+			if isSizeParameter(arg, in: allArgs, data: data) {
+				guard let array = arrayForSizeParameter(arg, in: allArgs, data: data) else {
+					continue
+				}
+				let arrayName = array.name.camelCase
+				let sizeName = arg.name.camelCase
+				let swiftType = array.swiftTypeName(data: data)
+				let isOptional = swiftType.hasSuffix("?")
+				let countExpression = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
+				extractions.append("let \(sizeName) = \(countExpression)")
+			}
+		}
+
+		return extractions.joined(separator: "\n") + "\n"
+	}
+
 	/// Unwrap the arguments for a method call, so that we can call the unwrapped WGPU method with the arguments.
 	func unwrapArgs(_ args: [DawnFunctionArgument], data: DawnData, expression: ExprSyntax) -> ExprSyntax {
 		if args.isEmpty {
