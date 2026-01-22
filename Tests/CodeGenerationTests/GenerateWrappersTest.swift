@@ -248,10 +248,12 @@ struct TestTypeDescriptor: TypeDescriptor {
 					]
 				},
 				"command buffer": {
-					"category": "object"
+					"category": "object",
+					"methods": []
 				},
 				"size_t": {
-					"category": "native"
+					"category": "native",
+					"methods": []
 				}
 			}
 			"""
