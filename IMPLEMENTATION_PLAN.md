@@ -911,6 +911,7 @@ For simple cases, regex search & replace can help:
 3. ⬜ Extend integration tests in `Tests/DawnTests/`
 4. ⬜ Run `swift test` - all tests pass
 5. ⬜ Manual verification checklist
+6. ⬜ Address TODOs in Tests/CodeGenerationTests/GenerateWrappersTest.swift
 
 ### Phase 4: Sample Updates (1 hour)
 1. ⬜ Update `WebGPULife/Renderer.swift` commented code
