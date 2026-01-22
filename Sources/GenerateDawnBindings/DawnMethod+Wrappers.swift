@@ -24,6 +24,31 @@ extension DawnMethod {
 		return false
 	}
 
+	/// Check if the given argument is a size parameter for one of the args in the given list.
+	///
+	/// A size parameter will have a "name" that matches the "length" field of another argument.
+	/// If that other argument is itself an Array (deduced by looking at its swiftTypeName), then
+	/// this parameter is a size parameter for that Array.
+	/// Example from dawn.json:
+	/// "args": [
+	/// 	{"name": "command count", "type": "size_t"},
+	/// 	{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
+	/// ]
+	/// The second arg will have an Array type, and its "length" field matches the first arg's name.
+	internal func isSizeParameter(_ arg: DawnFunctionArgument, in args: [DawnFunctionArgument], data: DawnData) -> Bool {
+		return args.contains { otherArg in
+			if case .name(let lengthName) = otherArg.length {
+				if (lengthName == arg.name) {
+					// otherArg's length field matches the arg's name. Now check if otherArg is an Array type.
+					let swiftType = otherArg.swiftTypeName(data: data)
+					// The C-API only support array collection types, so a simple prefix check is sufficient.
+					return swiftType.hasPrefix("[")
+				}
+			}
+			return false
+		}
+	}
+
 	/// Unwrap the arguments for a method call, so that we can call the unwrapped WGPU method with the arguments.
 	func unwrapArgs(_ args: [DawnFunctionArgument], data: DawnData, expression: ExprSyntax) -> ExprSyntax {
 		if args.isEmpty {

@@ -889,15 +889,15 @@ For simple cases, regex search & replace can help:
 
 ### Phase 1: Preparation (1-2 hours)
 1. ✅ Create implementation plan (this document)
-2. ⬜ Review plan with stakeholders
-3. ⬜ Create feature branch: `feature/eliminate-array-size-params`
-4. ⬜ Set up test infrastructure if needed
+2. ✅ Review plan with stakeholders
+3. ✅ Create feature branch: `bmedina/remove-array-size-params`
+4. ✅ Set up test infrastructure if needed
 
 ### Phase 2: Implementation (2-3 hours)
-1. ⬜ Add helper methods to `DawnMethod+Wrappers.swift`
-   - `isSizeParameter(_:in:data:)`
-   - `publicArgs(data:)`
-   - `arrayForSize(_:in:)`
+1. 🔄 Add helper methods to `DawnMethod+Wrappers.swift`
+   - ✅ `isSizeParameter(_:in:data:)`
+   - ⬜ `publicArgs(data:)`
+   - ⬜ `arrayForSize(_:in:)`
 2. ⬜ Add extraction methods
    - `generateSizeExtractions(data:)`
    - `wrapWithSizeExtraction(_:data:)`
@@ -906,8 +906,8 @@ For simple cases, regex search & replace can help:
    - Use `wrapWithSizeExtraction` for body
 
 ### Phase 3: Testing (2-3 hours)
-1. ⬜ Create `Tests/GenerateDawnBindingsTests/DawnMethodWrapperTests.swift`
-2. ⬜ Write unit tests (5-6 test cases)
+1. ✅ Add tests to `Tests/CodeGenerationTests/GenerateWrappersTest.swift`
+2. 🔄 Write unit tests (5-6 test cases)
 3. ⬜ Extend integration tests in `Tests/DawnTests/`
 4. ⬜ Run `swift test` - all tests pass
 5. ⬜ Manual verification checklist
