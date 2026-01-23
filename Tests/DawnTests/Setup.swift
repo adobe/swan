@@ -8,8 +8,14 @@ public func setupGPU() -> (GPUInstance, GPUAdapter, GPUDevice) {
 
 	var adapter: GPUAdapter? = nil
 
+	#if os(Windows)
+	let options = GPURequestAdapterOptions(backendType: .D3D12)
+	#else
+	let options: GPURequestAdapterOptions? = nil
+	#endif
+
 	_ = instance.requestAdapter(
-		options: nil,
+		options: options,
 		callbackInfo: .init(
 			mode: .allowProcessEvents,
 			callback: { status, inAdapter, message in
