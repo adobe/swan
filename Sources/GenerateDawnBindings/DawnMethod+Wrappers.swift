@@ -131,18 +131,6 @@ extension DawnMethod {
 		return lastArgFormatted
 	}
 
-	/// Wrap expression with array size extractions, if needed
-	// private func wrapWithArraySizeExtractions(_ expression: ExprSyntax, data: DawnData) -> ExprSyntax {
-	// 	let arraySizeExtractionCode = generateArraySizeExtractions(data: data)
-	// 	if arraySizeExtractionCode.isEmpty {
-	// 		return expression
-	// 	}
-	// 	return """
-	// 		\(raw: arraySizeExtractionCode)
-	// 		return \(expression, format: TabFormat(initialIndentation: .tabs(1)))
-	// 		"""
-	// }
-
 	/// Create a wrapper for a method call that will unwrap the arguments and call the WGPU method.
 	func methodWrapperDecl(data: DawnData) -> FunctionDeclSyntax {
 		let methodName = name.camelCase
@@ -155,19 +143,6 @@ extension DawnMethod {
 			"""
 			\(raw: name.camelCase)(\(raw: argsForCMethod.map { "\($0.name.camelCase): \($0.name.camelCase)" }.joined(separator: ", ")))
 			"""
-
-		// let expressionWithSizeExtractions: ExprSyntax
-		// if arraySizeExtractionCode.isEmpty {
-		// 	expressionWithSizeExtractions = wgpuMethodCall
-		// } else {
-		// 	expressionWithSizeExtractions =
-		// 		ExprSyntax(
-		// 			"""
-		// 			\(raw: arraySizeExtractionCode)
-		// 			\(wgpuMethodCall)
-		// 			"""
-		// 		)
-		// }
 
 		// We need to unwrap the arguments, eventually calling the WGPU method with the unwrapped arguments.
 		let unwrappedMethodCall = unwrapArgs(argsForSwiftMethod, data: data, expression: wgpuMethodCall)
