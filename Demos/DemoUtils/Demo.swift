@@ -96,6 +96,7 @@ public func runDemo<Provider: DemoProvider>(
 
 	while RGFW_window_shouldClose(window) == RGFW_FALSE {
 		RGFW_pollEvents()
+		instance.processEvents(); // very important to process webgpu async events per frame
 
 		updateSurface(surface: surface, window: window, device: device!, format: format)
 
