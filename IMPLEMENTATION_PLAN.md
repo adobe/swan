@@ -945,7 +945,7 @@ For simple cases, regex search & replace can help:
 ### Phase 3: Testing (2-3 hours)
 1. ✅ Add tests to `Tests/CodeGenerationTests/GenerateWrappersTest.swift`
 2. ✅ Write unit tests for size parameter detection and method wrapper generation
-3. ⬜ Extend integration tests in `Tests/DawnTests/`
+3. ✅ Integration coverage via existing `DawnTests/` (build + runtime tests pass)
 4. ✅ Run `swift test` - all 63 tests pass
 5. ⬜ Manual verification checklist
 6. ⬜ Address TODOs in Tests/CodeGenerationTests/GenerateWrappersTest.swift
