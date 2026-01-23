@@ -13,9 +13,7 @@ func getSurface(window: OpaquePointer, instance: GPUInstance) -> GPUSurface {
 }
 
 @MainActor
-func updateSurface(surface: GPUSurface, window: OpaquePointer, device: GPUDevice, format: GPUTextureFormat) {
-	print("No surface update")
-}
+func updateSurface(surface: GPUSurface, window: OpaquePointer, device: GPUDevice, format: GPUTextureFormat) {}
 
 func adapterOptions() -> GPURequestAdapterOptions {
 	return GPURequestAdapterOptions(backendType: .D3D12);

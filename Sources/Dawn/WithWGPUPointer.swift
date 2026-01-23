@@ -157,24 +157,23 @@ public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E
 
 extension UnsafePointer where Pointee: WGPUStruct {
 	func wrapArrayWithCount<SType: GPUStructWrappable>(_ count: Int) -> [SType] where SType.WGPUType == Pointee {
-		return Array(unsafeUninitializedCapacity: count) {
-			(structArrayBuffer: inout UnsafeMutableBufferPointer<SType>, initializedCount: inout Int) in
-			for i: Int in 0..<count {
-				structArrayBuffer[i] = SType(wgpuStruct: self[i])
-			}
-			initializedCount = count
+		var structArray = Array<SType>()
+		structArray.reserveCapacity(count)
+		for i: Int in 0..<count {
+			structArray.append(SType(wgpuStruct: self[i]))
 		}
+		return structArray
 	}
 }
 
 extension UnsafePointer {
 	func wrapArrayWithCount(_ count: Int) -> [Pointee] {
-		return Array.init(unsafeUninitializedCapacity: count) {
-			(structArrayBuffer: inout UnsafeMutableBufferPointer<Pointee>, initializedCount: inout Int) in
-			for i in 0..<count {
-				structArrayBuffer[i] = self[i]
-			}
+		var structArray = Array<Pointee>()
+		structArray.reserveCapacity(count)
+		for i in 0..<count {
+			structArray.append(self[i])
 		}
+		return structArray
 	}
 }
 
@@ -195,13 +194,12 @@ extension UnsafePointer where Pointee: FloatingPoint {
 extension UnsafePointer {
 	/// Wrap an array of WGPU values, specified with a pointer, into a proper Swift array.
 	func wrapWGPUArrayWithCount<T>(_ count: Int) -> [T] where Pointee == Optional<T> {
-		return Array.init(unsafeUninitializedCapacity: count) {
-			(integerArrayBuffer: inout UnsafeMutableBufferPointer<T>, initializedCount: inout Int) in
-			for i in 0..<count {
-				integerArrayBuffer[i] = self[i]!
-			}
-			initializedCount = count
+		var integerArray = Array<T>()
+		integerArray.reserveCapacity(count)
+		for i in 0..<count {
+			integerArray.append(self[i]!)
 		}
+		return integerArray
 	}
 }
 
@@ -227,18 +225,20 @@ extension Array where Element: AnyObject {
 			return lambda(nil)
 		}
 		var result: R!
-		_ = Array<Element?>(unsafeUninitializedCapacity: count) { buffer, initializedCount in
-			func process(index: Int) -> R {
-				if index >= count {
-					initializedCount = count
+		var optionalArray = Array<Element?>()
+		optionalArray.reserveCapacity(count)
+
+		func process(index: Int) -> R {
+			if index >= count {
+				return optionalArray.withUnsafeBufferPointer { buffer in
 					let pointer = UnsafePointer(buffer.baseAddress!)
 					return lambda(pointer)
 				}
-				buffer[index] = Optional(self[index])
-				return process(index: index + 1)
 			}
-			result = process(index: 0)
+			optionalArray.append(Optional(self[index]))
+			return process(index: index + 1)
 		}
+		result = process(index: 0)
 		return result
 	}
 

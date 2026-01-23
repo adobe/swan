@@ -11,7 +11,15 @@ import Foundation
 import PackageDescription
 
 let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"] != nil
+
+#if os(Windows)
+let useAddressSanitizer: Bool = false
+let usePDBDebugInfo: Bool = ProcessInfo.processInfo.environment["USE_PDB_DEBUG_INFO"] == "true"
+#else
 let useAddressSanitizer: Bool = ProcessInfo.processInfo.environment["CI"] == "true"
+let usePDBDebugInfo: Bool = false
+#endif
+
 
 let dawnTarget: Target = {
 	if swanLocalDawn {
@@ -29,15 +37,23 @@ let dawnTarget: Target = {
 	}
 }()
 
-let strictSwiftSettings: [SwiftSetting] = [
+var swiftSettings: [SwiftSetting] = [
 	.unsafeFlags(["-warnings-as-errors"])
 ]
 
-let asanSwiftSettings: [SwiftSetting] =
-	useAddressSanitizer
-	? [
+// Generate PDB debug info on Windows for Visual Studio debugging compatibility
+if usePDBDebugInfo {
+	swiftSettings.append(contentsOf: [
+		.unsafeFlags(["-g", "-debug-info-format=codeview"])
+	])
+}
+
+// Add address sanitizer settings if enabled
+if useAddressSanitizer {
+	swiftSettings.append(contentsOf: [
 		.unsafeFlags(["-sanitize=address"])
-	] : []
+	])
+}
 
 let asanLinkerSettings: [LinkerSetting] =
 	useAddressSanitizer
@@ -87,7 +103,7 @@ let package = Package(
 			exclude: [
 				"README.md"
 			],
-			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings
 		),
 		.executableTarget(
@@ -99,7 +115,7 @@ let package = Package(
 			exclude: [
 				"README.md"
 			],
-			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings
 		),
 		.plugin(
@@ -129,7 +145,7 @@ let package = Package(
 			dependencies: [
 				"DawnLib"
 			],
-			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings
 		),
 		.target(
@@ -138,7 +154,7 @@ let package = Package(
 				.product(name: "Logging", package: "swift-log"),
 				"DawnLib",
 			],
-			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings
 		),
 		.target(
@@ -148,7 +164,7 @@ let package = Package(
 				"DawnLib",
 				"GenerateDawnBindingsPlugin",
 			],
-			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings
 		),
 		.target(
@@ -156,13 +172,13 @@ let package = Package(
 			dependencies: [
 				"Dawn"
 			],
-			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings
 		),
 		.target(
 			name: "RGFW",
 			path: "Demos/RGFW",
-			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings
 		),
 		.target(
@@ -172,7 +188,7 @@ let package = Package(
 				"WebGPU",
 			],
 			path: "Demos/DemoUtils",
-			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings + [
 				.linkedLibrary("dxgi", .when(platforms: [.windows])),
 				.linkedLibrary("d3d12", .when(platforms: [.windows])),
@@ -185,7 +201,7 @@ let package = Package(
 				"DemoUtils"
 			],
 			path: "Demos/GameOfLife",
-			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings + [
 				.linkedFramework("Cocoa", .when(platforms: [.macOS])),
 				.linkedFramework("IOKit", .when(platforms: [.macOS])),
@@ -200,7 +216,7 @@ let package = Package(
 				"GenerateDawnAPINotes",
 				.product(name: "Testing", package: "swift-testing"),
 			],
-			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings
 		),
 		.testTarget(
@@ -209,7 +225,7 @@ let package = Package(
 				"Dawn",
 				.product(name: "Testing", package: "swift-testing"),
 			],
-			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings + [
 				.linkedFramework("IOSurface", .when(platforms: [.macOS])),
 				.linkedFramework("Metal", .when(platforms: [.macOS])),
