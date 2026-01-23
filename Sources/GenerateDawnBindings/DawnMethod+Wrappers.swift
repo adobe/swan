@@ -38,7 +38,7 @@ extension DawnMethod {
 	private func isArraySizeParameter(_ arg: DawnFunctionArgument, in args: [DawnFunctionArgument], data: DawnData) -> Bool {
 		return args.contains { otherArg in
 			if case .name(let lengthName) = otherArg.length {
-				if (lengthName == arg.name) {
+				if lengthName == arg.name {
 					// otherArg's length field matches the arg's name. Now check if otherArg is an Array type.
 					let swiftType = otherArg.swiftTypeName(data: data)
 					// The C-API only support array collection types, so a simple prefix check is sufficient.
@@ -133,30 +133,32 @@ extension DawnMethod {
 		// We need to unwrap the arguments, eventually calling the WGPU method with the unwrapped arguments.
 		let unwrappedMethodCall = unwrapArgs(argsForSwiftMethod, data: data, expression: wgpuMethodCall)
 
-		let wrappedReturns = returns != nil ? returns!.swiftTypeName(data: data) : "Void"
+		let wrappedReturns = returns?.swiftTypeName(data: data) ?? "Void"
 
 		// Create the body of the method.
 		let arraySizeExtractions = generateArraySizeExtractions(data: data)
 
 		var body: CodeBlockItemListSyntax
-		if returns == nil {
+		if let returns = returns {
+			if returns.isWrappedType(data: data) {
+				// The return value is a wrapped type, so we need to wrap it as we return it.
+				body = CodeBlockItemListSyntax {
+					arraySizeExtractions
+					"let result: \(raw: returns.cTypeName(data: data)) = \(unwrappedMethodCall)"
+					"return \(returns.wrapValueWithIdentifier("result", data: data))"
+				}
+			} else {
+				// The return value is not a wrapped type, so we can just return the result of the WGPU method.
+				body = CodeBlockItemListSyntax {
+					arraySizeExtractions
+					"return \(unwrappedMethodCall)"
+				}
+			}
+		} else {
 			// No return value, so just call the WGPU method.
 			body = CodeBlockItemListSyntax {
 				arraySizeExtractions
 				"\(unwrappedMethodCall)"
-			}
-		} else if returns!.isWrappedType(data: data) {
-			// The return value is a wrapped type, so we need to wrap it as we return it.
-			body = CodeBlockItemListSyntax {
-				arraySizeExtractions
-				"let result: \(raw: returns!.cTypeName(data: data)) = \(unwrappedMethodCall)"
-				"return \(returns!.wrapValueWithIdentifier("result", data: data))"
-			}
-		} else {
-			// The return value is not a wrapped type, so we can just return the result of the WGPU method.
-			body = CodeBlockItemListSyntax {
-				arraySizeExtractions
-				"return \(unwrappedMethodCall)"
 			}
 		}
 
