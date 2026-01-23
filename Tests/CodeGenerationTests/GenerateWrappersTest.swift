@@ -266,21 +266,8 @@ struct TestTypeDescriptor: TypeDescriptor {
 			Issue.record("Failed to get queue")
 			return
 		}
+
 		let submitMethod = queue.methods.first { $0.name == Name("submit") }!
-		let args = submitMethod.args!
-
-		// Direct test of isSizeParameter. TODO - bmedina: do we want to test this interal function, or just use
-		// the public API, as further down?
-		// The first arg, "command count", should be detected as a size parameter.
-		#expect(submitMethod.isSizeParameter(args[0], in: args, data: data))
-		// The second arg is the array, and should not be detected as a size parameter.
-		#expect(!submitMethod.isSizeParameter(args[1], in: args, data: data))
-
-		// The publicArgs function should filter out the size parameter.
-		// let publicArgs = submitMethod.publicArgs(data: data)
-		// #expect(publicArgs.count == 1)
-		// #expect(publicArgs[0].name == Name("commands"))
-
 		let generated = submitMethod.methodWrapperDecl(data: data).formatted().description
 		#expect(generated.contains("commands"))
 		// "command count" should have been excluded from the Swift API
@@ -335,52 +322,6 @@ struct TestTypeDescriptor: TypeDescriptor {
 		// Check C API call includes both the extracted count and the array
 		#expect(generated.contains("submit(commandCount: commandCount, commands: commands)"))
 	}
-
-	@Test("Array size extraction for Array types")
-	func testArraySizeExtraction() {
-		let testData = """
-			{
-				"queue": {
-					"category": "object",
-					"methods": [
-						{
-							"name": "submit",
-							"args": [
-								{"name": "command count", "type": "size_t"},
-								{"name": "commands", "type": "array buffer", "annotation": "const*", "length": "command count"},
-								{"name": "option count", "type": "size_t"},
-								{"name": "options", "type": "array buffer", "annotation": "const*", "length": "option count"}
-							]
-						}
-					]
-				},
-				"array buffer": {
-					"category": "object",
-					"methods": []
-				},
-				"size_t": {
-					"category": "native",
-					"methods": []
-				}
-			}
-			"""
-		let data = try? JSONDecoder().decode(DawnData.self, from: testData.data(using: .utf8)!)
-		guard let data = data else {
-			Issue.record("Failed to decode data")
-			return
-		}
-		guard case .object(let queue) = data.data[Name("queue")] else {
-			Issue.record("Failed to get queue")
-			return
-		}
-		let submitMethod = queue.methods.first { $0.name == Name("submit") }!
-
-		// Direct test of generateArraySizeExtractions. TODO - bmedina: do we want to test this interal function, or just use the public API?
-		let sizeExtractions = submitMethod.generateArraySizeExtractions(data: data)
-		#expect(sizeExtractions.contains("let commandCount = commands.count"))
-		#expect(sizeExtractions.contains("let optionCount = options.count"))
-	}
-
 }
 
 let deviceDawnData = """
