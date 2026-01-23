@@ -1041,14 +1041,65 @@ If issue is minor:
 
 ---
 
+## Future Enhancements
+
+### Enable `uint8_t` Array Wrapping for `writeBuffer`
+
+**Status**: Exploration candidate
+
+**Current Behavior**: Methods like `writeBuffer` that take `uint8_t const*` with a `length` parameter are NOT wrapped. The `data` parameter becomes `UnsafeRawPointer` and users must manually pass the size.
+
+**Location of exclusion**: `Sources/GenerateDawnBindings/TypeDescriptor.swift` lines 44-46:
+```swift
+if type.raw == "void" || type.raw == "uint8_t" {
+    return false  // Explicitly NOT wrapped
+}
+```
+
+**Why `uint8_t` was originally excluded**:
+1. **Semantic intent**: `uint8_t*` typically represents "raw byte buffer" (like `Data`), not "array of byte values"
+2. **Consistency with `void*`**: Both are treated as raw byte pointers
+3. **Flexibility**: Users can pass different typed arrays (`[Float]`, `[UInt32]`, etc.) that Swift bridges to `UnsafeRawPointer`
+
+**Why we might want to change this**:
+Unlike `void*`, a `[UInt8]` array has a meaningful `.count` property. Enabling wrapping would allow:
+
+```swift
+// Current API (manual size)
+device.queue.writeBuffer(buffer: buf, bufferOffset: 0, data: bytes, size: bytes.count)
+
+// Potential new API (automatic size)
+device.queue.writeBuffer(buffer: buf, bufferOffset: 0, data: bytes)
+```
+
+**Implementation**:
+Remove `|| type.raw == "uint8_t"` from the condition in `TypeDescriptor.swift`:
+```swift
+if type.raw == "void" {  // Only exclude void, not uint8_t
+    return false
+}
+```
+
+**Trade-offs**:
+- ✅ Cleaner API for byte array operations
+- ✅ Consistent with other array parameter handling
+- ⚠️ Loses flexibility of passing arbitrary typed data without explicit conversion
+- ⚠️ Breaking change for existing `writeBuffer` call sites
+
+**Related code**: `Demos/GameOfLife/GameOfLife.swift` line 57 has a TODO comment: `// TODO: Shouldn't have to pass size`
+
+**Decision**: Defer to future PR. Evaluate after main array size elimination is complete and stable.
+
+---
+
 ## Appendix A: Affected Methods (Examples)
 
 Based on Dawn WebGPU API, these methods will change:
 
 ### GPUQueue
 - `submit(commandCount:commands:)` → `submit(commands:)`
-- `writeBuffer(buffer:bufferOffset:data:dataSize:)` → **No change** (data is raw pointer)
-- `writeTexture(destination:data:dataSize:dataLayout:writeSize:)` → **No change** (data is raw pointer)
+- `writeBuffer(buffer:bufferOffset:data:size:)` → **No change** (data is `uint8_t*`, see [Future Enhancements](#enable-uint8_t-array-wrapping-for-writebuffer))
+- `writeTexture(destination:data:dataSize:dataLayout:writeSize:)` → **No change** (data is `void*` raw pointer)
 
 ### GPURenderPassEncoder
 - `setBindGroup(groupIndex:group:dynamicOffsetCount:dynamicOffsets:)` → `setBindGroup(groupIndex:group:dynamicOffsets:)`
