@@ -35,7 +35,7 @@ extension DawnMethod {
 	/// 	{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
 	/// ]
 	/// The second arg will have an Array type, and its "length" field matches the first arg's name.
-	internal func isSizeParameter(_ arg: DawnFunctionArgument, in args: [DawnFunctionArgument], data: DawnData) -> Bool {
+	private func isArraySizeParameter(_ arg: DawnFunctionArgument, in args: [DawnFunctionArgument], data: DawnData) -> Bool {
 		return args.contains { otherArg in
 			if case .name(let lengthName) = otherArg.length {
 				if (lengthName == arg.name) {
@@ -49,24 +49,20 @@ extension DawnMethod {
 		}
 	}
 
-	/// If the given parameter is a size parameter, return the array that we are the size parameter for.
+	/// If the given parameter is a size parameter, return the array for which it is the size parameter.
 	/// TODO: bmedina - can this be combined with isSizeParameter so we aren't searching twice?
-	internal func arrayForSizeParameter(
-		_ sizeParameter: DawnFunctionArgument,
-		in args: [DawnFunctionArgument],
+	private func arrayForSizeParameter(
+		_ sizeParameterArg: DawnFunctionArgument,
+		allArgs: [DawnFunctionArgument],
 		data: DawnData
 	) -> DawnFunctionArgument? {
-		if !isSizeParameter(sizeParameter, in: args, data: data) {
+		if !isArraySizeParameter(sizeParameterArg, in: allArgs, data: data) {
 			return nil
 		}
 		// Search for the array that has a length that matches the size parameter's name.
-		return args.first { arg in
-			/// TODO: bmedina - use the more concise syntax from isSizeParameter
-			guard let length = arg.length else {
-				return false
-			}
-			if case .name(let lengthName) = length {
-				return lengthName == sizeParameter.name
+		return allArgs.first { arg in
+			if case .name(let lengthName) = arg.length {
+				return lengthName == sizeParameterArg.name
 			}
 			return false
 		}
@@ -82,24 +78,20 @@ extension DawnMethod {
 	/// "command count" is the size parameter for the "commands" array, so we would generate the following:
 	/// let commandCount = commands.count
 	/// TODO: bmedina - rename to generateArraySizeExtractionCode
-	func generateArraySizeExtractions(data: DawnData) -> String {
+	private func generateArraySizeExtractions(data: DawnData) -> String {
 		let allArgs = self.args ?? []
 		var extractions = [String]()
 
-		for arg in allArgs {
-			// TODO: bmedina - don't really like `in` as the label here. Can we think of a better name?
-			// TODO: bmedina - include the if clause as a `where` in the loop statement
-			if isSizeParameter(arg, in: allArgs, data: data) {
-				guard let array = arrayForSizeParameter(arg, in: allArgs, data: data) else {
-					continue
-				}
-				let arrayName = array.name.camelCase
-				let sizeName = arg.name.camelCase
-				let swiftType = array.swiftTypeName(data: data)
-				let isOptional = swiftType.hasSuffix("?")
-				let countExpression = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
-				extractions.append("let \(sizeName) = \(countExpression)")
+		for arg in allArgs where isArraySizeParameter(arg, in: allArgs, data: data) {
+			guard let array = arrayForSizeParameter(arg, allArgs: allArgs, data: data) else {
+				continue
 			}
+			let arrayName = array.name.camelCase
+			let sizeName = arg.name.camelCase
+			let swiftType = array.swiftTypeName(data: data)
+			let isOptional = swiftType.hasSuffix("?")
+			let countExpression = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
+			extractions.append("let \(sizeName) = \(countExpression)")
 		}
 
 		if extractions.isEmpty {
@@ -137,7 +129,7 @@ extension DawnMethod {
 
 		let argsForCMethod = self.args ?? []
 		// Exclude all array size parameters from the Swift method signature.
-		let argsForSwiftMethod = argsForCMethod.filter { !isSizeParameter($0, in: argsForCMethod, data: data) }
+		let argsForSwiftMethod = argsForCMethod.filter { !isArraySizeParameter($0, in: argsForCMethod, data: data) }
 
 		let wgpuMethodCall: ExprSyntax =
 			"""
