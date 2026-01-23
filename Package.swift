@@ -7,10 +7,11 @@
 //
 // swift-tools-version: 6.1
 
-import PackageDescription
 import Foundation
+import PackageDescription
 
 let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"] != nil
+let useAddressSanitizer: Bool = ProcessInfo.processInfo.environment["CI"] == "true"
 
 let dawnTarget: Target = {
 	if swanLocalDawn {
@@ -31,6 +32,18 @@ let dawnTarget: Target = {
 let strictSwiftSettings: [SwiftSetting] = [
 	.unsafeFlags(["-warnings-as-errors"])
 ]
+
+let asanSwiftSettings: [SwiftSetting] =
+	useAddressSanitizer
+	? [
+		.unsafeFlags(["-sanitize=address"])
+	] : []
+
+let asanLinkerSettings: [LinkerSetting] =
+	useAddressSanitizer
+	? [
+		.unsafeFlags(["-sanitize=address"])
+	] : []
 
 let package = Package(
 	name: "Swan",
@@ -74,7 +87,8 @@ let package = Package(
 			exclude: [
 				"README.md"
 			],
-			swiftSettings: strictSwiftSettings
+			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			linkerSettings: asanLinkerSettings
 		),
 		.executableTarget(
 			name: "GenerateDawnAPINotes",
@@ -85,7 +99,8 @@ let package = Package(
 			exclude: [
 				"README.md"
 			],
-			swiftSettings: strictSwiftSettings
+			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			linkerSettings: asanLinkerSettings
 		),
 		.plugin(
 			name: "GenerateDawnBindingsPlugin",
@@ -114,7 +129,8 @@ let package = Package(
 			dependencies: [
 				"DawnLib"
 			],
-			swiftSettings: strictSwiftSettings
+			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			linkerSettings: asanLinkerSettings
 		),
 		.target(
 			name: "DawnData",
@@ -122,7 +138,8 @@ let package = Package(
 				.product(name: "Logging", package: "swift-log"),
 				"DawnLib",
 			],
-			swiftSettings: strictSwiftSettings
+			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			linkerSettings: asanLinkerSettings
 		),
 		.target(
 			name: "Dawn",
@@ -131,19 +148,22 @@ let package = Package(
 				"DawnLib",
 				"GenerateDawnBindingsPlugin",
 			],
-			swiftSettings: strictSwiftSettings
+			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			linkerSettings: asanLinkerSettings
 		),
 		.target(
 			name: "WebGPU",
 			dependencies: [
 				"Dawn"
 			],
-			swiftSettings: strictSwiftSettings
+			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			linkerSettings: asanLinkerSettings
 		),
 		.target(
 			name: "RGFW",
 			path: "Demos/RGFW",
-			swiftSettings: strictSwiftSettings
+			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			linkerSettings: asanLinkerSettings
 		),
 		.target(
 			name: "DemoUtils",
@@ -152,8 +172,8 @@ let package = Package(
 				"WebGPU",
 			],
 			path: "Demos/DemoUtils",
-			swiftSettings: strictSwiftSettings,
-			linkerSettings: [
+			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			linkerSettings: asanLinkerSettings + [
 				.linkedLibrary("dxgi", .when(platforms: [.windows])),
 				.linkedLibrary("d3d12", .when(platforms: [.windows])),
 				.linkedLibrary("dxguid", .when(platforms: [.windows])),
@@ -165,8 +185,8 @@ let package = Package(
 				"DemoUtils"
 			],
 			path: "Demos/GameOfLife",
-			swiftSettings: strictSwiftSettings,
-			linkerSettings: [
+			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			linkerSettings: asanLinkerSettings + [
 				.linkedFramework("Cocoa", .when(platforms: [.macOS])),
 				.linkedFramework("IOKit", .when(platforms: [.macOS])),
 				.linkedFramework("Metal", .when(platforms: [.macOS])),
@@ -180,7 +200,8 @@ let package = Package(
 				"GenerateDawnAPINotes",
 				.product(name: "Testing", package: "swift-testing"),
 			],
-			swiftSettings: strictSwiftSettings
+			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			linkerSettings: asanLinkerSettings
 		),
 		.testTarget(
 			name: "DawnTests",
@@ -188,8 +209,8 @@ let package = Package(
 				"Dawn",
 				.product(name: "Testing", package: "swift-testing"),
 			],
-			swiftSettings: strictSwiftSettings,
-			linkerSettings: [
+			swiftSettings: strictSwiftSettings + asanSwiftSettings,
+			linkerSettings: asanLinkerSettings + [
 				.linkedFramework("IOSurface", .when(platforms: [.macOS])),
 				.linkedFramework("Metal", .when(platforms: [.macOS])),
 				.linkedFramework("QuartzCore", .when(platforms: [.macOS])),
