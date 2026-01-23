@@ -177,10 +177,10 @@ private func arrayForSize(_ sizeName: Name, in args: [DawnFunctionArgument]) -> 
 
 #### Step 2: Count Extraction Code Generation
 
-Add methods to generate `let count = array.count` statements:
+Add a method to generate `let count = array.count` statements:
 ```swift
 /// Generate let statements that extract array counts into size parameter variables
-private func generateSizeExtractions(data: DawnData) -> String {
+private func generateArraySizeExtractions(data: DawnData) -> String {
     let allArgs = self.args ?? []
     var extractions: [String] = []
 
@@ -202,23 +202,61 @@ private func generateSizeExtractions(data: DawnData) -> String {
 
     return extractions.isEmpty ? "" : extractions.joined(separator: "\n") + "\n"
 }
+```
 
-/// Wrap expression with size extraction if needed
-private func wrapWithSizeExtraction(_ expression: ExprSyntax, data: DawnData) -> ExprSyntax {
-    let sizeCode = generateSizeExtractions(data: data)
-    if sizeCode.isEmpty {
-        return expression
+#### Step 3: Modify `unwrapArgs` to Accept Size Extraction
+
+**File**: `Sources/GenerateDawnBindings/DawnMethod+Wrappers.swift`
+**Method**: `unwrapArgs(_:data:expression:)` (lines 28-47)
+
+The size extraction code needs to be injected at the **innermost level** of the unwrapping closures—after all array arguments are unwrapped but before the C API call. This ensures the array variables are in scope when we call `.count` on them.
+
+**Add a new `sizeExtraction` parameter:**
+```swift
+/// Unwrap the arguments for a method call, injecting size extraction at the innermost level.
+func unwrapArgs(_ args: [DawnFunctionArgument], data: DawnData, expression: ExprSyntax,
+                sizeExtraction: String = "") -> ExprSyntax {
+    if args.isEmpty {
+        if sizeExtraction.isEmpty {
+            return expression.indented(by: Trivia.tab)
+        }
+        // Inject size extraction before the expression at the innermost level
+        return ExprSyntax(
+            """
+            \(raw: sizeExtraction)\(expression)
+            """
+        )
     }
 
-    return """
-        {
-            \(raw: sizeCode)return \(expression, format: TabFormat(initialIndentation: .tabs(1)))
-        }()
-        """
+    var args = args
+    let lastArg = args.removeLast()
+
+    let lastArgDecl: ExprSyntax
+    if lastArg.isWrappedType(data: data) {
+        lastArgDecl = lastArg.unwrapValueWithIdentifier(lastArg.name.camelCase, data: data, expression: expression)
+    } else {
+        lastArgDecl = expression
+    }
+    let lastArgFormatted: ExprSyntax = "\(lastArgDecl, format: TabFormat(initialIndentation: .tabs(0)))"
+    if args.count > 0 {
+        // Pass sizeExtraction through to the next recursive call
+        return unwrapArgs(args, data: data, expression: lastArgFormatted, sizeExtraction: sizeExtraction)
+    }
+    return lastArgFormatted
 }
 ```
 
-#### Step 3: Modify Method Signature Generation
+**Why this approach?** The size extraction needs to happen inside the unwrapping closures:
+```swift
+commands.unwrapWGPUObjectArray { commands in
+    let commandCount = commands.count    // ← Inside closure, after unwrapping
+    submit(commandCount: commandCount, commands: commands)
+}
+```
+
+By injecting at the innermost level (when `args.isEmpty`), we ensure the array variables are in scope.
+
+#### Step 4: Modify Method Signature Generation
 
 **File**: `Sources/GenerateDawnBindings/DawnMethod+Wrappers.swift`
 **Method**: `methodWrapperDecl(data:)` (lines 50-99)
@@ -237,13 +275,14 @@ func methodWrapperDecl(data: DawnData) -> FunctionDeclSyntax {
         \(raw: name.camelCase)(\(raw: allArgs.map { "\($0.name.camelCase): \($0.name.camelCase)" }.joined(separator: ", ")))
         """
 
-    // Unwrap public arguments (size params will be in scope from wrapper)
-    let unwrappedMethodCall = unwrapArgs(publicArgs, data: data, expression: wgpuMethodCall)
+    // NEW: Generate size extraction code
+    let sizeExtraction = generateArraySizeExtractions(data: data)
 
-    // NEW: Wrap with size extraction
-    let unwrappedWithSizes = wrapWithSizeExtraction(unwrappedMethodCall, data: data)
+    // Unwrap arguments, passing size extraction to inject at innermost level
+    let unwrappedMethodCall = unwrapArgs(publicArgs, data: data, expression: wgpuMethodCall,
+                                          sizeExtraction: sizeExtraction)
 
-    // ... rest of method body uses unwrappedWithSizes ...
+    // ... rest of method body uses unwrappedMethodCall ...
 
     // NEW: Use publicArgs for signature
     let argumentSignature = FunctionParameterListSyntax {
@@ -894,22 +933,20 @@ For simple cases, regex search & replace can help:
 4. ✅ Set up test infrastructure if needed
 
 ### Phase 2: Implementation (2-3 hours)
-1. 🔄 Add helper methods to `DawnMethod+Wrappers.swift`
+1. ✅ Add helper methods to `DawnMethod+Wrappers.swift`
    - ✅ `isSizeParameter(_:in:data:)`
-   - ⬜ `publicArgs(data:)`
-   - ✅ `arrayForSize(_:in:)`
-2. ⬜ Add extraction methods
-   - `generateSizeExtractions(data:)`
-   - `wrapWithSizeExtraction(_:data:)`
-3. ⬜ Modify `methodWrapperDecl(data:)`
-   - Use `publicArgs` for signature
-   - Use `wrapWithSizeExtraction` for body
+   - ✅ `arrayForSizeParameter(_:in:data:)` (renamed from `arrayForSize`)
+   - ✅ `generateArraySizeExtractions(data:)`
+2. ✅ Modify `methodWrapperDecl(data:)`
+   - ✅ Filter size params from signature using inline `filter` with `isSizeParameter`
+   - ✅ Generate size extraction and prepend to method body (before closures)
+   - Note: `unwrapArgs` left unchanged - size extraction injected into body instead
 
 ### Phase 3: Testing (2-3 hours)
 1. ✅ Add tests to `Tests/CodeGenerationTests/GenerateWrappersTest.swift`
-2. 🔄 Write unit tests (5-6 test cases)
+2. ✅ Write unit tests for size parameter detection and method wrapper generation
 3. ⬜ Extend integration tests in `Tests/DawnTests/`
-4. ⬜ Run `swift test` - all tests pass
+4. ✅ Run `swift test` - all 63 tests pass
 5. ⬜ Manual verification checklist
 6. ⬜ Address TODOs in Tests/CodeGenerationTests/GenerateWrappersTest.swift
 

@@ -81,6 +81,7 @@ extension DawnMethod {
 	/// ]
 	/// "command count" is the size parameter for the "commands" array, so we would generate the following:
 	/// let commandCount = commands.count
+	/// TODO: bmedina - rename to generateArraySizeExtractionCode
 	func generateArraySizeExtractions(data: DawnData) -> String {
 		let allArgs = self.args ?? []
 		var extractions = [String]()
@@ -101,6 +102,10 @@ extension DawnMethod {
 			}
 		}
 
+		if extractions.isEmpty {
+			return ""
+		}
+		// Append a trailing newline here, so we don't have to do it conditionally later
 		return extractions.joined(separator: "\n") + "\n"
 	}
 
@@ -126,41 +131,70 @@ extension DawnMethod {
 		return lastArgFormatted
 	}
 
+	/// Wrap expression with array size extractions, if needed
+	// private func wrapWithArraySizeExtractions(_ expression: ExprSyntax, data: DawnData) -> ExprSyntax {
+	// 	let arraySizeExtractionCode = generateArraySizeExtractions(data: data)
+	// 	if arraySizeExtractionCode.isEmpty {
+	// 		return expression
+	// 	}
+	// 	return """
+	// 		\(raw: arraySizeExtractionCode)
+	// 		return \(expression, format: TabFormat(initialIndentation: .tabs(1)))
+	// 		"""
+	// }
+
 	/// Create a wrapper for a method call that will unwrap the arguments and call the WGPU method.
 	func methodWrapperDecl(data: DawnData) -> FunctionDeclSyntax {
 		let methodName = name.camelCase
 
-		let args = self.args ?? []
+		let argsForCMethod = self.args ?? []
+		// Exclude all array size parameters from the Swift method signature.
+		let argsForSwiftMethod = argsForCMethod.filter { !isSizeParameter($0, in: argsForCMethod, data: data) }
 
-		// Ultimately, we have to call the WGPU method with the arguments.
 		let wgpuMethodCall: ExprSyntax =
 			"""
-			\(raw: name.camelCase)(\(raw: args.map { "\($0.name.camelCase): \($0.name.camelCase)" }.joined(separator: ", ")))
+			\(raw: name.camelCase)(\(raw: argsForCMethod.map { "\($0.name.camelCase): \($0.name.camelCase)" }.joined(separator: ", ")))
 			"""
 
+		// let expressionWithSizeExtractions: ExprSyntax
+		// if arraySizeExtractionCode.isEmpty {
+		// 	expressionWithSizeExtractions = wgpuMethodCall
+		// } else {
+		// 	expressionWithSizeExtractions =
+		// 		ExprSyntax(
+		// 			"""
+		// 			\(raw: arraySizeExtractionCode)
+		// 			\(wgpuMethodCall)
+		// 			"""
+		// 		)
+		// }
+
 		// We need to unwrap the arguments, eventually calling the WGPU method with the unwrapped arguments.
-		let unwrappedMethodCall = unwrapArgs(args, data: data, expression: wgpuMethodCall)
+		let unwrappedMethodCall = unwrapArgs(argsForSwiftMethod, data: data, expression: wgpuMethodCall)
+
 		let wrappedReturns = returns != nil ? returns!.swiftTypeName(data: data) : "Void"
 
 		// Create the body of the method.
+		let arraySizeExtractionCode = generateArraySizeExtractions(data: data)
+
 		var body: CodeBlockItemListSyntax
 		if returns == nil {
 			// No return value, so just call the WGPU method.
-			body = "\(unwrappedMethodCall)"
+			body = "\(raw: arraySizeExtractionCode)\(unwrappedMethodCall)"
 		} else if returns!.isWrappedType(data: data) {
 			// The return value is a wrapped type, so we need to wrap it as we return it.
 			body =
 				"""
-				let result: \(raw: returns!.cTypeName(data: data)) = \(unwrappedMethodCall)
+				\(raw: arraySizeExtractionCode)let result: \(raw: returns!.cTypeName(data: data)) = \(unwrappedMethodCall)
 				return \(returns!.wrapValueWithIdentifier("result", data: data))
 				"""
 		} else {
 			// The return value is not a wrapped type, so we can just return the result of the WGPU method.
-			body = "return \(unwrappedMethodCall)"
+			body = "\(raw: arraySizeExtractionCode)return \(unwrappedMethodCall)"
 		}
 
 		let argumentSignature = FunctionParameterListSyntax {
-			for arg in args {
+			for arg in argsForSwiftMethod {
 				"\(raw: arg.name.camelCase): \(raw: arg.isInOut ? "inout " : "")\(raw: arg.swiftTypeName(data: data))"
 			}
 		}
