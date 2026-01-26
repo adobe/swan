@@ -230,7 +230,7 @@ struct GameOfLifeDemo: DemoProvider {
 		)
 	}
 
-	func renderToTexture(destTexture : GPUTexture, encoder : GPUCommandEncoder) {
+	func renderToTexture(destTexture: GPUTexture, encoder: GPUCommandEncoder) {
 		// Render pass
 		let pass = encoder.beginRenderPass(
 			descriptor: GPURenderPassDescriptor(
@@ -259,80 +259,106 @@ struct GameOfLifeDemo: DemoProvider {
 		pass.end()
 	}
 
-	func screenShotRender(encoder : GPUCommandEncoder, w : Int, h : Int, format : GPUTextureFormat) -> GPUBuffer {
+	func screenShotRender(encoder: GPUCommandEncoder, w: Int, h: Int, format: GPUTextureFormat) -> GPUBuffer {
 		guard let device: GPUDevice = self.device else {
 			fatalError("Device not initialized")
 		}
-		let targetTexture: GPUTexture = device.createTexture(descriptor: GPUTextureDescriptor(
-			label: "Temp screenshot", 
-			usage: [GPUTextureUsage.copySrc, GPUTextureUsage.renderAttachment], 
-			dimension: GPUTextureDimension._2D, // unsigthly _, probably no way around it though?
-			size: GPUExtent3D(width: UInt32(w), height: UInt32(h), depthOrArrayLayers: 1), // note: should have default value for depthOrArrayLayers
-			format: format));
-		let readbackBuffer: GPUBuffer = device.createBuffer(descriptor: GPUBufferDescriptor( 
-			label: "Temp screenshot", 
-			usage: [GPUBufferUsage.copyDst, GPUBufferUsage.mapRead],
-			size: UInt64(w*h*4), // consider: should we map those to swift Int instead? 
-			mappedAtCreation: false))! // unclear why this returns an optional (create texture does not)
-		
+		let targetTexture: GPUTexture = device.createTexture(
+			descriptor: GPUTextureDescriptor(
+				label: "Temp screenshot",
+				usage: [GPUTextureUsage.copySrc, GPUTextureUsage.renderAttachment],
+				dimension: GPUTextureDimension._2D,  // unsigthly _, probably no way around it though?
+				size: GPUExtent3D(width: UInt32(w), height: UInt32(h), depthOrArrayLayers: 1),  // note: should have default value for depthOrArrayLayers
+				format: format
+			)
+		)
+			;
+		let readbackBuffer: GPUBuffer = device.createBuffer(
+			descriptor: GPUBufferDescriptor(
+				label: "Temp screenshot",
+				usage: [GPUBufferUsage.copyDst, GPUBufferUsage.mapRead],
+				size: UInt64(w * h * 4),  // consider: should we map those to swift Int instead?
+				mappedAtCreation: false
+			)
+		)!  // unclear why this returns an optional (create texture does not)
+
 		renderToTexture(destTexture: targetTexture, encoder: encoder)
 
-		encoder.copyTextureToBuffer(source: GPUTexelCopyTextureInfo(
-			texture: targetTexture, 
-			mipLevel: 0, 
-			origin: GPUOrigin3D(x: 0, y: 0, z: 0), 
-			aspect: WGPUTextureAspect.all), 
+		encoder.copyTextureToBuffer(
+			source: GPUTexelCopyTextureInfo(
+				texture: targetTexture,
+				mipLevel: 0,
+				origin: GPUOrigin3D(x: 0, y: 0, z: 0),
+				aspect: WGPUTextureAspect.all
+			),
 			destination: GPUTexelCopyBufferInfo(
 				layout: GPUTexelCopyBufferLayout(
-					offset: 0, 
-					bytesPerRow: UInt32(w*4), 
-					rowsPerImage: UInt32(h)), 
+					offset: 0,
+					bytesPerRow: UInt32(w * 4),
+					rowsPerImage: UInt32(h)
+				),
 				buffer: readbackBuffer
-			), 
+			),
 			copySize: GPUExtent3D(width: UInt32(w), height: UInt32(h), depthOrArrayLayers: 1)
-			)
+		)
 		return readbackBuffer
 	}
 
-	func savePPM(destFileName : String, bgra : UnsafePointer<UInt8>, w : Int, h : Int) {
+	func savePPM(destFileName: String, bgra: UnsafePointer<UInt8>, w: Int, h: Int) {
 		do {
 			let fileManager = FileManager.default
-			let folderURL = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+			let folderURL = try fileManager.url(
+				for: .documentDirectory,
+				in: .userDomainMask,
+				appropriateFor: nil,
+				create: false
+			)
 			let fileURL = folderURL.appendingPathComponent(destFileName)
 			let header: String = "P6\n\(w) \(h) 255\n"
 			var data = header.data(using: .ascii)!
-			for i in 0 ..< w*h {
-				data.append(bgra[i*4+2])
-				data.append(bgra[i*4+1])
-				data.append(bgra[i*4])
+			for i in 0..<w * h {
+				data.append(bgra[i * 4 + 2])
+				data.append(bgra[i * 4 + 1])
+				data.append(bgra[i * 4])
 			}
 			try data.write(to: fileURL)
-			print ("Saved: \(fileURL)")
+			print("Saved: \(fileURL)")
 		} catch {
-			print ( "Failed to write file: \(destFileName). Error: \(error)")
+			print("Failed to write file: \(destFileName). Error: \(error)")
 		}
 	}
 
-	func screenshotReadback(readbackBuffer : GPUBuffer, w : Int, h : Int) {
+	func screenshotReadback(readbackBuffer: GPUBuffer, w: Int, h: Int) {
 		// inconsistent: sizes here are Ints
-		print ( "Readback started..." );
-		readbackBuffer.mapAsync(mode: GPUMapMode.read, offset: 0, size: Int(readbackBuffer.size), callbackInfo: GPUBufferMapCallbackInfo(
-			mode: GPUCallbackMode.allowProcessEvents,
-			callback: { status, message in
-				if ( status != GPUMapAsyncStatus.success) {
-					fatalError(message ?? "map async failed");
-				}
-				guard let ptr: UnsafeRawPointer = readbackBuffer.getConstMappedRange(offset: 0, size: Int(readbackBuffer.size)) else {
-					fatalError("map returned null pointer");
-				}
-				print ( "Readback ok!" )
+		print("Readback started...");
+		let _ = readbackBuffer.mapAsync(
+			mode: GPUMapMode.read,
+			offset: 0,
+			size: Int(readbackBuffer.size),
+			callbackInfo: GPUBufferMapCallbackInfo(
+				mode: GPUCallbackMode.allowProcessEvents,
+				callback: { status, message in
+					if (status != GPUMapAsyncStatus.success) {
+						fatalError(message ?? "map async failed");
+					}
+					guard
+						let ptr: UnsafeRawPointer = readbackBuffer.getConstMappedRange(
+							offset: 0,
+							size: Int(readbackBuffer.size)
+						)
+					else {
+						fatalError("map returned null pointer");
+					}
+					print("Readback ok!")
 
-				let ptr2: UnsafePointer<UInt8> = ptr.bindMemory(to: UInt8.self, capacity: Int(readbackBuffer.size)) 
-				savePPM(destFileName: "myshot.ppm", bgra: ptr2, w: w, h: h);
+					let ptr2: UnsafePointer<UInt8> = ptr.bindMemory(to: UInt8.self, capacity: Int(readbackBuffer.size))
+					savePPM(destFileName: "myshot.ppm", bgra: ptr2, w: w, h: h);
 
-				readbackBuffer.unmap();
-				readbackBuffer.destroy();
-			}));
+					readbackBuffer.unmap();
+					readbackBuffer.destroy();
+				}
+			)
+		);
 	}
 
 	@MainActor
@@ -376,15 +402,20 @@ struct GameOfLifeDemo: DemoProvider {
 		let backbuffer = surface.getCurrentTexture();
 		renderToTexture(destTexture: backbuffer, encoder: encoder)
 
-		var screenShotRenderedBuffer : GPUBuffer?;
+		var screenShotRenderedBuffer: GPUBuffer?;
 		let screenShotW = 1024;
 		let screenShotH = 600;
 
-		if ( sPressed ) {
-			print ( "Screen shot!")
-			screenShotRenderedBuffer = self.screenShotRender(encoder: encoder, w: screenShotW, h: screenShotH, format: backbuffer.format)
+		if (sPressed) {
+			print("Screen shot!")
+			screenShotRenderedBuffer = self.screenShotRender(
+				encoder: encoder,
+				w: screenShotW,
+				h: screenShotH,
+				format: backbuffer.format
+			)
 		}
-		
+
 		let commandBuffer = encoder.finish(descriptor: nil)!
 		device.queue.submit(commandCount: 1, commands: [commandBuffer])
 
