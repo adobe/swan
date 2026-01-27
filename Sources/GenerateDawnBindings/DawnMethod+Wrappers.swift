@@ -24,6 +24,72 @@ extension DawnMethod {
 		return false
 	}
 
+	/// Check if the given argument is a size parameter for one of the args in the given list.
+	///
+	/// A size parameter will have a "name" that matches the "length" field of another argument that is an Array.
+	/// Example from dawn.json:
+	/// "args": [
+	/// 	{"name": "command count", "type": "size_t"},
+	/// 	{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
+	/// ]
+	/// The second arg will have an Array type, and its "length" field matches the first arg's name.
+	private func isArraySizeParameter(_ arg: DawnFunctionArgument, in args: [DawnFunctionArgument]) -> Bool {
+		return args.contains { otherArg in
+			if !otherArg.includesArrayLength() {
+				return false
+			}
+			// To be a size parameter, the given arg's name must match the other argument's length field.
+			if case .name(let lengthName) = otherArg.length {
+				return lengthName == arg.name
+			}
+			return false
+		}
+	}
+
+	/// If the given parameter is a size parameter, return the array for which it is the size parameter.
+	private func arrayForSizeParameter(
+		_ sizeParameterArg: DawnFunctionArgument,
+		allArgs: [DawnFunctionArgument],
+	) -> DawnFunctionArgument? {
+		if !isArraySizeParameter(sizeParameterArg, in: allArgs) {
+			return nil
+		}
+		// Search for the array that has a length that matches the size parameter's name.
+		return allArgs.first { arg in
+			if case .name(let lengthName) = arg.length {
+				return lengthName == sizeParameterArg.name
+			}
+			return false
+		}
+	}
+
+	/// For any of our args that are size parameters for an array, generate a let statement that contains the size
+	/// of the array so that we can call the Dawn API that requires a separate parameter for the size.
+	/// Example
+	/// "args": [
+	/// 	{"name": "command count", "type": "size_t"},
+	/// 	{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
+	/// ]
+	/// "command count" is the size parameter for the "commands" array, so we would generate the following:
+	/// let commandCount = commands.count
+	private func generateArraySizeExtractions(data: DawnData) -> CodeBlockItemListSyntax {
+		let allArgs = self.args ?? []
+
+		return CodeBlockItemListSyntax {
+			for arg in allArgs where isArraySizeParameter(arg, in: allArgs) {
+				if let array = arrayForSizeParameter(arg, allArgs: allArgs) {
+					let arrayName = array.name.camelCase
+					let sizeName = arg.name.camelCase
+					let swiftType = array.swiftTypeName(data: data)
+					let isOptional = swiftType.hasSuffix("?")
+					let countExpr = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
+
+					"let \(raw: sizeName) = \(raw: countExpr)"
+				}
+			}
+		}
+	}
+
 	/// Unwrap the arguments for a method call, so that we can call the unwrapped WGPU method with the arguments.
 	func unwrapArgs(_ args: [DawnFunctionArgument], data: DawnData, expression: ExprSyntax) -> ExprSyntax {
 		if args.isEmpty {
@@ -50,37 +116,49 @@ extension DawnMethod {
 	func methodWrapperDecl(data: DawnData) -> FunctionDeclSyntax {
 		let methodName = name.camelCase
 
-		let args = self.args ?? []
+		let argsForCMethod = self.args ?? []
+		// Exclude all array size parameters from the Swift method signature.
+		let argsForSwiftMethod = argsForCMethod.filter { !isArraySizeParameter($0, in: argsForCMethod) }
 
-		// Ultimately, we have to call the WGPU method with the arguments.
 		let wgpuMethodCall: ExprSyntax =
 			"""
-			\(raw: name.camelCase)(\(raw: args.map { "\($0.name.camelCase): \($0.name.camelCase)" }.joined(separator: ", ")))
+			\(raw: name.camelCase)(\(raw: argsForCMethod.map { "\($0.name.camelCase): \($0.name.camelCase)" }.joined(separator: ", ")))
 			"""
 
 		// We need to unwrap the arguments, eventually calling the WGPU method with the unwrapped arguments.
-		let unwrappedMethodCall = unwrapArgs(args, data: data, expression: wgpuMethodCall)
-		let wrappedReturns = returns != nil ? returns!.swiftTypeName(data: data) : "Void"
+		let unwrappedMethodCall = unwrapArgs(argsForSwiftMethod, data: data, expression: wgpuMethodCall)
+
+		let wrappedReturns = returns?.swiftTypeName(data: data) ?? "Void"
 
 		// Create the body of the method.
+		let arraySizeExtractions = generateArraySizeExtractions(data: data)
+
 		var body: CodeBlockItemListSyntax
-		if returns == nil {
-			// No return value, so just call the WGPU method.
-			body = "\(unwrappedMethodCall)"
-		} else if returns!.isWrappedType(data: data) {
-			// The return value is a wrapped type, so we need to wrap it as we return it.
-			body =
-				"""
-				let result: \(raw: returns!.cTypeName(data: data)) = \(unwrappedMethodCall)
-				return \(returns!.wrapValueWithIdentifier("result", data: data))
-				"""
+		if let returns = returns {
+			if returns.isWrappedType(data: data) {
+				// The return value is a wrapped type, so we need to wrap it as we return it.
+				body = CodeBlockItemListSyntax {
+					arraySizeExtractions
+					"let result: \(raw: returns.cTypeName(data: data)) = \(unwrappedMethodCall)"
+					"return \(returns.wrapValueWithIdentifier("result", data: data))"
+				}
+			} else {
+				// The return value is not a wrapped type, so we can just return the result of the WGPU method.
+				body = CodeBlockItemListSyntax {
+					arraySizeExtractions
+					"return \(unwrappedMethodCall)"
+				}
+			}
 		} else {
-			// The return value is not a wrapped type, so we can just return the result of the WGPU method.
-			body = "return \(unwrappedMethodCall)"
+			// No return value, so just call the WGPU method.
+			body = CodeBlockItemListSyntax {
+				arraySizeExtractions
+				"\(unwrappedMethodCall)"
+			}
 		}
 
 		let argumentSignature = FunctionParameterListSyntax {
-			for arg in args {
+			for arg in argsForSwiftMethod {
 				"\(raw: arg.name.camelCase): \(raw: arg.isInOut ? "inout " : "")\(raw: arg.swiftTypeName(data: data))"
 			}
 		}

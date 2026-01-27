@@ -230,6 +230,205 @@ struct TestTypeDescriptor: TypeDescriptor {
 			combined.description == expected.description
 		)
 	}
+
+	@Test("Size parameter detection for Array types")
+	func testIsSizeParameter() {
+		let testData = """
+			{
+				"queue": {
+					"category": "object",
+					"methods": [
+						{
+							"name": "submit",
+							"args": [
+								{"name": "command count", "type": "size_t"},
+								{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
+							]
+						}
+					]
+				},
+				"command buffer": {
+					"category": "object",
+					"methods": []
+				},
+				"size_t": {
+					"category": "native",
+					"methods": []
+				}
+			}
+			"""
+		let data = try? JSONDecoder().decode(DawnData.self, from: testData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+		guard case .object(let queue) = data.data[Name("queue")] else {
+			Issue.record("Failed to get queue")
+			return
+		}
+
+		let submitMethod = queue.methods.first { $0.name == Name("submit") }!
+		let generated = submitMethod.methodWrapperDecl(data: data).formatted().description
+		#expect(generated.contains("commands"))
+		// "command count" should have been excluded from the Swift API
+		#expect(!generated.contains("command count"))
+	}
+
+	@Test("Method wrapper excludes size params and extracts count")
+	func testMethodWrapperDeclWithArraySizeExtraction() {
+		let testData = """
+			{
+				"queue": {
+					"category": "object",
+					"methods": [
+						{
+							"name": "submit",
+							"args": [
+								{"name": "command count", "type": "size_t"},
+								{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
+							]
+						}
+					]
+				},
+				"command buffer": {
+					"category": "object",
+					"methods": []
+				},
+				"size_t": {
+					"category": "native"
+				}
+			}
+			"""
+		let data = try? JSONDecoder().decode(DawnData.self, from: testData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+		guard case .object(let queue) = data.data[Name("queue")] else {
+			Issue.record("Failed to get queue")
+			return
+		}
+		let submitMethod = queue.methods.first { $0.name == Name("submit") }!
+
+		let generated = submitMethod.methodWrapperDecl(data: data).formatted().description
+
+		// Check signature excludes size param but includes array param
+		#expect(generated.contains("func submit(commands: [GPUCommandBuffer])"))
+		#expect(!generated.contains("commandCount: Int"))  // Size param excluded from signature
+
+		// Check size extraction is present in the body
+		#expect(generated.contains("let commandCount = commands.count"))
+
+		// Check C API call includes both the extracted count and the array
+		#expect(generated.contains("submit(commandCount: commandCount, commands: commands)"))
+	}
+
+	@Test("Method with multiple arrays extracts all sizes")
+	func testMultipleArraySizeExtraction() {
+		let testData = """
+			{
+				"encoder": {
+					"category": "object",
+					"methods": [
+						{
+							"name": "set buffers",
+							"args": [
+								{"name": "buffer count", "type": "size_t"},
+								{"name": "buffers", "type": "buffer", "annotation": "const*", "length": "buffer count"},
+								{"name": "offset count", "type": "size_t"},
+								{"name": "offsets", "type": "uint64_t", "annotation": "const*", "length": "offset count"}
+							]
+						}
+					]
+				},
+				"buffer": {
+					"category": "object",
+					"methods": []
+				},
+				"size_t": {
+					"category": "native"
+				},
+				"uint64_t": {
+					"category": "native"
+				}
+			}
+			"""
+		let data = try? JSONDecoder().decode(DawnData.self, from: testData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+		guard case .object(let encoder) = data.data[Name("encoder")] else {
+			Issue.record("Failed to get encoder")
+			return
+		}
+		let setBuffersMethod = encoder.methods.first { $0.name == Name("set buffers") }!
+
+		let generated = setBuffersMethod.methodWrapperDecl(data: data).formatted().description
+
+		// Check signature excludes both size params but includes both array params
+		// Note: offsets is [UInt64]? because native type arrays with const* are optional
+		#expect(generated.contains("func setBuffers(buffers: [GPUBuffer], offsets: [UInt64]?)"))
+		#expect(!generated.contains("bufferCount: Int"))  // Size param excluded from signature
+		#expect(!generated.contains("offsetCount: Int"))  // Size param excluded from signature
+
+		// Check size extractions are present in the body
+		#expect(generated.contains("let bufferCount = buffers.count"))
+		// offsets uses nil-coalescing because it's optional
+		#expect(generated.contains("let offsetCount = offsets?.count ?? 0"))
+
+		// Check C API call includes all extracted counts and arrays
+		#expect(
+			generated.contains(
+				"setBuffers(bufferCount: bufferCount, buffers: buffers, offsetCount: offsetCount, offsets: offsets)"
+			)
+		)
+	}
+
+	@Test("Optional array uses nil-coalescing for count")
+	func testOptionalArraySizeExtraction() {
+		let testData = """
+			{
+				"pass": {
+					"category": "object",
+					"methods": [
+						{
+							"name": "set groups",
+							"args": [
+								{"name": "group count", "type": "size_t"},
+								{"name": "groups", "type": "bind group", "annotation": "const*", "length": "group count", "optional": true}
+							]
+						}
+					]
+				},
+				"bind group": {
+					"category": "object",
+					"methods": []
+				},
+				"size_t": {
+					"category": "native"
+				}
+			}
+			"""
+		let data = try? JSONDecoder().decode(DawnData.self, from: testData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+		guard case .object(let pass) = data.data[Name("pass")] else {
+			Issue.record("Failed to get pass")
+			return
+		}
+		let setGroupsMethod = pass.methods.first { $0.name == Name("set groups") }!
+
+		let generated = setGroupsMethod.methodWrapperDecl(data: data).formatted().description
+
+		// Check signature has optional array parameter
+		#expect(generated.contains("groups: [GPUBindGroup]?"))
+
+		// Check size extraction uses nil-coalescing for optional array
+		#expect(generated.contains("let groupCount = groups?.count ?? 0"))
+	}
 }
 
 let deviceDawnData = """
