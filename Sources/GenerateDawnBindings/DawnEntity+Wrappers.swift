@@ -35,7 +35,7 @@ extension DawnEntity: DawnType {
 		case .functionPointer(let functionPointer):
 			return functionPointer.swiftTypeNameForType(type, annotation: annotation, length: length, optional: optional)
 		case .enum, .bitmask:
-			var type = "\(swiftTypePrefixForName(name: type))\(type.CamelCase)"
+			var type = "\(type.swiftTypePrefix())\(type.CamelCase)"
 			if length != nil {
 				type = "[\(type)]"
 			}
@@ -79,7 +79,7 @@ extension DawnEntity: DawnType {
 		case .functionPointer(let functionPointer):
 			return functionPointer.defaultValue(type, annotation: annotation, length: length)
 		case .bitmask:
-			return "\(swiftTypePrefixForName(name: type))\(type.CamelCase)()"
+			return "\(type.swiftTypePrefix())\(type.CamelCase)()"
 		case .enum(let enumValue):
 			return ".\(enumValue.values.first!.name.camelCaseIdentifier)"
 		default:

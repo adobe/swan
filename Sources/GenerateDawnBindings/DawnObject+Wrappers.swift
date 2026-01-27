@@ -13,7 +13,7 @@ extension DawnObject: DawnType {
 		// Create a typealias for the object.
 		var declarations: [any DeclSyntaxProtocol] = [
 			DeclSyntax(
-				"public typealias \(raw: swiftTypePrefixForName(name: name))\(raw: name.CamelCase) = WGPU\(raw: name.CamelCase)"
+				"public typealias \(raw: name.swiftTypePrefix())\(raw: name.CamelCase) = WGPU\(raw: name.CamelCase)"
 			)
 		]
 		// Create an extension with wrappers for any methods that use a wrapped type as an
@@ -29,7 +29,7 @@ extension DawnObject: DawnType {
 			declarations.append(
 				DeclSyntax(
 					"""
-					extension \(raw: swiftTypePrefixForName(name: name))\(raw: name.CamelCase) {
+					extension \(raw: name.swiftTypePrefix())\(raw: name.CamelCase) {
 					\(raw: wrappedMethodDecls.map { "\t\($0.formatted().description)\n" }.joined(separator: "\n"))
 					}
 					"""
@@ -44,10 +44,10 @@ extension DawnObject: DawnType {
 	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool = false) -> String {
 		if case .int(let count) = length {
 			if count == 1 && annotation == "const*" {
-				return "UnsafePointer<\(swiftTypePrefixForName(name: type))\(type.CamelCase)?>?"
+				return "UnsafePointer<\(type.swiftTypePrefix())\(type.CamelCase)?>?"
 			}
 		}
-		var name = "\(swiftTypePrefixForName(name: type))\(type.CamelCase)"
+		var name = "\(type.swiftTypePrefix())\(type.CamelCase)"
 		if length != nil {
 			name = "[\(name)]"
 			if annotation != "const*" {
@@ -62,13 +62,13 @@ extension DawnObject: DawnType {
 
 	func cTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool? = false) -> String {
 		if annotation == "const*" {
-			return "UnsafePointer<\(swiftTypePrefixForName(name: type))\(type.CamelCase)?>?"
+			return "UnsafePointer<\(type.swiftTypePrefix())\(type.CamelCase)?>?"
 		}
 		if optional ?? false {
-			return "\(swiftTypePrefixForName(name: type))\(type.CamelCase)?"
+			return "\(type.swiftTypePrefix())\(type.CamelCase)?"
 		}
 
-		return "\(swiftTypePrefixForName(name: type))\(type.CamelCase)"
+		return "\(type.swiftTypePrefix())\(type.CamelCase)"
 	}
 
 	/// The default value for the type.

@@ -12,13 +12,13 @@ extension DawnFunctionPointer: DawnType {
 	func declarations(name: Name, data: DawnData) throws -> [any DeclSyntaxProtocol] {
 		return [
 			DeclSyntax(
-				"public typealias \(raw: swiftTypePrefixForName(name: name))\(raw: name.CamelCase) = WGPU\(raw: name.CamelCase)"
+				"public typealias \(raw: name.swiftTypePrefix())\(raw: name.CamelCase) = WGPU\(raw: name.CamelCase)"
 			)
 		]
 	}
 
 	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool = false) -> String {
-		return "\(swiftTypePrefixForName(name: type))\(type.CamelCase)?"
+		return "\(type.swiftTypePrefix())\(type.CamelCase)?"
 	}
 
 	func cTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool?) -> String {

@@ -19,7 +19,7 @@ extension DawnCallbackFunction {
 
 		return [
 			DeclSyntax(
-				"public typealias \(raw: swiftTypePrefixForName(name: name))\(raw: name.CamelCase) = (\(raw: argumentTypes.joined(separator: ", "))) -> Void"
+				"public typealias \(raw: name.swiftTypePrefix())\(raw: name.CamelCase) = (\(raw: argumentTypes.joined(separator: ", "))) -> Void"
 			)
 		]
 	}

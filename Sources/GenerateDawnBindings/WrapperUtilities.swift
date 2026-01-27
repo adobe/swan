@@ -16,10 +16,6 @@ class TabFormat: BasicFormat {
 	}
 }
 
-func swiftTypePrefixForName(name: Name) -> String {
-	return name.firstPart == "dawn" ? "" : "GPU"
-}
-
 let constantMap = [
 	"UINT64_MAX": "UInt64.max",
 	"UINT32_MAX": "UInt32.max",

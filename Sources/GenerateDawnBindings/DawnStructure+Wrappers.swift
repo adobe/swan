@@ -41,7 +41,7 @@ extension DawnStructure: DawnType {
 	}
 
 	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool = false) -> String {
-		var name = "\(swiftTypePrefixForName(name: type))\(type.CamelCase)"
+		var name = "\(type.swiftTypePrefix())\(type.CamelCase)"
 		if type.raw == "string view" {
 			name = "String"
 		}
@@ -262,7 +262,7 @@ extension DawnStructure: DawnType {
 
 		var decls: [DeclSyntaxProtocol] = []
 		let cStructName = "WGPU\(name.CamelCase)"
-		let swiftStructName = "\(swiftTypePrefixForName(name: name))\(name.CamelCase)"
+		let swiftStructName = "\(name.swiftTypePrefix())\(name.CamelCase)"
 
 		if !isWrappedType(name, data: data) {
 			return [
@@ -447,16 +447,16 @@ extension DawnStructure: DawnType {
 			// When the length is an identifier, it will be a sibling of the identifier.
 			let parentIdentifier = identifier.split(separator: ".").dropLast().joined(separator: ".")
 			return
-				"\(raw: identifier).wrapArrayWithCount(\(raw: length!.sizeWithIdentifier(parentIdentifier))) as [\(raw: swiftTypePrefixForName(name: type))\(raw: type.CamelCase)]"
+				"\(raw: identifier).wrapArrayWithCount(\(raw: length!.sizeWithIdentifier(parentIdentifier))) as [\(raw: type.swiftTypePrefix())\(raw: type.CamelCase)]"
 		}
 		if annotation == "const*" {
 			if isWrappedType(type, data: data) {
 				return
-					"\(raw: swiftTypePrefixForName(name: type))\(raw: type.CamelCase)(wgpuStruct: \(raw: identifier)!.pointee)"
+					"\(raw: type.swiftTypePrefix())\(raw: type.CamelCase)(wgpuStruct: \(raw: identifier)!.pointee)"
 			} else {
 				return "\(raw: identifier)?.pointee"
 			}
 		}
-		return "\(raw: swiftTypePrefixForName(name: type))\(raw: type.CamelCase)(wgpuStruct: \(raw: identifier))"
+		return "\(raw: type.swiftTypePrefix())\(raw: type.CamelCase)(wgpuStruct: \(raw: identifier))"
 	}
 }
