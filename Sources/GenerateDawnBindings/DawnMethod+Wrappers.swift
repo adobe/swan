@@ -26,24 +26,21 @@ extension DawnMethod {
 
 	/// Check if the given argument is a size parameter for one of the args in the given list.
 	///
-	/// A size parameter will have a "name" that matches the "length" field of another argument.
-	/// If that other argument is itself an Array (deduced by looking at its swiftTypeName), then
-	/// this parameter is a size parameter for that Array.
+	/// A size parameter will have a "name" that matches the "length" field of another argument that is an Array.
 	/// Example from dawn.json:
 	/// "args": [
 	/// 	{"name": "command count", "type": "size_t"},
 	/// 	{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
 	/// ]
 	/// The second arg will have an Array type, and its "length" field matches the first arg's name.
-	private func isArraySizeParameter(_ arg: DawnFunctionArgument, in args: [DawnFunctionArgument], data: DawnData) -> Bool {
+	private func isArraySizeParameter(_ arg: DawnFunctionArgument, in args: [DawnFunctionArgument]) -> Bool {
 		return args.contains { otherArg in
+			if !otherArg.includesArrayLength() {
+				return false
+			}
+			// To be a size parameter, the given arg's name must match the other argument's length field.
 			if case .name(let lengthName) = otherArg.length {
-				if lengthName == arg.name {
-					// otherArg's length field matches the arg's name. Now check if otherArg is an Array type.
-					let swiftType = otherArg.swiftTypeName(data: data)
-					// The C-API only support array collection types, so a simple prefix check is sufficient.
-					return swiftType.hasPrefix("[")
-				}
+				return lengthName == arg.name
 			}
 			return false
 		}
@@ -54,9 +51,8 @@ extension DawnMethod {
 	private func arrayForSizeParameter(
 		_ sizeParameterArg: DawnFunctionArgument,
 		allArgs: [DawnFunctionArgument],
-		data: DawnData
 	) -> DawnFunctionArgument? {
-		if !isArraySizeParameter(sizeParameterArg, in: allArgs, data: data) {
+		if !isArraySizeParameter(sizeParameterArg, in: allArgs) {
 			return nil
 		}
 		// Search for the array that has a length that matches the size parameter's name.
@@ -81,8 +77,8 @@ extension DawnMethod {
 		let allArgs = self.args ?? []
 
 		return CodeBlockItemListSyntax {
-			for arg in allArgs where isArraySizeParameter(arg, in: allArgs, data: data) {
-				if let array = arrayForSizeParameter(arg, allArgs: allArgs, data: data) {
+			for arg in allArgs where isArraySizeParameter(arg, in: allArgs) {
+				if let array = arrayForSizeParameter(arg, allArgs: allArgs) {
 					let arrayName = array.name.camelCase
 					let sizeName = arg.name.camelCase
 					let swiftType = array.swiftTypeName(data: data)
@@ -123,7 +119,7 @@ extension DawnMethod {
 
 		let argsForCMethod = self.args ?? []
 		// Exclude all array size parameters from the Swift method signature.
-		let argsForSwiftMethod = argsForCMethod.filter { !isArraySizeParameter($0, in: argsForCMethod, data: data) }
+		let argsForSwiftMethod = argsForCMethod.filter { !isArraySizeParameter($0, in: argsForCMethod) }
 
 		let wgpuMethodCall: ExprSyntax =
 			"""

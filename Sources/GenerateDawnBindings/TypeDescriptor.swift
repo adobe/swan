@@ -1,3 +1,4 @@
+
 // Copyright 2025 Adobe
 // All Rights Reserved.
 //
@@ -56,6 +57,23 @@ extension TypeDescriptor {
 			return true
 		}
 		return isWrapped
+	}
+
+
+	/// Returns true if the Swift type for this descriptor includes the collection length.
+	///
+	/// When true, the corresponding size parameter in the C API can be derived from the Swift
+	/// collection (e.g., `array.count`), so it should be excluded from the Swift API signature.
+	func includesArrayLength() -> Bool {
+		guard case .name = length else {
+			// For Arrays, length will be the name of another arg.
+			return false
+		}
+		// Special case: we do not wrap uint8_t arrays or void* arrays.
+		if (type.raw == "uint8_t" || type.raw == "void") && annotation == "const*" {
+			return false
+		}
+		return true
 	}
 
 	// The name of the wrapper type.
