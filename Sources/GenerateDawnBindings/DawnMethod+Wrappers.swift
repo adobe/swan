@@ -47,7 +47,6 @@ extension DawnMethod {
 	}
 
 	/// If the given parameter is a size parameter, return the array for which it is the size parameter.
-	/// TODO: bmedina - can this be combined with isSizeParameter so we aren't searching twice?
 	private func arrayForSizeParameter(
 		_ sizeParameterArg: DawnFunctionArgument,
 		allArgs: [DawnFunctionArgument],
