@@ -12,7 +12,10 @@ on:
 jobs:
   build:
     name: Build and Test
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        os: [macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
       - uses: swift-actions/setup-swift@v3
