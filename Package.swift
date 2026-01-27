@@ -16,10 +16,9 @@ let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"]
 let useAddressSanitizer: Bool = false
 let usePDBDebugInfo: Bool = ProcessInfo.processInfo.environment["USE_PDB_DEBUG_INFO"] == "true"
 #else
-let useAddressSanitizer: Bool = ProcessInfo.processInfo.environment["CI"] == "true"
+let useAddressSanitizer: Bool = ProcessInfo.processInfo.environment["USE_ADDRESS_SANITIZER"] == "true"
 let usePDBDebugInfo: Bool = false
 #endif
-
 
 let dawnTarget: Target = {
 	if swanLocalDawn {
