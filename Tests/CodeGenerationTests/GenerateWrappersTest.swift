@@ -438,8 +438,8 @@ struct TestTypeDescriptor: TypeDescriptor {
 		#expect(!generated.contains("size: Int"))  // Size param excluded from signature
 
 		// Check body extracts count and baseAddress from the buffer pointer
-		#expect(generated.contains("data.count"))
-		#expect(generated.contains("data.baseAddress"))
+		#expect(generated.contains("let size = data.count"))
+		#expect(generated.contains("let data = data.baseAddress"))
 	}
 }
 	}
