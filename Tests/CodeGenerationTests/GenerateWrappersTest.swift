@@ -387,6 +387,63 @@ struct TestTypeDescriptor: TypeDescriptor {
 		#expect(generated.contains("let groupCount = groups?.count ?? 0"))
 	}
 
+	@Test("void* array uses UnsafeRawBufferPointer and excludes size param")
+	func testVoidArrayUsesUnsafeRawBufferPointer() {
+		let testData = """
+			{
+				"queue": {
+					"category": "object",
+					"methods": [
+						{
+							"name": "write buffer",
+							"args": [
+								{"name": "buffer", "type": "buffer"},
+								{"name": "buffer offset", "type": "uint64_t"},
+								{"name": "data", "type": "void", "annotation": "const*", "length": "size"},
+								{"name": "size", "type": "size_t"}
+							]
+						}
+					]
+				},
+				"buffer": {
+					"category": "object",
+					"methods": []
+				},
+				"uint64_t": {
+					"category": "native"
+				},
+				"size_t": {
+					"category": "native"
+				},
+				"void": {
+					"category": "native"
+				}
+			}
+			"""
+		let data = try? JSONDecoder().decode(DawnData.self, from: testData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+		guard case .object(let queue) = data.data[Name("queue")] else {
+			Issue.record("Failed to get queue")
+			return
+		}
+		let writeBufferMethod = queue.methods.first { $0.name == Name("write buffer") }!
+
+		let generated = writeBufferMethod.methodWrapperDecl(data: data).formatted().description
+
+		// Check signature uses UnsafeRawBufferPointer and excludes size param
+		#expect(generated.contains("data: UnsafeRawBufferPointer"))
+		#expect(!generated.contains("size: Int"))  // Size param excluded from signature
+
+		// Check body extracts count and baseAddress from the buffer pointer
+		#expect(generated.contains("data.count"))
+		#expect(generated.contains("data.baseAddress"))
+	}
+}
+	}
+
 	@Test("swiftTypePrefix() returns empty string for Dawn types and GPU for others")
 	func testSwiftTypePrefixForDawnTypes() {
 		// Dawn-internal types should have no prefix
