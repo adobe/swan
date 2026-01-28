@@ -42,10 +42,8 @@ extension TypeDescriptor {
 				return true
 			case .native:
 				if length != nil {
-					if type.raw == "void" || type.raw == "uint8_t" {
-						return false
-					}
-					return true
+					// All native types with a length are wrapped except void.
+					return type.raw != "void"
 				}
 				return false
 			default:
@@ -69,8 +67,8 @@ extension TypeDescriptor {
 			// For Arrays, length will be the name of another arg.
 			return false
 		}
-		// Special case: we do not wrap uint8_t arrays or void* arrays.
-		if (type.raw == "uint8_t" || type.raw == "void") && annotation == "const*" {
+		// We do not wrap void-type arrays. See corresponding logic in `isWrappedType`.
+		if type.raw == "void" && annotation == "const*" {
 			return false
 		}
 		return true
