@@ -12,14 +12,14 @@ from dawn_builder import TargetConfig, Arch, OS
 def get_current_arch() -> Arch:
     """
     Detect the current machine architecture.
-    
+
     Returns:
         Arch enum value for the current architecture
     """
     machine = platform.machine().lower()
-    if machine in ('amd64', 'x86_64', 'x64'):
+    if machine in ("amd64", "x86_64", "x64"):
         return Arch.X86_64
-    elif machine in ('arm64', 'aarch64'):
+    elif machine in ("arm64", "aarch64"):
         return Arch.ARM64
     else:
         # Default to X86_64 if unknown
