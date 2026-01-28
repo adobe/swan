@@ -41,11 +41,8 @@ extension TypeDescriptor {
 				// Arrays of objects need to be wrapped if we are to get a pointer to the array.
 				return true
 			case .native:
-				if length != nil {
-					// All native types with a length are wrapped except void.
-					return type.raw != "void"
-				}
-				return false
+				// Native types with a length are wrapped (Tuple for fixed-size, Array for dynamic-size, UnsafeRawBufferPointer for void*).
+				return length != nil
 			default:
 				return false
 			}
@@ -65,10 +62,6 @@ extension TypeDescriptor {
 	func includesArrayLength() -> Bool {
 		guard case .name = length else {
 			// For Arrays, length will be the name of another arg.
-			return false
-		}
-		// We do not wrap void-type arrays. See corresponding logic in `isWrappedType`.
-		if type.raw == "void" && annotation == "const*" {
 			return false
 		}
 		return true
