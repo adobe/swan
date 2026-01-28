@@ -55,8 +55,26 @@ public extension Optional where Wrapped: WithWGPUPointer {
 	}
 }
 
+/// Given an array of strings, convert it to an array of C strings and call the lambda with the pointer to the WGPU array.
 public func withWGPUArrayPointer<R>(_ array: [String], _ lambda: (UnsafePointer<UnsafePointer<CChar>?>) -> R) -> R {
-	fatalError("Unimplemented withWGPUArrayPointer")
+	var result: R!
+	var cStringArray = Array<UnsafePointer<CChar>?>()
+	cStringArray.reserveCapacity(array.count)
+
+	func process(index: Int) -> R {
+		if index >= array.count {
+			return cStringArray.withUnsafeBufferPointer { buffer in
+				let pointer = UnsafePointer(buffer.baseAddress!)
+				return lambda(pointer)
+			}
+		}
+		return array[index].withCString { cString in
+			cStringArray.append(cString)
+			return process(index: index + 1)
+		}
+	}
+	result = process(index: 0)
+	return result
 }
 
 /// Given an array of Swift structs, convert it to an array of WGPU structs and call the lambda with the pointer to the WGPU array.

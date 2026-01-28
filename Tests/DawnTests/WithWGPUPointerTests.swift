@@ -427,4 +427,82 @@ struct WithWGPUPointerTests {
 			)
 		)
 	}
+
+	@Test("withWGPUArrayPointer with String array")
+	func testWithWGPUArrayPointerString() {
+		let strings = ["hello", "world", "test", "strings"]
+
+		let result = withWGPUArrayPointer(strings) { pointer in
+			// Verify we can access all C string pointers
+			#expect(pointer[0] != nil)
+			#expect(pointer[1] != nil)
+			#expect(pointer[2] != nil)
+			#expect(pointer[3] != nil)
+
+			// Convert back to Swift strings and verify content
+			let str0 = String(cString: pointer[0]!)
+			let str1 = String(cString: pointer[1]!)
+			let str2 = String(cString: pointer[2]!)
+			let str3 = String(cString: pointer[3]!)
+
+			#expect(str0 == "hello")
+			#expect(str1 == "world")
+			#expect(str2 == "test")
+			#expect(str3 == "strings")
+
+			// Return the count to verify the function returns correctly
+			return strings.count
+		}
+
+		#expect(result == 4)
+	}
+
+	@Test("withWGPUArrayPointer with single String")
+	func testWithWGPUArrayPointerSingleString() {
+		let strings = ["single"]
+
+		let result = withWGPUArrayPointer(strings) { pointer in
+			#expect(pointer[0] != nil)
+
+			let str = String(cString: pointer[0]!)
+			#expect(str == "single")
+
+			return "success"
+		}
+
+		#expect(result == "success")
+	}
+
+	@Test("withWGPUArrayPointer with empty String array")
+	func testWithWGPUArrayPointerEmptyString() {
+		let strings: [String] = []
+
+		let result = withWGPUArrayPointer(strings) { pointer in
+			// Verify we get a valid pointer even for empty array
+			let bufferPointer = UnsafeBufferPointer(start: pointer, count: strings.count)
+			#expect(bufferPointer.count == 0)
+
+			return true
+		}
+
+		#expect(result == true)
+	}
+
+	@Test("withWGPUArrayPointer with String array - special characters")
+	func testWithWGPUArrayPointerStringSpecialCharacters() {
+		let strings = ["foo-bar", "test_123", "CamelCase", "with spaces", "unicode: 🚀"]
+
+		let result = withWGPUArrayPointer(strings) { pointer in
+			// Verify all strings are correctly converted
+			for i in 0..<strings.count {
+				#expect(pointer[i] != nil)
+				let converted = String(cString: pointer[i]!)
+				#expect(converted == strings[i])
+			}
+
+			return strings.count
+		}
+
+		#expect(result == 5)
+	}
 }

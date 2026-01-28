@@ -1,6 +1,6 @@
+import Foundation
 import RGFW
 import WebGPU
-import Foundation
 
 public protocol DemoProvider {
 	@MainActor
@@ -41,7 +41,7 @@ public func runDemo<Provider: DemoProvider>(
 
 	var device: GPUDevice? = nil
 
-	let deviceDescriptor: GPUDeviceDescriptor = GPUDeviceDescriptor(
+	var deviceDescriptor: GPUDeviceDescriptor = GPUDeviceDescriptor(
 		defaultQueue: GPUQueueDescriptor(),
 		deviceLostCallbackInfo: GPUDeviceLostCallbackInfo(
 			mode: .allowProcessEvents,
@@ -63,6 +63,13 @@ public func runDemo<Provider: DemoProvider>(
 				fatalError("Terminating due to uncaptured error")
 			}
 		)
+	)
+
+	deviceDescriptor.nextInChain = GPUDawnTogglesDescriptor(
+		enabledToggleCount: 1,
+		enabledToggles: ["disable_symbol_renaming"],
+		disabledToggleCount: 0,
+		disabledToggles: []
 	)
 
 	_ = adapter!.requestDevice(
@@ -96,7 +103,7 @@ public func runDemo<Provider: DemoProvider>(
 
 	while RGFW_window_shouldClose(window) == RGFW_FALSE {
 		RGFW_pollEvents()
-		instance.processEvents(); // very important to process webgpu async events per frame
+		instance.processEvents();  // very important to process webgpu async events per frame
 
 		updateSurface(surface: surface, window: window, device: device!, format: format)
 
