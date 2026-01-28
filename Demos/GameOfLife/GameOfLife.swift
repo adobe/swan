@@ -35,12 +35,13 @@ struct GameOfLifeDemo: DemoProvider {
 				mappedAtCreation: false
 			)
 		)!
-		device.queue.writeBuffer(
-			buffer: vertexBuffer!,
-			bufferOffset: 0,
-			data: vertices,
-			size: Int(vertices.lengthInBytes)
-		)
+		vertices.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: vertexBuffer!,
+				bufferOffset: 0,
+				data: data
+			)
+		}
 
 		// Create uniform buffer
 		let uniformArray = [Float32(gridSize), Float32(gridSize)]
@@ -51,13 +52,13 @@ struct GameOfLifeDemo: DemoProvider {
 				size: UInt64(uniformArray.lengthInBytes),
 			)
 		)
-		device.queue.writeBuffer(
-			buffer: uniformBuffer!,
-			bufferOffset: 0,
-			data: uniformArray,
-			// TODO: Shouldn't have to pass size
-			size: Int(uniformArray.lengthInBytes)
-		)
+		uniformArray.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: uniformBuffer!,
+				bufferOffset: 0,
+				data: data
+			)
+		}
 
 		// Create cell state storage buffers
 		let cellStateArraySize: UInt64 = UInt64(gridSize * gridSize * MemoryLayout<Float32>.size)
@@ -86,13 +87,13 @@ struct GameOfLifeDemo: DemoProvider {
 			}
 			initializedCount = gridCount
 		}
-		device.queue.writeBuffer(
-			buffer: cellStateStorage[0],
-			bufferOffset: 0,
-			data: cellStateArray,
-			// TODO: Shouldn't have to pass size
-			size: Int(cellStateArray.lengthInBytes)
-		)
+		cellStateArray.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: cellStateStorage[0],
+				bufferOffset: 0,
+				data: data
+			)
+		}
 		let cellStateArray2 = Array(unsafeUninitializedCapacity: gridCount) {
 			(arrayBuffer: inout UnsafeMutableBufferPointer<UInt32>, initializedCount: inout Int) in
 			for i: Int in 0..<gridCount {
@@ -100,13 +101,13 @@ struct GameOfLifeDemo: DemoProvider {
 			}
 			initializedCount = gridCount
 		}
-		device.queue.writeBuffer(
-			buffer: cellStateStorage[1],
-			bufferOffset: 0,
-			data: cellStateArray2,
-			// TODO: Shouldn't have to pass size
-			size: Int(cellStateArray2.lengthInBytes)
-		)
+		cellStateArray2.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: cellStateStorage[1],
+				bufferOffset: 0,
+				data: data
+			)
+		}
 
 		// Create shader modules
 		let cellShaderModule = device.createShaderModule(

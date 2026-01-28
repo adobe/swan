@@ -70,12 +70,13 @@ final class Renderer {
 				mappedAtCreation: false
 			)
 		)
-		device.queue.writeBuffer(
-			buffer: vertexBuffer,
-			bufferOffset: 0,
-			data: .init(vertices),
-			size: Int(vertices.lengthInBytes)
-		)
+		vertices.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: vertexBuffer,
+				bufferOffset: 0,
+				data: data
+			)
+		}
 
 		// Create uniform buffer
 		let uniformArray = [Float32](repeating: 0, count: gridSize * gridSize)
@@ -87,12 +88,13 @@ final class Renderer {
 				mappedAtCreation: false
 			)
 		)
-		device.queue.writeBuffer(
-			buffer: uniformBuffer,
-			bufferOffset: 0,
-			data: .init(uniformArray),
-			size: Int(uniformArray.lengthInBytes)
-		)
+		uniformArray.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: uniformBuffer,
+				bufferOffset: 0,
+				data: data
+			)
+		}
 
 		// Create cell state storage buffers
 		let cellStateArraySize = gridSize * gridSize * MemoryLayout<Float32>.size
@@ -116,18 +118,18 @@ final class Renderer {
 		for i in 0..<(gridSize * gridSize) {
 			cellStateArray[i] = Double.random(in: 0...1) > 0.6 ? 1 : 0
 		}
-		device.queue.writeBuffer(
-			buffer: cellStateStorage[0],
-			bufferOffset: 0,
-			data: .init(cellStateArray),
-			size: Int(cellStateArray.lengthInBytes)
-		)
-		device.queue.writeBuffer(
-			buffer: cellStateStorage[1],
-			bufferOffset: 0,
-			data: .init(cellStateArray),
-			size: Int(cellStateArray.lengthInBytes)
-		)
+		cellStateArray.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: cellStateStorage[0],
+				bufferOffset: 0,
+				data: data
+			)
+			device.queue.writeBuffer(
+				buffer: cellStateStorage[1],
+				bufferOffset: 0,
+				data: data
+			)
+		}
 
 		let cellShaderModule = device.createShaderModule(
 			descriptor: .init(
