@@ -33,8 +33,8 @@ extension DawnMethod {
 	/// 	{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
 	/// ]
 	/// The second arg will have an Array type, and its "length" field matches the first arg's name.
-	private func isArraySizeParameter(_ arg: DawnFunctionArgument, in args: [DawnFunctionArgument]) -> Bool {
-		return args.contains { otherArg in
+	private func isArraySizeParameter(_ arg: DawnFunctionArgument, allArgs: [DawnFunctionArgument]) -> Bool {
+		return allArgs.contains { otherArg in
 			if !otherArg.includesArrayLength() {
 				return false
 			}
@@ -51,7 +51,7 @@ extension DawnMethod {
 		_ sizeParameterArg: DawnFunctionArgument,
 		allArgs: [DawnFunctionArgument],
 	) -> DawnFunctionArgument? {
-		if !isArraySizeParameter(sizeParameterArg, in: allArgs) {
+		if !isArraySizeParameter(sizeParameterArg, allArgs: allArgs) {
 			return nil
 		}
 		// Search for the array that has a length that matches the size parameter's name.
@@ -90,12 +90,10 @@ extension DawnMethod {
 		let allArgs = self.args ?? []
 
 		return CodeBlockItemListSyntax {
-			for arg in allArgs where isArraySizeParameter(arg, in: allArgs) {
+			for arg in allArgs where isArraySizeParameter(arg, allArgs: allArgs) {
 				if let array = arrayForSizeParameter(arg, allArgs: allArgs) {
-					let swiftType = array.swiftTypeName(data: data)
-					if !swiftType.hasPrefix("UnsafeRawBufferPointer") {
-						// TODO - bmedina: Add isRawBufferPointerType() to TypeDescriptor and use it here.
-						// if !array.isRawBufferPointerType() { // UnsafeRawBufferPointer properties are extracted in unwrapValueOfType
+					if !array.isRawBufferPointerType() { // Skip raw buffer pointers - size is extracted in unwrapValueOfType
+						let swiftType = array.swiftTypeName(data: data)
 						let arrayName = array.name.camelCase
 						let sizeName = arg.name.camelCase
 						let isOptional = swiftType.hasSuffix("?")
@@ -137,7 +135,7 @@ extension DawnMethod {
 
 		let argsForCMethod = self.args ?? []
 		// Exclude all array size parameters from the Swift method signature.
-		let argsForSwiftMethod = argsForCMethod.filter { !isArraySizeParameter($0, in: argsForCMethod) }
+		let argsForSwiftMethod = argsForCMethod.filter { !isArraySizeParameter($0, allArgs: argsForCMethod) }
 
 		let wgpuMethodCall: ExprSyntax =
 			"""
