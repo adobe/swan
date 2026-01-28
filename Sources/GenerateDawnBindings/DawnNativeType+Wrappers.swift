@@ -41,20 +41,11 @@ extension DawnNativeType: DawnType {
 		case "double": numericType = "Double"
 		case "float": numericType = "Float"
 		case "int": numericType = "Int32"
-		case "uint8_t":
-			if length != nil {
-				if annotation == "const*" {
-					return "UnsafeRawBufferPointer"
-				}
-				fatalError(
-					"Unimplemented swiftTypeNameForType for type \(type.raw) with annotation \(annotation!) and length \(length!)"
-				)
-			}
-			numericType = "UInt8"
 		case "int16_t": numericType = "Int16"
 		case "int32_t": numericType = "Int32"
 		case "int64_t": numericType = "Int64"
 		case "size_t": numericType = "Int"
+		case "uint8_t": numericType = "UInt8"
 		case "uint16_t": numericType = "UInt16"
 		case "uint32_t": numericType = "UInt32"
 		case "uint64_t": numericType = "UInt64"
@@ -63,7 +54,7 @@ extension DawnNativeType: DawnType {
 			case "*":
 				return "UnsafeMutableRawPointer?"
 			case "const*":
-				return "UnsafeRawPointer"
+				return length != nil ?  "UnsafeRawBufferPointer" : "UnsafeRawPointer"
 			default:
 				return "Void"
 			}
@@ -143,14 +134,10 @@ extension DawnNativeType: DawnType {
 		data: DawnData,
 		expression: ExprSyntax?
 	) -> ExprSyntax {
-		if (annotation == "*" || annotation == "const*") && type.raw == "void" {
-			// Pass through the expression for raw/void data pointers.
-			return expression ?? ""
-		}
-		if (annotation == "*" || annotation == "const*") && type.raw == "uint8_t" && length != nil {
-			// We wrap uint8_t arrays in UnsafeRawBufferPointer. Extract the baseAddress and count.
+		if (annotation == "*" || annotation == "const*") && type.raw == "void" && length != nil {
+			// We wrap void arrays in UnsafeRawBufferPointer. Extract the baseAddress and count.
 			guard case .name(let lengthName) = length! else {
-				fatalError("uint8_t array requires named length parameter")
+				fatalError("void array requires named length parameter")
 			}
 			let isOptional = optional ?? false
 			let countExpression = isOptional ? "\(identifier)?.count ?? 0" : "\(identifier).count"
@@ -158,7 +145,7 @@ extension DawnNativeType: DawnType {
 			// Note we use an immediately invoked closure in the code below because we must shadow the identifier variable name.
 			return """
 				{
-					let \(raw: lengthName.camelCase) = UInt64(\(raw: countExpression))
+					let \(raw: lengthName.camelCase) = \(raw: countExpression)
 					let \(raw: identifier) = \(raw: baseAddressExpression)
 					return \(expression ?? "", format: TabFormat(initialIndentation: .tabs(0)))
 				}()

@@ -63,6 +63,20 @@ extension DawnMethod {
 		}
 	}
 
+	/// Convert an array count expression to match the C parameter type.
+	/// Array.count returns Int, but some Dawn APIs use uint64_t for size params.
+	private func convertCountExpression(_ countExpr: String, forParameterType type: Name) -> String {
+		switch type.raw {
+		case "size_t":
+			// size_t maps to Int, which matches Array.count - no conversion needed
+			return countExpr
+		case "uint64_t":
+			return "UInt64(\(countExpr))"
+		default:
+			fatalError("Unexpected size parameter type: \(type.raw)")
+		}
+	}
+
 	/// For any of our args that are size parameters for an array, generate a let statement that contains the size
 	/// of the array so that we can call the Dawn API that requires a separate parameter for the size.
 	/// Example
@@ -79,13 +93,16 @@ extension DawnMethod {
 			for arg in allArgs where isArraySizeParameter(arg, in: allArgs) {
 				if let array = arrayForSizeParameter(arg, allArgs: allArgs) {
 					let swiftType = array.swiftTypeName(data: data)
-					if !swiftType.hasPrefix("UnsafeRawBufferPointer") { // UnsafeRawBufferPointer propreties are extracted in unwrapValueOfType
+					if !swiftType.hasPrefix("UnsafeRawBufferPointer") {
+						// TODO - bmedina: Add isRawBufferPointerType() to TypeDescriptor and use it here.
+						// if !array.isRawBufferPointerType() { // UnsafeRawBufferPointer properties are extracted in unwrapValueOfType
 						let arrayName = array.name.camelCase
 						let sizeName = arg.name.camelCase
 						let isOptional = swiftType.hasSuffix("?")
 						let countExpr = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
+						let convertedCountExpr = convertCountExpression(countExpr, forParameterType: arg.type)
 
-						"let \(raw: sizeName) = \(raw: countExpr)"
+						"let \(raw: sizeName) = \(raw: convertedCountExpr)"
 					}
 				}
 			}
