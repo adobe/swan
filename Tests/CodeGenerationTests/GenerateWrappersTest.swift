@@ -231,50 +231,7 @@ struct TestTypeDescriptor: TypeDescriptor {
 		)
 	}
 
-	@Test("Size parameter detection for Array types")
-	func testIsSizeParameter() {
-		let testData = """
-			{
-				"queue": {
-					"category": "object",
-					"methods": [
-						{
-							"name": "submit",
-							"args": [
-								{"name": "command count", "type": "size_t"},
-								{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
-							]
-						}
-					]
-				},
-				"command buffer": {
-					"category": "object",
-					"methods": []
-				},
-				"size_t": {
-					"category": "native",
-					"methods": []
-				}
-			}
-			"""
-		let data = try? JSONDecoder().decode(DawnData.self, from: testData.data(using: .utf8)!)
-		guard let data = data else {
-			Issue.record("Failed to decode data")
-			return
-		}
-		guard case .object(let queue) = data.data[Name("queue")] else {
-			Issue.record("Failed to get queue")
-			return
-		}
-
-		let submitMethod = queue.methods.first { $0.name == Name("submit") }!
-		let generated = submitMethod.methodWrapperDecl(data: data).formatted().description
-		#expect(generated.contains("commands"))
-		// "command count" should have been excluded from the Swift API
-		#expect(!generated.contains("command count"))
-	}
-
-	@Test("Method wrapper excludes size params and extracts count")
+	@Test("Wrapper for method with typed array excludes size params and extracts count")
 	func testMethodWrapperDeclWithArraySizeExtraction() {
 		let testData = """
 			{
@@ -312,7 +269,7 @@ struct TestTypeDescriptor: TypeDescriptor {
 
 		let generated = submitMethod.methodWrapperDecl(data: data).formatted().description
 
-		// Check signature excludes size param but includes array param
+		// Check signature uses Swift array type and excludes size param
 		#expect(generated.contains("func submit(commands: [GPUCommandBuffer])"))
 		#expect(!generated.contains("commandCount: Int"))  // Size param excluded from signature
 
