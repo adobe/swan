@@ -67,6 +67,12 @@ extension TypeDescriptor {
 		return true
 	}
 
+	/// Returns true if this descriptor represents a void* array (raw buffer pointer type).
+	/// These use UnsafeRawBufferPointer in the Swift API.
+	func isRawBufferPointerType() -> Bool {
+		return type.raw == "void" && annotation == "const*" && length != nil
+	}
+
 	// The name of the wrapper type.
 	func swiftTypeName(data: DawnData) -> String {
 		let entity: DawnEntity? = data.data[type]
