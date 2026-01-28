@@ -78,13 +78,15 @@ extension DawnMethod {
 		return CodeBlockItemListSyntax {
 			for arg in allArgs where isArraySizeParameter(arg, in: allArgs) {
 				if let array = arrayForSizeParameter(arg, allArgs: allArgs) {
-					let arrayName = array.name.camelCase
-					let sizeName = arg.name.camelCase
 					let swiftType = array.swiftTypeName(data: data)
-					let isOptional = swiftType.hasSuffix("?")
-					let countExpr = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
+					if !swiftType.hasPrefix("UnsafeRawBufferPointer") { // UnsafeRawBufferPointer propreties are extracted in unwrapValueOfType
+						let arrayName = array.name.camelCase
+						let sizeName = arg.name.camelCase
+						let isOptional = swiftType.hasSuffix("?")
+						let countExpr = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
 
-					"let \(raw: sizeName) = \(raw: countExpr)"
+						"let \(raw: sizeName) = \(raw: countExpr)"
+					}
 				}
 			}
 		}

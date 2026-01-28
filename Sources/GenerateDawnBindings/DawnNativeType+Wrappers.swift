@@ -44,7 +44,7 @@ extension DawnNativeType: DawnType {
 		case "uint8_t":
 			if length != nil {
 				if annotation == "const*" {
-					return "UnsafeRawPointer"
+					return "UnsafeRawBufferPointer"
 				}
 				fatalError(
 					"Unimplemented swiftTypeNameForType for type \(type.raw) with annotation \(annotation!) and length \(length!)"
@@ -143,11 +143,26 @@ extension DawnNativeType: DawnType {
 		data: DawnData,
 		expression: ExprSyntax?
 	) -> ExprSyntax {
-		if (annotation == "*" || annotation == "const*")
-			&& (type.raw == "void" || type.raw == "uint8_t")
-		{
-			// Pass through the expression for raw data pointers.
+		if (annotation == "*" || annotation == "const*") && type.raw == "void" {
+			// Pass through the expression for raw/void data pointers.
 			return expression ?? ""
+		}
+		if (annotation == "*" || annotation == "const*") && type.raw == "uint8_t" && length != nil {
+			// We wrap uint8_t arrays in UnsafeRawBufferPointer. Extract the baseAddress and count.
+			guard case .name(let lengthName) = length! else {
+				fatalError("uint8_t array requires named length parameter")
+			}
+			let isOptional = optional ?? false
+			let countExpression = isOptional ? "\(identifier)?.count ?? 0" : "\(identifier).count"
+			let baseAddressExpression = isOptional ? "\(identifier)?.baseAddress" : "\(identifier).baseAddress"
+			// Note we use an immediately invoked closure in the code below because we must shadow the identifier variable name.
+			return """
+				{
+					let \(raw: lengthName.camelCase) = UInt64(\(raw: countExpression))
+					let \(raw: identifier) = \(raw: baseAddressExpression)
+					return \(expression ?? "", format: TabFormat(initialIndentation: .tabs(0)))
+				}()
+				"""
 		}
 		if length != nil {
 			return
