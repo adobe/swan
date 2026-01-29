@@ -65,7 +65,7 @@ public func runDemo<Provider: DemoProvider>(
 		)
 	)
 
-	deviceDescriptor.nextInChain = GPUDawnTogglesDescriptor(
+	deviceDescriptor.nextInChain = DawnTogglesDescriptor(
 		enabledToggleCount: 1,
 		enabledToggles: ["disable_symbol_renaming"],
 		disabledToggleCount: 0,
