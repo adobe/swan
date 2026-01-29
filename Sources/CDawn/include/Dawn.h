@@ -8,3 +8,5 @@
  */
 
 #include "dawn/webgpu.h"
+
+void WaitForCommandsToBeScheduled(WGPUDevice device);
