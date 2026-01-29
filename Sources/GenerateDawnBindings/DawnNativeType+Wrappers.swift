@@ -41,20 +41,11 @@ extension DawnNativeType: DawnType {
 		case "double": numericType = "Double"
 		case "float": numericType = "Float"
 		case "int": numericType = "Int32"
-		case "uint8_t":
-			if length != nil {
-				if annotation == "const*" {
-					return "UnsafeRawPointer"
-				}
-				fatalError(
-					"Unimplemented swiftTypeNameForType for type \(type.raw) with annotation \(annotation!) and length \(length!)"
-				)
-			}
-			numericType = "UInt8"
 		case "int16_t": numericType = "Int16"
 		case "int32_t": numericType = "Int32"
 		case "int64_t": numericType = "Int64"
 		case "size_t": numericType = "Int"
+		case "uint8_t": numericType = "UInt8"
 		case "uint16_t": numericType = "UInt16"
 		case "uint32_t": numericType = "UInt32"
 		case "uint64_t": numericType = "UInt64"
@@ -63,7 +54,7 @@ extension DawnNativeType: DawnType {
 			case "*":
 				return "UnsafeMutableRawPointer?"
 			case "const*":
-				return "UnsafeRawPointer"
+				return length != nil ?  "UnsafeRawBufferPointer" : "UnsafeRawPointer"
 			default:
 				return "Void"
 			}
@@ -143,10 +134,9 @@ extension DawnNativeType: DawnType {
 		data: DawnData,
 		expression: ExprSyntax?
 	) -> ExprSyntax {
-		if (annotation == "*" || annotation == "const*")
-			&& (type.raw == "void" || type.raw == "uint8_t")
-		{
-			// Pass through the expression for raw data pointers.
+		if (annotation == "*" || annotation == "const*") && type.raw == "void" && length != nil {
+			// We wrap void arrays in UnsafeRawBufferPointer. Both count and baseAddress are extracted in
+			// generateArraySizeExtractions, so just pass through the expression.
 			return expression ?? ""
 		}
 		if length != nil {
