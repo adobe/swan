@@ -77,15 +77,43 @@ extension DawnMethod {
 		}
 	}
 
-	/// For any of our args that are size parameters for an array, generate a let statement that contains the size
-	/// of the array so that we can call the Dawn API that requires a separate parameter for the size.
-	/// Example
+	/// Generates let statements that extract array sizes from Swift collections.
+	///
+	/// The Dawn C API requires separate size parameters for array arguments, but Swift collections
+	/// include their size via `.count`. This method generates the size extraction code needed to bridge
+	/// between these conventions.
+	///
+	/// Example 1: Typed Array
+	/// Dawn JSON:
 	/// "args": [
-	/// 	{"name": "command count", "type": "size_t"},
-	/// 	{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
+	///     {"name": "command count", "type": "size_t"},
+	///     {"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
 	/// ]
-	/// "command count" is the size parameter for the "commands" array, so we would generate the following:
-	/// let commandCount = commands.count
+	///
+	/// Generated Swift API:
+	///   func submit(commands: [GPUCommandBuffer]) -> Void
+	///
+	/// Generated method body (size extraction happens here):
+	///   let commandCount = commands.count
+	///   commands.withWGPUArrayPointer { commands in
+	///       return submit(commandCount: commandCount, commands: commands)
+	///   }
+	///
+	/// Example 2: UnsafeRawBufferPointer (void* array)
+	/// Dawn JSON:
+	/// "args": [
+	///     {"name": "data", "type": "void", "annotation": "const*", "length": "size"},
+	///     {"name": "size", "type": "size_t"}
+	/// ]
+	///
+	/// Generated Swift API:
+	///   func writeBuffer(buffer: GPUBuffer, bufferOffset: UInt64, data: UnsafeRawBufferPointer) -> Void
+	///
+	/// Generated method body (both size and baseAddress extracted):
+	///   let size = data.count
+	///   let data = data.baseAddress
+	///   return writeBuffer(buffer: buffer, bufferOffset: bufferOffset, data: data, size: size)
+	/// 
 	private func generateArraySizeExtractions(data: DawnData) -> CodeBlockItemListSyntax {
 		let allArgs = self.args ?? []
 
