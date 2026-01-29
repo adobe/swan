@@ -116,7 +116,6 @@ import Testing
 	@Test("YAML generation")
 	func testYAMLGeneration() {
 		let apinotes = [
-			APINote(category: .tag, name: "WGPUAdapterType", values: ["EnumExtensibility": "closed"]),
 			APINote(
 				category: .tag,
 				name: "WGPUTextureViewImpl",
@@ -125,6 +124,7 @@ import Testing
 					"SwiftRetainOp": "wgpuTextureViewRetain",
 				]
 			),
+			APINote(category: .tag, name: "WGPUAdapterType", values: ["EnumExtensibility": "closed"]),
 			APINote(category: .typedef, name: "WGPUBufferUsage", values: ["SwiftWrapper": "struct"]),
 			APINote(category: .function, name: "wgpuAdapterAddRef", values: ["SwiftName": "WGPUAdapterImpl.addRef(self:)"]),
 			APINote(category: .global, name: "WGPUBufferUsage_None", values: ["SwiftName": "WGPUBufferUsage.none"]),

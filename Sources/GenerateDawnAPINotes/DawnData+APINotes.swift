@@ -272,7 +272,7 @@ func yamlFromAPINotes(_ apinotes: [APINote]) -> String {
 			continue
 		}
 		let categoryText = category.description
-		let notesText = notes.map { $0.description() }.joined(separator: "\n")
+		let notesText = notes.sorted { $0.name < $1.name }.map { $0.description() }.joined(separator: "\n")
 		text += """
 			\(categoryText):
 			\(notesText)\n
