@@ -6,12 +6,17 @@
  * accordance with the terms of the Adobe license agreement accompanying
  * it.
  */
+#include "Dawn.h"
 #if defined(__APPLE__)
 #include "dawn/native/MetalBackend.h"
 #endif
+
+extern "C" {
 
 void WaitForCommandsToBeScheduled(WGPUDevice device) {
 #if defined(__APPLE__)
     dawn::native::metal::WaitForCommandsToBeScheduled(device);
 #endif
 }
+
+} // extern "C"
