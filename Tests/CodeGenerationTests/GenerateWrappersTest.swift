@@ -441,8 +441,6 @@ struct TestTypeDescriptor: TypeDescriptor {
 		#expect(generated.contains("let size = data.count"))
 		#expect(generated.contains("let data = data.baseAddress"))
 	}
-}
-	}
 
 	@Test("swiftTypePrefix() returns empty string for Dawn types and GPU for others")
 	func testSwiftTypePrefixForDawnTypes() {
