@@ -1,4 +1,3 @@
-
 // Copyright 2025 Adobe
 // All Rights Reserved.
 //
