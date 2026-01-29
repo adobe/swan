@@ -135,21 +135,9 @@ extension DawnNativeType: DawnType {
 		expression: ExprSyntax?
 	) -> ExprSyntax {
 		if (annotation == "*" || annotation == "const*") && type.raw == "void" && length != nil {
-			// We wrap void arrays in UnsafeRawBufferPointer. Extract the baseAddress and count.
-			guard case .name(let lengthName) = length! else {
-				fatalError("void array requires named length parameter")
-			}
-			let isOptional = optional ?? false
-			let countExpression = isOptional ? "\(identifier)?.count ?? 0" : "\(identifier).count"
-			let baseAddressExpression = isOptional ? "\(identifier)?.baseAddress" : "\(identifier).baseAddress"
-			// Note we use an immediately invoked closure in the code below because we must shadow the identifier variable name.
-			return """
-				{
-					let \(raw: lengthName.camelCase) = \(raw: countExpression)
-					let \(raw: identifier) = \(raw: baseAddressExpression)
-					return \(expression ?? "", format: TabFormat(initialIndentation: .tabs(0)))
-				}()
-				"""
+			// We wrap void arrays in UnsafeRawBufferPointer. Both count and baseAddress are extracted in
+			// generateArraySizeExtractions, so just pass through the expression.
+			return expression ?? ""
 		}
 		if length != nil {
 			return

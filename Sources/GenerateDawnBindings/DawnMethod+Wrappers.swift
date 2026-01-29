@@ -63,9 +63,9 @@ extension DawnMethod {
 		}
 	}
 
-	/// Convert an array count expression to match the C parameter type.
-	/// Array.count returns Int, but some Dawn APIs use uint64_t for size params.
-	private func convertCountExpression(_ countExpr: String, forParameterType type: Name) -> String {
+	/// Convert an array count expression to match the C parameter type, if needed.
+	/// E.g. Array.count returns Int, but some Dawn APIs use uint64_t for size params.
+	private func castCountIfNeeded(_ countExpr: String, forParameterType type: Name) -> String {
 		switch type.raw {
 		case "size_t":
 			// size_t maps to Int, which matches Array.count - no conversion needed
@@ -92,15 +92,21 @@ extension DawnMethod {
 		return CodeBlockItemListSyntax {
 			for arg in allArgs where isArraySizeParameter(arg, allArgs: allArgs) {
 				if let array = arrayForSizeParameter(arg, allArgs: allArgs) {
-					if !array.isRawBufferPointerType() { // Skip raw buffer pointers - size is extracted in unwrapValueOfType
-						let swiftType = array.swiftTypeName(data: data)
-						let arrayName = array.name.camelCase
-						let sizeName = arg.name.camelCase
-						let isOptional = swiftType.hasSuffix("?")
-						let countExpr = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
-						let convertedCountExpr = convertCountExpression(countExpr, forParameterType: arg.type)
+					let swiftType = array.swiftTypeName(data: data)
+					let arrayName = array.name.camelCase
+					let sizeName = arg.name.camelCase
+					let isOptional = swiftType.hasSuffix("?")
 
-						"let \(raw: sizeName) = \(raw: convertedCountExpr)"
+					// All arrays need count extraction
+					let countExpr = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
+					let convertedCountExpr = castCountIfNeeded(countExpr, forParameterType: arg.type)
+
+					"let \(raw: sizeName) = \(raw: convertedCountExpr)"
+
+					if array.isRawBufferPointerType() {
+						// For UnsafeRawBufferPointer, also extract baseAddress
+						let baseAddressExpr = isOptional ? "\(arrayName)?.baseAddress" : "\(arrayName).baseAddress"
+						"let \(raw: arrayName) = \(raw: baseAddressExpr)"
 					}
 				}
 			}
