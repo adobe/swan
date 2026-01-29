@@ -18,7 +18,9 @@ extension DawnCallbackFunction {
 		}
 
 		return [
-			DeclSyntax("public typealias GPU\(raw: name.CamelCase) = (\(raw: argumentTypes.joined(separator: ", "))) -> Void")
+			DeclSyntax(
+				"public typealias \(raw: name.swiftTypePrefix())\(raw: name.CamelCase) = (\(raw: argumentTypes.joined(separator: ", "))) -> Void"
+			)
 		]
 	}
 

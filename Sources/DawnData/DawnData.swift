@@ -409,6 +409,16 @@ public struct DawnBitmaskValue: Decodable, HasTags {
 	public let tags: Tags?
 }
 
+public extension Name {
+	var isDawnInternal: Bool {
+		firstPart == "dawn"
+	}
+
+	func swiftTypePrefix() -> String {
+		return isDawnInternal ? "" : "GPU"
+	}
+}
+
 /// An entity record in the Dawn JSON data.
 ///
 /// The entity records are the top-level definitions in the Dawn JSON data.

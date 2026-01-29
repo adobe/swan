@@ -429,6 +429,58 @@ struct TestTypeDescriptor: TypeDescriptor {
 		// Check size extraction uses nil-coalescing for optional array
 		#expect(generated.contains("let groupCount = groups?.count ?? 0"))
 	}
+
+	@Test("swiftTypePrefix() returns empty string for Dawn types and GPU for others")
+	func testSwiftTypePrefixForDawnTypes() {
+		// Dawn-internal types should have no prefix
+		#expect(Name("dawn toggles descriptor").swiftTypePrefix() == "")
+		#expect(Name("dawn cache device descriptor").swiftTypePrefix() == "")
+		#expect(Name("dawn format capabilities").swiftTypePrefix() == "")
+
+		// Standard WebGPU types should have GPU prefix
+		#expect(Name("shader module").swiftTypePrefix() == "GPU")
+		#expect(Name("adapter info").swiftTypePrefix() == "GPU")
+		#expect(Name("device").swiftTypePrefix() == "GPU")
+	}
+
+	@Test("Dawn-prefixed structures do not use GPU prefix in Swift API")
+	func testDawnPrefixedStructureDeclarations() {
+		let data = try? JSONDecoder().decode(DawnData.self, from: dawnPrefixedDawnData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+
+		let dawnDrmFormatProperties = data.data[Name("dawn drm format properties")]
+		guard let dawnDrmFormatProperties = dawnDrmFormatProperties else {
+			Issue.record("Failed to get dawn drm format properties")
+			return
+		}
+
+		guard case .structure(let structure) = dawnDrmFormatProperties else {
+			Issue.record("dawn drm format properties is not a structure")
+			return
+		}
+
+		let declarations = try? structure.declarations(name: Name("dawn drm format properties"), needsWrap: false, data: data)
+		guard let declarations = declarations else {
+			Issue.record("Failed to get declarations")
+			return
+		}
+		#expect(declarations.count > 0)
+		let combined = DeclSyntax(
+			"""
+			\(raw:declarations.map { $0.formatted().description }.joined(separator: "\n"))
+			"""
+		).formatted(using: TabFormat(initialIndentation: .tabs(0)))
+
+		// Verify the struct does not have a "GPU" prefix (GPUDawnDrmFormatProperties) and instead uses a typealias (DawnDrmFormatProperties)
+		let combinedDescription = combined.description
+		#expect(!combinedDescription.contains(" GPUDawnDrmFormatProperties"))
+		#expect(combinedDescription.contains("public typealias DawnDrmFormatProperties = WGPUDawnDrmFormatProperties"))
+		#expect(combinedDescription.contains("extension DawnDrmFormatProperties: GPUSimpleStruct"))
+	}
+
 }
 
 let deviceDawnData = """
@@ -550,5 +602,26 @@ let adapterDawnData = """
 			"category": "native",
 			"wasm type": "i"
 		},
+	}
+	"""
+
+let dawnPrefixedDawnData = """
+	{
+		"dawn drm format properties": {
+			"category": "structure",
+			"tags": ["dawn"],
+			"members": [
+				{"name": "modifier", "type": "uint64_t"},
+				{"name": "modifier plane count", "type": "uint32_t"}
+			]
+		},
+		"uint64_t": {
+			"category": "native",
+			"wasm type": "j"
+		},
+		"uint32_t": {
+			"category": "native",
+			"wasm type": "i"
+		}
 	}
 	"""

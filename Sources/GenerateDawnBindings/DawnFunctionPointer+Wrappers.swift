@@ -11,12 +11,14 @@ import SwiftSyntax
 extension DawnFunctionPointer: DawnType {
 	func declarations(name: Name, data: DawnData) throws -> [any DeclSyntaxProtocol] {
 		return [
-			DeclSyntax("public typealias GPU\(raw: name.CamelCase) = WGPU\(raw: name.CamelCase)")
+			DeclSyntax(
+				"public typealias \(raw: name.swiftTypePrefix())\(raw: name.CamelCase) = WGPU\(raw: name.CamelCase)"
+			)
 		]
 	}
 
 	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool = false) -> String {
-		return "GPU\(type.CamelCase)?"
+		return "\(type.swiftTypePrefix())\(type.CamelCase)?"
 	}
 
 	func cTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool?) -> String {
