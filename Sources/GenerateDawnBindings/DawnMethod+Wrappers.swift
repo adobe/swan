@@ -107,7 +107,7 @@ extension DawnMethod {
 	/// ]
 	///
 	/// Generated Swift API:
-	///   func writeBuffer(buffer: GPUBuffer, bufferOffset: UInt64, data: UnsafeRawBufferPointer) -> Void
+	///   func writeBuffer(data: UnsafeRawBufferPointer) -> Void
 	///
 	/// Generated method body (both size and baseAddress extracted):
 	///   let size = data.count
@@ -125,7 +125,7 @@ extension DawnMethod {
 					let sizeName = arg.name.camelCase
 					let isOptional = swiftType.hasSuffix("?")
 
-					// All arrays need count extraction
+					// All collections need count extraction
 					let countExpr = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
 					let convertedCountExpr = castCountIfNeeded(countExpr, forParameterType: arg.type)
 
