@@ -1,4 +1,3 @@
-
 // Copyright 2025 Adobe
 // All Rights Reserved.
 //
@@ -41,13 +40,8 @@ extension TypeDescriptor {
 				// Arrays of objects need to be wrapped if we are to get a pointer to the array.
 				return true
 			case .native:
-				if length != nil {
-					if type.raw == "void" || type.raw == "uint8_t" {
-						return false
-					}
-					return true
-				}
-				return false
+				// Native types with a length are wrapped (Tuple for fixed-size, Array for dynamic-size, UnsafeRawBufferPointer for void*).
+				return length != nil
 			default:
 				return false
 			}
@@ -69,11 +63,13 @@ extension TypeDescriptor {
 			// For Arrays, length will be the name of another arg.
 			return false
 		}
-		// Special case: we do not wrap uint8_t arrays or void* arrays.
-		if (type.raw == "uint8_t" || type.raw == "void") && annotation == "const*" {
-			return false
-		}
 		return true
+	}
+
+	/// Returns true if this descriptor represents a void* array (raw buffer pointer type).
+	/// These use UnsafeRawBufferPointer in the Swift API.
+	func isRawBufferPointerType() -> Bool {
+		return type.raw == "void" && annotation == "const*" && length != nil
 	}
 
 	// The name of the wrapper type.
