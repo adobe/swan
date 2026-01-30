@@ -50,7 +50,7 @@ extension GPUDevice {
 	}
 }
 
-struct WebGPURenderingTests {
+struct WebGPUPipelineTests {
 
 	@Test("Render solid color to offscreen texture")
 	@MainActor
