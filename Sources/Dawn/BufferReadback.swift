@@ -21,8 +21,6 @@ public extension GPUBuffer {
     /// - Returns: Array of elements read from the buffer
     @MainActor
     func readData<T>(instance: GPUInstance, offset: Int = 0, count: Int) -> [T]{
-		print("Readback started...");
-
         var mapped = false
         let size = count * MemoryLayout<T>.stride
         _ = mapAsync(mode: .read, offset: offset, size: size, callbackInfo:
