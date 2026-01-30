@@ -145,7 +145,7 @@ let package = Package(
 				"DawnLib"
 			],
 			cxxSettings: [
-				.unsafeFlags(["-std=c++17"])
+				.unsafeFlags(["-std=c++23"])
 			],
 			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings
