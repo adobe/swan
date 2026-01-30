@@ -60,7 +60,7 @@ public extension GPUTexture {
     ///   - instance: GPU instance required to call processEvents() until the mapAsync request completes
     ///   - width: Width of the texture region to read
     ///   - height: Height of the texture region to read
-    /// - Returns: Array of pixel data in BGRA format (4 bytes per pixel)
+    /// - Returns: Array of pixel data in BGRA format (or similar; assumes 4 bytes per pixel)
     @MainActor
     func readPixels(
         device: GPUDevice,
@@ -68,7 +68,7 @@ public extension GPUTexture {
         width: UInt32,
         height: UInt32
     ) -> [UInt8] {
-        let bytesPerRow = width * 4  // BGRA format = 4 bytes per pixel
+        let bytesPerRow = width * 4  // BGRA (or similar) format = 4 bytes per pixel
         precondition(
             bytesPerRow % 256 == 0,
             "Width must result in bytesPerRow that is a multiple of 256 (WebGPU requirement). Use width >= 64."
