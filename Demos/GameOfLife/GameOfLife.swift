@@ -367,8 +367,8 @@ struct GameOfLifeDemo: DemoProvider {
 			let pixels = texture.readPixels(
 				device: device,
 				instance: instance!,
-				width: UInt32(screenShotW),
-				height: UInt32(screenShotH)
+				width: screenShotW,
+				height: screenShotH
 			)
 			pixels.withUnsafeBufferPointer { buffer in
 				savePPM(destFileName: "myshot.ppm", bgra: buffer.baseAddress!, w: screenShotW, h: screenShotH)
