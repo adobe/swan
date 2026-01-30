@@ -55,63 +55,74 @@ public extension GPUBuffer {
     }
 }
 
-@MainActor
-public func readPixels(
-    from texture: GPUTexture,
-    device: GPUDevice,
-    instance: GPUInstance,
-    width: UInt32,
-    height: UInt32
-) -> [UInt8] {
-    let bytesPerRow = width * 4  // BGRA format = 4 bytes per pixel
-    precondition(bytesPerRow % 256 == 0, "Width must result in bytesPerRow that is a multiple of 256 (WebGPU requirement). Use width >= 64.")
-    let bufferSize = UInt64(bytesPerRow * height)
-
-    // Create staging buffer for read-back
-    let stagingBuffer = device.createBuffer(
-        descriptor: GPUBufferDescriptor(
-            label: "read back buffer",
-            usage: [.copyDst, .mapRead],
-            size: bufferSize,
-            mappedAtCreation: false
+public extension GPUTexture {
+    /// Read pixel data from a texture by copying it to a staging buffer.
+    /// - Parameters:
+    ///   - device: GPU device used to create the staging buffer and command encoder
+    ///   - instance: GPU instance required to call processEvents() until the mapAsync request completes
+    ///   - width: Width of the texture region to read
+    ///   - height: Height of the texture region to read
+    /// - Returns: Array of pixel data in BGRA format (4 bytes per pixel)
+    @MainActor
+    func readPixels(
+        device: GPUDevice,
+        instance: GPUInstance,
+        width: UInt32,
+        height: UInt32
+    ) -> [UInt8] {
+        let bytesPerRow = width * 4  // BGRA format = 4 bytes per pixel
+        precondition(
+            bytesPerRow % 256 == 0,
+            "Width must result in bytesPerRow that is a multiple of 256 (WebGPU requirement). Use width >= 64."
         )
-    )
-    // Why would createBuffer ever fail?
-    guard let stagingBuffer = stagingBuffer else {
-        fatalError("Failed to create staging buffer")
-    }
+        let bufferSize = UInt64(bytesPerRow * height)
 
-    // Issue a command to copy the texture to the staging buffer
-    let encoder = device.createCommandEncoder(
-        descriptor: GPUCommandEncoderDescriptor(label: "read back encoder")
-    )
-    encoder.copyTextureToBuffer(
-        source: GPUTexelCopyTextureInfo(
-            texture: texture,
-            mipLevel: 0,
-            origin: GPUOrigin3D(x: 0, y: 0, z: 0),
-            aspect: .all
-        ),
-        destination: GPUTexelCopyBufferInfo(
-            layout: GPUTexelCopyBufferLayout(
-                offset: 0,
-                bytesPerRow: bytesPerRow,
-                rowsPerImage: height
+        // Create staging buffer for read-back
+        let stagingBuffer = device.createBuffer(
+            descriptor: GPUBufferDescriptor(
+                label: "read back buffer",
+                usage: [.copyDst, .mapRead],
+                size: bufferSize,
+                mappedAtCreation: false
+            )
+        )
+        // Why would createBuffer ever fail?
+        guard let stagingBuffer = stagingBuffer else {
+            fatalError("Failed to create staging buffer")
+        }
+
+        // Issue a command to copy the texture to the staging buffer
+        let encoder = device.createCommandEncoder(
+            descriptor: GPUCommandEncoderDescriptor(label: "read back encoder")
+        )
+        encoder.copyTextureToBuffer(
+            source: GPUTexelCopyTextureInfo(
+                texture: self,
+                mipLevel: 0,
+                origin: GPUOrigin3D(x: 0, y: 0, z: 0),
+                aspect: .all
             ),
-            buffer: stagingBuffer
-        ),
-        copySize: GPUExtent3D(width: width, height: height, depthOrArrayLayers: 1)
-    )
-    let commandBuffer = encoder.finish(descriptor: nil)!
-    device.queue.submit(commands: [commandBuffer])
+            destination: GPUTexelCopyBufferInfo(
+                layout: GPUTexelCopyBufferLayout(
+                    offset: 0,
+                    bytesPerRow: bytesPerRow,
+                    rowsPerImage: height
+                ),
+                buffer: stagingBuffer
+            ),
+            copySize: GPUExtent3D(width: width, height: height, depthOrArrayLayers: 1)
+        )
+        let commandBuffer = encoder.finish(descriptor: nil)!
+        device.queue.submit(commands: [commandBuffer])
 
-    // Read back pixel data from buffer
-    let pixels: [UInt8] = stagingBuffer.readData(
-        instance: instance,
-        count: Int(bufferSize)
-    )
+        // Read back pixel data from buffer
+        let pixels: [UInt8] = stagingBuffer.readData(
+            instance: instance,
+            count: Int(bufferSize)
+        )
 
-    stagingBuffer.destroy()
+        stagingBuffer.destroy()
 
-    return pixels
+        return pixels
+    }
 }

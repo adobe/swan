@@ -372,8 +372,7 @@ struct GameOfLifeDemo: DemoProvider {
 
 		// Read back screenshot synchronously after GPU commands are submitted
 		if let texture = screenShotTexture {
-			let pixels = readPixels(
-				from: texture,
+			let pixels = texture.readPixels(
 				device: device,
 				instance: instance!,
 				width: UInt32(screenShotW),
