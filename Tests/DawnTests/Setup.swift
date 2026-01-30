@@ -31,8 +31,31 @@ public func setupGPU() -> (GPUInstance, GPUAdapter, GPUDevice) {
 
 	var device: GPUDevice? = nil
 
+	let deviceDescriptor = GPUDeviceDescriptor(
+		defaultQueue: GPUQueueDescriptor(),
+		deviceLostCallbackInfo: GPUDeviceLostCallbackInfo(
+			mode: .allowProcessEvents,
+			callback: { device, reason, message in
+				print("Device Lost!")
+				print("  Reason: \(reason)")
+				if let message = message {
+					print("  Message: \(message)")
+				}
+			}
+		),
+		uncapturedErrorCallbackInfo: GPUUncapturedErrorCallbackInfo(
+			callback: { device, type, message in
+				print("Uncaptured Error!")
+				print("  Type: \(type)")
+				if let message = message {
+					print("  Message: \(message)")
+				}
+			}
+		)
+	)
+
 	_ = adapter!.requestDevice(
-		descriptor: nil,
+		descriptor: deviceDescriptor,
 		callbackInfo: .init(
 			mode: .allowProcessEvents,
 			callback: { status, inDevice, message in
