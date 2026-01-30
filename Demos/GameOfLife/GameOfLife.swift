@@ -270,24 +270,16 @@ struct GameOfLifeDemo: DemoProvider {
 		pass.end()
 	}
 
-	func screenShotRender(encoder: GPUCommandEncoder, w: Int, h: Int, format: GPUTextureFormat) -> GPUTexture {
+	func screenShotRender(encoder: GPUCommandEncoder, w: UInt32, h: UInt32, format: GPUTextureFormat) -> GPUTexture {
 		guard let device: GPUDevice = self.device else {
 			fatalError("Device not initialized")
 		}
-		let targetTexture: GPUTexture = device.createTexture(
-			descriptor: GPUTextureDescriptor(
-				label: "Temp screenshot",
-				usage: [GPUTextureUsage.copySrc, GPUTextureUsage.renderAttachment],
-				dimension: GPUTextureDimension._2D,  // unsigthly _, probably no way around it though?
-				size: GPUExtent3D(width: UInt32(w), height: UInt32(h), depthOrArrayLayers: 1),  // note: should have default value for depthOrArrayLayers
-				format: format
-			)
-		)
+		let targetTexture = device.createRenderTargetTexture(width: w, height: h, format: format)
 		renderToTexture(destTexture: targetTexture, encoder: encoder)
 		return targetTexture
 	}
 
-	func savePPM(destFileName: String, bgra: UnsafePointer<UInt8>, w: Int, h: Int) {
+	func savePPM(destFileName: String, bgra: UnsafePointer<UInt8>, w: UInt32, h: UInt32) {
 		do {
 			let fileManager = FileManager.default
 			let folderURL = try fileManager.url(
@@ -299,7 +291,7 @@ struct GameOfLifeDemo: DemoProvider {
 			let fileURL = folderURL.appendingPathComponent(destFileName)
 			let header: String = "P6\n\(w) \(h) 255\n"
 			var data = header.data(using: .ascii)!
-			for i in 0..<w * h {
+			for i in 0..<Int(w * h) {
 				data.append(bgra[i * 4 + 2])
 				data.append(bgra[i * 4 + 1])
 				data.append(bgra[i * 4])
@@ -354,8 +346,8 @@ struct GameOfLifeDemo: DemoProvider {
 		renderToTexture(destTexture: backbuffer, encoder: encoder)
 
 		var screenShotTexture: GPUTexture? = nil
-		let screenShotW = 1024;
-		let screenShotH = 600;
+		let screenShotW = UInt32(1024);
+		let screenShotH = UInt32(600);
 
 		if (sPressed) {
 			print("Screen shot!")
