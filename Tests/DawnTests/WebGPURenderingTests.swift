@@ -14,11 +14,10 @@ extension GPUDevice {
 	func createSimpleRenderPipeline(
 		label: String,
 		shaderModule: GPUShaderModule,
+		vertexEntryPoint: String = "vertexMain",
+		fragmentEntryPoint: String = "fragmentMain",
 		format: GPUTextureFormat = .RGBA8Unorm
 	) -> GPURenderPipeline {
-		let vertexEntryPoint = "vertexMain"
-		let fragmentEntryPoint = "fragmentMain"
-
 		// No layout needed - WebGPU creates an implicit "auto" layout for shaders with no bindings
 		return createRenderPipeline(
 			descriptor: GPURenderPipelineDescriptor(
