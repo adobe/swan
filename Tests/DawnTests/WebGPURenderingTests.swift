@@ -83,11 +83,16 @@ struct WebGPURenderingTests {
 		let shaderCode = """
 			@vertex
 			fn vertexMain(@builtin(vertex_index) idx: u32) -> @builtin(position) vec4f {
-			    // Full-screen triangle (CCW winding in NDC where Y points up)
-			    var pos = array<vec2f, 3>(
+			    // Full-screen quad as two triangles (CCW winding)
+			    var pos = array<vec2f, 6>(
+			        // Triangle 1: bottom-left, bottom-right, top-left
 			        vec2f(-1.0, -1.0),
-			        vec2f(-1.0,  3.0),
-			        vec2f( 3.0, -1.0)
+			        vec2f( 1.0, -1.0),
+			        vec2f(-1.0,  1.0),
+			        // Triangle 2: bottom-right, top-right, top-left
+			        vec2f( 1.0, -1.0),
+			        vec2f( 1.0,  1.0),
+			        vec2f(-1.0,  1.0)
 			    );
 			    return vec4f(pos[idx], 0.0, 1.0);
 			}
@@ -121,7 +126,7 @@ struct WebGPURenderingTests {
 
 		let renderPass = encoder.beginRenderPass(descriptor: renderPassDescriptor)
 		renderPass.setPipeline(pipeline: pipeline)
-		renderPass.draw(vertexCount: 3, instanceCount: 1, firstVertex: 0, firstInstance: 0)
+		renderPass.draw(vertexCount: 6, instanceCount: 1, firstVertex: 0, firstInstance: 0)
 		renderPass.end()
 
 		let commandBuffer = encoder.finish(descriptor: nil)!
