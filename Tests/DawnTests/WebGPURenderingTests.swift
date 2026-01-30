@@ -70,14 +70,16 @@ extension GPUDevice {
 
 struct WebGPURenderingTests {
 
-	@Test("Render solid red to offscreen texture")
+	@Test("Render solid color to offscreen texture")
 	@MainActor
-	func testRenderSolidRed() {
+	func testRenderSolidColor() {
 		let (instance, _, device) = setupGPU()
 
 		let texture = device.createRenderTargetTexture()
 		let textureView = texture.createView()
 
+		// Use distinct values for each channel to catch swizzling/ordering bugs
+		// R=0.5 (128), G=0.75 (191), B=0.25 (64), A=1.0 (255)
 		let shaderCode = """
 			@vertex
 			fn vertexMain(@builtin(vertex_index) idx: u32) -> @builtin(position) vec4f {
@@ -92,7 +94,7 @@ struct WebGPURenderingTests {
 
 			@fragment
 			fn fragmentMain() -> @location(0) vec4f {
-			    return vec4f(1.0, 0.0, 0.0, 1.0); // Solid red
+			    return vec4f(0.5, 0.75, 0.25, 1.0); // R=128, G=191, B=64, A=255
 			}
 			"""
 		let shaderModule = device.createShaderModule(
@@ -133,13 +135,15 @@ struct WebGPURenderingTests {
 			height: 64
 		)
 
-		// Verify all pixels are red (B=0, G=0, R=255, A=255)
+		// Verify all pixels match expected BGRA values
+		// Shader outputs RGBA (0.5, 0.75, 0.25, 1.0) -> bytes (128, 191, 64, 255)
+		// Texture format is BGRA8, so memory layout is B=64, G=191, R=128, A=255
 		let pixelCount = 64 * 64
 		for i in 0..<pixelCount {
-			#expect(pixels[i * 4 + 0] == 0)
-			#expect(pixels[i * 4 + 1] == 0)
-			#expect(pixels[i * 4 + 2] == 255)
-			#expect(pixels[i * 4 + 3] == 255)
+			#expect(pixels[i * 4 + 0] == 64)   // B
+			#expect(pixels[i * 4 + 1] == 191)  // G
+			#expect(pixels[i * 4 + 2] == 128)  // R
+			#expect(pixels[i * 4 + 3] == 255)  // A
 		}
 	}
 }
