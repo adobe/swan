@@ -126,3 +126,22 @@ public extension GPUTexture {
         return pixels
     }
 }
+
+public extension GPUDevice {
+	func createRenderTargetTexture(
+		label: String = "Render Target",
+		width: UInt32 = 64,
+		height: UInt32 = 64,
+		format: GPUTextureFormat = .RGBA8Unorm
+	) -> GPUTexture {
+		createTexture(
+			descriptor: GPUTextureDescriptor(
+				label: label,
+				usage: [.copySrc, .renderAttachment],
+				dimension: ._2D,
+				size: GPUExtent3D(width: width, height: height, depthOrArrayLayers: 1),
+				format: format
+			)
+		)
+	}
+}
