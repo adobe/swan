@@ -131,8 +131,7 @@ struct WebGPURenderingTests {
 		let commandBuffer = encoder.finish(descriptor: nil)!
 		device.queue.submit(commands: [commandBuffer])
 
-		let pixels = readPixels(
-			from: texture,
+		let pixels = texture.readPixels(
 			device: device,
 			instance: instance,
 			width: 64,
