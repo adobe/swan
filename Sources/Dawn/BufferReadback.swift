@@ -64,6 +64,7 @@ public func readPixels(
     height: UInt32
 ) -> [UInt8] {
     let bytesPerRow = width * 4  // BGRA format = 4 bytes per pixel
+    precondition(bytesPerRow % 256 == 0, "Width must result in bytesPerRow that is a multiple of 256 (WebGPU requirement). Use width >= 64.")
     let bufferSize = UInt64(bytesPerRow * height)
 
     // Create staging buffer for read-back
@@ -82,7 +83,7 @@ public func readPixels(
 
     // Issue a command to copy the texture to the staging buffer
     let encoder = device.createCommandEncoder(
-        descriptor: GPUCommandEncoderDescriptor(label: "read back encoder") 
+        descriptor: GPUCommandEncoderDescriptor(label: "read back encoder")
     )
     encoder.copyTextureToBuffer(
         source: GPUTexelCopyTextureInfo(
@@ -104,7 +105,7 @@ public func readPixels(
     let commandBuffer = encoder.finish(descriptor: nil)!
     device.queue.submit(commands: [commandBuffer])
 
-    // Read back pixel data
+    // Read back pixel data from buffer
     let pixels: [UInt8] = stagingBuffer.readData(
         instance: instance,
         count: Int(bufferSize)
