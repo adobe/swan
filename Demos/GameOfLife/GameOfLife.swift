@@ -1,3 +1,11 @@
+// Copyright 2026 Adobe
+// All Rights Reserved.
+//
+// NOTICE: Adobe permits you to use, modify, and distribute this file in
+// accordance with the terms of the Adobe license agreement accompanying
+// it.
+//
+
 import Dawn
 import DemoUtils
 import Foundation
@@ -8,6 +16,7 @@ let gridSize: Int = 32
 let updateInterval: Double = 0.2  // Update every 200ms (5 times/sec)
 
 struct GameOfLifeDemo: DemoProvider {
+	private var instance: GPUInstance?
 	private var device: GPUDevice?
 	private var surface: GPUSurface?
 	private var vertexBuffer: GPUBuffer?
@@ -20,7 +29,8 @@ struct GameOfLifeDemo: DemoProvider {
 	private var nextUpdateTime: Double = 0
 
 	@MainActor
-	mutating func initialize(device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface) {
+	mutating func initialize(instance: GPUInstance, device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface) {
+		self.instance = instance
 		self.device = device
 		self.surface = surface
 		// Create vertex buffer
@@ -260,52 +270,16 @@ struct GameOfLifeDemo: DemoProvider {
 		pass.end()
 	}
 
-	func screenShotRender(encoder: GPUCommandEncoder, w: Int, h: Int, format: GPUTextureFormat) -> GPUBuffer {
+	func screenShotRender(encoder: GPUCommandEncoder, w: UInt32, h: UInt32, format: GPUTextureFormat) -> GPUTexture {
 		guard let device: GPUDevice = self.device else {
 			fatalError("Device not initialized")
 		}
-		let targetTexture: GPUTexture = device.createTexture(
-			descriptor: GPUTextureDescriptor(
-				label: "Temp screenshot",
-				usage: [GPUTextureUsage.copySrc, GPUTextureUsage.renderAttachment],
-				dimension: GPUTextureDimension._2D,  // unsigthly _, probably no way around it though?
-				size: GPUExtent3D(width: UInt32(w), height: UInt32(h), depthOrArrayLayers: 1),  // note: should have default value for depthOrArrayLayers
-				format: format
-			)
-		)
-			;
-		let readbackBuffer: GPUBuffer = device.createBuffer(
-			descriptor: GPUBufferDescriptor(
-				label: "Temp screenshot",
-				usage: [GPUBufferUsage.copyDst, GPUBufferUsage.mapRead],
-				size: UInt64(w * h * 4),  // consider: should we map those to swift Int instead?
-				mappedAtCreation: false
-			)
-		)!  // unclear why this returns an optional (create texture does not)
-
+		let targetTexture = device.createRenderTargetTexture(width: w, height: h, format: format)
 		renderToTexture(destTexture: targetTexture, encoder: encoder)
-
-		encoder.copyTextureToBuffer(
-			source: GPUTexelCopyTextureInfo(
-				texture: targetTexture,
-				mipLevel: 0,
-				origin: GPUOrigin3D(x: 0, y: 0, z: 0),
-				aspect: WGPUTextureAspect.all
-			),
-			destination: GPUTexelCopyBufferInfo(
-				layout: GPUTexelCopyBufferLayout(
-					offset: 0,
-					bytesPerRow: UInt32(w * 4),
-					rowsPerImage: UInt32(h)
-				),
-				buffer: readbackBuffer
-			),
-			copySize: GPUExtent3D(width: UInt32(w), height: UInt32(h), depthOrArrayLayers: 1)
-		)
-		return readbackBuffer
+		return targetTexture
 	}
 
-	func savePPM(destFileName: String, bgra: UnsafePointer<UInt8>, w: Int, h: Int) {
+	func savePPM(destFileName: String, bgra: UnsafePointer<UInt8>, w: UInt32, h: UInt32) {
 		do {
 			let fileManager = FileManager.default
 			let folderURL = try fileManager.url(
@@ -317,7 +291,7 @@ struct GameOfLifeDemo: DemoProvider {
 			let fileURL = folderURL.appendingPathComponent(destFileName)
 			let header: String = "P6\n\(w) \(h) 255\n"
 			var data = header.data(using: .ascii)!
-			for i in 0..<w * h {
+			for i in 0..<Int(w * h) {
 				data.append(bgra[i * 4 + 2])
 				data.append(bgra[i * 4 + 1])
 				data.append(bgra[i * 4])
@@ -329,38 +303,6 @@ struct GameOfLifeDemo: DemoProvider {
 		}
 	}
 
-	func screenshotReadback(readbackBuffer: GPUBuffer, w: Int, h: Int) {
-		// inconsistent: sizes here are Ints
-		print("Readback started...");
-		let _ = readbackBuffer.mapAsync(
-			mode: GPUMapMode.read,
-			offset: 0,
-			size: Int(readbackBuffer.size),
-			callbackInfo: GPUBufferMapCallbackInfo(
-				mode: GPUCallbackMode.allowProcessEvents,
-				callback: { status, message in
-					if (status != GPUMapAsyncStatus.success) {
-						fatalError(message ?? "map async failed");
-					}
-					guard
-						let ptr: UnsafeRawPointer = readbackBuffer.getConstMappedRange(
-							offset: 0,
-							size: Int(readbackBuffer.size)
-						)
-					else {
-						fatalError("map returned null pointer");
-					}
-					print("Readback ok!")
-
-					let ptr2: UnsafePointer<UInt8> = ptr.bindMemory(to: UInt8.self, capacity: Int(readbackBuffer.size))
-					savePPM(destFileName: "myshot.ppm", bgra: ptr2, w: w, h: h);
-
-					readbackBuffer.unmap();
-					readbackBuffer.destroy();
-				}
-			)
-		);
-	}
 
 	@MainActor
 	mutating func frame(time: Double) throws -> Bool {
@@ -403,13 +345,13 @@ struct GameOfLifeDemo: DemoProvider {
 		let backbuffer = surface.getCurrentTexture();
 		renderToTexture(destTexture: backbuffer, encoder: encoder)
 
-		var screenShotRenderedBuffer: GPUBuffer?;
-		let screenShotW = 1024;
-		let screenShotH = 600;
+		var screenShotTexture: GPUTexture? = nil
+		let screenShotW = UInt32(1024);
+		let screenShotH = UInt32(600);
 
 		if (sPressed) {
 			print("Screen shot!")
-			screenShotRenderedBuffer = self.screenShotRender(
+			screenShotTexture = self.screenShotRender(
 				encoder: encoder,
 				w: screenShotW,
 				h: screenShotH,
@@ -420,9 +362,18 @@ struct GameOfLifeDemo: DemoProvider {
 		let commandBuffer = encoder.finish(descriptor: nil)!
 		device.queue.submit(commandCount: 1, commands: [commandBuffer])
 
-		if let screenShotRenderedBuffer2 = screenShotRenderedBuffer {
-			self.screenshotReadback(readbackBuffer: screenShotRenderedBuffer2, w: screenShotW, h: screenShotH)
-			screenShotRenderedBuffer = nil;
+		// Read back screenshot synchronously after GPU commands are submitted
+		if let texture = screenShotTexture {
+			let pixels = texture.readPixels(
+				device: device,
+				instance: instance!,
+				width: screenShotW,
+				height: screenShotH
+			)
+			pixels.withUnsafeBufferPointer { buffer in
+				savePPM(destFileName: "myshot.ppm", bgra: buffer.baseAddress!, w: screenShotW, h: screenShotH)
+			}
+			texture.destroy()
 		}
 
 		surface.present()
