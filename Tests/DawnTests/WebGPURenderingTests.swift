@@ -13,11 +13,11 @@ import Testing
 extension GPUDevice {
 	func createSimpleRenderPipeline(
 		label: String,
-		shaderModule: GPUShaderModule
+		shaderModule: GPUShaderModule,
+		format: GPUTextureFormat = .RGBA8Unorm
 	) -> GPURenderPipeline {
 		let vertexEntryPoint = "vertexMain"
 		let fragmentEntryPoint = "fragmentMain"
-		let format: GPUTextureFormat = .BGRA8Unorm
 
 		// No layout needed - WebGPU creates an implicit "auto" layout for shaders with no bindings
 		return createRenderPipeline(
@@ -54,7 +54,7 @@ extension GPUDevice {
 		label: String = "Render Target",
 		width: UInt32 = 64,
 		height: UInt32 = 64,
-		format: GPUTextureFormat = .BGRA8Unorm
+		format: GPUTextureFormat = .RGBA8Unorm
 	) -> GPUTexture {
 		createTexture(
 			descriptor: GPUTextureDescriptor(
@@ -135,14 +135,12 @@ struct WebGPURenderingTests {
 			height: 64
 		)
 
-		// Verify all pixels match expected BGRA values
-		// Shader outputs RGBA (0.5, 0.75, 0.25, 1.0) -> bytes (128, 191, 64, 255)
-		// Texture format is BGRA8, so memory layout is B=64, G=191, R=128, A=255
+		// Verify all pixels match expected RGBA values (128, 191, 64, 255)
 		let pixelCount = 64 * 64
 		for i in 0..<pixelCount {
-			#expect(pixels[i * 4 + 0] == 64)   // B
+			#expect(pixels[i * 4 + 0] == 128)  // R
 			#expect(pixels[i * 4 + 1] == 191)  // G
-			#expect(pixels[i * 4 + 2] == 128)  // R
+			#expect(pixels[i * 4 + 2] == 64)   // B
 			#expect(pixels[i * 4 + 3] == 255)  // A
 		}
 	}
