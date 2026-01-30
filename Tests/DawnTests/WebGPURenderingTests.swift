@@ -130,4 +130,154 @@ struct WebGPURenderingTests {
 			#expect(pixels[i * 4 + 3] == 255)  // A
 		}
 	}
+
+	@Test("Run compute shader that doubles values")
+	@MainActor
+	func testComputeDoubleValues() {
+		let (instance, _, device) = setupGPU()
+
+		// Input data: [0, 1, 2, 3, ..., 63]
+		let elementCount = 64
+		let inputData: [UInt32] = (0..<UInt32(elementCount)).map { $0 }
+		let bufferSize = inputData.lengthInBytes
+
+		// Create storage buffer with input data (needs storage + copySrc for readback)
+		let storageBuffer = device.createBuffer(
+			descriptor: GPUBufferDescriptor(
+				label: "Storage Buffer",
+				usage: [.storage, .copySrc, .copyDst],
+				size: bufferSize,
+				mappedAtCreation: false
+			)
+		)!
+
+		// Write input data to buffer
+		inputData.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: storageBuffer,
+				bufferOffset: 0,
+				data: data
+			)
+		}
+
+		// Create compute shader that doubles each value
+		let shaderCode = """
+			@group(0) @binding(0) var<storage, read_write> data: array<u32>;
+
+			@compute @workgroup_size(64)
+			fn computeMain(@builtin(global_invocation_id) id: vec3u) {
+			    data[id.x] = data[id.x] * 2u;
+			}
+			"""
+		let shaderModule = device.createShaderModule(
+			descriptor: GPUShaderModuleDescriptor(label: "Compute Shader", code: shaderCode)
+		)
+
+		// Create bind group layout
+		let bindGroupLayout = device.createBindGroupLayout(
+			descriptor: GPUBindGroupLayoutDescriptor(
+				label: "Compute Bind Group Layout",
+				entryCount: 1,
+				entries: [
+					GPUBindGroupLayoutEntry(
+						binding: 0,
+						visibility: GPUShaderStage([.compute]),
+						buffer: GPUBufferBindingLayout(type: .storage)
+					)
+				]
+			)
+		)
+
+		// Create pipeline layout
+		let pipelineLayout = device.createPipelineLayout(
+			descriptor: GPUPipelineLayoutDescriptor(
+				label: "Compute Pipeline Layout",
+				bindGroupLayoutCount: 1,
+				bindGroupLayouts: [bindGroupLayout]
+			)
+		)
+
+		// Create compute pipeline
+		let computePipeline = device.createComputePipeline(
+			descriptor: GPUComputePipelineDescriptor(
+				label: "Double Values Pipeline",
+				layout: pipelineLayout,
+				compute: GPUComputeState(
+					module: shaderModule,
+					entryPoint: "computeMain"
+				)
+			)
+		)
+
+		// Create bind group
+		let bindGroup = device.createBindGroup(
+			descriptor: GPUBindGroupDescriptor(
+				label: "Compute Bind Group",
+				layout: bindGroupLayout,
+				entryCount: 1,
+				entries: [
+					GPUBindGroupEntry(binding: 0, buffer: storageBuffer)
+				]
+			)
+		)
+
+		// Create command encoder and run compute pass
+		let encoder = device.createCommandEncoder(
+			descriptor: GPUCommandEncoderDescriptor(label: "Compute Encoder")
+		)
+
+		let computePass = encoder.beginComputePass(
+			descriptor: GPUComputePassDescriptor(label: "Compute Pass")
+		)
+		computePass.setPipeline(pipeline: computePipeline)
+		computePass.setBindGroup(
+			groupIndex: 0,
+			group: bindGroup,
+			dynamicOffsetCount: 0,
+			dynamicOffsets: []
+		)
+		// Dispatch 1 workgroup of 64 threads (one thread per element)
+		computePass.dispatchWorkgroups(
+			workgroupCountX: 1,
+			workgroupCountY: 1,
+			workgroupCountZ: 1
+		)
+		computePass.end()
+
+		// Create staging buffer for readback
+		let stagingBuffer = device.createBuffer(
+			descriptor: GPUBufferDescriptor(
+				label: "Staging Buffer",
+				usage: [.copyDst, .mapRead],
+				size: bufferSize,
+				mappedAtCreation: false
+			)
+		)!
+
+		// Copy storage buffer to staging buffer
+		encoder.copyBufferToBuffer(
+			source: storageBuffer,
+			sourceOffset: 0,
+			destination: stagingBuffer,
+			destinationOffset: 0,
+			size: bufferSize
+		)
+
+		let commandBuffer = encoder.finish(descriptor: nil)!
+		device.queue.submit(commands: [commandBuffer])
+
+		// Read back results
+		let results: [UInt32] = stagingBuffer.readData(
+			instance: instance,
+			count: elementCount
+		)
+
+		// Verify all values are doubled: [0, 2, 4, 6, ..., 126]
+		for i in 0..<elementCount {
+			#expect(results[i] == UInt32(i * 2))
+		}
+
+		storageBuffer.destroy()
+		stagingBuffer.destroy()
+	}
 }
