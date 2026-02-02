@@ -144,6 +144,9 @@ let package = Package(
 			dependencies: [
 				"DawnLib"
 			],
+			cxxSettings: [
+				.unsafeFlags(["-std=c++23"])
+			],
 			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings
 		),

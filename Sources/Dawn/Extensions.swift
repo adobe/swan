@@ -37,3 +37,20 @@ public extension GPUTexture {
 		createView(descriptor: nil)
 	}
 }
+
+public extension GPUDevice {
+	#if canImport(Metal)
+	// When making Metal interop with other APIs, we need to be careful that QueueSubmit
+	// doesn't mean that the operations will be visible to other APIs/Metal devices right
+	// away. macOS does have a global queue of graphics operations, but the command
+	// buffers are inserted there when they are "scheduled". Submitting other operations
+	// before the command buffer is scheduled could lead to races in who gets scheduled
+	// first and incorrect rendering.
+	//
+	// Note:This may become unnecessary once Dawn migrates to commands scheduled futures
+	// (crbug.com/444702048).
+	func waitForCommandsToBeScheduled() {
+		WaitForCommandsToBeScheduled(self)
+	}
+	#endif
+}
