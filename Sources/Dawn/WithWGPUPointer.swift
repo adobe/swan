@@ -115,8 +115,10 @@ public func withWGPUMutableArrayPointer<E: GPUStruct, R>(_ array: [E]?, _ lambda
 	fatalError("Unimplemented withWGPUMutableArrayPointer")
 }
 
-public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E], _ lambda: (UnsafePointer<E.WGPUType>) -> R) -> R {
-	fatalError("Unimplemented withWGPUArrayPointer")
+public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E], _ lambda: (UnsafePointer<E.WGPUType>) -> R) -> R where E.WGPUType == E {
+	return array.withUnsafeBufferPointer { buffer in
+		return lambda(buffer.baseAddress!)
+	}
 }
 
 public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E]?, _ lambda: (UnsafePointer<E.WGPUType>?) -> R) -> R {

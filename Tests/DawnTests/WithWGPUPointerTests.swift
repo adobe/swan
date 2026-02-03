@@ -526,4 +526,24 @@ struct WithWGPUPointerTests {
 		}
 		#expect(result == 4)
 	}
+
+	// A simple GPUSimpleStruct for testing
+	private struct TestStruct: GPUSimpleStruct {
+		var a: Int
+		var b: Float
+	}
+	@Test("withWGPUArrayPointer with GPUSimpleStruct array")
+	func testWithWGPUArrayPointerGPUSimpleStruct() {
+		let testStructs = [TestStruct(a: 1, b: 1.0), TestStruct(a: 2, b: 2.0), TestStruct(a: 3, b: 3.0)]
+		let result = withWGPUArrayPointer(testStructs) { pointer in
+			#expect(pointer[0].a == 1)
+			#expect(pointer[0].b == 1.0)
+			#expect(pointer[1].a == 2)
+			#expect(pointer[1].b == 2.0)
+			#expect(pointer[2].a == 3)
+			#expect(pointer[2].b == 3.0)
+			return testStructs.count
+		}
+		#expect(result == 3)	
+	}		
 }
