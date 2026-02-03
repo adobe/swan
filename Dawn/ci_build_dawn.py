@@ -172,7 +172,7 @@ def main() -> int:
                 if machine in ('amd64', 'x86_64', 'x64'):
                     archs = ["x86_64"]
                 elif machine in ('arm64', 'aarch64'):
-                    archs = ["arm64"]
+                    archs = ["aarch64"]
                 else:
                     # Default to x86_64 if unknown
                     archs = ["x86_64"]
