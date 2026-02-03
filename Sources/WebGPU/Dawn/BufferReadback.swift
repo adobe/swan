@@ -12,6 +12,38 @@ import Foundation
 // These helpers make it easy to verify GPU output by reading data back to the CPU.
 
 public extension GPUBuffer {
+    /// Map a buffer for reading and invoke the given completion with the data as an array.
+    /// The buffer must have been created with .mapRead usage.
+    /// The caller is responsible for calling gpuInstance.processEvents() so the async mapping completes.
+    /// - Parameters:
+    ///   - offset: Byte offset to start reading from
+    ///   - count: Number of elements to read
+    ///   - completion: Callback invoked with the array of elements read from the buffer
+    func readDataAsync<T>(
+        offset: Int = 0,
+        count: Int,
+        completion: @escaping ([T]) -> Void
+    ) {
+        let size = count * MemoryLayout<T>.stride
+        _ = mapAsync(mode: .read, offset: offset, size: size, callbackInfo:
+            .init(
+                mode: .allowProcessEvents,
+                callback: { [self] status, message in
+                    guard status == .success else {
+                        fatalError("Buffer map failed: \(message ?? "unknown error")")
+                    }
+                    guard let pointer = getConstMappedRange(offset: offset, size: size) else {
+                        fatalError("Failed to get mapped range")
+                    }
+                    let typedPointer = pointer.assumingMemoryBound(to: T.self)
+                    let result = Array(UnsafeBufferPointer(start: typedPointer, count: count))
+                    unmap()
+                    completion(result)
+                }
+            )
+        )
+    }
+
     /// Map a buffer for reading and return the data as an array.
     /// The buffer must have been created with .mapRead usage.
     /// - Parameters:
@@ -20,54 +52,33 @@ public extension GPUBuffer {
     ///   - count: Number of elements to read
     /// - Returns: Array of elements read from the buffer
     @MainActor
-    func readData<T>(instance: GPUInstance, offset: Int = 0, count: Int) -> [T]{
-        var mapped = false
-        let size = count * MemoryLayout<T>.stride
-        _ = mapAsync(mode: .read, offset: offset, size: size, callbackInfo:
-            .init(
-                mode: .allowProcessEvents,
-                callback: { status, message in
-                    guard status == .success else {
-                        fatalError("Buffer map failed: \(message ?? "unknown error")")
-                    }
-                    mapped = true
-                }
-            )
-        )
-
+    func readData<T>(instance: GPUInstance, offset: Int = 0, count: Int) -> [T] {
+        var result: [T]?
+        readDataAsync(offset: offset, count: count) { data in
+            result = data
+        }
         // Poll until mapAsync request completes
-        while !mapped {
+        while result == nil {
             instance.processEvents()
         }
-
-        guard let pointer = getConstMappedRange(offset: offset, size: size) else {
-            fatalError("Failed to get mapped range")
-        }
-        let typedPointer = pointer.assumingMemoryBound(to: T.self)
-        // Copy into an array
-        let result = Array(UnsafeBufferPointer(start: typedPointer, count: count))
-
-        unmap()
-
-        return result
+        return result!
     }
 }
 
 public extension GPUTexture {
-    /// Read pixel data from a texture by copying it to a staging buffer.
+    /// Read pixel data from a texture by copying it to a staging buffer, with async callback.
+    /// The callback is invoked when instance.processEvents() is called and the mapping completes.
     /// - Parameters:
     ///   - device: GPU device used to create the staging buffer and command encoder
-    ///   - instance: GPU instance required to call processEvents() until the mapAsync request completes
     ///   - width: Width of the texture region to read
     ///   - height: Height of the texture region to read
-    /// - Returns: Array of pixel data in BGRA format (or similar; assumes 4 bytes per pixel)
-    @MainActor
-    func readPixels(
+    ///   - completion: Callback invoked with the array of pixel data in BGRA format (or similar; assumes 4 bytes per pixel)
+    func readPixelsAsync(
         device: GPUDevice,
-        instance: GPUInstance,
         width: Int,
-        height: Int
-    ) -> [UInt8] {
+        height: Int,
+        completion: @escaping ([UInt8]) -> Void
+    ) {
         let bytesPerRow = width * 4  // BGRA (or similar) format = 4 bytes per pixel
         precondition(
             bytesPerRow % 256 == 0,
@@ -113,15 +124,36 @@ public extension GPUTexture {
         let commandBuffer = encoder.finish(descriptor: nil)!
         device.queue.submit(commands: [commandBuffer])
 
-        // Read back pixel data from buffer
-        let pixels: [UInt8] = stagingBuffer.readData(
-            instance: instance,
-            count: bufferSize
-        )
+        // Read back pixel data from buffer asynchronously
+        stagingBuffer.readDataAsync(count: bufferSize) { (pixels: [UInt8]) in
+            stagingBuffer.destroy()
+            completion(pixels)
+        }
+    }
 
-        stagingBuffer.destroy()
-
-        return pixels
+    /// Read pixel data from a texture by copying it to a staging buffer.
+    /// - Parameters:
+    ///   - device: GPU device used to create the staging buffer and command encoder
+    ///   - instance: GPU instance required to call processEvents() until the mapAsync request completes
+    ///   - width: Width of the texture region to read
+    ///   - height: Height of the texture region to read
+    /// - Returns: Array of pixel data in BGRA format (or similar; assumes 4 bytes per pixel)
+    @MainActor
+    func readPixels(
+        device: GPUDevice,
+        instance: GPUInstance,
+        width: Int,
+        height: Int
+    ) -> [UInt8] {
+        var result: [UInt8]?
+        readPixelsAsync(device: device, width: width, height: height) { pixels in
+            result = pixels
+        }
+        // Poll until mapAsync request completes
+        while result == nil {
+            instance.processEvents()
+        }
+        return result!
     }
 }
 

@@ -16,7 +16,6 @@ let gridSize: Int = 32
 let updateInterval: Double = 0.2  // Update every 200ms (5 times/sec)
 
 struct GameOfLifeDemo: DemoProvider {
-	private var instance: GPUInstance?
 	private var device: GPUDevice?
 	private var surface: GPUSurface?
 	private var vertexBuffer: GPUBuffer?
@@ -29,8 +28,7 @@ struct GameOfLifeDemo: DemoProvider {
 	private var nextUpdateTime: Double = 0
 
 	@MainActor
-	mutating func initialize(instance: GPUInstance, device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface) {
-		self.instance = instance
+	mutating func initialize(device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface) {
 		self.device = device
 		self.surface = surface
 		// Create vertex buffer
@@ -279,7 +277,7 @@ struct GameOfLifeDemo: DemoProvider {
 		return targetTexture
 	}
 
-	func savePPM(destFileName: String, bgra: UnsafePointer<UInt8>, w: Int, h: Int) {
+	static func savePPM(destFileName: String, bgra: UnsafePointer<UInt8>, w: Int, h: Int) {
 		do {
 			let fileManager = FileManager.default
 			let folderURL = try fileManager.url(
@@ -362,18 +360,19 @@ struct GameOfLifeDemo: DemoProvider {
 		let commandBuffer = encoder.finish(descriptor: nil)!
 		device.queue.submit(commandCount: 1, commands: [commandBuffer])
 
-		// Read back screenshot synchronously after GPU commands are submitted
+		// Read back screenshot asynchronously after GPU commands are submitted.
+		// The callback will be invoked when instance.processEvents() is called in the main loop.
 		if let texture = screenShotTexture {
-			let pixels = texture.readPixels(
+			texture.readPixelsAsync(
 				device: device,
-				instance: instance!,
 				width: screenShotW,
 				height: screenShotH
-			)
-			pixels.withUnsafeBufferPointer { buffer in
-				savePPM(destFileName: "myshot.ppm", bgra: buffer.baseAddress!, w: screenShotW, h: screenShotH)
+			) { pixels in
+				pixels.withUnsafeBufferPointer { buffer in
+					GameOfLifeDemo.savePPM(destFileName: "myshot.ppm", bgra: buffer.baseAddress!, w: screenShotW, h: screenShotH)
+				}
+				texture.destroy()
 			}
-			texture.destroy()
 		}
 
 		surface.present()

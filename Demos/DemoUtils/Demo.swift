@@ -4,7 +4,7 @@ import WebGPU
 
 public protocol DemoProvider {
 	@MainActor
-	mutating func initialize(instance: GPUInstance, device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface)
+	mutating func initialize(device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface)
 	@MainActor
 	mutating func frame(time: Double) throws -> Bool
 }
@@ -99,7 +99,7 @@ public func runDemo<Provider: DemoProvider>(
 	let surface: GPUSurface = getSurface(window: window, instance: instance)
 	surface.configure(config: GPUSurfaceConfiguration(device: device!, format: format, width: UInt32(width), height: UInt32(height)))
 
-	mutableProvider.initialize(instance: instance, device: device!, format: format, surface: surface)
+	mutableProvider.initialize(device: device!, format: format, surface: surface)
 
 	while RGFW_window_shouldClose(window) == RGFW_FALSE {
 		RGFW_pollEvents()

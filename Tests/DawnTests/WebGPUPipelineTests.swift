@@ -7,8 +7,7 @@
 //
 
 import Testing
-
-@testable import Dawn
+@testable import WebGPU
 
 extension GPUDevice {
 	func createSimpleRenderPipeline(
