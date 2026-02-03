@@ -51,14 +51,14 @@ extension DawnEnum {
 		data: DawnData,
 		expression: ExprSyntax?
 	) -> ExprSyntax {
-		if length == nil {
+		guard length != nil else {
 			assert(annotation == nil)
 			return expression ?? ""
 		}
 		let optional = optional ?? false
 		// Unpack an array of values.
 		let count: ExprSyntax = optional ? "\(raw: identifier)?.count ?? 0" : "\(raw: identifier).count"
-		guard case .name(let lengthName) = length! else {
+		guard case .name(let lengthName) = length else {
 			fatalError("Unimplemented unwrapValueOfType for type \(type.raw) with length \(length!)")
 		}
 		return
