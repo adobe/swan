@@ -95,7 +95,6 @@ public extension GPUTexture {
                 mappedAtCreation: false
             )
         )
-        // Why would createBuffer ever fail?
         guard let stagingBuffer = stagingBuffer else {
             fatalError("Failed to create staging buffer")
         }
