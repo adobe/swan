@@ -137,7 +137,9 @@ public func withWGPUArrayPointer<E: Numeric, R>(_ array: [E]?, _ lambda: (Unsafe
 }
 
 public func withWGPUArrayPointer<E: RawRepresentable, R>(_ array: [E], _ lambda: (UnsafePointer<E>) -> R) -> R {
-	fatalError("Unimplemented withWGPUArrayPointer")
+	return array.withUnsafeBufferPointer { buffer in
+		return lambda(buffer.baseAddress!)
+	}
 }
 
 public func withWGPUArrayPointer<E: RawRepresentable, R>(_ array: [E]?, _ lambda: (UnsafePointer<E>?) -> R) -> R {

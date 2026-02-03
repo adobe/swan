@@ -505,4 +505,25 @@ struct WithWGPUPointerTests {
 
 		#expect(result == 5)
 	}
+
+	// A simple RawRepresentable enum for testing
+	private enum TestFormat: UInt32, RawRepresentable {
+		case first = 1
+		case second = 2
+		case third = 3
+		case fourth = 4
+	}
+	@Test("withWGPUArrayPointer with RawRepresentable array")
+	func testWithWGPUArrayPointerRawRepresentable() {
+		let formats: [TestFormat] = [.first, .second, .third, .fourth]
+		let result = withWGPUArrayPointer(formats){ pointer in
+			#expect(pointer[0] == .first)
+			#expect(pointer[1] == .second)
+			#expect(pointer[2] == .third)
+			#expect(pointer[3] == .fourth)
+			// Return a value to verify the generic return type works
+			return formats.count
+		}
+		#expect(result == 4)
+	}
 }
