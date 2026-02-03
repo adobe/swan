@@ -127,9 +127,9 @@ public extension GPUTexture {
 
 public extension GPUDevice {
 	func createRenderTargetTexture(
-		label: String = "Render Target",
-		width: Int = 64,
-		height: Int = 64,
+		label: String? = nil,
+		width: Int,
+		height: Int,
 		format: GPUTextureFormat = .RGBA8Unorm
 	) -> GPUTexture {
 		createTexture(

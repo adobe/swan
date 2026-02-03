@@ -57,7 +57,7 @@ struct WebGPUPipelineTests {
 	func testRenderSolidColor() {
 		let (instance, _, device) = setupGPU()
 
-		let texture = device.createRenderTargetTexture()
+		let texture = device.createRenderTargetTexture(width: 64, height: 64)
 		let textureView = texture.createView()
 
 		// Use distinct values for each channel to catch swizzling/ordering bugs
