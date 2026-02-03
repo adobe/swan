@@ -360,8 +360,6 @@ struct GameOfLifeDemo: DemoProvider {
 		let commandBuffer = encoder.finish(descriptor: nil)!
 		device.queue.submit(commandCount: 1, commands: [commandBuffer])
 
-		// Read back screenshot asynchronously after GPU commands are submitted.
-		// The callback will be invoked when instance.processEvents() is called in the main loop.
 		if let texture = screenShotTexture {
 			texture.readPixelsAsync(
 				device: device,
