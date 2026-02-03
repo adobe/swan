@@ -1161,6 +1161,8 @@ Enumerators:
   SwiftName: chromiumTestingUnimplemented
 - Name: WGPUWGSLLanguageFeatureName_ChromiumTestingUnsafeExperimental
   SwiftName: chromiumTestingUnsafeExperimental
+- Name: WGPUWGSLLanguageFeatureName_FilteringParameters
+  SwiftName: filteringParameters
 - Name: WGPUWGSLLanguageFeatureName_FragmentDepth
   SwiftName: fragmentDepth
 - Name: WGPUWGSLLanguageFeatureName_ImmediateAddressSpace
@@ -1177,6 +1179,8 @@ Enumerators:
   SwiftName: subgroupId
 - Name: WGPUWGSLLanguageFeatureName_SubgroupUniformity
   SwiftName: subgroupUniformity
+- Name: WGPUWGSLLanguageFeatureName_SwizzleAssignment
+  SwiftName: swizzleAssignment
 - Name: WGPUWGSLLanguageFeatureName_TexelBuffers
   SwiftName: texelBuffers
 - Name: WGPUWGSLLanguageFeatureName_TextureAndSamplerLet
