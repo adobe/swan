@@ -91,7 +91,7 @@ def get_current_os() -> OS:
 class Arch(Enum):
     X86_64 = "x86_64"
     ARM64 = "arm64"
-
+    AARCH64 = "aarch64"
 
 @dataclass
 class TargetConfig:

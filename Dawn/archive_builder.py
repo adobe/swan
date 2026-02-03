@@ -96,7 +96,7 @@ def write_bundle_manifest(version: str) -> None:
                 "variants": [
                     {
                         "path": "windows_arm64_release/bin/dxcompiler.dll",
-                        "supportedTriples": ["arm64-unknown-windows-msvc"],
+                        "supportedTriples": ["aarch64-unknown-windows-msvc"],
                     },
                     {
                         "path": "windows_x86_64_release/bin/dxcompiler.dll",
@@ -110,7 +110,7 @@ def write_bundle_manifest(version: str) -> None:
                 "variants": [
                     {
                         "path": "windows_arm64_release/bin/dxil.dll",
-                        "supportedTriples": ["arm64-unknown-windows-msvc"],
+                        "supportedTriples": ["aarch64-unknown-windows-msvc"],
                     },
                     {
                         "path": "windows_x86_64_release/bin/dxil.dll",
@@ -124,7 +124,7 @@ def write_bundle_manifest(version: str) -> None:
                 "variants": [
                     {
                         "path": "windows_arm64_release/bin/d3dcompiler_47.dll",
-                        "supportedTriples": ["arm64-unknown-windows-msvc"],
+                        "supportedTriples": ["aarch64-unknown-windows-msvc"],
                     },
                     {
                         "path": "windows_x86_64_release/bin/d3dcompiler_47.dll",
