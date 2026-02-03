@@ -65,22 +65,22 @@ public extension GPUTexture {
     func readPixels(
         device: GPUDevice,
         instance: GPUInstance,
-        width: UInt32,
-        height: UInt32
+        width: Int,
+        height: Int
     ) -> [UInt8] {
         let bytesPerRow = width * 4  // BGRA (or similar) format = 4 bytes per pixel
         precondition(
             bytesPerRow % 256 == 0,
             "Width must result in bytesPerRow that is a multiple of 256 (WebGPU requirement). Use width >= 64."
         )
-        let bufferSize = UInt64(bytesPerRow * height)
+        let bufferSize = bytesPerRow * height
 
         // Create staging buffer for read-back
         let stagingBuffer = device.createBuffer(
             descriptor: GPUBufferDescriptor(
                 label: "read back buffer",
                 usage: [.copyDst, .mapRead],
-                size: bufferSize,
+                size: UInt64(bufferSize),
                 mappedAtCreation: false
             )
         )
@@ -103,12 +103,12 @@ public extension GPUTexture {
             destination: GPUTexelCopyBufferInfo(
                 layout: GPUTexelCopyBufferLayout(
                     offset: 0,
-                    bytesPerRow: bytesPerRow,
-                    rowsPerImage: height
+                    bytesPerRow: UInt32(bytesPerRow),
+                    rowsPerImage: UInt32(height)
                 ),
                 buffer: stagingBuffer
             ),
-            copySize: GPUExtent3D(width: width, height: height, depthOrArrayLayers: 1)
+            copySize: GPUExtent3D(width: UInt32(width), height: UInt32(height), depthOrArrayLayers: 1)
         )
         let commandBuffer = encoder.finish(descriptor: nil)!
         device.queue.submit(commands: [commandBuffer])
@@ -116,7 +116,7 @@ public extension GPUTexture {
         // Read back pixel data from buffer
         let pixels: [UInt8] = stagingBuffer.readData(
             instance: instance,
-            count: Int(bufferSize)
+            count: bufferSize
         )
 
         stagingBuffer.destroy()
@@ -128,8 +128,8 @@ public extension GPUTexture {
 public extension GPUDevice {
 	func createRenderTargetTexture(
 		label: String = "Render Target",
-		width: UInt32 = 64,
-		height: UInt32 = 64,
+		width: Int = 64,
+		height: Int = 64,
 		format: GPUTextureFormat = .RGBA8Unorm
 	) -> GPUTexture {
 		createTexture(
@@ -137,7 +137,7 @@ public extension GPUDevice {
 				label: label,
 				usage: [.copySrc, .renderAttachment],
 				dimension: ._2D,
-				size: GPUExtent3D(width: width, height: height, depthOrArrayLayers: 1),
+				size: GPUExtent3D(width: UInt32(width), height: UInt32(height), depthOrArrayLayers: 1),
 				format: format
 			)
 		)
