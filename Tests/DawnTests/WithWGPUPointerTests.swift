@@ -546,4 +546,14 @@ struct WithWGPUPointerTests {
 		}
 		#expect(result == 3)	
 	}		
+	@Test("withWGPUArrayPointer with optional GPUSimpleStruct array - nil")
+	func testWithWGPUArrayPointerNilGPUSimpleStruct() {
+		let testStructs: [TestStruct]? = nil
+		let result = withWGPUArrayPointer(testStructs) { pointer in
+			#expect(pointer == nil)
+			return 42
+		}
+		#expect(result == 42)
+	}
+
 }

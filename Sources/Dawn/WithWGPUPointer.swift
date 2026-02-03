@@ -121,8 +121,11 @@ public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E], _ lambda: 
 	}
 }
 
-public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E]?, _ lambda: (UnsafePointer<E.WGPUType>?) -> R) -> R {
-	fatalError("Unimplemented withWGPUArrayPointer")
+public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E]?, _ lambda: (UnsafePointer<E.WGPUType>?) -> R) -> R where E.WGPUType == E {
+	if let array = array {
+		return withWGPUArrayPointer(array, lambda)
+	}
+	return lambda(nil)
 }
 
 public func withWGPUArrayPointer<E: Numeric, R>(_ array: [E], _ lambda: (UnsafePointer<E>) -> R) -> R {
