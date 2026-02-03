@@ -6,8 +6,8 @@
 // it.
 //
 
-import Dawn
 import DemoUtils
+import WebGPU
 import Foundation
 import RGFW
 
