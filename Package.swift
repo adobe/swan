@@ -225,6 +225,7 @@ let package = Package(
 			name: "DawnTests",
 			dependencies: [
 				"Dawn",
+				"WebGPU",
 				.product(name: "Testing", package: "swift-testing"),
 			],
 			swiftSettings: swiftSettings,
