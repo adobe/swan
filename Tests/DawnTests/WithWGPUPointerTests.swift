@@ -670,8 +670,6 @@ struct WithWGPUPointerTests {
 		#expect(stringResult == "binding: 42")
 	}
 
-	// MARK: - Group 5: Tuple Overloads
-
 	@Test("withWGPUArrayPointer with 7-element tuple")
 	func testWithWGPUArrayPointer7ElementTuple() {
 		// 7 parameters for transfer function (like sRGB gamma curve)
@@ -801,5 +799,20 @@ struct WithWGPUPointerTests {
 		}
 
 		#expect(result == "non-nil case")
+	}
+
+	@Test("unwrapWGPUArray with Numeric array")
+	func testUnwrapWGPUArrayNumeric() {
+		let numbers: [Float] = [1.0, 2.0, 3.0, 4.0]
+
+		let result = numbers.unwrapWGPUArray { pointer in
+			#expect(pointer[0] == 1.0)
+			#expect(pointer[1] == 2.0)
+			#expect(pointer[2] == 3.0)
+			#expect(pointer[3] == 4.0)
+			return "success"
+		}
+
+		#expect(result == "success")
 	}
 }

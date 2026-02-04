@@ -274,7 +274,9 @@ extension UnsafePointer {
 
 extension Array where Element: Numeric {
 	func unwrapWGPUArray<R>(_ lambda: (UnsafePointer<Element>) -> R) -> R {
-		fatalError("Unimplemented unwrapWGPUArray")
+		return self.withUnsafeBufferPointer { buffer in
+			lambda(buffer.baseAddress!)
+		}
 	}
 }
 
