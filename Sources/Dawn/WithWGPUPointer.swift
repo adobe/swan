@@ -304,6 +304,8 @@ extension Array where Element: AnyObject {
 	}
 
 	func unwrapWGPUArray<R>(_ lambda: (UnsafePointer<Element>) -> R) -> R {
-		fatalError("Unimplemented unwrapWGPUArray")
+		return self.withUnsafeBufferPointer { buffer in
+			lambda(buffer.baseAddress!)
+		}
 	}
 }

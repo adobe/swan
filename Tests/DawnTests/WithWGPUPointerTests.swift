@@ -815,4 +815,24 @@ struct WithWGPUPointerTests {
 
 		#expect(result == "success")
 	}
+
+	// Simple test class for AnyObject array tests
+	private class TestObject {
+		let value: Int
+		init(_ value: Int) { self.value = value }
+	}
+
+	@Test("unwrapWGPUArray with AnyObject array")
+	func testUnwrapWGPUArrayAnyObject() {
+		let objects: [TestObject] = [TestObject(1), TestObject(2), TestObject(3)]
+
+		let result = objects.unwrapWGPUArray { pointer in
+			#expect(pointer[0].value == 1)
+			#expect(pointer[1].value == 2)
+			#expect(pointer[2].value == 3)
+			return "success"
+		}
+
+		#expect(result == "success")
+	}
 }
