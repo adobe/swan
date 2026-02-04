@@ -615,4 +615,58 @@ struct WithWGPUPointerTests {
 		#expect(result == 1)
 	}
 
+	@Test("Array.withWGPUPointer with GPUStruct array")
+	func testArrayWithWGPUPointer() {
+		let entries: [GPUBindGroupLayoutEntry] = [
+			.init(
+				binding: 0,
+				visibility: GPUShaderStage([.vertex, .compute, .fragment]),
+				buffer: .init()
+			),
+			.init(
+				binding: 1,
+				visibility: GPUShaderStage([.vertex, .compute]),
+				buffer: .init(type: .readOnlyStorage)
+			),
+		]
+
+		// Use the array instance method instead of the free function
+		entries.withWGPUPointer { pointer in
+			#expect(pointer[0].binding == 0)
+			#expect(pointer[1].binding == 1)
+
+			// Verify visibility flags
+			#expect(pointer[0].visibility.contains(.vertex))
+			#expect(pointer[0].visibility.contains(.compute))
+			#expect(pointer[0].visibility.contains(.fragment))
+			#expect(pointer[1].visibility.contains(.vertex))
+			#expect(pointer[1].visibility.contains(.compute))
+			#expect(!pointer[1].visibility.contains(.fragment))
+
+			// Verify buffer types
+			#expect(pointer[0].buffer.type == .uniform)
+			#expect(pointer[1].buffer.type == .readOnlyStorage)
+		}
+	}
+
+	@Test("Array.withWGPUPointer return type propagation")
+	func testArrayWithWGPUPointerReturnType() {
+		let entries: [GPUBindGroupLayoutEntry] = [
+			.init(binding: 42, visibility: GPUShaderStage([.vertex]), buffer: .init()),
+		]
+
+		// Test that the return type is correctly propagated
+		let result: UInt32 = entries.withWGPUPointer { pointer in
+			return pointer[0].binding
+		}
+
+		#expect(result == 42)
+
+		// Test with a different return type
+		let stringResult: String = entries.withWGPUPointer { pointer in
+			return "binding: \(pointer[0].binding)"
+		}
+
+		#expect(stringResult == "binding: 42")
+	}
 }

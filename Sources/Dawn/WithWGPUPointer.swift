@@ -42,7 +42,7 @@ public extension WithWGPUPointer where Self: GPUSimpleStruct, Self.WGPUType == S
 
 public extension Array where Element: GPUStruct {
 	func withWGPUPointer<R>(_ lambda: (UnsafePointer<Element.WGPUType>) -> R) -> R {
-		fatalError("Unimplemented withWGPUPointer")
+		return withWGPUArrayPointer(self, lambda)
 	}
 }
 
