@@ -9,6 +9,44 @@
 import Testing
 @testable import WebGPU
 
+// Synchronous read-back helpers for tests only
+// These loop on instance.processEvents() which should not be done in production code.
+
+extension GPUBuffer {
+	@MainActor
+	func readData<T>(instance: GPUInstance, offset: Int = 0, count: Int) -> [T] {
+		var result: [T]?
+		readDataAsync(offset: offset, count: count) { data in
+			result = data
+		}
+		// Poll until mapAsync request completes
+		while result == nil {
+			instance.processEvents()
+		}
+		return result!
+	}
+}
+
+extension GPUTexture {
+	@MainActor
+	func readPixels(
+		device: GPUDevice,
+		instance: GPUInstance,
+		width: Int,
+		height: Int
+	) -> [UInt8] {
+		var result: [UInt8]?
+		readPixelsAsync(device: device, width: width, height: height) { pixels in
+			result = pixels
+		}
+		// Poll until mapAsync request completes
+		while result == nil {
+			instance.processEvents()
+		}
+		return result!
+	}
+}
+
 extension GPUDevice {
 	func createSimpleRenderPipeline(
 		label: String,

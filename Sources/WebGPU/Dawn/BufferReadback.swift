@@ -43,26 +43,6 @@ public extension GPUBuffer {
             )
         )
     }
-
-    /// Map a buffer for reading and return the data as an array.
-    /// The buffer must have been created with .mapRead usage.
-    /// - Parameters:
-    ///   - instance: GPU instance required to call processEvents() until the mapAsync request completes
-    ///   - offset: Byte offset to start reading from
-    ///   - count: Number of elements to read
-    /// - Returns: Array of elements read from the buffer
-    @MainActor
-    func readData<T>(instance: GPUInstance, offset: Int = 0, count: Int) -> [T] {
-        var result: [T]?
-        readDataAsync(offset: offset, count: count) { data in
-            result = data
-        }
-        // Poll until mapAsync request completes
-        while result == nil {
-            instance.processEvents()
-        }
-        return result!
-    }
 }
 
 public extension GPUTexture {
@@ -128,31 +108,6 @@ public extension GPUTexture {
             stagingBuffer.destroy()
             completion(pixels)
         }
-    }
-
-    /// Read pixel data from a texture by copying it to a staging buffer.
-    /// - Parameters:
-    ///   - device: GPU device used to create the staging buffer and command encoder
-    ///   - instance: GPU instance required to call processEvents() until the mapAsync request completes
-    ///   - width: Width of the texture region to read
-    ///   - height: Height of the texture region to read
-    /// - Returns: Array of pixel data in BGRA format (or similar; assumes 4 bytes per pixel)
-    @MainActor
-    func readPixels(
-        device: GPUDevice,
-        instance: GPUInstance,
-        width: Int,
-        height: Int
-    ) -> [UInt8] {
-        var result: [UInt8]?
-        readPixelsAsync(device: device, width: width, height: height) { pixels in
-            result = pixels
-        }
-        // Poll until mapAsync request completes
-        while result == nil {
-            instance.processEvents()
-        }
-        return result!
     }
 }
 
