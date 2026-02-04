@@ -44,6 +44,10 @@ public extension Array where Element: GPUStruct {
 	func withWGPUPointer<R>(_ lambda: (UnsafePointer<Element.WGPUType>) -> R) -> R {
 		return withWGPUArrayPointer(self, lambda)
 	}
+
+	func withWGPUMutablePointer<R>(_ lambda: (UnsafeMutablePointer<Element.WGPUType>) -> R) -> R {
+		return withWGPUMutableArrayPointer(self, lambda)
+	}
 }
 
 public extension Optional where Wrapped: WithWGPUPointer {
@@ -265,16 +269,6 @@ extension UnsafePointer {
 			integerArray.append(self[i]!)
 		}
 		return integerArray
-	}
-}
-
-extension Array where Element: GPUStruct {
-	func unwrapWGPUArray<R>(_ lambda: (UnsafePointer<Element.WGPUType>) -> R) -> R {
-		fatalError("Unimplemented unwrapWGPUArray")
-	}
-
-	func unwrapWGPUArray<R>(_ lambda: (UnsafeMutablePointer<Element.WGPUType>) -> R) -> R {
-		fatalError("Unimplemented unwrapWGPUArray")
 	}
 }
 
