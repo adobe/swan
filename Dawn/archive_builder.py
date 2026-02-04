@@ -31,7 +31,7 @@ def write_target_manifest(
         "libraryPath": (target_dir / "lib").as_posix(),
         "includePath": (target_dir / "include").as_posix(),
         "supportedTriples": target_config.triples(),
-        "libraryName": "libwebgpu_dawn.lib"
+        "libraryName": "webgpu_dawn.lib"
         if target_config.os.is_windows()
         else "libwebgpu_dawn.a",
     }
