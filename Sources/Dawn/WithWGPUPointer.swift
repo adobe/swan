@@ -163,9 +163,7 @@ public func withWGPUArrayPointer<E: RawRepresentable, R>(_ array: [E]?, _ lambda
 	guard let array = array else {
 		return lambda(nil)
 	}
-	return array.withUnsafeBufferPointer { buffer in
-		return lambda(buffer.baseAddress)
-	}
+	return withWGPUArrayPointer(array, lambda)
 }
 
 // Tuples 7, 9, and 12 (used in color space conversion structures)
