@@ -70,7 +70,6 @@ let package = Package(
 		.iOS(.v18),  // iOS 18 (or adjust the version as needed)
 	],
 	products: [
-		// WebGPU library - use this for cross-platform WebGPU development
 		.library(
 			name: "WebGPU",
 			targets: ["WebGPU"]
