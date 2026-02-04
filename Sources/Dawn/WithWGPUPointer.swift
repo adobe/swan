@@ -164,8 +164,14 @@ public func withWGPUArrayPointer<E: RawRepresentable, R>(_ array: [E]?, _ lambda
 	}
 }
 
+// Tuples 7, 9, and 12 (used in color space conversion structures)
 public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E), _ lambda: (UnsafePointer<E>) -> R) -> R {
-	fatalError("Unimplemented withWGPUArrayPointer")
+	var copy = tuple // Copy for mutability
+	return withUnsafePointer(to: &copy) { tuplePointer in
+		tuplePointer.withMemoryRebound(to: E.self, capacity: 7) { pointer in
+			lambda(pointer)
+		}
+	}
 }
 
 public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E, E), _ lambda: (UnsafePointer<E>) -> R) -> R {
@@ -176,8 +182,14 @@ public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E
 	fatalError("Unimplemented withWGPUArrayPointer")
 }
 
+// Optional tuples of the same arity
 public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E)?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
-	fatalError("Unimplemented withWGPUArrayPointer")
+	if let tuple = tuple {
+		return withWGPUArrayPointer(tuple) { (pointer: UnsafePointer<E>) in
+			lambda(pointer)
+		}
+	}
+	return lambda(nil)
 }
 
 public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E, E)?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
