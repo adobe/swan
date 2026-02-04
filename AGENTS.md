@@ -12,7 +12,7 @@ Swan is a Swift WebGPU binding library that provides Swift APIs for using WebGPU
 - **CDawn**: C bindings layer for Dawn
 - **DawnData**: Data structures and utilities for Dawn integration
 - **WebGPU**: High-level Swift WebGPU API built on Dawn
-- **WebGPULife**: Demo/example applications
+- **GameOfLife**: Demo/example application
 
 ### Code Generation
 
@@ -65,6 +65,8 @@ The project uses swift-format with configuration in `.swift-format`:
 - swift-testing (for tests)
 - swift-log (for logging)
 - swift-syntax (for code generation)
+- swift-argument-parser (for CLI argument parsing)
+- swift-format (for code formatting)
 
 ## Key Files
 
