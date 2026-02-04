@@ -556,4 +556,31 @@ struct WithWGPUPointerTests {
 		#expect(result == 42)
 	}
 
+	@Test("withWGPUMutableArrayPointer with GPUStruct array")
+	func testWithWGPUMutableArrayPointerGPUStruct() {
+		let entries: [GPUBindGroupLayoutEntry] = [
+			.init(
+				binding: 7,
+				visibility: GPUShaderStage([.vertex, .fragment]),
+				buffer: .init()
+			),
+			.init(
+				binding: 9,
+				visibility: GPUShaderStage([.compute]),
+				buffer: .init(type: .readOnlyStorage)
+			),
+		]
+
+		let result = withWGPUMutableArrayPointer(entries) { pointer in
+			#expect(pointer[0].binding == 7)
+			#expect(pointer[1].binding == 9)
+			#expect(pointer[0].visibility.contains(.vertex))
+			#expect(pointer[0].visibility.contains(.fragment))
+			#expect(pointer[1].visibility.contains(.compute))
+			return entries.count
+		}
+
+		#expect(result == 2)
+	}
+
 }
