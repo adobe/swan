@@ -716,4 +716,90 @@ struct WithWGPUPointerTests {
 
 		#expect(result == "non-nil case")
 	}
+
+	@Test("withWGPUArrayPointer with 9-element tuple")
+	func testWithWGPUArrayPointer9ElementTuple() {
+		// 3x3 matrix (9 floats) for color space conversion
+		let conversionMatrix: (Float, Float, Float, Float, Float, Float, Float, Float, Float) =
+			(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0)
+
+		let result = withWGPUArrayPointer(conversionMatrix) { pointer in
+			#expect(pointer[0] == 1.0)
+			#expect(pointer[4] == 5.0)
+			#expect(pointer[8] == 9.0)
+			return "success"
+		}
+
+		#expect(result == "success")
+	}
+
+	@Test("withWGPUArrayPointer with optional 9-element tuple - nil")
+	func testWithWGPUArrayPointerNil9ElementTuple() {
+		let conversionMatrix: (Float, Float, Float, Float, Float, Float, Float, Float, Float)? = nil
+
+		let result = withWGPUArrayPointer(conversionMatrix) { pointer in
+			#expect(pointer == nil)
+			return "nil case"
+		}
+
+		#expect(result == "nil case")
+	}
+
+	@Test("withWGPUArrayPointer with optional 9-element tuple - non-nil")
+	func testWithWGPUArrayPointerNonNil9ElementTuple() {
+		let conversionMatrix: (Float, Float, Float, Float, Float, Float, Float, Float, Float)? =
+			(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0)
+
+		let result = withWGPUArrayPointer(conversionMatrix) { pointer in
+			#expect(pointer != nil)
+			#expect(pointer![0] == 1.0)
+			#expect(pointer![8] == 9.0)
+			return "non-nil case"
+		}
+
+		#expect(result == "non-nil case")
+	}
+
+	@Test("withWGPUArrayPointer with 12-element tuple")
+	func testWithWGPUArrayPointer12ElementTuple() {
+		// 3x4 matrix (12 floats) for YUV to RGB conversion
+		let yuvMatrix: (Float, Float, Float, Float, Float, Float, Float, Float, Float, Float, Float, Float) =
+			(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0)
+
+		let result = withWGPUArrayPointer(yuvMatrix) { pointer in
+			#expect(pointer[0] == 1.0)
+			#expect(pointer[5] == 6.0)
+			#expect(pointer[11] == 12.0)
+			return "success"
+		}
+
+		#expect(result == "success")
+	}
+
+	@Test("withWGPUArrayPointer with optional 12-element tuple - nil")
+	func testWithWGPUArrayPointerNil12ElementTuple() {
+		let yuvMatrix: (Float, Float, Float, Float, Float, Float, Float, Float, Float, Float, Float, Float)? = nil
+
+		let result = withWGPUArrayPointer(yuvMatrix) { pointer in
+			#expect(pointer == nil)
+			return "nil case"
+		}
+
+		#expect(result == "nil case")
+	}
+
+	@Test("withWGPUArrayPointer with optional 12-element tuple - non-nil")
+	func testWithWGPUArrayPointerNonNil12ElementTuple() {
+		let yuvMatrix: (Float, Float, Float, Float, Float, Float, Float, Float, Float, Float, Float, Float)? =
+			(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0)
+
+		let result = withWGPUArrayPointer(yuvMatrix) { pointer in
+			#expect(pointer != nil)
+			#expect(pointer![0] == 1.0)
+			#expect(pointer![11] == 12.0)
+			return "non-nil case"
+		}
+
+		#expect(result == "non-nil case")
+	}
 }

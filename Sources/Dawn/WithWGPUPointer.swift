@@ -175,11 +175,21 @@ public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E), 
 }
 
 public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E, E), _ lambda: (UnsafePointer<E>) -> R) -> R {
-	fatalError("Unimplemented withWGPUArrayPointer")
+	var copy = tuple  // Copy for mutability
+	return withUnsafePointer(to: &copy) { tuplePointer in
+		tuplePointer.withMemoryRebound(to: E.self, capacity: 9) { pointer in
+			lambda(pointer)
+		}
+	}
 }
 
 public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E, E, E, E, E), _ lambda: (UnsafePointer<E>) -> R) -> R {
-	fatalError("Unimplemented withWGPUArrayPointer")
+	var copy = tuple  // Copy for mutability
+	return withUnsafePointer(to: &copy) { tuplePointer in
+		tuplePointer.withMemoryRebound(to: E.self, capacity: 12) { pointer in
+			lambda(pointer)
+		}
+	}
 }
 
 // Optional tuples of the same arity
@@ -193,11 +203,21 @@ public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E)?,
 }
 
 public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E, E)?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
-	fatalError("Unimplemented withWGPUArrayPointer")
+	if let tuple = tuple {
+		return withWGPUArrayPointer(tuple) { (pointer: UnsafePointer<E>) in
+			lambda(pointer)
+		}
+	}
+	return lambda(nil)
 }
 
 public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E, E, E, E, E, E)?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
-	fatalError("Unimplemented withWGPUArrayPointer")
+	if let tuple = tuple {
+		return withWGPUArrayPointer(tuple) { (pointer: UnsafePointer<E>) in
+			lambda(pointer)
+		}
+	}
+	return lambda(nil)
 }
 
 extension UnsafePointer where Pointee: WGPUStruct {
