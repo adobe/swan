@@ -5,10 +5,13 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 //
-// swift-tools-version: 6.1
+// swift-tools-version: 6.2
 
 import Foundation
 import PackageDescription
+
+let supportedNativePlatforms: [Platform] = [.macOS, .windows]
+let wasmPlatforms: [Platform] = [.wasi]
 
 let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"] != nil
 
@@ -67,6 +70,11 @@ let package = Package(
 		.iOS(.v18),  // iOS 18 (or adjust the version as needed)
 	],
 	products: [
+		// WebGPU library - use this for cross-platform WebGPU development
+		.library(
+			name: "WebGPU",
+			targets: ["WebGPU"]
+		),
 		.plugin(
 			name: "GenerateDawnBindingsPlugin",
 			targets: ["GenerateDawnBindingsPlugin"],
@@ -170,11 +178,35 @@ let package = Package(
 			linkerSettings: asanLinkerSettings
 		),
 		.target(
-			name: "WebGPU",
+			name: "WebGPUDawn",
 			dependencies: [
+				// WebGPUCore or similar core library for shared protocols and types ?
 				"Dawn"
 			],
+			path: "Sources/WebGPU/Dawn",
 			swiftSettings: swiftSettings,
+			linkerSettings: asanLinkerSettings
+		),
+		.target(
+			name: "WebGPUWasm",
+			dependencies: [
+				// WebGPUCore or similar core library for shared protocols and types ?
+			],
+			path: "Sources/WebGPU/Wasm",
+			swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
+			linkerSettings: asanLinkerSettings
+		),
+		.target(
+			name: "WebGPU",
+			dependencies: [
+				.target(name: "WebGPUDawn", condition: .when(platforms: supportedNativePlatforms)),
+				.target(name: "WebGPUWasm", condition: .when(platforms: wasmPlatforms)),
+			],
+			exclude: [
+				"Dawn",
+				"Wasm",
+			],
+			swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
 			linkerSettings: asanLinkerSettings
 		),
 		.target(
