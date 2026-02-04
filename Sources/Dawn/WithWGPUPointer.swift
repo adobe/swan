@@ -128,6 +128,7 @@ public func withWGPUMutableArrayPointer<E: GPUStruct, R>(_ array: [E]?, _ lambda
 }
 
 public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E], _ lambda: (UnsafePointer<E.WGPUType>) -> R) -> R where E.WGPUType == E {
+	precondition(!array.isEmpty, "withWGPUArrayPointer requires a non-empty array")
 	return array.withUnsafeBufferPointer { buffer in
 		return lambda(buffer.baseAddress!)
 	}
@@ -154,6 +155,7 @@ public func withWGPUArrayPointer<E: Numeric, R>(_ array: [E]?, _ lambda: (Unsafe
 }
 
 public func withWGPUArrayPointer<E: RawRepresentable, R>(_ array: [E], _ lambda: (UnsafePointer<E>) -> R) -> R {
+	precondition(!array.isEmpty, "withWGPUArrayPointer requires a non-empty array")
 	return array.withUnsafeBufferPointer { buffer in
 		return lambda(buffer.baseAddress!)
 	}
@@ -272,6 +274,7 @@ extension UnsafePointer {
 
 extension Array where Element: Numeric {
 	func unwrapWGPUArray<R>(_ lambda: (UnsafePointer<Element>) -> R) -> R {
+		precondition(!isEmpty, "unwrapWGPUArray requires a non-empty array")
 		return self.withUnsafeBufferPointer { buffer in
 			lambda(buffer.baseAddress!)
 		}
@@ -302,6 +305,7 @@ extension Array where Element: AnyObject {
 	}
 
 	func unwrapWGPUArray<R>(_ lambda: (UnsafePointer<Element>) -> R) -> R {
+		precondition(!isEmpty, "unwrapWGPUArray requires a non-empty array")
 		return self.withUnsafeBufferPointer { buffer in
 			lambda(buffer.baseAddress!)
 		}
