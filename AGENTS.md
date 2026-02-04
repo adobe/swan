@@ -1,6 +1,4 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+# AGENTS.md
 
 ## Project Overview
 
@@ -59,7 +57,7 @@ The project uses swift-format with configuration in `.swift-format`:
 
 - macOS 15+ 
 - iOS 18+
-- Swift 6.1+
+- Swift 6.3+
 - Uses development snapshot toolchain (6.3-snapshot-2026-01-29)
 
 ## Dependencies
