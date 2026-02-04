@@ -583,4 +583,36 @@ struct WithWGPUPointerTests {
 		#expect(result == 2)
 	}
 
+	@Test("withWGPUMutableArrayPointer with optional GPUStruct array - nil")
+	func testWithWGPUMutableArrayPointerOptionalNil() {
+		let entries: [GPUBindGroupLayoutEntry]? = nil
+
+		let result = withWGPUMutableArrayPointer(entries) { pointer in
+			#expect(pointer == nil)
+			return 42
+		}
+
+		#expect(result == 42)
+	}
+
+	@Test("withWGPUMutableArrayPointer with optional GPUStruct array - non-nil")
+	func testWithWGPUMutableArrayPointerOptionalNonNil() {
+		let entries: [GPUBindGroupLayoutEntry]? = [
+			.init(
+				binding: 3,
+				visibility: GPUShaderStage([.vertex]),
+				buffer: .init()
+			),
+		]
+
+		let result = withWGPUMutableArrayPointer(entries) { pointer in
+			#expect(pointer != nil)
+			#expect(pointer![0].binding == 3)
+			#expect(pointer![0].visibility.contains(.vertex))
+			return entries!.count
+		}
+
+		#expect(result == 1)
+	}
+
 }
