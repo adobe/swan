@@ -99,6 +99,26 @@
       "target": "GameOfLife",
       "configuration": "release",
       "preLaunchTask": "swift: Build Release GameOfLife"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:swan}",
+      "name": "Debug BitonicSort",
+      "target": "BitonicSort",
+      "configuration": "debug",
+      "preLaunchTask": "swift: Build Debug BitonicSort"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:swan}",
+      "name": "Release BitonicSort",
+      "target": "BitonicSort",
+      "configuration": "release",
+      "preLaunchTask": "swift: Build Release BitonicSort"
     }
   ]
 }
