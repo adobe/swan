@@ -242,6 +242,18 @@ let package = Package(
 				.linkedLibrary("c++", .when(platforms: [.macOS])),
 			]
 		),
+		.executableTarget(
+			name: "BitonicSort",
+			dependencies: ["DemoUtils"],
+			path: "Demos/BitonicSort",
+			swiftSettings: swiftSettings,
+			linkerSettings: asanLinkerSettings + [
+				.linkedFramework("Cocoa", .when(platforms: [.macOS])),
+				.linkedFramework("IOKit", .when(platforms: [.macOS])),
+				.linkedFramework("Metal", .when(platforms: [.macOS])),
+				.linkedLibrary("c++", .when(platforms: [.macOS])),
+			]
+		),
 		.testTarget(
 			name: "CodeGenerationTests",
 			dependencies: [
