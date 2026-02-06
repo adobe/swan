@@ -190,7 +190,7 @@ struct TestTypeDescriptor: TypeDescriptor {
 
 				public var nextInChain: (any GPUChainedStruct)? = nil
 
-				public init(vendor: String = "", architecture: String = "", device: String = "", description: String = "", backendType: GPUBackendType = .undefined, adapterType: GPUAdapterType = .discreteGPU, vendorID: UInt32 = 0, deviceID: UInt32 = 0, subgroupMinSize: UInt32 = 0, subgroupMaxSize: UInt32 = 0) {
+				public init(vendor: String = "", architecture: String = "", device: String = "", description: String = "", backendType: GPUBackendType = .undefined, adapterType: GPUAdapterType = .discreteGPU, vendorID: UInt32 = 0, deviceID: UInt32 = 0, subgroupMinSize: UInt32 = 0, subgroupMaxSize: UInt32 = 0, nextInChain: (any GPUChainedStruct)? = nil) {
 					self.vendor = vendor
 					self.architecture = architecture
 					self.device = device
@@ -201,6 +201,7 @@ struct TestTypeDescriptor: TypeDescriptor {
 					self.deviceID = deviceID
 					self.subgroupMinSize = subgroupMinSize
 					self.subgroupMaxSize = subgroupMaxSize
+					self.nextInChain = nextInChain
 				}
 
 
