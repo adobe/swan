@@ -15,7 +15,7 @@ import WebGPU
 let gridWidth = 32
 let gridHeight = 32
 let totalElements = gridWidth * gridHeight
-let updateInterval = 0.05  // 20 steps per second
+let updateInterval = 0.5  // 2 steps per second
 
 struct BitonicSortDemo: DemoProvider {
 	var device: GPUDevice?
@@ -116,17 +116,20 @@ struct BitonicSortDemo: DemoProvider {
 			)
 		)
 
-		// Initialize with randomly shuffled values [0, totalElements)
+		self.randomizeBuffer(device: device, buffer: self.elementsBufferA!)
+		return bufferSize
+	}
+
+	private func randomizeBuffer(device: GPUDevice, buffer: GPUBuffer) {
 		var elements = Array(0..<UInt32(totalElements))
 		elements.shuffle()
 		elements.withUnsafeBytes { data in
 			device.queue.writeBuffer(
-				buffer: self.elementsBufferA!,
+				buffer: buffer,
 				bufferOffset: 0,
 				data: data
 			)
 		}
-		return bufferSize
 	}
 
 	private mutating func createUniformBuffer(device: GPUDevice) -> UInt64 {
