@@ -383,6 +383,10 @@ struct BitonicSortDemo: DemoProvider {
 		if self.keyIsPressed(UInt8(RGFW_r)) {
 			self.resetSort()
 		}
+		if self.keyIsPressed(UInt8(RGFW_p)) {
+			self.isPaused.toggle()
+			print(self.isPaused ? "Paused" : "Resumed")
+		}
 	}
 
 	@MainActor
