@@ -261,7 +261,6 @@ struct GameOfLifeDemo: DemoProvider {
 		pass.setBindGroup(
 			groupIndex: 0,
 			group: bindGroups[Int(step % 2)],
-			dynamicOffsetCount: 0,
 			dynamicOffsets: []
 		)
 		pass.draw(vertexCount: 6, instanceCount: UInt32(gridSize * gridSize), firstVertex: 0, firstInstance: 0)
@@ -358,7 +357,7 @@ struct GameOfLifeDemo: DemoProvider {
 		}
 
 		let commandBuffer = encoder.finish(descriptor: nil)!
-		device.queue.submit(commandCount: 1, commands: [commandBuffer])
+		device.queue.submit(commands: [commandBuffer])
 
 		if let texture = screenShotTexture {
 			texture.readPixelsAsync(
