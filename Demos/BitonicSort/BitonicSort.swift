@@ -10,6 +10,7 @@
 
 import DemoUtils
 import Foundation
+import RGFW
 import WebGPU
 
 let gridWidth = 256
@@ -355,11 +356,32 @@ struct BitonicSortDemo: DemoProvider {
 		self.currentBuffer = self.currentBuffer == 0 ? 1 : 0
 	}
 
+	private mutating func resetSort() {
+		guard let device = self.device else { return }
+
+		self.randomizeBuffer(device: device, buffer: self.elementsBufferA!)
+		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: bitonicWorkgroupSize)
+		self.currentBuffer = 0
+		print("Sort reset: \(totalElements) elements, \(self.sortState.totalSteps) steps")
+	}
+
+	private func keyIsPressed(_ key: UInt8) -> Bool {
+		return RGFW_isKeyReleased(key) != 0
+	}
+
+	private mutating func handleInput() {
+		if self.keyIsPressed(UInt8(RGFW_r)) {
+			self.resetSort()
+		}
+	}
+
 	@MainActor
 	mutating func frame(time: Double) throws -> Bool {
 		guard let device = self.device, let surface = self.surface, let renderPipeline = self.renderPipeline else {
 			return false
 		}
+
+		self.handleInput()
 
 		// If we're not paused and it's time for the next update, execute a step
 		if !self.isPaused && time >= self.nextUpdateTime && !self.sortState.sortIsComplete {
