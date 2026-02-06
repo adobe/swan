@@ -47,6 +47,7 @@ struct BitonicSortDemo: DemoProvider {
 	var currentBuffer: Int = 0  // 0 = A is current, 1 = B is current
 	var nextUpdateTime: Double = 0
 	var isPaused: Bool = false
+	var highlightMode: Bool = true  // Toggle with 'H' key to show comparison pairs
 
 	init() {
 		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: 256)
@@ -82,6 +83,7 @@ struct BitonicSortDemo: DemoProvider {
 		print(
 			"BitonicSort initialized: \(totalElements) elements, \(self.sortState.totalSteps) steps, workgroup size: \(self.workgroupSize)"
 		)
+		print("Controls: P=pause/resume, R=reset, H=toggle highlight mode")
 	}
 
 	private func createShaderModules(device: GPUDevice)
@@ -144,7 +146,7 @@ struct BitonicSortDemo: DemoProvider {
 	}
 
 	private mutating func createUniformBuffer(device: GPUDevice) -> UInt64 {
-		let uniformSize = UInt64(4 * MemoryLayout<UInt32>.size)  // width, height, algo, blockHeight
+		let uniformSize = UInt64(5 * MemoryLayout<UInt32>.size)  // width, height, algo, blockHeight, highlight
 		self.uniformBuffer = device.createBuffer(
 			descriptor: GPUBufferDescriptor(
 				label: "Uniforms",
@@ -322,6 +324,7 @@ struct BitonicSortDemo: DemoProvider {
 			UInt32(gridHeight),
 			UInt32(self.sortState.currentStepType.rawValue),
 			UInt32(self.sortState.blockHeight),
+			self.highlightMode ? 1 : 0,
 		]
 		uniforms.withUnsafeBytes { data in
 			self.device!.queue.writeBuffer(
@@ -387,6 +390,10 @@ struct BitonicSortDemo: DemoProvider {
 			self.isPaused.toggle()
 			print(self.isPaused ? "Paused" : "Resumed")
 		}
+		if self.keyIsPressed(UInt8(RGFW_h)) {
+			self.highlightMode.toggle()
+			print("Highlight mode: \(self.highlightMode ? "ON" : "OFF")")
+		}
 	}
 
 	@MainActor
@@ -406,6 +413,9 @@ struct BitonicSortDemo: DemoProvider {
 				print("Sort complete!")
 			}
 		}
+
+		// Update uniforms before rendering (ensures highlight toggle takes effect)
+		self.updateUniforms()
 
 		// Render current state
 		let encoder = device.createCommandEncoder(

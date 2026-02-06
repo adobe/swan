@@ -179,6 +179,7 @@ fn vertexMain(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {
 """
 
 /// Fragment shader: visualizes the sorting array as a grayscale grid
+/// Supports highlight mode to show comparison pairs in red/green
 // Ported from bitonicDisplay.frag.wgsl
 let bitonicDisplayFragmentShader = """
 struct Uniforms {
@@ -186,6 +187,7 @@ struct Uniforms {
     height: u32,
     algo: u32,
     blockHeight: u32,
+    highlight: u32,  // 0 = grayscale, 1 = show comparison pairs
 }
 
 @group(0) @binding(0) var<storage, read> data: array<u32>;
@@ -214,10 +216,23 @@ fn fragmentMain(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
     // Get element value and normalize to [0, 1]
     let value = f32(data[elementIndex]);
     let normalized = value / f32(totalElements);
-
-    // Grayscale: bright = small value, dark = large value
     let intensity = 1.0 - normalized;
 
+    // Highlight mode: show which elements are being compared
+    if (uniforms.highlight == 1u && uniforms.blockHeight >= 2u) {
+        // Check if element is in lower or upper half of its comparison block
+        let inLowerHalf = (elementIndex % uniforms.blockHeight) < (uniforms.blockHeight / 2u);
+
+        if (inLowerHalf) {
+            // Lower half of block: RED (these compare with green elements)
+            return vec4<f32>(intensity, 0.0, 0.0, 1.0);
+        } else {
+            // Upper half of block: GREEN (these compare with red elements)
+            return vec4<f32>(0.0, intensity, 0.0, 1.0);
+        }
+    }
+
+    // Default: grayscale (bright = small value, dark = large value)
     return vec4<f32>(intensity, intensity, intensity, 1.0);
 }
 """
