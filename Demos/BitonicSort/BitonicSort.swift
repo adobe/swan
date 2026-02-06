@@ -39,12 +39,17 @@ struct BitonicSortDemo: DemoProvider {
 
 	// Algorithm state
 	var sortState: BitonicSortState
+	// Workgroup size for compute shader. Each invocation processes 2 elements, so shared memory
+	// usage is workgroupSize * 2 * sizeof(u32). Larger values mean more work done in fast shared
+	// memory (local operations) vs slower global memory, but must not exceed device limits.
+	// WebGPU spec guarantees at least 256. Powers of 2 recommended (64, 128, 256).
+	var workgroupSize: Int = 256
 	var currentBuffer: Int = 0  // 0 = A is current, 1 = B is current
 	var nextUpdateTime: Double = 0
 	var isPaused: Bool = false
 
 	init() {
-		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: bitonicWorkgroupSize)
+		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: 256)
 	}
 
 	@MainActor
@@ -71,7 +76,9 @@ struct BitonicSortDemo: DemoProvider {
 			renderBindGroupLayout: renderBindGroupLayout
 		)
 
-		print("BitonicSort initialized: \(totalElements) elements, \(self.sortState.totalSteps) steps")
+		print(
+			"BitonicSort initialized: \(totalElements) elements, \(self.sortState.totalSteps) steps, workgroup size: \(self.workgroupSize)"
+		)
 	}
 
 	private func createShaderModules(device: GPUDevice)
@@ -80,7 +87,7 @@ struct BitonicSortDemo: DemoProvider {
 		let computeModule = device.createShaderModule(
 			descriptor: GPUShaderModuleDescriptor(
 				label: "Bitonic Compute Shader",
-				code: bitonicComputeShader
+				code: bitonicComputeShader(workgroupSize: self.workgroupSize)
 			)
 		)
 		let vertexModule = device.createShaderModule(
@@ -360,7 +367,7 @@ struct BitonicSortDemo: DemoProvider {
 		guard let device = self.device else { return }
 
 		self.randomizeBuffer(device: device, buffer: self.elementsBufferA!)
-		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: bitonicWorkgroupSize)
+		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: self.workgroupSize)
 		self.currentBuffer = 0
 		print("Sort reset: \(totalElements) elements, \(self.sortState.totalSteps) steps")
 	}
