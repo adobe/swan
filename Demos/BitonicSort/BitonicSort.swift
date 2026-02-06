@@ -51,7 +51,7 @@ struct BitonicSortDemo: DemoProvider {
 		self.device = device
 		self.surface = surface
 
-		let bufferSize = self.createBuffers(device: device)
+		let bufferSize = self.createElementBuffers(device: device)
 		let uniformSize = self.createUniformBuffer(device: device)
 		let (computeBindGroupLayout, renderBindGroupLayout) = self.createBindGroupLayouts(device: device)
 		self.createBindGroups(
@@ -97,7 +97,7 @@ struct BitonicSortDemo: DemoProvider {
 		return (computeModule, vertexModule, fragmentModule)
 	}
 
-	private mutating func createBuffers(device: GPUDevice) -> UInt64 {
+	private mutating func createElementBuffers(device: GPUDevice) -> UInt64 {
 		let bufferSize = UInt64(totalElements * MemoryLayout<UInt32>.size)
 		self.elementsBufferA = device.createBuffer(
 			descriptor: GPUBufferDescriptor(
