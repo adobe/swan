@@ -1,25 +1,6 @@
 {
   "configurations": [
-    {
-      "type": "swift",
-      "request": "launch",
-      "args": [],
-      "cwd": "${workspaceFolder:swan}",
-      "name": "Debug RedClear",
-      "target": "RedClear",
-      "configuration": "debug",
-      "preLaunchTask": "swift: Build Debug RedClear"
-    },
-    {
-      "type": "swift",
-      "request": "launch",
-      "args": [],
-      "cwd": "${workspaceFolder:swan}",
-      "name": "Release RedClear",
-      "target": "RedClear",
-      "configuration": "release",
-      "preLaunchTask": "swift: Build Release RedClear"
-    },
+
     {
       "type": "swift",
       "request": "launch",
