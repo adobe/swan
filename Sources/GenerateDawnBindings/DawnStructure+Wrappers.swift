@@ -90,10 +90,22 @@ extension DawnStructure: DawnType {
 	func initDecl(data: DawnData) -> DeclSyntax {
 		do {
 			let members = try getMembers(data: data)
-			let memberParams = members.map {
+			var memberParams = members.map {
 				"\($0.name): \($0.swiftType)\($0.defaultValue != nil ? " = \($0.defaultValue!)" : "")"
 			}.joined(separator: ", ")
-			let memberAssignments = members.map { "self.\($0.name) = \($0.name)" }.joined(separator: "\n\t")
+			if extensibilityType != .none {
+				if !memberParams.isEmpty {
+					memberParams += ", "
+				}
+				memberParams += "nextInChain: (any GPUChainedStruct)? = nil"
+			}
+			var memberAssignments = members.map { "self.\($0.name) = \($0.name)" }.joined(separator: "\n\t")
+			if extensibilityType != .none {
+				if !memberAssignments.isEmpty {
+					memberAssignments += "\n\t"
+				}
+				memberAssignments += "self.nextInChain = nextInChain"
+			}
 			return DeclSyntax(
 				"""
 				public init(\(raw: memberParams)) {
