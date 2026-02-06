@@ -12,10 +12,10 @@ import DemoUtils
 import Foundation
 import WebGPU
 
-let gridWidth = 32
-let gridHeight = 32
+let gridWidth = 256
+let gridHeight = 256
 let totalElements = gridWidth * gridHeight
-let updateInterval = 0.5  // 2 steps per second
+let updatesPerSecond = 5.0
 
 struct BitonicSortDemo: DemoProvider {
 	var device: GPUDevice?
@@ -364,7 +364,7 @@ struct BitonicSortDemo: DemoProvider {
 		// If we're not paused and it's time for the next update, execute a step
 		if !self.isPaused && time >= self.nextUpdateTime && !self.sortState.sortIsComplete {
 			self.executeStep()
-			self.nextUpdateTime = time + updateInterval
+			self.nextUpdateTime = time + (1.0 / updatesPerSecond)
 
 			if self.sortState.sortIsComplete {
 				print("Sort complete!")
