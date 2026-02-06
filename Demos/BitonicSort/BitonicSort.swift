@@ -103,6 +103,7 @@ struct BitonicSortDemo: DemoProvider {
         // Create bind group layouts
         let computeBindGroupLayout = device.createBindGroupLayout(descriptor: GPUBindGroupLayoutDescriptor(
             label: "Compute Bind Group Layout",
+            entryCount: 3, // TODO: bmedina - count parameter should not be needed
             entries: [
                 GPUBindGroupLayoutEntry(
                     binding: 0,
@@ -123,6 +124,7 @@ struct BitonicSortDemo: DemoProvider {
         ))
         let renderBindGroupLayout = device.createBindGroupLayout(descriptor: GPUBindGroupLayoutDescriptor(
             label: "Render Bind Group Layout",
+            entryCount: 2, // TODO: bmedina - count parameter should not be needed
             entries: [
                 GPUBindGroupLayoutEntry(
                     binding: 0,
@@ -141,6 +143,7 @@ struct BitonicSortDemo: DemoProvider {
         self.computeBindGroupA = device.createBindGroup(descriptor: GPUBindGroupDescriptor(
             label: "Compute Bind Group A",
             layout: computeBindGroupLayout,
+            entryCount: 3, // TODO: bmedina - count parameter should not be needed
             entries: [
                 GPUBindGroupEntry(binding: 0, buffer: self.elementsBufferA!, offset: 0, size: bufferSize),
                 GPUBindGroupEntry(binding: 1, buffer: self.elementsBufferB!, offset: 0, size: bufferSize),
@@ -150,6 +153,7 @@ struct BitonicSortDemo: DemoProvider {
         self.computeBindGroupB = device.createBindGroup(descriptor: GPUBindGroupDescriptor(
             label: "Compute Bind Group B",
             layout: computeBindGroupLayout,
+            entryCount: 2, // TODO: bmedina - count parameter should not be needed
             entries: [
                 GPUBindGroupEntry(binding: 0, buffer: self.elementsBufferB!, offset: 0, size: bufferSize),
                 GPUBindGroupEntry(binding: 1, buffer: self.elementsBufferA!, offset: 0, size: bufferSize),
@@ -161,6 +165,7 @@ struct BitonicSortDemo: DemoProvider {
         self.renderBindGroupA = device.createBindGroup(descriptor: GPUBindGroupDescriptor(
             label: "Render Bind Group A",
             layout: renderBindGroupLayout,
+            entryCount: 2, // TODO: bmedina - count parameter should not be needed
             entries: [
                 GPUBindGroupEntry(binding: 0, buffer: self.elementsBufferA!, offset: 0, size: bufferSize),
                 GPUBindGroupEntry(binding: 1, buffer: self.uniformBuffer!, offset: 0, size: uniformSize),
@@ -169,6 +174,7 @@ struct BitonicSortDemo: DemoProvider {
         self.renderBindGroupB = device.createBindGroup(descriptor: GPUBindGroupDescriptor(
             label: "Render Bind Group B",
             layout: renderBindGroupLayout,
+            entryCount: 2, // TODO: bmedina - count parameter should not be needed
             entries: [
                 GPUBindGroupEntry(binding: 0, buffer: self.elementsBufferB!, offset: 0, size: bufferSize),
                 GPUBindGroupEntry(binding: 1, buffer: self.uniformBuffer!, offset: 0, size: uniformSize),
@@ -178,10 +184,12 @@ struct BitonicSortDemo: DemoProvider {
         // Create pipeline layouts
         let computePipelineLayout = device.createPipelineLayout(descriptor: GPUPipelineLayoutDescriptor(
             label: "Compute Pipeline Layout",
+            bindGroupLayoutCount: 1, // TODO: bmedina - count parameter should not be needed
             bindGroupLayouts: [computeBindGroupLayout]
         ))
         let renderPipelineLayout = device.createPipelineLayout(descriptor: GPUPipelineLayoutDescriptor(
             label: "Render Pipeline Layout",
+            bindGroupLayoutCount: 1, // TODO: bmedina - count parameter should not be needed
             bindGroupLayouts: [renderBindGroupLayout]
         ))
 
@@ -211,7 +219,7 @@ struct BitonicSortDemo: DemoProvider {
             fragment: GPUFragmentState(
                 module: fragmentModule,
                 entryPoint: "fragmentMain",
-                targetCount: 1,
+                targetCount: 1, // TODO: bmedina - count parameter should not be needed
                 targets: [GPUColorTargetState(format: format)]
             )
         ))
