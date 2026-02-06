@@ -1,5 +1,118 @@
 {
 	"version": "2.0.0",
 	"tasks": [
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--product",
+				"BitonicSort",
+				"-c",
+				"debug"
+			],
+			"cwd": "${workspaceFolder}",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "swift: Build Debug BitonicSort"
+		},
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--product",
+				"BitonicSort",
+				"-c",
+				"release"
+			],
+			"cwd": "${workspaceFolder}",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "swift: Build Release BitonicSort"
+		},
+
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--product",
+				"GenerateDawnBindings",
+				"-c",
+				"debug"
+			],
+			"cwd": "${workspaceFolder}",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "swift: Build Debug GenerateDawnBindings"
+		},
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--product",
+				"GenerateDawnBindings",
+				"-c",
+				"release"
+			],
+			"cwd": "${workspaceFolder}",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "swift: Build Release GenerateDawnBindings"
+		},
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--product",
+				"GenerateDawnAPINotes",
+				"-c",
+				"debug"
+			],
+			"cwd": "${workspaceFolder}",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "swift: Build Debug GenerateDawnAPINotes"
+		},
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--product",
+				"GenerateDawnAPINotes",
+				"-c",
+				"release"
+			],
+			"cwd": "${workspaceFolder}",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "swift: Build Release GenerateDawnAPINotes"
+		},
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--product",
+				"GameOfLife",
+				"-c",
+				"debug"
+			],
+			"cwd": "${workspaceFolder}",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "swift: Build Debug GameOfLife"
+		},
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--product",
+				"GameOfLife",
+				"-c",
+				"release"
+			],
+			"cwd": "${workspaceFolder}",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "swift: Build Release GameOfLife"
+		}
 	]
 }
