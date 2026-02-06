@@ -76,6 +76,9 @@ struct BitonicSortDemo: DemoProvider {
 			renderBindGroupLayout: renderBindGroupLayout
 		)
 
+		// Initialize uniform buffer with valid data for the first frame
+		self.updateUniforms()
+
 		print(
 			"BitonicSort initialized: \(totalElements) elements, \(self.sortState.totalSteps) steps, workgroup size: \(self.workgroupSize)"
 		)
