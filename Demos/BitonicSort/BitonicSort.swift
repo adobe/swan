@@ -51,10 +51,34 @@ struct BitonicSortDemo: DemoProvider {
 		self.device = device
 		self.surface = surface
 
-		// Create shader modules
+		let bufferSize = self.createBuffers(device: device)
+		let uniformSize = self.createUniformBuffer(device: device)
+		let (computeBindGroupLayout, renderBindGroupLayout) = self.createBindGroupLayouts(device: device)
+		self.createBindGroups(
+			device: device,
+			computeBindGroupLayout: computeBindGroupLayout,
+			renderBindGroupLayout: renderBindGroupLayout,
+			bufferSize: bufferSize,
+			uniformSize: uniformSize
+		)
+		let shaderModules = self.createShaderModules(device: device)
+		self.createPipelines(
+			device: device,
+			format: format,
+			shaderModules: shaderModules,
+			computeBindGroupLayout: computeBindGroupLayout,
+			renderBindGroupLayout: renderBindGroupLayout
+		)
+
+		print("BitonicSort initialized: \(totalElements) elements, \(self.sortState.totalSteps) steps")
+	}
+
+	private func createShaderModules(device: GPUDevice)
+		-> (compute: GPUShaderModule, vertex: GPUShaderModule, fragment: GPUShaderModule)
+	{
 		let computeModule = device.createShaderModule(
 			descriptor: GPUShaderModuleDescriptor(
-				label: "Bitonic Comput Shader",
+				label: "Bitonic Compute Shader",
 				code: bitonicComputeShader
 			)
 		)
@@ -70,7 +94,10 @@ struct BitonicSortDemo: DemoProvider {
 				code: bitonicDisplayFragmentShader
 			)
 		)
+		return (computeModule, vertexModule, fragmentModule)
+	}
 
+	private mutating func createBuffers(device: GPUDevice) -> UInt64 {
 		let bufferSize = UInt64(totalElements * MemoryLayout<UInt32>.size)
 		self.elementsBufferA = device.createBuffer(
 			descriptor: GPUBufferDescriptor(
@@ -99,8 +126,10 @@ struct BitonicSortDemo: DemoProvider {
 				data: data
 			)
 		}
+		return bufferSize
+	}
 
-		// Uniform (constants) buffer
+	private mutating func createUniformBuffer(device: GPUDevice) -> UInt64 {
 		let uniformSize = UInt64(4 * MemoryLayout<UInt32>.size)  // width, height, algo, blockHeight
 		self.uniformBuffer = device.createBuffer(
 			descriptor: GPUBufferDescriptor(
@@ -111,8 +140,10 @@ struct BitonicSortDemo: DemoProvider {
 			)
 		)
 		self.updateUniforms()
+		return uniformSize
+	}
 
-		// Create bind group layouts
+	private func createBindGroupLayouts(device: GPUDevice) -> (GPUBindGroupLayout, GPUBindGroupLayout) {
 		let computeBindGroupLayout = device.createBindGroupLayout(
 			descriptor: GPUBindGroupLayoutDescriptor(
 				label: "Compute Bind Group Layout",
@@ -154,8 +185,17 @@ struct BitonicSortDemo: DemoProvider {
 				]
 			)
 		)
+		return (computeBindGroupLayout, renderBindGroupLayout)
+	}
 
-		// Create bind groups (A reads from A, writes to B; B reads from B, writes to A)
+	private mutating func createBindGroups(
+		device: GPUDevice,
+		computeBindGroupLayout: GPUBindGroupLayout,
+		renderBindGroupLayout: GPUBindGroupLayout,
+		bufferSize: UInt64,
+		uniformSize: UInt64
+	) {
+		// Compute bind groups (A reads from A, writes to B; B reads from B, writes to A)
 		self.computeBindGroupA = device.createBindGroup(
 			descriptor: GPUBindGroupDescriptor(
 				label: "Compute Bind Group A",
@@ -181,7 +221,7 @@ struct BitonicSortDemo: DemoProvider {
 			)
 		)
 
-		// Create render bind groups
+		// Render bind groups
 		self.renderBindGroupA = device.createBindGroup(
 			descriptor: GPUBindGroupDescriptor(
 				label: "Render Bind Group A",
@@ -204,8 +244,15 @@ struct BitonicSortDemo: DemoProvider {
 				]
 			)
 		)
+	}
 
-		// Create pipeline layouts
+	private mutating func createPipelines(
+		device: GPUDevice,
+		format: GPUTextureFormat,
+		shaderModules: (compute: GPUShaderModule, vertex: GPUShaderModule, fragment: GPUShaderModule),
+		computeBindGroupLayout: GPUBindGroupLayout,
+		renderBindGroupLayout: GPUBindGroupLayout
+	) {
 		let computePipelineLayout = device.createPipelineLayout(
 			descriptor: GPUPipelineLayoutDescriptor(
 				label: "Compute Pipeline Layout",
@@ -221,21 +268,19 @@ struct BitonicSortDemo: DemoProvider {
 			)
 		)
 
-		// Create compute pipeline
 		self.computePipeline = device.createComputePipeline(
 			descriptor: GPUComputePipelineDescriptor(
 				label: "Bitonic Sort Compute Pipeline",
 				layout: computePipelineLayout,
-				compute: GPUComputeState(module: computeModule, entryPoint: "computeMain")
+				compute: GPUComputeState(module: shaderModules.compute, entryPoint: "computeMain")
 			)
 		)
 
-		// Create render pipeline
 		self.renderPipeline = device.createRenderPipeline(
 			descriptor: GPURenderPipelineDescriptor(
 				label: "Display Render Pipeline",
 				layout: renderPipelineLayout,
-				vertex: GPUVertexState(module: vertexModule, entryPoint: "vertexMain"),
+				vertex: GPUVertexState(module: shaderModules.vertex, entryPoint: "vertexMain"),
 				primitive: GPUPrimitiveState(
 					topology: .triangleList,
 					stripIndexFormat: .undefined,
@@ -248,16 +293,13 @@ struct BitonicSortDemo: DemoProvider {
 					alphaToCoverageEnabled: false
 				),
 				fragment: GPUFragmentState(
-					module: fragmentModule,
+					module: shaderModules.fragment,
 					entryPoint: "fragmentMain",
 					targetCount: 1,  // TODO: bmedina - count parameter should not be needed
 					targets: [GPUColorTargetState(format: format)]
 				)
 			)
 		)
-
-		print("BitonicSort initialized: \(totalElements) elements, \(self.sortState.totalSteps) steps")
-		// print("Press Space to pause/resume, R to randomize")
 	}
 
 	private func updateUniforms() {
