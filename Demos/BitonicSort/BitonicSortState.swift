@@ -1,3 +1,10 @@
+// Copyright 2026 Adobe
+// All Rights Reserved.
+//
+// NOTICE: Adobe permits you to use, modify, and distribute this file in
+// accordance with the terms of the Adobe license agreement accompanying
+// it.
+//
 import Foundation
 
 // Local vs Global: When blockHeight ≤ workgroupSize×2, all comparisons fit in one workgroup's
@@ -59,7 +66,6 @@ struct BitonicSortState {
         return (self.totalElements + elementsPerWorkgroup - 1) / elementsPerWorkgroup
     }
 
-    // TODO: bmedina - eliminate mutating methods in favor or returning a new state
     mutating func advanceStep() {
         guard !sortIsComplete else { return }
 
