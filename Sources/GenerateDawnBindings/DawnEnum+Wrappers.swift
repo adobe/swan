@@ -56,16 +56,10 @@ extension DawnEnum {
 			return expression ?? ""
 		}
 		let optional = optional ?? false
-		// Unpack an array of values.
-		let count: ExprSyntax = optional ? "\(raw: identifier)?.count ?? 0" : "\(raw: identifier).count"
-		guard case .name(let lengthName) = length else {
-			fatalError("Unimplemented unwrapValueOfType for type \(type.raw) with length \(length!)")
-		}
+		// Unpack an array of values. Count extraction is done at the top level via generateArraySizeExtractions().
 		return
 			"""
-			withWGPUArrayPointer(\(raw: identifier)) { (_\(raw: identifier): UnsafePointer<WGPU\(raw: type.CamelCase)>\(raw: optional ? "?" : "")) in
-				let \(raw: lengthName.camelCase) = \(count)
-				let \(raw: identifier) = _\(raw: identifier)
+			withWGPUArrayPointer(\(raw: identifier)) { (\(raw: identifier): UnsafePointer<WGPU\(raw: type.CamelCase)>\(raw: optional ? "?" : "")) in
 				return \(expression ?? "", format: TabFormat(initialIndentation: .tabs(1)))
 			}
 			"""

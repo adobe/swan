@@ -107,9 +107,8 @@ extension DawnStructure: DawnType {
 	}
 
 	func getMembers(data: DawnData) throws -> [(name: String, swiftType: String, defaultValue: String?)] {
-		return
-			try members
-			.map { try $0.getMemberInfo(data: data) }
+		let filteredMembers = members.filter { !isArraySizeItem($0, allItems: members) }
+		return try filteredMembers.map { try $0.getMemberInfo(data: data) }
 	}
 
 	func isSimpleWGPUStruct(_ member: DawnStructureMember, data: DawnData) -> Bool {
@@ -213,19 +212,29 @@ extension DawnStructure: DawnType {
 		}
 
 		// Unwrap the members of the WGPU struct before calling the lambda.
+		// Filter out size parameters since they are derived from array counts.
+		let membersToUnwrap = members.filter { !isArraySizeItem($0, allItems: members) }
 		let unwrappedMemberExpr = unwrapMembers(
-			members,
+			membersToUnwrap,
 			wgpuStructIdentifier: "wgpuStruct",
 			data: data,
 			expression: lambdaCallExpr
 		)
+
+		// Generate array size extractions at the start of the function body.
+		let arraySizeExtractions = generateArraySizeExtractions(items: members, data: data)
+
+		let body = CodeBlockItemListSyntax {
+			arraySizeExtractions
+			"return \(unwrappedMemberExpr)"
+		}
 
 		return DeclSyntax(
 			"""
 			public func withWGPUStruct<R>(
 				_ lambda: (inout \(raw: cStructName)) -> R
 			) -> R {
-				\(unwrappedMemberExpr)
+				\(body, format: TabFormat(initialIndentation: .tabs(0)))
 			}
 			"""
 		)
@@ -235,7 +244,7 @@ extension DawnStructure: DawnType {
 	/// the WGPU struct's data.
 	func initWithWGPUStructMethod(cStructName: String, data: DawnData) -> DeclSyntax {
 		let memberAssignments: CodeBlockItemListSyntax = CodeBlockItemListSyntax {
-			for member in members {
+			for member in members where !isArraySizeItem(member, allItems: members) {
 				if member.type.raw == "string view" {
 					"self.\(raw: member.name.camelCase) = String(wgpuStringView: wgpuStruct.\(raw: member.name.camelCase))!"
 				} else if member.isWrappedType(data: data) {
@@ -300,7 +309,8 @@ extension DawnStructure: DawnType {
 			structProtocol = "\(structProtocol), GPUStructWrappable"
 		}
 
-		let memberDecls = try members.flatMap { try $0.declarations(data: data) }
+		let membersForProperties = members.filter { !isArraySizeItem($0, allItems: members) }
+		let memberDecls = try membersForProperties.flatMap { try $0.declarations(data: data) }
 
 		let chainMemberDecl: DeclSyntax? =
 			extensibilityType == .none ? nil : "public var nextInChain: (any GPUChainedStruct)? = nil"
@@ -349,17 +359,13 @@ extension DawnStructure: DawnType {
 				if case .int = length! {
 					fatalError("Unimplemented unwrapValueOfType for type \(type.raw) with length \(length!)")
 				}
-				if case .name(let lengthName) = length! {
-					let count: ExprSyntax = optional ? "\(raw: identifier)?.count ?? 0" : "\(raw: identifier).count"
-					return
-						"""
-						withWGPUArrayPointer(\(raw: identifier)) { _\(raw: identifier) in
-							let \(raw: lengthName.camelCase) = \(count)
-							let \(raw: identifier) = _\(raw: identifier)
-							return \(expression ?? "", format: TabFormat(initialIndentation: .tabs(1)))
-						}
-						"""
-				}
+				// Count extraction is now done at the top level via generateArraySizeExtractions()
+				return
+					"""
+					withWGPUArrayPointer(\(raw: identifier)) { \(raw: identifier) in
+						return \(expression ?? "", format: TabFormat(initialIndentation: .tabs(1)))
+					}
+					"""
 			}
 			// Even though this type of structure is normally unwrapped, we still need to
 			// "unwrap" it into a pointer that we can pass to the WGPU API.
