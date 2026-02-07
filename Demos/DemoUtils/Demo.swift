@@ -46,7 +46,7 @@ public func runDemo<Provider: DemoProvider>(
 		deviceLostCallbackInfo: GPUDeviceLostCallbackInfo(
 			mode: .allowProcessEvents,
 			callback: { device, reason, message in
-				print("🚨 Device Lost!")
+				print("Device Lost!")
 				print("  Reason: \(reason)")
 				if let message = message {
 					print("  Message: \(message)")
@@ -55,7 +55,7 @@ public func runDemo<Provider: DemoProvider>(
 		),
 		uncapturedErrorCallbackInfo: GPUUncapturedErrorCallbackInfo(
 			callback: { device, type, message in
-				print("❌ Uncaptured Error!")
+				print("Uncaptured Error!")
 				print("  Type: \(type)")
 				if let message = message {
 					print("  Message: \(message)")
