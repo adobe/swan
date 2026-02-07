@@ -45,7 +45,7 @@ func bitonicComputeShader(workgroupSize: Int) -> String {
 		// Calculate flip indices for an invocation
 		// Flip pairs elements symmetrically within a block
 		fn get_flip_indices(invocation_id: u32, block_height: u32) -> vec2<u32> {
-		  // Caculate index offset (i.e move indices into correct block)
+		  // Calculate index offset (i.e move indices into correct block)
 		    let block_offset = ((2u * invocation_id) / block_height) * block_height;
 		    let half_height = block_height / 2u;
 		    let idx_in_block = invocation_id % half_height;
