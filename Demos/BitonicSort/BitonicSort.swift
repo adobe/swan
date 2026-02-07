@@ -50,7 +50,7 @@ struct BitonicSortDemo: DemoProvider {
 	var highlightMode: Bool = true  // Toggle with 'H' key to show comparison pairs
 
 	init() {
-		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: 256)
+		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: workgroupSize)
 	}
 
 	@MainActor
