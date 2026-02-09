@@ -7,7 +7,7 @@
 
 import DawnData
 
-extension DawnFunctionArgument: TypeDescriptor {
+extension DawnFunctionArgument: NamedTypeDescriptor {
 	var isInOut: Bool {
 		return annotation == "void*" || annotation == "*"
 	}

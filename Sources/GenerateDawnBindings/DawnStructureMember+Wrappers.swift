@@ -8,7 +8,7 @@
 import DawnData
 import SwiftSyntax
 
-extension DawnStructureMember: TypeDescriptor {
+extension DawnStructureMember: NamedTypeDescriptor {
 
 	func getMemberInfo(data: DawnData) throws -> (name: String, swiftType: String, defaultValue: String?) {
 		var defaultString: String? = nil

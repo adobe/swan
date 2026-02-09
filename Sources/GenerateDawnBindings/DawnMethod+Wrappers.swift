@@ -24,123 +24,6 @@ extension DawnMethod {
 		return false
 	}
 
-	/// Check if the given argument is a size parameter for one of the args in the given list.
-	///
-	/// A size parameter will have a "name" that matches the "length" field of another argument that is an Array.
-	/// Example from dawn.json:
-	/// "args": [
-	/// 	{"name": "command count", "type": "size_t"},
-	/// 	{"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
-	/// ]
-	/// The second arg will have an Array type, and its "length" field matches the first arg's name.
-	private func isArraySizeParameter(_ arg: DawnFunctionArgument, allArgs: [DawnFunctionArgument]) -> Bool {
-		return allArgs.contains { otherArg in
-			if !otherArg.includesArrayLength() {
-				return false
-			}
-			// To be a size parameter, the given arg's name must match the other argument's length field.
-			if case .name(let lengthName) = otherArg.length {
-				return lengthName == arg.name
-			}
-			return false
-		}
-	}
-
-	/// If the given parameter is a size parameter, return the array for which it is the size parameter.
-	private func arrayForSizeParameter(
-		_ sizeParameterArg: DawnFunctionArgument,
-		allArgs: [DawnFunctionArgument],
-	) -> DawnFunctionArgument? {
-		if !isArraySizeParameter(sizeParameterArg, allArgs: allArgs) {
-			return nil
-		}
-		// Search for the array that has a length that matches the size parameter's name.
-		return allArgs.first { arg in
-			if case .name(let lengthName) = arg.length {
-				return lengthName == sizeParameterArg.name
-			}
-			return false
-		}
-	}
-
-	/// Convert an array count expression to match the C parameter type, if needed.
-	/// E.g. Array.count returns Int, but some Dawn APIs use uint64_t for size params.
-	private func castCountIfNeeded(_ countExpr: String, forParameterType type: Name) -> String {
-		switch type.raw {
-		case "size_t":
-			// size_t maps to Int, which matches Array.count - no conversion needed
-			return countExpr
-		case "uint64_t":
-			return "UInt64(\(countExpr))"
-		default:
-			fatalError("Unexpected size parameter type: \(type.raw)")
-		}
-	}
-
-	/// Generates let statements that extract array sizes from Swift collections.
-	///
-	/// The Dawn C API requires separate size parameters for array arguments, but Swift collections
-	/// include their size via `.count`. This method generates the size extraction code needed to bridge
-	/// between these conventions.
-	///
-	/// Example 1: Typed Array
-	/// Dawn JSON:
-	/// "args": [
-	///     {"name": "command count", "type": "size_t"},
-	///     {"name": "commands", "type": "command buffer", "annotation": "const*", "length": "command count"}
-	/// ]
-	///
-	/// Generated Swift API:
-	///   func submit(commands: [GPUCommandBuffer]) -> Void
-	///
-	/// Generated method body (size extraction happens here):
-	///   let commandCount = commands.count
-	///   commands.withWGPUArrayPointer { commands in
-	///       return submit(commandCount: commandCount, commands: commands)
-	///   }
-	///
-	/// Example 2: UnsafeRawBufferPointer (void* array)
-	/// Dawn JSON:
-	/// "args": [
-	///     {"name": "data", "type": "void", "annotation": "const*", "length": "size"},
-	///     {"name": "size", "type": "size_t"}
-	/// ]
-	///
-	/// Generated Swift API:
-	///   func writeBuffer(data: UnsafeRawBufferPointer) -> Void
-	///
-	/// Generated method body (both size and baseAddress extracted):
-	///   let size = data.count
-	///   let data = data.baseAddress
-	///   return writeBuffer(buffer: buffer, bufferOffset: bufferOffset, data: data, size: size)
-	/// 
-	private func generateArraySizeExtractions(data: DawnData) -> CodeBlockItemListSyntax {
-		let allArgs = self.args ?? []
-
-		return CodeBlockItemListSyntax {
-			for arg in allArgs where isArraySizeParameter(arg, allArgs: allArgs) {
-				if let array = arrayForSizeParameter(arg, allArgs: allArgs) {
-					let swiftType = array.swiftTypeName(data: data)
-					let arrayName = array.name.camelCase
-					let sizeName = arg.name.camelCase
-					let isOptional = swiftType.hasSuffix("?")
-
-					// All collections need count extraction
-					let countExpr = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
-					let convertedCountExpr = castCountIfNeeded(countExpr, forParameterType: arg.type)
-
-					"let \(raw: sizeName) = \(raw: convertedCountExpr)"
-
-					if array.isRawBufferPointerType() {
-						// For UnsafeRawBufferPointer, also extract baseAddress
-						let baseAddressExpr = isOptional ? "\(arrayName)?.baseAddress" : "\(arrayName).baseAddress"
-						"let \(raw: arrayName) = \(raw: baseAddressExpr)"
-					}
-				}
-			}
-		}
-	}
-
 	/// Unwrap the arguments for a method call, so that we can call the unwrapped WGPU method with the arguments.
 	func unwrapArgs(_ args: [DawnFunctionArgument], data: DawnData, expression: ExprSyntax) -> ExprSyntax {
 		if args.isEmpty {
@@ -169,7 +52,7 @@ extension DawnMethod {
 
 		let argsForCMethod = self.args ?? []
 		// Exclude all array size parameters from the Swift method signature.
-		let argsForSwiftMethod = argsForCMethod.filter { !isArraySizeParameter($0, allArgs: argsForCMethod) }
+		let argsForSwiftMethod = argsForCMethod.filter { !isArraySizeItem($0, allItems: argsForCMethod) }
 
 		let wgpuMethodCall: ExprSyntax =
 			"""
@@ -182,7 +65,7 @@ extension DawnMethod {
 		let wrappedReturns = returns?.swiftTypeName(data: data) ?? "Void"
 
 		// Create the body of the method.
-		let arraySizeExtractions = generateArraySizeExtractions(data: data)
+		let arraySizeExtractions = generateArraySizeExtractions(items: argsForCMethod, data: data)
 
 		var body: CodeBlockItemListSyntax
 		if let returns = returns {
