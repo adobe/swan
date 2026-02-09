@@ -30,8 +30,28 @@ The project uses a binary target `DawnLib` that contains pre-built Dawn WebGPU l
 ## Development Commands
 
 ### Building
+You need to use the swift version that is defined in .swift-version. 
+Please do so by ensuring that swiftly is first in the PATH variable:
+```bash
+export PATH="$HOME/.swiftly/bin:$PATH"
+```
+and let swiftly use the defined version:
+```bash
+swiftly use
+```
+It might be useful to clean up old artifacts when the version was changed. In that case run:
+```bash
+swift package clean
+```
+before finally running a build with:
 ```bash
 swift build
+```
+
+#### WASM builds
+WASM builds need to set the swift-sdk in the build command. For example a WASM build of the WebGPUMinimalWasm target looks like this:
+```bash
+swift build --target WebGPUMinimalWasm --swift-sdk swift-6.3-DEVELOPMENT-SNAPSHOT-2026-01-09-a_wasm
 ```
 
 ### Testing

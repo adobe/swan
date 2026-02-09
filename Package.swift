@@ -88,6 +88,7 @@ let package = Package(
 			url: "https://github.com/swiftlang/swift-testing.git",
 			from: "6.2.3"
 		),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit", from: "0.43.0"),
 		.package(url: "https://github.com/apple/swift-log", from: "1.9.1"),
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
@@ -189,9 +190,10 @@ let package = Package(
 		.target(
 			name: "WebGPUWasm",
 			dependencies: [
-				// WebGPUCore or similar core library for shared protocols and types ?
+				.product(name: "JavaScriptKit", package: "JavaScriptKit")
 			],
 			path: "Sources/WebGPU/Wasm",
+			exclude: ["README.md"],
 			swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
 			linkerSettings: asanLinkerSettings
 		),
@@ -241,6 +243,16 @@ let package = Package(
 				.linkedFramework("Metal", .when(platforms: [.macOS])),
 				.linkedLibrary("c++", .when(platforms: [.macOS])),
 			]
+		),
+		.executableTarget(
+			name: "WebGPUMinimalWasm",
+			dependencies: [
+				.target(name: "WebGPU", condition: .when(platforms: wasmPlatforms))
+			],
+			path: "Demos/WebGPUMinimalWasm",
+			exclude: ["README.md", "index.html"],
+			swiftSettings: swiftSettings,
+			linkerSettings: asanLinkerSettings
 		),
 		.testTarget(
 			name: "CodeGenerationTests",

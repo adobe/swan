@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Swift Web App</title>
+    <script type="module">
+        import { init } from "../../.build/plugins/PackageToJS/outputs/Package/index.js";
+        const runtime = await init(); 
+        debugger
+        /* 
+        Type: {
+            instance: WebAssembly.Instance;
+            swift: SwiftRuntime;
+            exports: Exports;
+            } 
+        */
+        runtime.swift.main();
+    </script>
+</head>
+
+<body>
+    <h1>Swan WASM Demo</h1>
+</body>
+
+</html>
