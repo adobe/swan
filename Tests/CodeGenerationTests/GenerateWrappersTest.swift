@@ -521,7 +521,11 @@ struct TestTypeDescriptor: TypeDescriptor {
 		let combined = declarations.map { $0.formatted().description }.joined(separator: "\n")
 
 		// Verify init signature excludes entryCount parameter
-		#expect(combined.contains("public init(label: String? = nil, entries: [GPUBindGroupLayoutEntry] = [])"))
+		#expect(
+			combined.contains(
+				"public init(label: String? = nil, entries: [GPUBindGroupLayoutEntry] = [], nextInChain: (any GPUChainedStruct)? = nil)"
+			)
+		)
 		#expect(!combined.contains("entryCount: Int"))
 
 		// Verify stored properties exclude entryCount

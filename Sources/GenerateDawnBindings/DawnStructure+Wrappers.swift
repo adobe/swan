@@ -146,7 +146,7 @@ extension DawnStructure: DawnType {
 					body: CodeBlockSyntax(
 						statements: memberAssignments
 					)
-				).formatted()
+				).formatted(using: TabFormat(initialIndentation: .tabs(0)))
 			)!
 		} catch {
 			fatalError("Failed to get members for creating init: \(error)")
