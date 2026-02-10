@@ -194,7 +194,6 @@ let package = Package(
 				.product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
 			],
 			path: "Sources/WebGPU/Wasm",
-			exclude: ["README.md"],
 			swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
 			linkerSettings: asanLinkerSettings
 		),
