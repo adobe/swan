@@ -5,6 +5,7 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 //
+// Ported from https://github.com/webgpu/webgpu-samples/tree/main/sample/bitonicSort
 
 // Uniform data passed each step. Must match WGSL Uniforms struct below. 
 struct Uniforms {
@@ -33,7 +34,6 @@ struct Uniforms {
 /// The workgroup size determines the shared memory size (workgroupSize * 2) and affects
 /// which operations can be done locally vs globally.
 /// Handles all 4 step types: flip/disperse × local/global
-// Ported from bitonicCompute.ts
 func bitonicComputeShader(workgroupSize: Int) -> String {
 	let sharedMemorySize = workgroupSize * 2
 	return """

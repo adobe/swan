@@ -7,6 +7,7 @@
 //
 
 // Bitonic Sort Demo - GPU-accelerated parallel sorting with visualization
+// Ported from https://github.com/webgpu/webgpu-samples/tree/main/sample/bitonicSort
 
 import DemoUtils
 import Foundation

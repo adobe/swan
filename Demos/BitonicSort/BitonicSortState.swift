@@ -5,6 +5,8 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 //
+// Ported from https://github.com/webgpu/webgpu-samples/tree/main/sample/bitonicSort
+
 import Foundation
 
 // Local vs Global: When blockHeight ≤ workgroupSize×2, all comparisons fit in one workgroup's
