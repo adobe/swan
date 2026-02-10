@@ -90,17 +90,64 @@ extension DawnStructure: DawnType {
 	func initDecl(data: DawnData) -> DeclSyntax {
 		do {
 			let members = try getMembers(data: data)
-			let memberParams = members.map {
-				"\($0.name): \($0.swiftType)\($0.defaultValue != nil ? " = \($0.defaultValue!)" : "")"
-			}.joined(separator: ", ")
-			let memberAssignments = members.map { "self.\($0.name) = \($0.name)" }.joined(separator: "\n\t")
-			return DeclSyntax(
-				"""
-				public init(\(raw: memberParams)) {
-					\(raw: memberAssignments)
+
+			let memberParams = FunctionParameterListSyntax {
+				for member in members {
+					FunctionParameterSyntax(
+						firstName: .identifier(member.name),
+						type: TypeSyntax(stringLiteral: member.swiftType),
+						defaultValue: member.defaultValue.map { value in
+							InitializerClauseSyntax(value: ExprSyntax(stringLiteral: value))
+						}
+					)
 				}
-				"""
-			)
+				if extensibilityType != .none {
+					FunctionParameterSyntax(
+						firstName: .identifier("nextInChain"),
+						type: TypeSyntax(stringLiteral: "(any GPUChainedStruct)?"),
+						defaultValue: InitializerClauseSyntax(value: ExprSyntax(stringLiteral: "nil"))
+					)
+				}
+			}
+
+			let memberAssignments = CodeBlockItemListSyntax {
+				for member in members {
+					InfixOperatorExprSyntax(
+						leftOperand: MemberAccessExprSyntax(
+							base: DeclReferenceExprSyntax(baseName: .keyword(.self)),
+							declName: DeclReferenceExprSyntax(baseName: .identifier(member.name))
+						),
+						operator: AssignmentExprSyntax(),
+						rightOperand: DeclReferenceExprSyntax(baseName: .identifier(member.name))
+					)
+				}
+				if extensibilityType != .none {
+					InfixOperatorExprSyntax(
+						leftOperand: MemberAccessExprSyntax(
+							base: DeclReferenceExprSyntax(baseName: .keyword(.self)),
+							declName: DeclReferenceExprSyntax(baseName: .identifier("nextInChain"))
+						),
+						operator: AssignmentExprSyntax(),
+						rightOperand: DeclReferenceExprSyntax(baseName: .identifier("nextInChain"))
+					)
+				}
+			}
+
+			return DeclSyntax(
+				InitializerDeclSyntax(
+					modifiers: DeclModifierListSyntax {
+						DeclModifierSyntax(name: .keyword(.public))
+					},
+					signature: FunctionSignatureSyntax(
+						parameterClause: FunctionParameterClauseSyntax(
+							parameters: memberParams
+						)
+					),
+					body: CodeBlockSyntax(
+						statements: memberAssignments
+					)
+				).formatted(using: TabFormat(initialIndentation: .tabs(0)))
+			)!
 		} catch {
 			fatalError("Failed to get members for creating init: \(error)")
 		}

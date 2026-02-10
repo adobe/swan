@@ -190,7 +190,7 @@ struct TestTypeDescriptor: TypeDescriptor {
 
 				public var nextInChain: (any GPUChainedStruct)? = nil
 
-				public init(vendor: String = "", architecture: String = "", device: String = "", description: String = "", backendType: GPUBackendType = .undefined, adapterType: GPUAdapterType = .discreteGPU, vendorID: UInt32 = 0, deviceID: UInt32 = 0, subgroupMinSize: UInt32 = 0, subgroupMaxSize: UInt32 = 0) {
+				public init(vendor: String = "", architecture: String = "", device: String = "", description: String = "", backendType: GPUBackendType = .undefined, adapterType: GPUAdapterType = .discreteGPU, vendorID: UInt32 = 0, deviceID: UInt32 = 0, subgroupMinSize: UInt32 = 0, subgroupMaxSize: UInt32 = 0, nextInChain: (any GPUChainedStruct)? = nil) {
 					self.vendor = vendor
 					self.architecture = architecture
 					self.device = device
@@ -201,6 +201,7 @@ struct TestTypeDescriptor: TypeDescriptor {
 					self.deviceID = deviceID
 					self.subgroupMinSize = subgroupMinSize
 					self.subgroupMaxSize = subgroupMaxSize
+					self.nextInChain = nextInChain
 				}
 
 
@@ -520,7 +521,11 @@ struct TestTypeDescriptor: TypeDescriptor {
 		let combined = declarations.map { $0.formatted().description }.joined(separator: "\n")
 
 		// Verify init signature excludes entryCount parameter
-		#expect(combined.contains("public init(label: String? = nil, entries: [GPUBindGroupLayoutEntry] = [])"))
+		#expect(
+			combined.contains(
+				"public init(label: String? = nil, entries: [GPUBindGroupLayoutEntry] = [], nextInChain: (any GPUChainedStruct)? = nil)"
+			)
+		)
 		#expect(!combined.contains("entryCount: Int"))
 
 		// Verify stored properties exclude entryCount
