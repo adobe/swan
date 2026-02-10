@@ -9,7 +9,7 @@ import Foundation
 
 // Local vs Global: When blockHeight ≤ workgroupSize×2, all comparisons fit in one workgroup's
 // shared memory (fast). Otherwise, we use global memory (slower but necessary).
-enum StepType: Int {
+enum StepType : UInt32 {
 	case none = 0
 	case flipLocal = 1
 	case disperseLocal = 2

@@ -6,6 +6,27 @@
 // it.
 //
 
+// Uniform data passed each step. Must match WGSL Uniforms struct below. 
+struct Uniforms {
+	let width: UInt32
+	let height: UInt32
+	let algorithmStep: UInt32
+	let blockHeight: UInt32
+    let highlight: UInt32  // 0 = grayscale, 1 = show comparison pairs
+
+    static var wgslDefinition: String {
+		// Could be generated with reflection, but this is simple enough.
+        """
+        struct Uniforms {
+            width: u32,
+            height: u32,
+            algorithmStep: u32,
+            blockHeight: u32,
+            highlight: u32,
+        }
+        """
+    }}
+
 // WGSL shader code for BitonicSort demo
 
 /// Generates compute shader for bitonic sort operations with the specified workgroup size.
@@ -16,13 +37,7 @@
 func bitonicComputeShader(workgroupSize: Int) -> String {
 	let sharedMemorySize = workgroupSize * 2
 	return """
-		// Uniform data passed each step
-		struct Uniforms {
-		    width: u32,        // Grid width for visualization
-		    height: u32,       // Grid height for visualization
-		    algo: u32,         // Current step type (1-4)
-		    blockHeight: u32,  // Current block height for comparisons
-		}
+		\(Uniforms.wgslDefinition)
 
 		// Workgroup shared memory for local operations
 		// Size = workgroupSize * 2 (each invocation handles 2 elements)
@@ -91,7 +106,7 @@ func bitonicComputeShader(workgroupSize: Int) -> String {
 		    let total_elements = uniforms.width * uniforms.height;
 		    let block_height = uniforms.blockHeight;
 
-		    switch uniforms.algo {
+		    switch uniforms.algorithmStep {
 		        // LOCAL FLIP: Load to shared memory, flip, write back
 		        case ALGO_LOCAL_FLIP: {
 		            // Load two elements per invocation into shared memory
@@ -146,7 +161,7 @@ func bitonicComputeShader(workgroupSize: Int) -> String {
 		        }
 
 		        default: {
-		            // No-op for algo = 0
+		            // No-op for algorithmStep = 0
 		        }
 		    }
 		}
@@ -182,13 +197,7 @@ fn vertexMain(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {
 /// Supports highlight mode to show comparison pairs in red/green
 // Ported from bitonicDisplay.frag.wgsl
 let bitonicDisplayFragmentShader = """
-struct Uniforms {
-    width: u32,
-    height: u32,
-    algo: u32,
-    blockHeight: u32,
-    highlight: u32,  // 0 = grayscale, 1 = show comparison pairs
-}
+\(Uniforms.wgslDefinition)
 
 @group(0) @binding(0) var<storage, read> data: array<u32>;
 @group(0) @binding(1) var<uniform> uniforms: Uniforms;

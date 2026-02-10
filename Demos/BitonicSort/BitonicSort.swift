@@ -146,7 +146,7 @@ struct BitonicSortDemo: DemoProvider {
 	}
 
 	private mutating func createUniformBuffer(device: GPUDevice) -> UInt64 {
-		let uniformSize = UInt64(5 * MemoryLayout<UInt32>.size)  // width, height, algo, blockHeight, highlight
+		let uniformSize = UInt64(MemoryLayout<Uniforms>.size)
 		self.uniformBuffer = device.createBuffer(
 			descriptor: GPUBufferDescriptor(
 				label: "Uniforms",
@@ -310,14 +310,14 @@ struct BitonicSortDemo: DemoProvider {
 	}
 
 	private func updateUniforms() {
-		let uniforms: [UInt32] = [
-			UInt32(gridWidth),
-			UInt32(gridHeight),
-			UInt32(self.sortState.currentStepType.rawValue),
-			UInt32(self.sortState.blockHeight),
-			self.highlightMode ? 1 : 0,
-		]
-		uniforms.withUnsafeBytes { data in
+		let uniforms = Uniforms(
+			width: UInt32(gridWidth),
+			height: UInt32(gridHeight),
+			algorithmStep: self.sortState.currentStepType.rawValue,
+			blockHeight: UInt32(self.sortState.blockHeight),
+			highlight: self.highlightMode ? 1 : 0
+		)
+		withUnsafeBytes(of: uniforms) { data in
 			self.device!.queue.writeBuffer(
 				buffer: self.uniformBuffer!,
 				bufferOffset: 0,
