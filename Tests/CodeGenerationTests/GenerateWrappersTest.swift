@@ -190,7 +190,7 @@ struct TestTypeDescriptor: TypeDescriptor {
 
 				public var nextInChain: (any GPUChainedStruct)? = nil
 
-				public init(vendor: String = "", architecture: String = "", device: String = "", description: String = "", backendType: GPUBackendType = .undefined, adapterType: GPUAdapterType = .discreteGPU, vendorID: UInt32 = 0, deviceID: UInt32 = 0, subgroupMinSize: UInt32 = 0, subgroupMaxSize: UInt32 = 0) {
+				public init(vendor: String = "", architecture: String = "", device: String = "", description: String = "", backendType: GPUBackendType = .undefined, adapterType: GPUAdapterType = .discreteGPU, vendorID: UInt32 = 0, deviceID: UInt32 = 0, subgroupMinSize: UInt32 = 0, subgroupMaxSize: UInt32 = 0, nextInChain: (any GPUChainedStruct)? = nil) {
 					self.vendor = vendor
 					self.architecture = architecture
 					self.device = device
@@ -201,6 +201,7 @@ struct TestTypeDescriptor: TypeDescriptor {
 					self.deviceID = deviceID
 					self.subgroupMinSize = subgroupMinSize
 					self.subgroupMaxSize = subgroupMaxSize
+					self.nextInChain = nextInChain
 				}
 
 
@@ -208,7 +209,7 @@ struct TestTypeDescriptor: TypeDescriptor {
 				public func withWGPUStruct<R>(
 					_ lambda: (inout WGPUAdapterInfo) -> R
 				) -> R {
-					vendor.withWGPUStruct { vendor in
+					return vendor.withWGPUStruct { vendor in
 						architecture.withWGPUStruct { architecture in
 							device.withWGPUStruct { device in
 								description.withWGPUStruct { description in
@@ -493,6 +494,75 @@ struct TestTypeDescriptor: TypeDescriptor {
 		#expect(combinedDescription.contains("extension DawnDrmFormatProperties: GPUSimpleStruct"))
 	}
 
+	@Test("Struct init excludes array size parameters")
+	func testStructInitExcludesArraySizeParameter() {
+		let data = try? JSONDecoder().decode(DawnData.self, from: structWithArrayDawnData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+
+		let bindGroupLayoutDescriptor = data.data[Name("bind group layout descriptor")]
+		guard let bindGroupLayoutDescriptor = bindGroupLayoutDescriptor else {
+			Issue.record("Failed to get bind group layout descriptor")
+			return
+		}
+
+		guard case .structure(let structure) = bindGroupLayoutDescriptor else {
+			Issue.record("Bind group layout descriptor is not a structure")
+			return
+		}
+
+		let declarations = try? structure.declarations(name: Name("bind group layout descriptor"), needsWrap: false, data: data)
+		guard let declarations = declarations else {
+			Issue.record("Failed to get declarations")
+			return
+		}
+		let combined = declarations.map { $0.formatted().description }.joined(separator: "\n")
+
+		// Verify init signature excludes entryCount parameter
+		#expect(
+			combined.contains(
+				"public init(label: String? = nil, entries: [GPUBindGroupLayoutEntry] = [], nextInChain: (any GPUChainedStruct)? = nil)"
+			)
+		)
+		#expect(!combined.contains("entryCount: Int"))
+
+		// Verify stored properties exclude entryCount
+		#expect(combined.contains("public var entries: [GPUBindGroupLayoutEntry]"))
+		#expect(!combined.contains("public var entryCount"))
+	}
+
+	@Test("Struct withWGPUStruct derives count from array")
+	func testStructWithWGPUStructDerivesCount() {
+		let data = try? JSONDecoder().decode(DawnData.self, from: structWithArrayDawnData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+
+		let bindGroupLayoutDescriptor = data.data[Name("bind group layout descriptor")]
+		guard let bindGroupLayoutDescriptor = bindGroupLayoutDescriptor else {
+			Issue.record("Failed to get bind group layout descriptor")
+			return
+		}
+
+		guard case .structure(let structure) = bindGroupLayoutDescriptor else {
+			Issue.record("Bind group layout descriptor is not a structure")
+			return
+		}
+
+		let declarations = try? structure.declarations(name: Name("bind group layout descriptor"), needsWrap: false, data: data)
+		guard let declarations = declarations else {
+			Issue.record("Failed to get declarations")
+			return
+		}
+		let combined = declarations.map { $0.formatted().description }.joined(separator: "\n")
+
+		// Verify withWGPUStruct extracts count from array
+		#expect(combined.contains("let entryCount = entries.count"))
+	}
+
 }
 
 let deviceDawnData = """
@@ -634,6 +704,39 @@ let dawnPrefixedDawnData = """
 		"uint32_t": {
 			"category": "native",
 			"wasm type": "i"
+		}
+	}
+	"""
+
+let structWithArrayDawnData = """
+	{
+		"bind group layout descriptor": {
+			"category": "structure",
+			"extensible": "in",
+			"members": [
+				{"name": "label", "type": "string view", "optional": true},
+				{"name": "entry count", "type": "size_t"},
+				{"name": "entries", "type": "bind group layout entry", "annotation": "const*", "length": "entry count"}
+			]
+		},
+		"bind group layout entry": {
+			"category": "structure",
+			"members": [
+				{"name": "binding", "type": "uint32_t"}
+			]
+		},
+		"string view": {
+			"category": "structure",
+			"members": [
+				{"name": "data", "type": "char", "annotation": "const*", "optional": true},
+				{"name": "length", "type": "size_t", "default": "strlen"}
+			]
+		},
+		"size_t": {
+			"category": "native"
+		},
+		"uint32_t": {
+			"category": "native"
 		}
 	}
 	"""
