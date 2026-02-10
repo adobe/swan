@@ -21,7 +21,7 @@ jobs:
       - uses: swift-actions/setup-swift@v3
         with:
           swift-version: "6.3-snapshot-2026-01-29"
-      - name: Build
-        run: swift build -v
       - name: Run tests
+        env:
+          USE_ADDRESS_SANITIZER: true
         run: swift test -v
