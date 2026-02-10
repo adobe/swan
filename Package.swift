@@ -88,7 +88,7 @@ let package = Package(
 			url: "https://github.com/swiftlang/swift-testing.git",
 			from: "6.2.3"
 		),
-		.package(url: "https://github.com/swiftwasm/JavaScriptKit", from: "0.43.0"),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit", from: "0.43.1"),
 		.package(url: "https://github.com/apple/swift-log", from: "1.9.1"),
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
