@@ -25,7 +25,7 @@ public final class GPU {
 	public func requestAdapter() async throws(WebGPUJSError) -> GPUAdapter? {
 		guard jsObject.requestAdapter.function != nil else { throw WebGPUJSError.missingGPU }
 		let result = jsObject.requestAdapter!()
-		guard let promise = result.object.flatMap({ JSPromise($0) }) else { return nil }
+		guard let promise = JSPromise(result.object!) else { return nil }
 		let value = try await promise.awaitValue()
 		guard let adapterObj = value.object else { return nil }
 		return GPUAdapter(jsObject: adapterObj)
