@@ -10,27 +10,26 @@ import JavaScriptKit
 extension JSPromise {
 	/// Resolves the promise and returns the fulfilled value, or throws if rejected.
 	public func awaitValue() async throws(WebGPUJSError) -> JSValue {
-		print("awaitValue")
 		do {
 			return try await withCheckedThrowingContinuation { continuation in
 				_ = then(
 					success: { value in
-						print("awaitValue 2", value)
+						print("awaitValue success")
 						continuation.resume(returning: value)
 						return .undefined
 					},
 					failure: { error in
-						print("awaitValue 3", error)
+						print("awaitValue failure")
 						continuation.resume(throwing: WebGPUJSError.rejected(error))
 						return .undefined
 					}
 				)
 			}
 		} catch let e as WebGPUJSError {
-			print("awaitValue 4", e)
+			print("awaitValue WebGPUJSError", e)
 			throw e
 		} catch {
-			print("awaitValue 5", error)
+			print("awaitValue unknown error")
 			throw WebGPUJSError.rejected(JSValue.string(JSString("rejected")))
 		}
 	}
