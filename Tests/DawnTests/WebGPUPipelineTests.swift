@@ -62,7 +62,6 @@ extension GPUDevice {
 				vertex: GPUVertexState(
 					module: shaderModule,
 					entryPoint: vertexEntryPoint,
-					bufferCount: 0,
 					buffers: []
 				),
 				primitive: GPUPrimitiveState(
@@ -79,7 +78,6 @@ extension GPUDevice {
 				fragment: GPUFragmentState(
 					module: shaderModule,
 					entryPoint: fragmentEntryPoint,
-					targetCount: 1,
 					targets: [GPUColorTargetState(format: format)]
 				)
 			)
@@ -132,7 +130,6 @@ struct WebGPUPipelineTests {
 
 		let renderPassDescriptor = GPURenderPassDescriptor(
 			label: "Test Render Pass",
-			colorAttachmentCount: 1,
 			colorAttachments: [
 				GPURenderPassColorAttachment(
 					view: textureView,
@@ -214,7 +211,6 @@ struct WebGPUPipelineTests {
 		let bindGroupLayout = device.createBindGroupLayout(
 			descriptor: GPUBindGroupLayoutDescriptor(
 				label: "Compute Bind Group Layout",
-				entryCount: 1,
 				entries: [
 					GPUBindGroupLayoutEntry(
 						binding: 0,
@@ -229,7 +225,6 @@ struct WebGPUPipelineTests {
 		let pipelineLayout = device.createPipelineLayout(
 			descriptor: GPUPipelineLayoutDescriptor(
 				label: "Compute Pipeline Layout",
-				bindGroupLayoutCount: 1,
 				bindGroupLayouts: [bindGroupLayout]
 			)
 		)
@@ -251,7 +246,6 @@ struct WebGPUPipelineTests {
 			descriptor: GPUBindGroupDescriptor(
 				label: "Compute Bind Group",
 				layout: bindGroupLayout,
-				entryCount: 1,
 				entries: [
 					GPUBindGroupEntry(binding: 0, buffer: storageBuffer)
 				]

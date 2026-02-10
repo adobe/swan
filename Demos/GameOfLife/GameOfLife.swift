@@ -129,7 +129,6 @@ struct GameOfLifeDemo: DemoProvider {
 		let bindGroupLayout = device.createBindGroupLayout(
 			descriptor: GPUBindGroupLayoutDescriptor(
 				label: "Cell Bind Group Layout",
-				entryCount: 3,
 				entries: [
 					GPUBindGroupLayoutEntry(
 						binding: 0,
@@ -156,7 +155,6 @@ struct GameOfLifeDemo: DemoProvider {
 				descriptor: GPUBindGroupDescriptor(
 					label: "Cell renderer bind group A",
 					layout: bindGroupLayout,
-					entryCount: 3,
 					entries: [
 						GPUBindGroupEntry(binding: 0, buffer: uniformBuffer!),
 						GPUBindGroupEntry(binding: 1, buffer: cellStateStorage[0]),
@@ -168,7 +166,6 @@ struct GameOfLifeDemo: DemoProvider {
 				descriptor: GPUBindGroupDescriptor(
 					label: "Cell renderer bind group B",
 					layout: bindGroupLayout,
-					entryCount: 3,
 					entries: [
 						GPUBindGroupEntry(binding: 0, buffer: uniformBuffer!),
 						GPUBindGroupEntry(binding: 1, buffer: cellStateStorage[1]),
@@ -182,7 +179,6 @@ struct GameOfLifeDemo: DemoProvider {
 		let pipelineLayout = device.createPipelineLayout(
 			descriptor: GPUPipelineLayoutDescriptor(
 				label: "Cell Pipeline Layout",
-				bindGroupLayoutCount: 1,
 				bindGroupLayouts: [bindGroupLayout]
 			)
 		)
@@ -195,11 +191,9 @@ struct GameOfLifeDemo: DemoProvider {
 				vertex: GPUVertexState(
 					module: cellShaderModule,
 					entryPoint: "vertexMain",
-					bufferCount: 1,
 					buffers: [
 						GPUVertexBufferLayout(
 							arrayStride: 8,
-							attributeCount: 1,
 							attributes: [
 								GPUVertexAttribute(format: .float32x2, offset: 0, shaderLocation: 0)
 							]
@@ -220,7 +214,6 @@ struct GameOfLifeDemo: DemoProvider {
 				fragment: GPUFragmentState(
 					module: cellShaderModule,
 					entryPoint: "fragmentMain",
-					targetCount: 1,
 					targets: [GPUColorTargetState(format: format)]
 				)
 			)
@@ -244,7 +237,6 @@ struct GameOfLifeDemo: DemoProvider {
 		let pass = encoder.beginRenderPass(
 			descriptor: GPURenderPassDescriptor(
 				label: "render pass",
-				colorAttachmentCount: 1,
 				colorAttachments: [
 					GPURenderPassColorAttachment(
 						view: destTexture.createView(),
