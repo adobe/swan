@@ -163,7 +163,6 @@ struct BitonicSortDemo: DemoProvider {
 		let computeBindGroupLayout = device.createBindGroupLayout(
 			descriptor: GPUBindGroupLayoutDescriptor(
 				label: "Compute Bind Group Layout",
-				entryCount: 3,  // TODO: bmedina - count parameter should not be needed
 				entries: [
 					GPUBindGroupLayoutEntry(
 						binding: 0,
@@ -186,7 +185,6 @@ struct BitonicSortDemo: DemoProvider {
 		let renderBindGroupLayout = device.createBindGroupLayout(
 			descriptor: GPUBindGroupLayoutDescriptor(
 				label: "Render Bind Group Layout",
-				entryCount: 2,  // TODO: bmedina - count parameter should not be needed
 				entries: [
 					GPUBindGroupLayoutEntry(
 						binding: 0,
@@ -216,7 +214,6 @@ struct BitonicSortDemo: DemoProvider {
 			descriptor: GPUBindGroupDescriptor(
 				label: "Compute Bind Group A",
 				layout: computeBindGroupLayout,
-				entryCount: 3,  // TODO: bmedina - count parameter should not be needed
 				entries: [
 					GPUBindGroupEntry(binding: 0, buffer: self.elementsBufferA!, offset: 0, size: bufferSize),
 					GPUBindGroupEntry(binding: 1, buffer: self.elementsBufferB!, offset: 0, size: bufferSize),
@@ -228,7 +225,6 @@ struct BitonicSortDemo: DemoProvider {
 			descriptor: GPUBindGroupDescriptor(
 				label: "Compute Bind Group B",
 				layout: computeBindGroupLayout,
-				entryCount: 3,  // TODO: bmedina - count parameter should not be needed
 				entries: [
 					GPUBindGroupEntry(binding: 0, buffer: self.elementsBufferB!, offset: 0, size: bufferSize),
 					GPUBindGroupEntry(binding: 1, buffer: self.elementsBufferA!, offset: 0, size: bufferSize),
@@ -242,7 +238,6 @@ struct BitonicSortDemo: DemoProvider {
 			descriptor: GPUBindGroupDescriptor(
 				label: "Render Bind Group A",
 				layout: renderBindGroupLayout,
-				entryCount: 2,  // TODO: bmedina - count parameter should not be needed
 				entries: [
 					GPUBindGroupEntry(binding: 0, buffer: self.elementsBufferA!, offset: 0, size: bufferSize),
 					GPUBindGroupEntry(binding: 1, buffer: self.uniformBuffer!, offset: 0, size: uniformSize),
@@ -253,7 +248,6 @@ struct BitonicSortDemo: DemoProvider {
 			descriptor: GPUBindGroupDescriptor(
 				label: "Render Bind Group B",
 				layout: renderBindGroupLayout,
-				entryCount: 2,  // TODO: bmedina - count parameter should not be needed
 				entries: [
 					GPUBindGroupEntry(binding: 0, buffer: self.elementsBufferB!, offset: 0, size: bufferSize),
 					GPUBindGroupEntry(binding: 1, buffer: self.uniformBuffer!, offset: 0, size: uniformSize),
@@ -272,14 +266,12 @@ struct BitonicSortDemo: DemoProvider {
 		let computePipelineLayout = device.createPipelineLayout(
 			descriptor: GPUPipelineLayoutDescriptor(
 				label: "Compute Pipeline Layout",
-				bindGroupLayoutCount: 1,  // TODO: bmedina - count parameter should not be needed
 				bindGroupLayouts: [computeBindGroupLayout]
 			)
 		)
 		let renderPipelineLayout = device.createPipelineLayout(
 			descriptor: GPUPipelineLayoutDescriptor(
 				label: "Render Pipeline Layout",
-				bindGroupLayoutCount: 1,  // TODO: bmedina - count parameter should not be needed
 				bindGroupLayouts: [renderBindGroupLayout]
 			)
 		)
@@ -311,7 +303,6 @@ struct BitonicSortDemo: DemoProvider {
 				fragment: GPUFragmentState(
 					module: shaderModules.fragment,
 					entryPoint: "fragmentMain",
-					targetCount: 1,  // TODO: bmedina - count parameter should not be needed
 					targets: [GPUColorTargetState(format: format)]
 				)
 			)
@@ -426,7 +417,6 @@ struct BitonicSortDemo: DemoProvider {
 
 		let renderPass = encoder.beginRenderPass(
 			descriptor: GPURenderPassDescriptor(
-				colorAttachmentCount: 1,
 				colorAttachments: [
 					GPURenderPassColorAttachment(
 						view: textureView,
