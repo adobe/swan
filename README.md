@@ -55,10 +55,11 @@ let package = Package(
 
 ### Usage
 
-You can run the demo by:
+You can run the demos by:
 
 ```sh
 swift run GameOfLife
+swift run BitonicSort
 ```
 
 ### Updating Dawn
