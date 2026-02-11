@@ -5,9 +5,9 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-import JavaScriptKit
+@_spi(Experimental) import JavaScriptKit
 
-@JS public enum GPUPrimitiveTopology: String, Sendable {
+@JS enum GPUPrimitiveTopology: String, Sendable {
 	case pointList = "point-list"
 	case lineList = "line-list"
 	case lineStrip = "line-strip"
@@ -15,7 +15,7 @@ import JavaScriptKit
 	case triangleStrip = "triangle-strip"
 }
 
-@JS public enum GPUVertexFormat: String, Sendable {
+@JS enum GPUVertexFormat: String, Sendable {
 	case uint8x2 = "uint8x2"
 	case uint8x4 = "uint8x4"
 	case sint8x2 = "sint8x2"
@@ -40,12 +40,12 @@ import JavaScriptKit
 	case sint32x4 = "sint32x4"
 }
 
-@JS public enum GPUVertexStepMode: String, Sendable {
+@JS enum GPUVertexStepMode: String, Sendable {
 	case vertex = "vertex"
 	case instance = "instance"
 }
 
-@JS public enum GPUTextureFormat: String, Sendable {
+@JS enum GPUTextureFormat: String, Sendable {
 	case bgra8unorm = "bgra8unorm"
 	case bgra8unormSrgb = "bgra8unorm-srgb"
 	case rgba8unorm = "rgba8unorm"
@@ -53,29 +53,28 @@ import JavaScriptKit
 	// Add more as needed
 }
 
-@JS public enum GPULoadOp: String, Sendable {
+@JS enum GPULoadOp: String, Sendable {
 	case load = "load"
 	case clear = "clear"
 }
 
-@JS public enum GPUStoreOp: String, Sendable {
+@JS enum GPUStoreOp: String, Sendable {
 	case store = "store"
 	case discard = "discard"
 }
 
-@JS public enum GPUFrontFace: String, Sendable {
+@JS enum GPUFrontFace: String, Sendable {
 	case ccw = "ccw"
 	case cw = "cw"
 }
 
-@JS public enum GPUCullMode: String, Sendable {
+@JS enum GPUCullMode: String, Sendable {
 	case none = "none"
 	case front = "front"
 	case back = "back"
 }
 
-@JS public enum GPUIndexFormat: String, Sendable {
+@JS enum GPUIndexFormat: String, Sendable {
 	case uint16 = "uint16"
 	case uint32 = "uint32"
 }
-

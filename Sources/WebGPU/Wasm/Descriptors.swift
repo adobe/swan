@@ -5,18 +5,18 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-import JavaScriptKit
+@_spi(Experimental) import JavaScriptKit
 
-@JS public struct GPUBufferDescriptor {
-	public var label: String?
-	public var size: UInt64
-	public var usage: GPUBufferUsage
-	public var mappedAtCreation: Bool = false
+@JS struct GPUBufferDescriptor {
+	var label: String?
+	var size: Int
+	var usage: Int
+	var mappedAtCreation: Bool = false
 
-	public init(
+	init(
 		label: String? = nil,
-		size: UInt64,
-		usage: GPUBufferUsage,
+		size: Int,
+		usage: Int,
 		mappedAtCreation: Bool = false
 	) {
 		self.label = label
@@ -24,37 +24,46 @@ import JavaScriptKit
 		self.usage = usage
 		self.mappedAtCreation = mappedAtCreation
 	}
+
+	init(
+		label: String? = nil,
+		size: Int,
+		usage: GPUBufferUsage,
+		mappedAtCreation: Bool = false
+	) {
+		self.init(label: label, size: size, usage: Int(usage.rawValue), mappedAtCreation: mappedAtCreation)
+	}
 }
 
-@JS public struct GPUShaderModuleDescriptor {
-	public var label: String?
-	public var code: String
+@JS struct GPUShaderModuleDescriptor {
+	var label: String?
+	var code: String
 
-	public init(label: String? = nil, code: String) {
+	init(label: String? = nil, code: String) {
 		self.label = label
 		self.code = code
 	}
 }
 
-@JS public struct GPUVertexAttribute {
-	public var format: GPUVertexFormat
-	public var offset: UInt64
-	public var shaderLocation: UInt32
+@JS struct GPUVertexAttribute {
+	var format: GPUVertexFormat
+	var offset: Int
+	var shaderLocation: Int
 
-	public init(format: GPUVertexFormat, offset: UInt64, shaderLocation: UInt32) {
+	init(format: GPUVertexFormat, offset: Int, shaderLocation: Int) {
 		self.format = format
 		self.offset = offset
 		self.shaderLocation = shaderLocation
 	}
 }
 
-@JS public struct GPUVertexBufferLayout {
-	public var arrayStride: UInt64
-	public var stepMode: GPUVertexStepMode = .vertex
-	public var attributes: [GPUVertexAttribute]
+@JS struct GPUVertexBufferLayout {
+	var arrayStride: Int
+	var stepMode: GPUVertexStepMode = .vertex
+	var attributes: [GPUVertexAttribute]
 
-	public init(
-		arrayStride: UInt64,
+	init(
+		arrayStride: Int,
 		stepMode: GPUVertexStepMode = .vertex,
 		attributes: [GPUVertexAttribute]
 	) {
@@ -64,12 +73,12 @@ import JavaScriptKit
 	}
 }
 
-@JS public struct GPUPrimitiveState {
-	public var topology: GPUPrimitiveTopology = .triangleList
-	public var frontFace: GPUFrontFace = .ccw
-	public var cullMode: GPUCullMode = .none
+@JS struct GPUPrimitiveState {
+	var topology: GPUPrimitiveTopology = .triangleList
+	var frontFace: GPUFrontFace = .ccw
+	var cullMode: GPUCullMode = .none
 
-	public init(
+	init(
 		topology: GPUPrimitiveTopology = .triangleList,
 		frontFace: GPUFrontFace = .ccw,
 		cullMode: GPUCullMode = .none
@@ -80,23 +89,27 @@ import JavaScriptKit
 	}
 }
 
-@JS public struct GPUColorTargetState {
-	public var format: GPUTextureFormat
-	public var writeMask: GPUColorWrite = .all
+@JS struct GPUColorTargetState {
+	var format: GPUTextureFormat
+	var writeMask: Int = Int(GPUColorWrite.all.rawValue)
 
-	public init(format: GPUTextureFormat, writeMask: GPUColorWrite = .all) {
+	init(format: GPUTextureFormat, writeMask: Int) {
 		self.format = format
 		self.writeMask = writeMask
 	}
+
+	init(format: GPUTextureFormat, writeMask: GPUColorWrite = .all) {
+		self.init(format: format, writeMask: Int(writeMask.rawValue))
+	}
 }
 
-@JS public struct GPUColor {
-	public var r: Double
-	public var g: Double
-	public var b: Double
-	public var a: Double
+@JS struct GPUColor {
+	var r: Double
+	var g: Double
+	var b: Double
+	var a: Double
 
-	public init(r: Double, g: Double, b: Double, a: Double) {
+	init(r: Double, g: Double, b: Double, a: Double) {
 		self.r = r
 		self.g = g
 		self.b = b
@@ -104,13 +117,10 @@ import JavaScriptKit
 	}
 }
 
-@JS public struct GPUCommandEncoderDescriptor {
-	public var label: String?
+@JS struct GPUCommandEncoderDescriptor {
+	var label: String?
 
-	public init(label: String? = nil) {
+	init(label: String? = nil) {
 		self.label = label
 	}
 }
-
-
-
