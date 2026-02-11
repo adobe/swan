@@ -246,6 +246,18 @@ let package = Package(
 			]
 		),
 		.executableTarget(
+			name: "BitonicSort",
+			dependencies: ["DemoUtils"],
+			path: "Demos/BitonicSort",
+			swiftSettings: swiftSettings,
+			linkerSettings: asanLinkerSettings + [
+				.linkedFramework("Cocoa", .when(platforms: [.macOS])),
+				.linkedFramework("IOKit", .when(platforms: [.macOS])),
+				.linkedFramework("Metal", .when(platforms: [.macOS])),
+				.linkedLibrary("c++", .when(platforms: [.macOS])),
+			]
+		),
+		.executableTarget(
 			name: "WebGPUMinimalWasm",
 			dependencies: [
 				.target(name: "WebGPU", condition: .when(platforms: wasmPlatforms))
