@@ -1,0 +1,1771 @@
+{
+  "exported" : {
+    "classes" : [
+
+    ],
+    "enums" : [
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "pointList",
+            "rawValue" : "point-list"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "lineList",
+            "rawValue" : "line-list"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "lineStrip",
+            "rawValue" : "line-strip"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "triangleList",
+            "rawValue" : "triangle-list"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "triangleStrip",
+            "rawValue" : "triangle-strip"
+          }
+        ],
+        "emitStyle" : "const",
+        "name" : "GPUPrimitiveTopology",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUPrimitiveTopology",
+        "tsFullPath" : "GPUPrimitiveTopology"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "uint8x2",
+            "rawValue" : "uint8x2"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "uint8x4",
+            "rawValue" : "uint8x4"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "sint8x2",
+            "rawValue" : "sint8x2"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "sint8x4",
+            "rawValue" : "sint8x4"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "unorm8x2",
+            "rawValue" : "unorm8x2"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "unorm8x4",
+            "rawValue" : "unorm8x4"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "snorm8x2",
+            "rawValue" : "snorm8x2"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "snorm8x4",
+            "rawValue" : "snorm8x4"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "float16x2",
+            "rawValue" : "float16x2"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "float16x4",
+            "rawValue" : "float16x4"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "float32",
+            "rawValue" : "float32"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "float32x2",
+            "rawValue" : "float32x2"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "float32x3",
+            "rawValue" : "float32x3"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "float32x4",
+            "rawValue" : "float32x4"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "uint32",
+            "rawValue" : "uint32"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "uint32x2",
+            "rawValue" : "uint32x2"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "uint32x3",
+            "rawValue" : "uint32x3"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "uint32x4",
+            "rawValue" : "uint32x4"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "sint32",
+            "rawValue" : "sint32"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "sint32x2",
+            "rawValue" : "sint32x2"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "sint32x3",
+            "rawValue" : "sint32x3"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "sint32x4",
+            "rawValue" : "sint32x4"
+          }
+        ],
+        "emitStyle" : "const",
+        "name" : "GPUVertexFormat",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUVertexFormat",
+        "tsFullPath" : "GPUVertexFormat"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "vertex",
+            "rawValue" : "vertex"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "instance",
+            "rawValue" : "instance"
+          }
+        ],
+        "emitStyle" : "const",
+        "name" : "GPUVertexStepMode",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUVertexStepMode",
+        "tsFullPath" : "GPUVertexStepMode"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "bgra8unorm",
+            "rawValue" : "bgra8unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "bgra8unormSrgb",
+            "rawValue" : "bgra8unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "rgba8unorm",
+            "rawValue" : "rgba8unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "rgba8unormSrgb",
+            "rawValue" : "rgba8unorm-srgb"
+          }
+        ],
+        "emitStyle" : "const",
+        "name" : "GPUTextureFormat",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUTextureFormat",
+        "tsFullPath" : "GPUTextureFormat"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "load",
+            "rawValue" : "load"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "clear",
+            "rawValue" : "clear"
+          }
+        ],
+        "emitStyle" : "const",
+        "name" : "GPULoadOp",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPULoadOp",
+        "tsFullPath" : "GPULoadOp"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "store",
+            "rawValue" : "store"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "discard",
+            "rawValue" : "discard"
+          }
+        ],
+        "emitStyle" : "const",
+        "name" : "GPUStoreOp",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUStoreOp",
+        "tsFullPath" : "GPUStoreOp"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ccw",
+            "rawValue" : "ccw"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "cw",
+            "rawValue" : "cw"
+          }
+        ],
+        "emitStyle" : "const",
+        "name" : "GPUFrontFace",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUFrontFace",
+        "tsFullPath" : "GPUFrontFace"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "none",
+            "rawValue" : "none"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "front",
+            "rawValue" : "front"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "back",
+            "rawValue" : "back"
+          }
+        ],
+        "emitStyle" : "const",
+        "name" : "GPUCullMode",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUCullMode",
+        "tsFullPath" : "GPUCullMode"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "uint16",
+            "rawValue" : "uint16"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "uint32",
+            "rawValue" : "uint32"
+          }
+        ],
+        "emitStyle" : "const",
+        "name" : "GPUIndexFormat",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUIndexFormat",
+        "tsFullPath" : "GPUIndexFormat"
+      }
+    ],
+    "exposeToGlobal" : false,
+    "functions" : [
+
+    ],
+    "protocols" : [
+
+    ],
+    "structs" : [
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPUBufferDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "size",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "usage",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "mappedAtCreation",
+            "type" : {
+              "bool" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBufferDescriptor"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPUShaderModuleDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "code",
+            "type" : {
+              "string" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUShaderModuleDescriptor"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPUVertexAttribute",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "format",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUVertexFormat",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "offset",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "shaderLocation",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUVertexAttribute"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPUVertexBufferLayout",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "arrayStride",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "stepMode",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUVertexStepMode",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "attributes",
+            "type" : {
+              "array" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUVertexAttribute"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUVertexBufferLayout"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPUPrimitiveState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "topology",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUPrimitiveTopology",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "frontFace",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUFrontFace",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "cullMode",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUCullMode",
+                "_1" : "String"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUPrimitiveState"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPUColorTargetState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "format",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUTextureFormat",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "writeMask",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUColorTargetState"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPUColor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "r",
+            "type" : {
+              "double" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "g",
+            "type" : {
+              "double" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "b",
+            "type" : {
+              "double" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "a",
+            "type" : {
+              "double" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUColor"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPUCommandEncoderDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUCommandEncoderDescriptor"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPUCanvasConfiguration",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "device",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUDevice"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "format",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUTextureFormat",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "alphaMode",
+            "type" : {
+              "string" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUCanvasConfiguration"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPURenderPassColorAttachment",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "view",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUTextureView"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "loadOp",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPULoadOp",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "storeOp",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUStoreOp",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "clearValue",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUColor"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPURenderPassColorAttachment"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPURenderPassDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "colorAttachments",
+            "type" : {
+              "array" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPURenderPassColorAttachment"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPURenderPassDescriptor"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPUVertexState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "module",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUShaderModule"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "entryPoint",
+            "type" : {
+              "string" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "buffers",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "array" : {
+                    "_0" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUVertexBufferLayout"
+                      }
+                    }
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUVertexState"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPUFragmentState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "module",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUShaderModule"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "entryPoint",
+            "type" : {
+              "string" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "targets",
+            "type" : {
+              "array" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUColorTargetState"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUFragmentState"
+      },
+      {
+        "methods" : [
+
+        ],
+        "name" : "GPURenderPipelineDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "vertex",
+            "type" : {
+              "swiftStruct" : {
+                "_0" : "GPUVertexState"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "primitive",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUPrimitiveState"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "fragment",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUFragmentState"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPURenderPipelineDescriptor"
+      }
+    ]
+  },
+  "imported" : {
+    "children" : [
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "size",
+                "type" : {
+                  "int" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "usage",
+                "type" : {
+                  "int" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+              {
+                "name" : "destroy",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              }
+            ],
+            "name" : "GPUBuffer",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+
+            ],
+            "methods" : [
+              {
+                "name" : "configure",
+                "parameters" : [
+                  {
+                    "name" : "configuration",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUCanvasConfiguration"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "getCurrentTexture",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUTexture"
+                  }
+                }
+              }
+            ],
+            "name" : "GPUCanvasContext",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+
+            ],
+            "name" : "GPUCommandBuffer",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+              {
+                "name" : "beginRenderPass",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPURenderPassDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPURenderPassEncoder"
+                  }
+                }
+              },
+              {
+                "name" : "finish",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUCommandBuffer"
+                  }
+                }
+              }
+            ],
+            "name" : "GPUCommandEncoder",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "queue",
+                "type" : {
+                  "jsObject" : {
+                    "_0" : "GPUQueue"
+                  }
+                }
+              },
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+              {
+                "name" : "createBuffer",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUBufferDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUBuffer"
+                  }
+                }
+              },
+              {
+                "name" : "createShaderModule",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUShaderModuleDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUShaderModule"
+                  }
+                }
+              },
+              {
+                "name" : "createRenderPipeline",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPURenderPipelineDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPURenderPipeline"
+                  }
+                }
+              },
+              {
+                "name" : "createCommandEncoder",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUCommandEncoderDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUCommandEncoder"
+                  }
+                }
+              }
+            ],
+            "name" : "GPUDevice",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+              {
+                "name" : "submit",
+                "parameters" : [
+                  {
+                    "name" : "commandBuffers",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "writeBuffer",
+                "parameters" : [
+                  {
+                    "name" : "buffer",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBuffer"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "bufferOffset",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "data",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              }
+            ],
+            "name" : "GPUQueue",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+              {
+                "name" : "setPipeline",
+                "parameters" : [
+                  {
+                    "name" : "pipeline",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPURenderPipeline"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "setVertexBuffer",
+                "parameters" : [
+                  {
+                    "name" : "slot",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "buffer",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBuffer"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "draw",
+                "parameters" : [
+                  {
+                    "name" : "vertexCount",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "instanceCount",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "firstVertex",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "firstInstance",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "end",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              }
+            ],
+            "name" : "GPURenderPassEncoder",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+
+            ],
+            "name" : "GPURenderPipeline",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+
+            ],
+            "name" : "GPUShaderModule",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              },
+              {
+                "name" : "format",
+                "type" : {
+                  "string" : {
+
+                  }
+                }
+              }
+            ],
+            "methods" : [
+              {
+                "name" : "createView",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUTextureView"
+                  }
+                }
+              },
+              {
+                "name" : "destroy",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              }
+            ],
+            "name" : "GPUTexture",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+
+            ],
+            "name" : "GPUTextureView",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "moduleName" : "WebGPUWasm"
+}
