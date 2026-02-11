@@ -92,6 +92,10 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
+		.package(
+			url: "https://github.com/swiftwasm/JavaScriptKit.git",
+			branch: "examples-in-bjs"
+		),
 	],
 	targets: [
 		dawnTarget,
@@ -189,10 +193,13 @@ let package = Package(
 		.target(
 			name: "WebGPUWasm",
 			dependencies: [
-				// WebGPUCore or similar core library for shared protocols and types ?
+				.product(name: "JavaScriptKit", package: "JavaScriptKit"),
+				.product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
 			],
 			path: "Sources/WebGPU/Wasm",
-			swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
+			swiftSettings: swiftSettings + [
+				.enableExperimentalFeature("Extern"),
+			],
 			linkerSettings: asanLinkerSettings
 		),
 		.target(
