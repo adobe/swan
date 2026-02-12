@@ -22,7 +22,8 @@ public struct GPUCanvasContext {
 	public func getCurrentTexture() throws(JSException) -> GPUTexture
 }
 
-@_spi(Experimental) @JS public struct GPUCanvasConfiguration {
+@_spi(Experimental)
+@JS public struct GPUCanvasConfiguration {
 	public var device: GPUDevice
 	public var format: GPUTextureFormat
 	public var alphaMode: String = "premultiplied"

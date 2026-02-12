@@ -7,7 +7,8 @@
 
 @_spi(Experimental) import JavaScriptKit
 
-@_spi(Experimental) @JS public struct GPUVertexState {
+@_spi(Experimental)
+@JS public struct GPUVertexState {
 	public var module: GPUShaderModule
 	public var entryPoint: String
 	public var buffers: [GPUVertexBufferLayout]
@@ -23,7 +24,8 @@
 	}
 }
 
-@_spi(Experimental) @JS public struct GPUFragmentState {
+@_spi(Experimental)
+@JS public struct GPUFragmentState {
 	public var module: GPUShaderModule
 	public var entryPoint: String
 	public var targets: [GPUColorTargetState]
@@ -39,7 +41,8 @@
 	}
 }
 
-@_spi(Experimental) @JS public struct GPURenderPipelineDescriptor {
+@_spi(Experimental)
+@JS public struct GPURenderPipelineDescriptor {
 	public var label: String?
 	public var layout: String
 	public var vertex: GPUVertexState
@@ -62,8 +65,7 @@
 }
 
 @_spi(Experimental)
-@JSClass
-public struct GPUDevice {
+@JSClass public struct GPUDevice {
 	public let jsObject: JSObject
 	public init(unsafelyWrapping jsObject: JSObject) {
 		self.jsObject = jsObject
