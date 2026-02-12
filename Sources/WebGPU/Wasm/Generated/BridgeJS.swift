@@ -569,14 +569,7 @@ fileprivate func _bjs_struct_lift_GPURenderPassDescriptor() -> Int32 {
 
 extension GPUVertexState: _BridgedSwiftStruct {
     @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUVertexState {
-        let buffers = {
-    let __isSome = _swift_js_pop_i32()
-    if __isSome == 0 {
-        return Optional<[GPUVertexBufferLayout]>.none
-    } else {
-        return [GPUVertexBufferLayout].bridgeJSLiftParameter()
-    }
-        }()
+        let buffers = [GPUVertexBufferLayout].bridgeJSLiftParameter()
         let entryPoint = String.bridgeJSLiftParameter()
         let module = GPUShaderModule(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
         return GPUVertexState(module: module, entryPoint: entryPoint, buffers: buffers)
@@ -585,11 +578,7 @@ extension GPUVertexState: _BridgedSwiftStruct {
     @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
         self.module.jsObject.bridgeJSLowerStackReturn()
         self.entryPoint.bridgeJSLowerStackReturn()
-        let __bjs_isSome_buffers = self.buffers != nil
-        if let __bjs_unwrapped_buffers = self.buffers {
-            __bjs_unwrapped_buffers.bridgeJSLowerReturn()
-        }
-        _swift_js_push_i32(__bjs_isSome_buffers ? 1 : 0)
+        self.buffers.bridgeJSLowerReturn()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -677,8 +666,9 @@ extension GPURenderPipelineDescriptor: _BridgedSwiftStruct {
         let fragment = Optional<GPUFragmentState>.bridgeJSLiftParameter()
         let primitive = Optional<GPUPrimitiveState>.bridgeJSLiftParameter()
         let vertex = GPUVertexState.bridgeJSLiftParameter()
+        let layout = String.bridgeJSLiftParameter()
         let label = Optional<String>.bridgeJSLiftParameter()
-        return GPURenderPipelineDescriptor(label: label, vertex: vertex, primitive: primitive, fragment: fragment)
+        return GPURenderPipelineDescriptor(label: label, layout: layout, vertex: vertex, primitive: primitive, fragment: fragment)
     }
 
     @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
@@ -687,6 +677,7 @@ extension GPURenderPipelineDescriptor: _BridgedSwiftStruct {
             __bjs_unwrapped_label.bridgeJSLowerStackReturn()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
+        self.layout.bridgeJSLowerStackReturn()
         self.vertex.bridgeJSLowerReturn()
         let __bjs_isSome_primitive = self.primitive != nil
         if let __bjs_unwrapped_primitive = self.primitive {

@@ -10,12 +10,12 @@
 @_spi(Experimental) @JS public struct GPUVertexState {
 	public var module: GPUShaderModule
 	public var entryPoint: String
-	public var buffers: [GPUVertexBufferLayout]?
+	public var buffers: [GPUVertexBufferLayout]
 
 	public init(
 		module: GPUShaderModule,
 		entryPoint: String,
-		buffers: [GPUVertexBufferLayout]? = nil
+		buffers: [GPUVertexBufferLayout] = []
 	) {
 		self.module = module
 		self.entryPoint = entryPoint
