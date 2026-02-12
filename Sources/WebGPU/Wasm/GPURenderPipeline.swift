@@ -7,8 +7,14 @@
 
 @_spi(Experimental) import JavaScriptKit
 
+@_spi(Experimental)
 @JSClass
-struct GPURenderPipeline {
-	@JSGetter var label: String?
+public struct GPURenderPipeline {
+	public let jsObject: JSObject
+	public init(unsafelyWrapping jsObject: JSObject) {
+		self.jsObject = jsObject
+	}
+
+	@JSGetter public var label: String?
 }
 

@@ -7,18 +7,24 @@
 
 @_spi(Experimental) import JavaScriptKit
 
+@_spi(Experimental)
 @JSClass
-struct GPURenderPassEncoder {
-	@JSGetter var label: String?
+public struct GPURenderPassEncoder {
+	public let jsObject: JSObject
+	public init(unsafelyWrapping jsObject: JSObject) {
+		self.jsObject = jsObject
+	}
+
+	@JSGetter public var label: String?
 
 	@JSFunction
-	func setPipeline(_ pipeline: GPURenderPipeline) throws(JSException)
+	public func setPipeline(_ pipeline: GPURenderPipeline) throws(JSException)
 
 	@JSFunction
-	func setVertexBuffer(_ slot: Int, _ buffer: GPUBuffer) throws(JSException)
+	public func setVertexBuffer(_ slot: Int, _ buffer: GPUBuffer) throws(JSException)
 
 	@JSFunction
-	func draw(
+	public func draw(
 		_ vertexCount: Int,
 		_ instanceCount: Int,
 		_ firstVertex: Int,
@@ -26,6 +32,6 @@ struct GPURenderPassEncoder {
 	) throws(JSException)
 
 	@JSFunction
-	func end() throws(JSException)
+	public func end() throws(JSException)
 }
 

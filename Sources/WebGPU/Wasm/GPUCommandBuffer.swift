@@ -7,8 +7,14 @@
 
 @_spi(Experimental) import JavaScriptKit
 
+@_spi(Experimental)
 @JSClass
-struct GPUCommandBuffer {
-	@JSGetter var label: String?
+public struct GPUCommandBuffer {
+	public let jsObject: JSObject
+	public init(unsafelyWrapping jsObject: JSObject) {
+		self.jsObject = jsObject
+	}
+
+	@JSGetter public var label: String?
 }
 

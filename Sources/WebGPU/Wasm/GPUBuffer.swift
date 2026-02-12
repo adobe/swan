@@ -7,13 +7,19 @@
 
 @_spi(Experimental) import JavaScriptKit
 
+@_spi(Experimental)
 @JSClass
-struct GPUBuffer {
-	@JSGetter var size: Int
-	@JSGetter var usage: Int
-	@JSGetter var label: String?
+public struct GPUBuffer {
+	public let jsObject: JSObject
+	public init(unsafelyWrapping jsObject: JSObject) {
+		self.jsObject = jsObject
+	}
+
+	@JSGetter public var size: Int
+	@JSGetter public var usage: Int
+	@JSGetter public var label: String?
 
 	@JSFunction
-	func destroy() throws(JSException)
+	public func destroy() throws(JSException)
 }
 

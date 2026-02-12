@@ -7,15 +7,21 @@
 
 @_spi(Experimental) import JavaScriptKit
 
+@_spi(Experimental)
 @JSClass
-struct GPUQueue {
-	@JSGetter var label: String?
+public struct GPUQueue {
+	public let jsObject: JSObject
+	public init(unsafelyWrapping jsObject: JSObject) {
+		self.jsObject = jsObject
+	}
+
+	@JSGetter public var label: String?
 
 	@JSFunction
-	func submit(_ commandBuffers: JSObject) throws(JSException)
+	public func submit(_ commandBuffers: JSObject) throws(JSException)
 
 	@JSFunction
-	func writeBuffer(
+	public func writeBuffer(
 		_ buffer: GPUBuffer,
 		_ bufferOffset: Int,
 		_ data: JSObject

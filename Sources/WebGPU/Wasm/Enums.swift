@@ -7,7 +7,7 @@
 
 @_spi(Experimental) import JavaScriptKit
 
-@JS enum GPUPrimitiveTopology: String, Sendable {
+@JS public enum GPUPrimitiveTopology: String, Sendable {
 	case pointList = "point-list"
 	case lineList = "line-list"
 	case lineStrip = "line-strip"
@@ -15,7 +15,7 @@
 	case triangleStrip = "triangle-strip"
 }
 
-@JS enum GPUVertexFormat: String, Sendable {
+@JS public enum GPUVertexFormat: String, Sendable {
 	case uint8x2 = "uint8x2"
 	case uint8x4 = "uint8x4"
 	case sint8x2 = "sint8x2"
@@ -40,12 +40,12 @@
 	case sint32x4 = "sint32x4"
 }
 
-@JS enum GPUVertexStepMode: String, Sendable {
+@JS public enum GPUVertexStepMode: String, Sendable {
 	case vertex = "vertex"
 	case instance = "instance"
 }
 
-@JS enum GPUTextureFormat: String, Sendable {
+@JS public enum GPUTextureFormat: String, Sendable {
 	case bgra8unorm = "bgra8unorm"
 	case bgra8unormSrgb = "bgra8unorm-srgb"
 	case rgba8unorm = "rgba8unorm"
@@ -53,28 +53,28 @@
 	// Add more as needed
 }
 
-@JS enum GPULoadOp: String, Sendable {
+@JS public enum GPULoadOp: String, Sendable {
 	case load = "load"
 	case clear = "clear"
 }
 
-@JS enum GPUStoreOp: String, Sendable {
+@JS public enum GPUStoreOp: String, Sendable {
 	case store = "store"
 	case discard = "discard"
 }
 
-@JS enum GPUFrontFace: String, Sendable {
+@JS public enum GPUFrontFace: String, Sendable {
 	case ccw = "ccw"
 	case cw = "cw"
 }
 
-@JS enum GPUCullMode: String, Sendable {
+@JS public enum GPUCullMode: String, Sendable {
 	case none = "none"
 	case front = "front"
 	case back = "back"
 }
 
-@JS enum GPUIndexFormat: String, Sendable {
+@JS public enum GPUIndexFormat: String, Sendable {
 	case uint16 = "uint16"
 	case uint32 = "uint32"
 }
