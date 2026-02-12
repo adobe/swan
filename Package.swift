@@ -5,14 +5,14 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 //
-// swift-tools-version: 6.1
+// swift-tools-version: 6.2
 
 import PackageDescription
 
 let package = Package(
 	name: "Swan",
 	platforms: [
-		.macOS(.v15),  // macOS 15
+		.macOS(.v26),  // macOS 15
 		.iOS(.v18),  // iOS 18 (or adjust the version as needed)
 	],
 	products: [
@@ -24,6 +24,7 @@ let package = Package(
 			name: "GenerateDawnAPINotesPlugin",
 			targets: ["GenerateDawnAPINotesPlugin"]
 		),
+		.library(name: "Swan", type: .static, targets: ["Dawn", "WebGPU"]),
 	],
 	dependencies: [
 		.package(
