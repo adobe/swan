@@ -1,6 +1,15 @@
-import Dawn
+// Copyright 2026 Adobe
+// All Rights Reserved.
+//
+// NOTICE: Adobe permits you to use, modify, and distribute this file in
+// accordance with the terms of the Adobe license agreement accompanying
+// it.
+//
+
 import DemoUtils
+import WebGPU
 import Foundation
+import RGFW
 
 let workgroupSize: UInt32 = 8
 let gridSize: Int = 32
@@ -34,12 +43,13 @@ struct GameOfLifeDemo: DemoProvider {
 				mappedAtCreation: false
 			)
 		)!
-		device.queue.writeBuffer(
-			buffer: vertexBuffer!,
-			bufferOffset: 0,
-			data: vertices,
-			size: Int(vertices.lengthInBytes)
-		)
+		vertices.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: vertexBuffer!,
+				bufferOffset: 0,
+				data: data
+			)
+		}
 
 		// Create uniform buffer
 		let uniformArray = [Float32(gridSize), Float32(gridSize)]
@@ -50,13 +60,13 @@ struct GameOfLifeDemo: DemoProvider {
 				size: UInt64(uniformArray.lengthInBytes),
 			)
 		)
-		device.queue.writeBuffer(
-			buffer: uniformBuffer!,
-			bufferOffset: 0,
-			data: uniformArray,
-			// TODO: Shouldn't have to pass size
-			size: Int(uniformArray.lengthInBytes)
-		)
+		uniformArray.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: uniformBuffer!,
+				bufferOffset: 0,
+				data: data
+			)
+		}
 
 		// Create cell state storage buffers
 		let cellStateArraySize: UInt64 = UInt64(gridSize * gridSize * MemoryLayout<Float32>.size)
@@ -85,13 +95,13 @@ struct GameOfLifeDemo: DemoProvider {
 			}
 			initializedCount = gridCount
 		}
-		device.queue.writeBuffer(
-			buffer: cellStateStorage[0],
-			bufferOffset: 0,
-			data: cellStateArray,
-			// TODO: Shouldn't have to pass size
-			size: Int(cellStateArray.lengthInBytes)
-		)
+		cellStateArray.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: cellStateStorage[0],
+				bufferOffset: 0,
+				data: data
+			)
+		}
 		let cellStateArray2 = Array(unsafeUninitializedCapacity: gridCount) {
 			(arrayBuffer: inout UnsafeMutableBufferPointer<UInt32>, initializedCount: inout Int) in
 			for i: Int in 0..<gridCount {
@@ -99,13 +109,13 @@ struct GameOfLifeDemo: DemoProvider {
 			}
 			initializedCount = gridCount
 		}
-		device.queue.writeBuffer(
-			buffer: cellStateStorage[1],
-			bufferOffset: 0,
-			data: cellStateArray2,
-			// TODO: Shouldn't have to pass size
-			size: Int(cellStateArray2.lengthInBytes)
-		)
+		cellStateArray2.withUnsafeBytes { data in
+			device.queue.writeBuffer(
+				buffer: cellStateStorage[1],
+				bufferOffset: 0,
+				data: data
+			)
+		}
 
 		// Create shader modules
 		let cellShaderModule = device.createShaderModule(
@@ -119,7 +129,6 @@ struct GameOfLifeDemo: DemoProvider {
 		let bindGroupLayout = device.createBindGroupLayout(
 			descriptor: GPUBindGroupLayoutDescriptor(
 				label: "Cell Bind Group Layout",
-				entryCount: 3,
 				entries: [
 					GPUBindGroupLayoutEntry(
 						binding: 0,
@@ -146,7 +155,6 @@ struct GameOfLifeDemo: DemoProvider {
 				descriptor: GPUBindGroupDescriptor(
 					label: "Cell renderer bind group A",
 					layout: bindGroupLayout,
-					entryCount: 3,
 					entries: [
 						GPUBindGroupEntry(binding: 0, buffer: uniformBuffer!),
 						GPUBindGroupEntry(binding: 1, buffer: cellStateStorage[0]),
@@ -158,7 +166,6 @@ struct GameOfLifeDemo: DemoProvider {
 				descriptor: GPUBindGroupDescriptor(
 					label: "Cell renderer bind group B",
 					layout: bindGroupLayout,
-					entryCount: 3,
 					entries: [
 						GPUBindGroupEntry(binding: 0, buffer: uniformBuffer!),
 						GPUBindGroupEntry(binding: 1, buffer: cellStateStorage[1]),
@@ -172,7 +179,6 @@ struct GameOfLifeDemo: DemoProvider {
 		let pipelineLayout = device.createPipelineLayout(
 			descriptor: GPUPipelineLayoutDescriptor(
 				label: "Cell Pipeline Layout",
-				bindGroupLayoutCount: 1,
 				bindGroupLayouts: [bindGroupLayout]
 			)
 		)
@@ -185,11 +191,9 @@ struct GameOfLifeDemo: DemoProvider {
 				vertex: GPUVertexState(
 					module: cellShaderModule,
 					entryPoint: "vertexMain",
-					bufferCount: 1,
 					buffers: [
 						GPUVertexBufferLayout(
 							arrayStride: 8,
-							attributeCount: 1,
 							attributes: [
 								GPUVertexAttribute(format: .float32x2, offset: 0, shaderLocation: 0)
 							]
@@ -210,7 +214,6 @@ struct GameOfLifeDemo: DemoProvider {
 				fragment: GPUFragmentState(
 					module: cellShaderModule,
 					entryPoint: "fragmentMain",
-					targetCount: 1,
 					targets: [GPUColorTargetState(format: format)]
 				)
 			)
@@ -229,6 +232,67 @@ struct GameOfLifeDemo: DemoProvider {
 		)
 	}
 
+	func renderToTexture(destTexture: GPUTexture, encoder: GPUCommandEncoder) {
+		// Render pass
+		let pass = encoder.beginRenderPass(
+			descriptor: GPURenderPassDescriptor(
+				label: "render pass",
+				colorAttachments: [
+					GPURenderPassColorAttachment(
+						view: destTexture.createView(),
+						loadOp: .clear,
+						storeOp: .store,
+						clearValue: GPUColor(r: 0, g: 0, b: 0.4, a: 1)
+					)
+				]
+			)
+		)
+
+		pass.setPipeline(pipeline: cellPipeline!)
+		pass.setVertexBuffer(slot: 0, buffer: vertexBuffer!, offset: 0, size: vertexBuffer!.size)
+		pass.setBindGroup(
+			groupIndex: 0,
+			group: bindGroups[Int(step % 2)],
+			dynamicOffsets: []
+		)
+		pass.draw(vertexCount: 6, instanceCount: UInt32(gridSize * gridSize), firstVertex: 0, firstInstance: 0)
+		pass.end()
+	}
+
+	func screenShotRender(encoder: GPUCommandEncoder, w: Int, h: Int, format: GPUTextureFormat) -> GPUTexture {
+		guard let device: GPUDevice = self.device else {
+			fatalError("Device not initialized")
+		}
+		let targetTexture = device.createRenderTargetTexture(width: w, height: h, format: format)
+		renderToTexture(destTexture: targetTexture, encoder: encoder)
+		return targetTexture
+	}
+
+	static func savePPM(destFileName: String, bgra: UnsafePointer<UInt8>, w: Int, h: Int) {
+		do {
+			let fileManager = FileManager.default
+			let folderURL = try fileManager.url(
+				for: .documentDirectory,
+				in: .userDomainMask,
+				appropriateFor: nil,
+				create: false
+			)
+			let fileURL = folderURL.appendingPathComponent(destFileName)
+			let header: String = "P6\n\(w) \(h) 255\n"
+			var data = header.data(using: .ascii)!
+			for i in 0..<(w * h) {
+				data.append(bgra[i * 4 + 2])
+				data.append(bgra[i * 4 + 1])
+				data.append(bgra[i * 4])
+			}
+			try data.write(to: fileURL)
+			print("Saved: \(fileURL)")
+		} catch {
+			print("Failed to write file: \(destFileName). Error: \(error)")
+		}
+	}
+
+
 	@MainActor
 	mutating func frame(time: Double) throws -> Bool {
 		guard let device = device else {
@@ -238,7 +302,9 @@ struct GameOfLifeDemo: DemoProvider {
 			fatalError("Surface not initialized")
 		}
 
-		if time >= nextUpdateTime {
+		let sPressed = RGFW_isKeyReleased(UInt8(RGFW_s)) != 0;
+
+		if time >= nextUpdateTime || sPressed {
 			nextUpdateTime = time + updateInterval
 		} else {
 			return true
@@ -265,35 +331,38 @@ struct GameOfLifeDemo: DemoProvider {
 
 		step += 1
 
-		// Render pass
-		let pass = encoder.beginRenderPass(
-			descriptor: GPURenderPassDescriptor(
-				label: "render pass",
-				colorAttachmentCount: 1,
-				colorAttachments: [
-					GPURenderPassColorAttachment(
-						view: surface.getCurrentTexture().createView(),
-						loadOp: .clear,
-						storeOp: .store,
-						clearValue: GPUColor(r: 0, g: 0, b: 0.4, a: 1)
-					)
-				]
-			)
-		)
+		let backbuffer = surface.getCurrentTexture();
+		renderToTexture(destTexture: backbuffer, encoder: encoder)
 
-		pass.setPipeline(pipeline: cellPipeline!)
-		pass.setVertexBuffer(slot: 0, buffer: vertexBuffer!, offset: 0, size: vertexBuffer!.size)
-		pass.setBindGroup(
-			groupIndex: 0,
-			group: bindGroups[Int(step % 2)],
-			dynamicOffsetCount: 0,
-			dynamicOffsets: []
-		)
-		pass.draw(vertexCount: 6, instanceCount: UInt32(gridSize * gridSize), firstVertex: 0, firstInstance: 0)
-		pass.end()
+		var screenShotTexture: GPUTexture? = nil
+		let screenShotW = 1024
+		let screenShotH = 600
+
+		if (sPressed) {
+			print("Screen shot!")
+			screenShotTexture = self.screenShotRender(
+				encoder: encoder,
+				w: screenShotW,
+				h: screenShotH,
+				format: backbuffer.format
+			)
+		}
 
 		let commandBuffer = encoder.finish(descriptor: nil)!
-		device.queue.submit(commandCount: 1, commands: [commandBuffer])
+		device.queue.submit(commands: [commandBuffer])
+
+		if let texture = screenShotTexture {
+			texture.readPixelsAsync(
+				device: device,
+				width: screenShotW,
+				height: screenShotH
+			) { pixels in
+				pixels.withUnsafeBufferPointer { buffer in
+					GameOfLifeDemo.savePPM(destFileName: "myshot.ppm", bgra: buffer.baseAddress!, w: screenShotW, h: screenShotH)
+				}
+				texture.destroy()
+			}
+		}
 
 		surface.present()
 

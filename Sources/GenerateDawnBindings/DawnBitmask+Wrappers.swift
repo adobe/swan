@@ -11,7 +11,9 @@ import SwiftSyntax
 extension DawnBitmask {
 	func declarations(name: Name, data: DawnData) throws -> [any DeclSyntaxProtocol] {
 		return [
-			DeclSyntax("public typealias GPU\(raw: name.CamelCase) = WGPU\(raw: name.CamelCase)")
+			DeclSyntax(
+				"public typealias \(raw: name.swiftTypePrefix())\(raw: name.CamelCase) = WGPU\(raw: name.CamelCase)"
+			)
 		]
 	}
 }

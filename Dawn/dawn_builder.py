@@ -91,7 +91,7 @@ def get_current_os() -> OS:
 class Arch(Enum):
     X86_64 = "x86_64"
     ARM64 = "arm64"
-
+    AARCH64 = "aarch64"
 
 @dataclass
 class TargetConfig:
@@ -315,3 +315,13 @@ def build_dawn(
     except subprocess.CalledProcessError as e:
         _subprocess_exception_message(e)
         raise CMakeError
+
+    # Copy DirectX support files to output_dir/bin (Windows only)
+    if target_config.os.is_windows():
+        source_dir = build_dir / config
+        dest_dir = output_dir / "bin"
+        if source_dir.exists():
+            dest_dir.mkdir(exist_ok=True, parents=True)
+            for item in source_dir.iterdir():
+                if item.is_file():
+                    shutil.copy2(item, dest_dir / item.name)
