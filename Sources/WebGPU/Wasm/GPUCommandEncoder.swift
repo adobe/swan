@@ -7,7 +7,8 @@
 
 @_spi(Experimental) import JavaScriptKit
 
-@_spi(Experimental) @JS public struct GPURenderPassColorAttachment {
+@_spi(Experimental)
+@JS public struct GPURenderPassColorAttachment {
 	public var view: GPUTextureView
 	public var loadOp: GPULoadOp
 	public var storeOp: GPUStoreOp
@@ -26,7 +27,8 @@
 	}
 }
 
-@_spi(Experimental) @JS public struct GPURenderPassDescriptor {
+@_spi(Experimental)
+@JS public struct GPURenderPassDescriptor {
 	public var label: String?
 	public var colorAttachments: [GPURenderPassColorAttachment]
 

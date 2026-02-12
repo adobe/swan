@@ -8,8 +8,7 @@
 @_spi(Experimental) import JavaScriptKit
 
 @_spi(Experimental)
-@JSClass
-public struct GPUShaderModule {
+@JSClass public struct GPUShaderModule {
 	public let jsObject: JSObject
 	public init(unsafelyWrapping jsObject: JSObject) {
 		self.jsObject = jsObject

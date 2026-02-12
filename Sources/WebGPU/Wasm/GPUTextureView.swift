@@ -8,8 +8,7 @@
 @_spi(Experimental) import JavaScriptKit
 
 @_spi(Experimental)
-@JSClass
-public struct GPUTextureView {
+@JSClass public struct GPUTextureView {
 	public let jsObject: JSObject
 	public init(unsafelyWrapping jsObject: JSObject) {
 		self.jsObject = jsObject
