@@ -7,21 +7,27 @@
 
 @_spi(Experimental) import JavaScriptKit
 
+@_spi(Experimental)
 @JSClass
-struct GPUCanvasContext {
-	@JSFunction
-	func configure(_ configuration: GPUCanvasConfiguration) throws(JSException)
+public struct GPUCanvasContext {
+	public let jsObject: JSObject
+	public init(unsafelyWrapping jsObject: JSObject) {
+		self.jsObject = jsObject
+	}
 
 	@JSFunction
-	func getCurrentTexture() throws(JSException) -> GPUTexture
+	public func configure(_ configuration: GPUCanvasConfiguration) throws(JSException)
+
+	@JSFunction
+	public func getCurrentTexture() throws(JSException) -> GPUTexture
 }
 
-@JS struct GPUCanvasConfiguration {
-	var device: GPUDevice
-	var format: GPUTextureFormat
-	var alphaMode: String = "premultiplied"
+@_spi(Experimental) @JS public struct GPUCanvasConfiguration {
+	public var device: GPUDevice
+	public var format: GPUTextureFormat
+	public var alphaMode: String = "premultiplied"
 
-	init(device: GPUDevice, format: GPUTextureFormat, alphaMode: String = "premultiplied") {
+	public init(device: GPUDevice, format: GPUTextureFormat, alphaMode: String = "premultiplied") {
 		self.device = device
 		self.format = format
 		self.alphaMode = alphaMode

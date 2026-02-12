@@ -7,12 +7,12 @@
 
 @_spi(Experimental) import JavaScriptKit
 
-@JS struct GPUVertexState {
-	var module: GPUShaderModule
-	var entryPoint: String
-	var buffers: [GPUVertexBufferLayout]?
+@_spi(Experimental) @JS public struct GPUVertexState {
+	public var module: GPUShaderModule
+	public var entryPoint: String
+	public var buffers: [GPUVertexBufferLayout]?
 
-	init(
+	public init(
 		module: GPUShaderModule,
 		entryPoint: String,
 		buffers: [GPUVertexBufferLayout]? = nil
@@ -23,12 +23,12 @@
 	}
 }
 
-@JS struct GPUFragmentState {
-	var module: GPUShaderModule
-	var entryPoint: String
-	var targets: [GPUColorTargetState]
+@_spi(Experimental) @JS public struct GPUFragmentState {
+	public var module: GPUShaderModule
+	public var entryPoint: String
+	public var targets: [GPUColorTargetState]
 
-	init(
+	public init(
 		module: GPUShaderModule,
 		entryPoint: String,
 		targets: [GPUColorTargetState]
@@ -39,43 +39,52 @@
 	}
 }
 
-@JS struct GPURenderPipelineDescriptor {
-	var label: String?
-	var vertex: GPUVertexState
-	var primitive: GPUPrimitiveState?
-	var fragment: GPUFragmentState?
+@_spi(Experimental) @JS public struct GPURenderPipelineDescriptor {
+	public var label: String?
+	public var layout: String
+	public var vertex: GPUVertexState
+	public var primitive: GPUPrimitiveState?
+	public var fragment: GPUFragmentState?
 
-	init(
+	public init(
 		label: String? = nil,
+		layout: String = "auto",
 		vertex: GPUVertexState,
 		primitive: GPUPrimitiveState? = nil,
 		fragment: GPUFragmentState? = nil
 	) {
 		self.label = label
+		self.layout = layout
 		self.vertex = vertex
 		self.primitive = primitive
 		self.fragment = fragment
 	}
 }
 
+@_spi(Experimental)
 @JSClass
-struct GPUDevice {
-	@JSGetter var queue: GPUQueue
-	@JSGetter var label: String?
+public struct GPUDevice {
+	public let jsObject: JSObject
+	public init(unsafelyWrapping jsObject: JSObject) {
+		self.jsObject = jsObject
+	}
+
+	@JSGetter public var queue: GPUQueue
+	@JSGetter public var label: String?
 
 	@JSFunction
-	func createBuffer(_ descriptor: GPUBufferDescriptor) throws(JSException) -> GPUBuffer
+	public func createBuffer(_ descriptor: GPUBufferDescriptor) throws(JSException) -> GPUBuffer
 
 	@JSFunction
-	func createShaderModule(_ descriptor: GPUShaderModuleDescriptor) throws(JSException)
+	public func createShaderModule(_ descriptor: GPUShaderModuleDescriptor) throws(JSException)
 		-> GPUShaderModule
 
 	@JSFunction
-	func createRenderPipeline(_ descriptor: GPURenderPipelineDescriptor) throws(JSException)
+	public func createRenderPipeline(_ descriptor: GPURenderPipelineDescriptor) throws(JSException)
 		-> GPURenderPipeline
 
 	@JSFunction
-	func createCommandEncoder(_ descriptor: GPUCommandEncoderDescriptor) throws(JSException)
+	public func createCommandEncoder(_ descriptor: GPUCommandEncoderDescriptor) throws(JSException)
 		-> GPUCommandEncoder
 }
 

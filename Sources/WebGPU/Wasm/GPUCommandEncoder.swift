@@ -7,13 +7,13 @@
 
 @_spi(Experimental) import JavaScriptKit
 
-@JS struct GPURenderPassColorAttachment {
-	var view: GPUTextureView
-	var loadOp: GPULoadOp
-	var storeOp: GPUStoreOp
-	var clearValue: GPUColor?
+@_spi(Experimental) @JS public struct GPURenderPassColorAttachment {
+	public var view: GPUTextureView
+	public var loadOp: GPULoadOp
+	public var storeOp: GPUStoreOp
+	public var clearValue: GPUColor?
 
-	init(
+	public init(
 		view: GPUTextureView,
 		loadOp: GPULoadOp,
 		storeOp: GPUStoreOp,
@@ -26,11 +26,11 @@
 	}
 }
 
-@JS struct GPURenderPassDescriptor {
-	var label: String?
-	var colorAttachments: [GPURenderPassColorAttachment]
+@_spi(Experimental) @JS public struct GPURenderPassDescriptor {
+	public var label: String?
+	public var colorAttachments: [GPURenderPassColorAttachment]
 
-	init(
+	public init(
 		label: String? = nil,
 		colorAttachments: [GPURenderPassColorAttachment]
 	) {
@@ -39,15 +39,21 @@
 	}
 }
 
+@_spi(Experimental)
 @JSClass
-struct GPUCommandEncoder {
-	@JSGetter var label: String?
+public struct GPUCommandEncoder {
+	public let jsObject: JSObject
+	public init(unsafelyWrapping jsObject: JSObject) {
+		self.jsObject = jsObject
+	}
+
+	@JSGetter public var label: String?
 
 	@JSFunction
-	func beginRenderPass(_ descriptor: GPURenderPassDescriptor) throws(JSException)
+	public func beginRenderPass(_ descriptor: GPURenderPassDescriptor) throws(JSException)
 		-> GPURenderPassEncoder
 
 	@JSFunction
-	func finish() throws(JSException) -> GPUCommandBuffer
+	public func finish() throws(JSException) -> GPUCommandBuffer
 }
 

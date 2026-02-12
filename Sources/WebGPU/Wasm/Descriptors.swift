@@ -7,13 +7,13 @@
 
 @_spi(Experimental) import JavaScriptKit
 
-@JS struct GPUBufferDescriptor {
-	var label: String?
-	var size: Int
-	var usage: Int
-	var mappedAtCreation: Bool = false
+@JS public struct GPUBufferDescriptor {
+	public var label: String?
+	public var size: Int
+	public var usage: Int
+	public var mappedAtCreation: Bool = false
 
-	init(
+	public init(
 		label: String? = nil,
 		size: Int,
 		usage: Int,
@@ -25,7 +25,7 @@
 		self.mappedAtCreation = mappedAtCreation
 	}
 
-	init(
+	public init(
 		label: String? = nil,
 		size: Int,
 		usage: GPUBufferUsage,
@@ -35,34 +35,34 @@
 	}
 }
 
-@JS struct GPUShaderModuleDescriptor {
-	var label: String?
-	var code: String
+@JS public struct GPUShaderModuleDescriptor {
+	public var label: String?
+	public var code: String
 
-	init(label: String? = nil, code: String) {
+	public init(label: String? = nil, code: String) {
 		self.label = label
 		self.code = code
 	}
 }
 
-@JS struct GPUVertexAttribute {
-	var format: GPUVertexFormat
-	var offset: Int
-	var shaderLocation: Int
+@JS public struct GPUVertexAttribute {
+	public var format: GPUVertexFormat
+	public var offset: Int
+	public var shaderLocation: Int
 
-	init(format: GPUVertexFormat, offset: Int, shaderLocation: Int) {
+	public init(format: GPUVertexFormat, offset: Int, shaderLocation: Int) {
 		self.format = format
 		self.offset = offset
 		self.shaderLocation = shaderLocation
 	}
 }
 
-@JS struct GPUVertexBufferLayout {
-	var arrayStride: Int
-	var stepMode: GPUVertexStepMode = .vertex
-	var attributes: [GPUVertexAttribute]
+@JS public struct GPUVertexBufferLayout {
+	public var arrayStride: Int
+	public var stepMode: GPUVertexStepMode = .vertex
+	public var attributes: [GPUVertexAttribute]
 
-	init(
+	public init(
 		arrayStride: Int,
 		stepMode: GPUVertexStepMode = .vertex,
 		attributes: [GPUVertexAttribute]
@@ -73,12 +73,12 @@
 	}
 }
 
-@JS struct GPUPrimitiveState {
-	var topology: GPUPrimitiveTopology = .triangleList
-	var frontFace: GPUFrontFace = .ccw
-	var cullMode: GPUCullMode = .none
+@JS public struct GPUPrimitiveState {
+	public var topology: GPUPrimitiveTopology = .triangleList
+	public var frontFace: GPUFrontFace = .ccw
+	public var cullMode: GPUCullMode = .none
 
-	init(
+	public init(
 		topology: GPUPrimitiveTopology = .triangleList,
 		frontFace: GPUFrontFace = .ccw,
 		cullMode: GPUCullMode = .none
@@ -89,27 +89,27 @@
 	}
 }
 
-@JS struct GPUColorTargetState {
-	var format: GPUTextureFormat
-	var writeMask: Int = Int(GPUColorWrite.all.rawValue)
+@JS public struct GPUColorTargetState {
+	public var format: GPUTextureFormat
+	public var writeMask: Int = Int(GPUColorWrite.all.rawValue)
 
-	init(format: GPUTextureFormat, writeMask: Int) {
+	public init(format: GPUTextureFormat, writeMask: Int) {
 		self.format = format
 		self.writeMask = writeMask
 	}
 
-	init(format: GPUTextureFormat, writeMask: GPUColorWrite = .all) {
+	public init(format: GPUTextureFormat, writeMask: GPUColorWrite = .all) {
 		self.init(format: format, writeMask: Int(writeMask.rawValue))
 	}
 }
 
-@JS struct GPUColor {
-	var r: Double
-	var g: Double
-	var b: Double
-	var a: Double
+@JS public struct GPUColor {
+	public var r: Double
+	public var g: Double
+	public var b: Double
+	public var a: Double
 
-	init(r: Double, g: Double, b: Double, a: Double) {
+	public init(r: Double, g: Double, b: Double, a: Double) {
 		self.r = r
 		self.g = g
 		self.b = b
@@ -117,10 +117,10 @@
 	}
 }
 
-@JS struct GPUCommandEncoderDescriptor {
-	var label: String?
+@JS public struct GPUCommandEncoderDescriptor {
+	public var label: String?
 
-	init(label: String? = nil) {
+	public init(label: String? = nil) {
 		self.label = label
 	}
 }

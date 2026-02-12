@@ -7,15 +7,21 @@
 
 @_spi(Experimental) import JavaScriptKit
 
+@_spi(Experimental)
 @JSClass
-struct GPUTexture {
-	@JSGetter var label: String?
-	@JSGetter var format: String  // Returns string, convert to GPUTextureFormat if needed
+public struct GPUTexture {
+	public let jsObject: JSObject
+	public init(unsafelyWrapping jsObject: JSObject) {
+		self.jsObject = jsObject
+	}
+
+	@JSGetter public var label: String?
+	@JSGetter public var format: String  // Returns string, convert to GPUTextureFormat if needed
 
 	@JSFunction
-	func createView() throws(JSException) -> GPUTextureView
+	public func createView() throws(JSException) -> GPUTextureView
 
 	@JSFunction
-	func destroy() throws(JSException)
+	public func destroy() throws(JSException)
 }
 
