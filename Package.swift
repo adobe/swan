@@ -260,7 +260,9 @@ let package = Package(
 		.executableTarget(
 			name: "WebGPUMinimalWasm",
 			dependencies: [
-				.target(name: "WebGPU", condition: .when(platforms: wasmPlatforms))
+				.product(name: "JavaScriptKit", package: "JavaScriptKit"),
+				.product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
+				.target(name: "WebGPU", condition: .when(platforms: wasmPlatforms)),
 			],
 			path: "Demos/WebGPUMinimalWasm",
 			exclude: ["README.md", "index.html", "Generated"],
