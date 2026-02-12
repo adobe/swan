@@ -4,19 +4,75 @@
 <head>
     <meta charset="utf-8">
     <title>Swan WebGPU Minimal WASM Demo</title>
+
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+
     <script type="module">
         import { init } from "../../.build/plugins/PackageToJS/outputs/Package/index.js";
-        const runtime = await init(); 
-        
-        /* TODO: When not calling runtime.swift.main() here again, the first requestAdapter call, which is triggered from instantiate.js, will wait forever. */
-        runtime.swift.main();
+        window.runtime = await init(); 
+
+        const buttons = document.querySelectorAll(".button");
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+                switch (button.id) {
+                    case "button1":
+                        window.runtime.exports.WebGPUMinimalWasmMain.installGlobalEventLoopExecutor();
+                        break;
+                    case "button2":
+                        window.runtime.exports.WebGPUMinimalWasmMain.startDemoAsync();
+                        break;
+                    case "button3":
+                        window.runtime.exports.WebGPUMinimalWasmMain.test2DContext();
+                        break;
+                    case "button4":
+                        window.runtime.exports.WebGPUMinimalWasmMain.testWebGPUContext();
+                        break;
+                    default:
+                        break;
+                }
+            });
+        });
     </script>
 </head>
 
 <body>
+    <div class="container">
     <h1>Swan WebGPU Minimal WASM Demo</h1>
+    
+    <div>
+        <code>print()</code> calls are visible in the console.
+    </div>
+    <div>
+        The global event loop executor needs to be installed before calling any async functions.
+    </div>
 
-    <canvas id="canvas"></canvas>
+    <div>
+        <button id="button1" class="button">Global Event Loop</button>
+        <button id="button2" class="button">Start Demo Async</button>
+    </div>
+
+    <div>
+        <button id="button3" class="button">Test 2D Context</button>
+        <button id="button4" class="button">Test WebGPU Context</button>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    </div>
 </body>
 
 </html>

@@ -9,16 +9,22 @@
 // On native platforms this target builds a stub that prints instructions.
 
 #if arch(wasm32) || os(wasi)
-import WebGPU
+@_spi(Experimental) import JavaScriptKit
 import JavaScriptEventLoop
-import JavaScriptKit
+import WebGPU
 
-@main
-struct WebGPUMinimalWasmMain {
-	static func main() async {
-		print("WebGPUMinimalWasmMain main")
+// @main
+@JS struct WebGPUMinimalWasmMain {
+
+	@JS static func installGlobalEventLoopExecutor() {
 		print("Installing global event loop executor")
 		JavaScriptEventLoop.installGlobalExecutor()
+	}
+
+	@JS static func startDemoAsync() async {
+		// print("WebGPUMinimalWasmMain main")
+		// print("Installing global event loop executor")
+		// JavaScriptEventLoop.installGlobalExecutor()
 
 		print("Requesting adapter")
 		guard let adapter = try? await GPU.sharedInstance?.requestAdapter() else {
@@ -61,25 +67,33 @@ struct WebGPUMinimalWasmMain {
 
 		let document = JSObject.global.document
 		let div = document.createElement("div")
-		div.innerHTML = "This text is from Swift! <br/> <code>print()</code> calls are visible in the console."
-		_ = document.body.appendChild(div)
-
-		// // 2D testing JavaScriptKit
-		// let canvas = document.getElementById("canvas")
-		// let ctx: JSValue = canvas.getContext("2d")
-		// // Red square
-		// ctx.fillStyle = "#ff0000"
-		// _ = ctx.fillRect(20, 20, 100, 100)
+		div.innerHTML = "This text is from Swift!"
+		_ = document.body.querySelector(".container").appendChild(div)
 
 		// WebGPU testing
 		// TODO
 	}
+
+	@JS static func test2DContext() {
+		let document = JSObject.global.document
+
+		// 2D testing JavaScriptKit
+		let canvas = document.getElementById("canvas")
+		let ctx: JSValue = canvas.getContext("2d")
+		// Red square
+		ctx.fillStyle = "#ff0000"
+		_ = ctx.fillRect(20, 20, 100, 100)
+	}
+
+	@JS static func testWebGPUContext() {
+		// TODO
+	}
 }
-#else
+#else  // native platforms
 @main
 struct WebGPUMinimalWasmMain {
 	static func main() {
 		print("WebGPUMinimalWasm runs only when built for WebAssembly.")
 	}
 }
-#endif
+#endif  // arch(wasm32) || os(wasi)

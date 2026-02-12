@@ -40,7 +40,8 @@ let dawnTarget: Target = {
 }()
 
 var swiftSettings: [SwiftSetting] = [
-	.unsafeFlags(["-warnings-as-errors"])
+	.unsafeFlags(["-warnings-as-errors"]),
+	.enableExperimentalFeature("Extern"),
 ]
 
 // Generate PDB debug info on Windows for Visual Studio debugging compatibility
@@ -250,9 +251,13 @@ let package = Package(
 				.target(name: "WebGPU", condition: .when(platforms: wasmPlatforms))
 			],
 			path: "Demos/WebGPUMinimalWasm",
-			exclude: ["README.md", "index.html"],
+			exclude: ["README.md", "index.html", "Generated"],
 			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings
+			linkerSettings: asanLinkerSettings,
+			plugins: [
+				// Add build plugin for processing @JS and generate Swift glue code
+				.plugin(name: "BridgeJS", package: "JavaScriptKit")
+			]
 		),
 		.testTarget(
 			name: "CodeGenerationTests",
