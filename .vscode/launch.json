@@ -1,6 +1,5 @@
 {
   "configurations": [
-
     {
       "type": "swift",
       "request": "launch",
@@ -100,6 +99,26 @@
       "target": "BitonicSort",
       "configuration": "release",
       "preLaunchTask": "swift: Build Release BitonicSort"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:swan}",
+      "name": "Debug WebGPUTriangleDemo",
+      "target": "WebGPUTriangleDemo",
+      "configuration": "debug",
+      "preLaunchTask": "swift: Build Debug WebGPUTriangleDemo"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:swan}",
+      "name": "Release WebGPUTriangleDemo",
+      "target": "WebGPUTriangleDemo",
+      "configuration": "release",
+      "preLaunchTask": "swift: Build Release WebGPUTriangleDemo"
     }
   ]
 }

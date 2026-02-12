@@ -261,6 +261,20 @@ let package = Package(
 				.linkedLibrary("c++", .when(platforms: [.macOS])),
 			]
 		),
+		.executableTarget(
+			name: "WebGPUTriangleDemo",
+			dependencies: [
+				.target(name: "WebGPUWasm"),
+			],
+			path: "Demos/WebGPUTriangleDemo",
+			exclude: ["index.html", "triangle.wgsl"],
+			swiftSettings: swiftSettings + [
+				.enableExperimentalFeature("Extern"),
+			],
+			plugins: [
+				.plugin(name: "BridgeJS", package: "JavaScriptKit"),
+			]
+		),
 		.testTarget(
 			name: "CodeGenerationTests",
 			dependencies: [
