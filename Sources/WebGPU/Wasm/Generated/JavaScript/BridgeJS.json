@@ -43,6 +43,7 @@
           }
         ],
         "emitStyle" : "const",
+        "explicitAccessControl" : "public",
         "name" : "GPUPrimitiveTopology",
         "rawType" : "String",
         "staticMethods" : [
@@ -212,6 +213,7 @@
           }
         ],
         "emitStyle" : "const",
+        "explicitAccessControl" : "public",
         "name" : "GPUVertexFormat",
         "rawType" : "String",
         "staticMethods" : [
@@ -241,6 +243,7 @@
           }
         ],
         "emitStyle" : "const",
+        "explicitAccessControl" : "public",
         "name" : "GPUVertexStepMode",
         "rawType" : "String",
         "staticMethods" : [
@@ -284,6 +287,7 @@
           }
         ],
         "emitStyle" : "const",
+        "explicitAccessControl" : "public",
         "name" : "GPUTextureFormat",
         "rawType" : "String",
         "staticMethods" : [
@@ -313,6 +317,7 @@
           }
         ],
         "emitStyle" : "const",
+        "explicitAccessControl" : "public",
         "name" : "GPULoadOp",
         "rawType" : "String",
         "staticMethods" : [
@@ -342,6 +347,7 @@
           }
         ],
         "emitStyle" : "const",
+        "explicitAccessControl" : "public",
         "name" : "GPUStoreOp",
         "rawType" : "String",
         "staticMethods" : [
@@ -371,6 +377,7 @@
           }
         ],
         "emitStyle" : "const",
+        "explicitAccessControl" : "public",
         "name" : "GPUFrontFace",
         "rawType" : "String",
         "staticMethods" : [
@@ -407,6 +414,7 @@
           }
         ],
         "emitStyle" : "const",
+        "explicitAccessControl" : "public",
         "name" : "GPUCullMode",
         "rawType" : "String",
         "staticMethods" : [
@@ -436,6 +444,7 @@
           }
         ],
         "emitStyle" : "const",
+        "explicitAccessControl" : "public",
         "name" : "GPUIndexFormat",
         "rawType" : "String",
         "staticMethods" : [
@@ -457,6 +466,7 @@
     ],
     "structs" : [
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -511,6 +521,7 @@
         "swiftCallName" : "GPUBufferDescriptor"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -545,6 +556,7 @@
         "swiftCallName" : "GPUShaderModuleDescriptor"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -585,6 +597,7 @@
         "swiftCallName" : "GPUVertexAttribute"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -629,6 +642,7 @@
         "swiftCallName" : "GPUVertexBufferLayout"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -671,6 +685,7 @@
         "swiftCallName" : "GPUPrimitiveState"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -701,6 +716,7 @@
         "swiftCallName" : "GPUColorTargetState"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -750,6 +766,7 @@
         "swiftCallName" : "GPUColor"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -774,6 +791,7 @@
         "swiftCallName" : "GPUCommandEncoderDescriptor"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -814,6 +832,7 @@
         "swiftCallName" : "GPUCanvasConfiguration"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -870,6 +889,7 @@
         "swiftCallName" : "GPURenderPassColorAttachment"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -908,6 +928,7 @@
         "swiftCallName" : "GPURenderPassDescriptor"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -938,17 +959,12 @@
             "isStatic" : false,
             "name" : "buffers",
             "type" : {
-              "nullable" : {
+              "array" : {
                 "_0" : {
-                  "array" : {
-                    "_0" : {
-                      "swiftStruct" : {
-                        "_0" : "GPUVertexBufferLayout"
-                      }
-                    }
+                  "swiftStruct" : {
+                    "_0" : "GPUVertexBufferLayout"
                   }
-                },
-                "_1" : "null"
+                }
               }
             }
           }
@@ -956,6 +972,7 @@
         "swiftCallName" : "GPUVertexState"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -999,6 +1016,7 @@
         "swiftCallName" : "GPUFragmentState"
       },
       {
+        "explicitAccessControl" : "public",
         "methods" : [
 
         ],
@@ -1016,6 +1034,16 @@
                   }
                 },
                 "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "layout",
+            "type" : {
+              "string" : {
+
               }
             }
           },
