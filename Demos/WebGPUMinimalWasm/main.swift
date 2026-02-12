@@ -90,7 +90,6 @@ import WebGPU
 	}
 }
 #else  // native platforms
-@main
 struct WebGPUMinimalWasmMain {
 	static func main() {
 		print("WebGPUMinimalWasm runs only when built for WebAssembly.")
