@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Swan WebGPU Triangle Demo</title>
+    <script type="importmap">
+    {
+        "imports": {
+            "@bjorn3/browser_wasi_shim": "https://esm.sh/@bjorn3/browser_wasi_shim"
+        }
+    }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            background: #1a1a2e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: system-ui, sans-serif;
+            color: white;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        canvas {
+            border: 2px solid #4a4a6a;
+            border-radius: 8px;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #2a2a4e;
+            border-radius: 4px;
+        }
+        .error {
+            color: #ff6b6b;
+        }
+        .success {
+            color: #6bff6b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Swan WebGPU Triangle Demo</h1>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <div id="status">Initializing...</div>
+
+    <script type="module">
+        const status = document.getElementById('status');
+
+        function setStatus(message, isError = false) {
+            status.textContent = message;
+            status.className = isError ? 'error' : 'success';
+        }
+
+        async function init() {
+            // Check WebGPU support
+            if (!navigator.gpu) {
+                setStatus('WebGPU is not supported in this browser', true);
+                return;
+            }
+
+            try {
+                // Request adapter
+                setStatus('Requesting GPU adapter...');
+                const adapter = await navigator.gpu.requestAdapter();
+                if (!adapter) {
+                    setStatus('Failed to get GPU adapter', true);
+                    return;
+                }
+
+                // Request device
+                setStatus('Requesting GPU device...');
+                const device = await adapter.requestDevice();
+                if (!device) {
+                    setStatus('Failed to get GPU device', true);
+                    return;
+                }
+
+                // Get canvas context
+                const canvas = document.getElementById('canvas');
+                const context = canvas.getContext('webgpu');
+                if (!context) {
+                    setStatus('Failed to get WebGPU context', true);
+                    return;
+                }
+
+                // Get preferred format
+                const format = navigator.gpu.getPreferredCanvasFormat();
+
+                // Configure canvas
+                context.configure({
+                    device: device,
+                    format: format,
+                    alphaMode: 'premultiplied',
+                });
+
+                // Load Swift WASM module
+                setStatus('Loading Swift WASM module...');
+                const { init: initWasm } = await import(
+                    '../../.build/plugins/PackageToJS/outputs/Package/index.js'
+                );
+
+                const runtime = await initWasm();
+
+                // Pass WebGPU objects to Swift
+                // The Swift code will access these via JavaScriptKit
+                setStatus('Initializing Swift WebGPU...');
+
+                // Store references globally for Swift to access
+                window.swanWebGPU = {
+                    device: device,
+                    context: context,
+                    format: format,
+                    canvas: canvas,
+                };
+
+                // Call Swift initialization
+                runtime.exports.initializeWebGPU(device, context, format);
+
+                // Start render loop
+                setStatus('Running...', false);
+
+                function renderLoop(time) {
+                    runtime.exports.renderFrame(time);
+                    requestAnimationFrame(renderLoop);
+                }
+                requestAnimationFrame(renderLoop);
+
+            } catch (error) {
+                setStatus(`Error: ${error.message}`, true);
+                console.error(error);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
+
