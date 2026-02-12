@@ -35,6 +35,10 @@ def write_target_manifest(
         if target_config.os.is_windows()
         else "libwebgpu_dawn.a",
     }
+
+    if target_config.os.is_windows():
+        manifest["binPath"] = (target_dir / "bin").as_posix()
+
     manifest_file.write_text(json.dumps(manifest, indent=2))
 
 
@@ -68,7 +72,11 @@ def write_bundle_manifest(version: str) -> None:
             "path": (
                 pathlib.Path(manifest["targetName"]) / manifest["libraryName"]
             ).as_posix(),
-            "staticLibraryMetadata": {"headerPaths": ["include"]},
+            "staticLibraryMetadata": {
+                "headerPaths": [
+                    (pathlib.Path(manifest["targetName"]) / "include").as_posix()
+                ]
+            },
             "supportedTriples": manifest["supportedTriples"],
         }
         for manifest in read_target_manifests()
@@ -81,7 +89,49 @@ def write_bundle_manifest(version: str) -> None:
                 "version": version,
                 "type": "staticLibrary",
                 "variants": target_manifests,
-            }
+            },
+            "dxcompiler": {
+                "type": "staticLibrary",
+                "version": "1.0.0",
+                "variants": [
+                    {
+                        "path": "windows_arm64_release/bin/dxcompiler.dll",
+                        "supportedTriples": ["aarch64-unknown-windows-msvc"],
+                    },
+                    {
+                        "path": "windows_x86_64_release/bin/dxcompiler.dll",
+                        "supportedTriples": ["x86_64-unknown-windows-msvc"],
+                    },
+                ],
+            },
+            "dxil": {
+                "type": "staticLibrary",
+                "version": "1.0.0",
+                "variants": [
+                    {
+                        "path": "windows_arm64_release/bin/dxil.dll",
+                        "supportedTriples": ["aarch64-unknown-windows-msvc"],
+                    },
+                    {
+                        "path": "windows_x86_64_release/bin/dxil.dll",
+                        "supportedTriples": ["x86_64-unknown-windows-msvc"],
+                    },
+                ],
+            },
+            "d3dcompiler_47": {
+                "type": "staticLibrary",
+                "version": "1.0.0",
+                "variants": [
+                    {
+                        "path": "windows_arm64_release/bin/d3dcompiler_47.dll",
+                        "supportedTriples": ["aarch64-unknown-windows-msvc"],
+                    },
+                    {
+                        "path": "windows_x86_64_release/bin/d3dcompiler_47.dll",
+                        "supportedTriples": ["x86_64-unknown-windows-msvc"],
+                    },
+                ],
+            },
         },
     }
     archive_manifest_file.write_text(json.dumps(archive_manifest, indent=2))
@@ -134,17 +184,24 @@ def create_artifact_bundle(
     archive_dir = artifact_bundle_directory()
     archive_dir.mkdir(exist_ok=True, parents=True)
 
-    # Copy the include directory from the first target manifest
-    manifests = read_target_manifests()
-    include_dir = manifests[0]["includePath"]
-    shutil.copytree(include_dir, archive_dir / "include")
-
     # Copy the libraries from the target manifests
+    manifests = read_target_manifests()
     for manifest in manifests:
         library_path = manifest["libraryPath"]
         target_dir = archive_dir / manifest["targetName"]
         shutil.copytree(library_path, target_dir)
-        
+
+        # Copy the include directory for this platform
+        include_dir = manifest["includePath"]
+        include_target_dir = target_dir / "include"
+        shutil.copytree(include_dir, include_target_dir)
+
+        # Copy the bin directory if it exists (Windows targets)
+        if "binPath" in manifest:
+            bin_path = manifest["binPath"]
+            bin_target_dir = target_dir / "bin"
+            shutil.copytree(bin_path, bin_target_dir)
+
     # Copy the dawn.json file to the archive directory
     shutil.copy2(dawn_json, archive_dir / "dawn.json")
 

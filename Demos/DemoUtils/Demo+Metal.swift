@@ -46,4 +46,9 @@ func updateSurface(surface: GPUSurface, window: OpaquePointer, device: GPUDevice
 
 	surface.configure(config: .init(device: device, format: format, width: UInt32(w), height: UInt32(h)))
 }
+
+func adapterOptions() -> GPURequestAdapterOptions {
+	return GPURequestAdapterOptions(backendType: .metal);
+}
+
 #endif

@@ -50,37 +50,49 @@ extension DawnMethod {
 	func methodWrapperDecl(data: DawnData) -> FunctionDeclSyntax {
 		let methodName = name.camelCase
 
-		let args = self.args ?? []
+		let argsForCMethod = self.args ?? []
+		// Exclude all array size parameters from the Swift method signature.
+		let argsForSwiftMethod = argsForCMethod.filter { !isArraySizeItem($0, allItems: argsForCMethod) }
 
-		// Ultimately, we have to call the WGPU method with the arguments.
 		let wgpuMethodCall: ExprSyntax =
 			"""
-			\(raw: name.camelCase)(\(raw: args.map { "\($0.name.camelCase): \($0.name.camelCase)" }.joined(separator: ", ")))
+			\(raw: name.camelCase)(\(raw: argsForCMethod.map { "\($0.name.camelCase): \($0.name.camelCase)" }.joined(separator: ", ")))
 			"""
 
 		// We need to unwrap the arguments, eventually calling the WGPU method with the unwrapped arguments.
-		let unwrappedMethodCall = unwrapArgs(args, data: data, expression: wgpuMethodCall)
-		let wrappedReturns = returns != nil ? returns!.swiftTypeName(data: data) : "Void"
+		let unwrappedMethodCall = unwrapArgs(argsForSwiftMethod, data: data, expression: wgpuMethodCall)
+
+		let wrappedReturns = returns?.swiftTypeName(data: data) ?? "Void"
 
 		// Create the body of the method.
+		let arraySizeExtractions = generateArraySizeExtractions(items: argsForCMethod, data: data)
+
 		var body: CodeBlockItemListSyntax
-		if returns == nil {
-			// No return value, so just call the WGPU method.
-			body = "\(unwrappedMethodCall)"
-		} else if returns!.isWrappedType(data: data) {
-			// The return value is a wrapped type, so we need to wrap it as we return it.
-			body =
-				"""
-				let result: \(raw: returns!.cTypeName(data: data)) = \(unwrappedMethodCall)
-				return \(returns!.wrapValueWithIdentifier("result", data: data))
-				"""
+		if let returns = returns {
+			if returns.isWrappedType(data: data) {
+				// The return value is a wrapped type, so we need to wrap it as we return it.
+				body = CodeBlockItemListSyntax {
+					arraySizeExtractions
+					"let result: \(raw: returns.cTypeName(data: data)) = \(unwrappedMethodCall)"
+					"return \(returns.wrapValueWithIdentifier("result", data: data))"
+				}
+			} else {
+				// The return value is not a wrapped type, so we can just return the result of the WGPU method.
+				body = CodeBlockItemListSyntax {
+					arraySizeExtractions
+					"return \(unwrappedMethodCall)"
+				}
+			}
 		} else {
-			// The return value is not a wrapped type, so we can just return the result of the WGPU method.
-			body = "return \(unwrappedMethodCall)"
+			// No return value, so just call the WGPU method.
+			body = CodeBlockItemListSyntax {
+				arraySizeExtractions
+				"\(unwrappedMethodCall)"
+			}
 		}
 
 		let argumentSignature = FunctionParameterListSyntax {
-			for arg in args {
+			for arg in argsForSwiftMethod {
 				"\(raw: arg.name.camelCase): \(raw: arg.isInOut ? "inout " : "")\(raw: arg.swiftTypeName(data: data))"
 			}
 		}

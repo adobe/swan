@@ -23,7 +23,7 @@ extension DawnCallbackInfo: DawnType {
 
 	func declarations(name: Name, data: DawnData) throws -> [any DeclSyntaxProtocol] {
 		let cStructName: String = "WGPU\(name.CamelCase)"
-		let swiftStructName = "GPU\(name.CamelCase)"
+		let swiftStructName = "\(name.swiftTypePrefix())\(name.CamelCase)"
 
 		let callbackMember: DawnStructureMember? = members.first { $0.name.raw == "callback" }
 		guard let callbackMember = callbackMember else {
@@ -121,7 +121,7 @@ extension DawnCallbackInfo: DawnType {
 	}
 
 	func swiftTypeNameForType(_ type: Name, annotation: String?, length: ArraySize?, optional: Bool = false) -> String {
-		var name = "GPU\(type.CamelCase)"
+		var name = "\(type.swiftTypePrefix())\(type.CamelCase)"
 		if length != nil {
 			if case .name = length {
 				name = "[\(name)]"

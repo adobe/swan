@@ -40,13 +40,8 @@ extension TypeDescriptor {
 				// Arrays of objects need to be wrapped if we are to get a pointer to the array.
 				return true
 			case .native:
-				if length != nil {
-					if type.raw == "void" || type.raw == "uint8_t" {
-						return false
-					}
-					return true
-				}
-				return false
+				// Native types with a length are wrapped (Tuple for fixed-size, Array for dynamic-size, UnsafeRawBufferPointer for void*).
+				return length != nil
 			default:
 				return false
 			}
@@ -56,6 +51,25 @@ extension TypeDescriptor {
 			return true
 		}
 		return isWrapped
+	}
+
+
+	/// Returns true if the Swift type for this descriptor includes the collection length.
+	///
+	/// When true, the corresponding size parameter in the C API can be derived from the Swift
+	/// collection (e.g., `array.count`), so it should be excluded from the Swift API signature.
+	func includesArrayLength() -> Bool {
+		guard case .name = length else {
+			// For Arrays, length will be the name of another arg.
+			return false
+		}
+		return true
+	}
+
+	/// Returns true if this descriptor represents a void* array (raw buffer pointer type).
+	/// These use UnsafeRawBufferPointer in the Swift API.
+	func isRawBufferPointerType() -> Bool {
+		return type.raw == "void" && annotation == "const*" && length != nil
 	}
 
 	// The name of the wrapper type.
@@ -110,5 +124,94 @@ extension TypeDescriptor {
 			optional: optional,
 			data: data
 		)
+	}
+}
+
+/// A TypeDescriptor that also has a name, used for function arguments and structure members.
+protocol NamedTypeDescriptor: TypeDescriptor {
+	var name: Name { get }
+}
+
+/// Check if the given item is a size item for an array item in the list.
+///
+/// A size item has a "name" that matches the "length" field of another item that is an array.
+/// Example from dawn.json:
+/// "members": [
+/// 	{"name": "entry count", "type": "size_t"},
+/// 	{"name": "entries", "type": "bind group layout entry", "annotation": "const*", "length": "entry count"}
+/// ]
+/// The second item will have an array type, and its "length" field matches the first item's name.
+func isArraySizeItem(_ item: any NamedTypeDescriptor, allItems: [any NamedTypeDescriptor]) -> Bool {
+	return allItems.contains { otherItem in
+		if case .name(let lengthName) = otherItem.length {
+			return lengthName == item.name
+		}
+		return false
+	}
+}
+
+/// If the given item is a size item, return the array item for which it provides the size.
+func arrayForSizeItem(
+	_ sizeItem: any NamedTypeDescriptor,
+	allItems: [any NamedTypeDescriptor]
+) -> (any NamedTypeDescriptor)? {
+	guard isArraySizeItem(sizeItem, allItems: allItems) else {
+		return nil
+	}
+	return allItems.first { item in
+		if case .name(let lengthName) = item.length {
+			return lengthName == sizeItem.name
+		}
+		return false
+	}
+}
+
+/// Convert an array count expression to match the C parameter type, if needed.
+/// E.g. Array.count returns Int, but some Dawn APIs use uint32_t or uint64_t for size params.
+func castCountIfNeeded(_ countExpr: String, forParameterType type: Name) -> String {
+	switch type.raw {
+	case "size_t":
+		// size_t maps to Int, which matches Array.count - no conversion needed
+		return countExpr
+	case "uint32_t":
+		return "UInt32(\(countExpr))"
+	case "uint64_t":
+		return "UInt64(\(countExpr))"
+	default:
+		fatalError("Unexpected size parameter type: \(type.raw)")
+	}
+}
+
+/// Generates let statements that extract array sizes from Swift collections.
+///
+/// The Dawn C API requires separate size items for array items, but Swift collections
+/// include their size via `.count`. This function generates the size extraction code needed to bridge
+/// between these conventions.
+///
+/// For `UnsafeRawBufferPointer` types (void* arrays), this also extracts the `baseAddress`.
+func generateArraySizeExtractions(
+	items: [any NamedTypeDescriptor],
+	data: DawnData
+) -> CodeBlockItemListSyntax {
+	return CodeBlockItemListSyntax {
+		for item in items where isArraySizeItem(item, allItems: items) {
+			if let array = arrayForSizeItem(item, allItems: items) {
+				let swiftType = array.swiftTypeName(data: data)
+				let arrayName = array.name.camelCase
+				let sizeName = item.name.camelCase
+				let isOptional = swiftType.hasSuffix("?")
+
+				let countExpr = isOptional ? "\(arrayName)?.count ?? 0" : "\(arrayName).count"
+				let convertedCountExpr = castCountIfNeeded(countExpr, forParameterType: item.type)
+
+				"let \(raw: sizeName) = \(raw: convertedCountExpr)"
+
+				if array.isRawBufferPointerType() {
+					// For UnsafeRawBufferPointer, also extract baseAddress
+					let baseAddressExpr = isOptional ? "\(arrayName)?.baseAddress" : "\(arrayName).baseAddress"
+					"let \(raw: arrayName) = \(raw: baseAddressExpr)"
+				}
+			}
+		}
 	}
 }

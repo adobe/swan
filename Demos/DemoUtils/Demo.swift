@@ -25,7 +25,7 @@ public func runDemo<Provider: DemoProvider>(
 	var adapter: GPUAdapter? = nil
 
 	_ = instance.requestAdapter(
-		options: nil,
+		options: adapterOptions(),
 		callbackInfo: GPURequestAdapterCallbackInfo(
 			mode: .allowProcessEvents,
 			callback: { status, inAdapter, message in
@@ -41,12 +41,12 @@ public func runDemo<Provider: DemoProvider>(
 
 	var device: GPUDevice? = nil
 
-	let deviceDescriptor: GPUDeviceDescriptor = GPUDeviceDescriptor(
+	var deviceDescriptor: GPUDeviceDescriptor = GPUDeviceDescriptor(
 		defaultQueue: GPUQueueDescriptor(),
 		deviceLostCallbackInfo: GPUDeviceLostCallbackInfo(
 			mode: .allowProcessEvents,
 			callback: { device, reason, message in
-				print("🚨 Device Lost!")
+				print("Device Lost!")
 				print("  Reason: \(reason)")
 				if let message = message {
 					print("  Message: \(message)")
@@ -55,7 +55,7 @@ public func runDemo<Provider: DemoProvider>(
 		),
 		uncapturedErrorCallbackInfo: GPUUncapturedErrorCallbackInfo(
 			callback: { device, type, message in
-				print("❌ Uncaptured Error!")
+				print("Uncaptured Error!")
 				print("  Type: \(type)")
 				if let message = message {
 					print("  Message: \(message)")
@@ -63,6 +63,11 @@ public func runDemo<Provider: DemoProvider>(
 				fatalError("Terminating due to uncaptured error")
 			}
 		)
+	)
+
+	deviceDescriptor.nextInChain = DawnTogglesDescriptor(
+		enabledToggles: ["disable_symbol_renaming"],
+		disabledToggles: []
 	)
 
 	_ = adapter!.requestDevice(
@@ -96,7 +101,7 @@ public func runDemo<Provider: DemoProvider>(
 
 	while RGFW_window_shouldClose(window) == RGFW_FALSE {
 		RGFW_pollEvents()
-		instance.processEvents(); // very important to process webgpu async events per frame
+		instance.processEvents();  // very important to process webgpu async events per frame
 
 		updateSurface(surface: surface, window: window, device: device!, format: format)
 
