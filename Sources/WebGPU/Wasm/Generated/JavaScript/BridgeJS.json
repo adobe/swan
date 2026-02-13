@@ -2434,7 +2434,24 @@
               }
             ],
             "methods" : [
+              {
+                "name" : "getBindGroupLayout",
+                "parameters" : [
+                  {
+                    "name" : "index",
+                    "type" : {
+                      "int" : {
 
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUBindGroupLayout"
+                  }
+                }
+              }
             ],
             "name" : "GPURenderPipeline",
             "setters" : [

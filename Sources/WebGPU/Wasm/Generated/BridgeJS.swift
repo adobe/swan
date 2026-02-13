@@ -1952,6 +1952,15 @@ fileprivate func bjs_GPURenderPipeline_label_get(_ self: Int32) -> Void {
 }
 #endif
 
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPURenderPipeline_getBindGroupLayout")
+fileprivate func bjs_GPURenderPipeline_getBindGroupLayout(_ self: Int32, _ index: Int32) -> Int32
+#else
+fileprivate func bjs_GPURenderPipeline_getBindGroupLayout(_ self: Int32, _ index: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
 func _$GPURenderPipeline_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
     let selfValue = self.bridgeJSLowerParameter()
     bjs_GPURenderPipeline_label_get(selfValue)
@@ -1959,6 +1968,16 @@ func _$GPURenderPipeline_label_get(_ self: JSObject) throws(JSException) -> Opti
         throw error
     }
     return Optional<String>.bridgeJSLiftReturnFromSideChannel()
+}
+
+func _$GPURenderPipeline_getBindGroupLayout(_ self: JSObject, _ index: Int) throws(JSException) -> GPUBindGroupLayout {
+    let selfValue = self.bridgeJSLowerParameter()
+    let indexValue = index.bridgeJSLowerParameter()
+    let ret = bjs_GPURenderPipeline_getBindGroupLayout(selfValue, indexValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return GPUBindGroupLayout.bridgeJSLiftReturn(ret)
 }
 
 #if arch(wasm32)
