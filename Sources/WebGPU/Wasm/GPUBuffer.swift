@@ -5,9 +5,8 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
+import JavaScriptKit
 
-@_spi(Experimental)
 @JSClass
 public struct GPUBuffer {
 	public let jsObject: JSObject
@@ -22,4 +21,3 @@ public struct GPUBuffer {
 	@JSFunction
 	public func destroy() throws(JSException)
 }
-

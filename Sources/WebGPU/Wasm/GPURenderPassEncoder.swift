@@ -5,9 +5,8 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
+import JavaScriptKit
 
-@_spi(Experimental)
 @JSClass public struct GPURenderPassEncoder {
 	public let jsObject: JSObject
 	public init(unsafelyWrapping jsObject: JSObject) {
@@ -36,4 +35,3 @@
 	@JSFunction
 	public func end() throws(JSException)
 }
-

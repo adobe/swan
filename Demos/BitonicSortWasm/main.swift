@@ -5,9 +5,9 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
 import JavaScriptEventLoop
-@_spi(Experimental) import WebGPUWasm
+import JavaScriptKit
+import WebGPUWasm
 
 // Global state
 nonisolated(unsafe) var demo: BitonicSortDemo!

@@ -5,9 +5,8 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
+import JavaScriptKit
 
-@_spi(Experimental)
 @JS public struct GPUPipelineLayoutDescriptor {
 	public var label: String?
 	public var bindGroupLayouts: [GPUBindGroupLayout]
@@ -21,7 +20,6 @@
 	}
 }
 
-@_spi(Experimental)
 @JSClass public struct GPUPipelineLayout {
 	public let jsObject: JSObject
 	public init(unsafelyWrapping jsObject: JSObject) {

@@ -5,9 +5,8 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
+import JavaScriptKit
 
-@_spi(Experimental)
 @JSClass public struct GPUQueue {
 	public let jsObject: JSObject
 	public init(unsafelyWrapping jsObject: JSObject) {
@@ -26,4 +25,3 @@
 		_ data: JSObject
 	) throws(JSException)
 }
-

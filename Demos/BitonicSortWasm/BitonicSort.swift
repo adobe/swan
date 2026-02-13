@@ -8,8 +8,8 @@
 // Bitonic Sort Demo (WASM) - GPU-accelerated parallel sorting with visualization
 // Ported from Demos/BitonicSort/BitonicSort.swift for browser via WebAssembly
 
-@_spi(Experimental) import JavaScriptKit
-@_spi(Experimental) import WebGPUWasm
+import JavaScriptKit
+import WebGPUWasm
 
 let gridWidth = 256
 let gridHeight = 256

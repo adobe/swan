@@ -5,9 +5,8 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
+import JavaScriptKit
 
-@_spi(Experimental)
 @JSClass
 public struct GPUCanvasContext {
 	public let jsObject: JSObject
@@ -22,7 +21,6 @@ public struct GPUCanvasContext {
 	public func getCurrentTexture() throws(JSException) -> GPUTexture
 }
 
-@_spi(Experimental)
 @JS public struct GPUCanvasConfiguration {
 	public var device: GPUDevice
 	public var format: GPUTextureFormat
@@ -34,4 +32,3 @@ public struct GPUCanvasContext {
 		self.alphaMode = alphaMode
 	}
 }
-

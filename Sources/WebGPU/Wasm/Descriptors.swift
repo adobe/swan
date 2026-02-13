@@ -5,7 +5,7 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
+import JavaScriptKit
 
 @JS public struct GPUBufferDescriptor {
 	public var label: String?

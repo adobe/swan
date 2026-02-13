@@ -5,9 +5,8 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
+import JavaScriptKit
 
-@_spi(Experimental)
 @JS public struct GPURenderPassColorAttachment {
 	public var view: GPUTextureView
 	public var loadOp: GPULoadOp
@@ -27,7 +26,6 @@
 	}
 }
 
-@_spi(Experimental)
 @JS public struct GPURenderPassDescriptor {
 	public var label: String?
 	public var colorAttachments: [GPURenderPassColorAttachment]
@@ -41,7 +39,6 @@
 	}
 }
 
-@_spi(Experimental)
 @JSClass
 public struct GPUCommandEncoder {
 	public let jsObject: JSObject
@@ -52,14 +49,17 @@ public struct GPUCommandEncoder {
 	@JSGetter public var label: String?
 
 	@JSFunction
-	public func beginRenderPass(_ descriptor: GPURenderPassDescriptor) throws(JSException)
+	public func beginRenderPass(
+		_ descriptor: GPURenderPassDescriptor
+	) throws(JSException)
 		-> GPURenderPassEncoder
 
 	@JSFunction
-	public func beginComputePass(descriptor: GPUComputePassDescriptor) throws(JSException)
+	public func beginComputePass(
+		descriptor: GPUComputePassDescriptor
+	) throws(JSException)
 		-> GPUComputePassEncoder
 
 	@JSFunction
 	public func finish() throws(JSException) -> GPUCommandBuffer
 }
-

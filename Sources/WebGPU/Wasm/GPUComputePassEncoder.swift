@@ -5,9 +5,8 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
+import JavaScriptKit
 
-@_spi(Experimental)
 @JS public struct GPUComputePassDescriptor {
 	public var label: String?
 
@@ -16,7 +15,6 @@
 	}
 }
 
-@_spi(Experimental)
 @JSClass public struct GPUComputePassEncoder {
 	public let jsObject: JSObject
 	public init(unsafelyWrapping jsObject: JSObject) {
