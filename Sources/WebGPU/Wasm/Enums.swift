@@ -78,3 +78,9 @@
 	case uint16 = "uint16"
 	case uint32 = "uint32"
 }
+
+@JS public enum GPUBufferBindingType: String, Sendable {
+	case uniform = "uniform"
+	case storage = "storage"
+	case readOnlyStorage = "read-only-storage"
+}

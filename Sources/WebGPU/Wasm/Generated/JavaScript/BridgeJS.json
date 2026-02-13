@@ -455,6 +455,43 @@
         ],
         "swiftCallName" : "GPUIndexFormat",
         "tsFullPath" : "GPUIndexFormat"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "uniform",
+            "rawValue" : "uniform"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "storage",
+            "rawValue" : "storage"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "readOnlyStorage",
+            "rawValue" : "read-only-storage"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUBufferBindingType",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUBufferBindingType",
+        "tsFullPath" : "GPUBufferBindingType"
       }
     ],
     "exposeToGlobal" : false,
@@ -795,6 +832,240 @@
         "methods" : [
 
         ],
+        "name" : "GPUBufferBinding",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "buffer",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUBuffer"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "offset",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "int" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "size",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "int" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBufferBinding"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUBindGroupEntry",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "binding",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "resource",
+            "type" : {
+              "swiftStruct" : {
+                "_0" : "GPUBufferBinding"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBindGroupEntry"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUBindGroupDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "layout",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUBindGroupLayout"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "entries",
+            "type" : {
+              "array" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUBindGroupEntry"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBindGroupDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUBufferBindingLayout",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "type",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUBufferBindingType",
+                "_1" : "String"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBufferBindingLayout"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUBindGroupLayoutEntry",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "binding",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "visibility",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "buffer",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUBufferBindingLayout"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBindGroupLayoutEntry"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUBindGroupLayoutDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "entries",
+            "type" : {
+              "array" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUBindGroupLayoutEntry"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBindGroupLayoutDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
         "name" : "GPUCanvasConfiguration",
         "properties" : [
           {
@@ -926,6 +1197,106 @@
           }
         ],
         "swiftCallName" : "GPURenderPassDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUComputePassDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUComputePassDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUComputeState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "module",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUShaderModule"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "entryPoint",
+            "type" : {
+              "string" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUComputeState"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUComputePipelineDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "layout",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUPipelineLayout"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "compute",
+            "type" : {
+              "swiftStruct" : {
+                "_0" : "GPUComputeState"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUComputePipelineDescriptor"
       },
       {
         "explicitAccessControl" : "public",
@@ -1089,11 +1460,118 @@
           }
         ],
         "swiftCallName" : "GPURenderPipelineDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUPipelineLayoutDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "bindGroupLayouts",
+            "type" : {
+              "array" : {
+                "_0" : {
+                  "jsObject" : {
+                    "_0" : "GPUBindGroupLayout"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUPipelineLayoutDescriptor"
       }
     ]
   },
   "imported" : {
     "children" : [
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+
+            ],
+            "name" : "GPUBindGroup",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+
+            ],
+            "name" : "GPUBindGroupLayout",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
       {
         "functions" : [
 
@@ -1308,6 +1786,162 @@
           {
             "getters" : [
               {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+              {
+                "name" : "setPipeline",
+                "parameters" : [
+                  {
+                    "name" : "pipeline",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUComputePipeline"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "setBindGroup",
+                "parameters" : [
+                  {
+                    "name" : "groupIndex",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "group",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBindGroup"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "dispatchWorkgroups",
+                "parameters" : [
+                  {
+                    "name" : "workgroupCountX",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "workgroupCountY",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "workgroupCountZ",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "end",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              }
+            ],
+            "name" : "GPUComputePassEncoder",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+
+            ],
+            "name" : "GPUComputePipeline",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
                 "name" : "queue",
                 "type" : {
                   "jsObject" : {
@@ -1404,6 +2038,40 @@
               }
             ],
             "name" : "GPUDevice",
+            "setters" : [
+
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "methods" : [
+
+            ],
+            "name" : "GPUPipelineLayout",
             "setters" : [
 
             ],
