@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Swan BitonicSort Demo</title>
+    <script type="importmap">
+    {
+        "imports": {
+            "@bjorn3/browser_wasi_shim": "https://esm.sh/@bjorn3/browser_wasi_shim"
+        }
+    }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            background: #1a1a2e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: system-ui, sans-serif;
+            color: white;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        canvas {
+            border: 2px solid #4a4a6a;
+            border-radius: 8px;
+        }
+        #controls {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #2a2a4e;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        #controls kbd {
+            background: #3a3a5e;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid #5a5a7e;
+            font-family: monospace;
+        }
+        #status {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #2a2a4e;
+            border-radius: 4px;
+        }
+        .error {
+            color: #ff6b6b;
+        }
+        .success {
+            color: #6bff6b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Swan BitonicSort Demo</h1>
+    <canvas id="canvas" width="512" height="512"></canvas>
+    <div id="controls">
+        <kbd>P</kbd> Pause/Resume &nbsp;
+        <kbd>R</kbd> Reset &nbsp;
+        <kbd>H</kbd> Toggle Highlight
+    </div>
+    <div id="status">Initializing...</div>
+
+    <script type="module">
+        const status = document.getElementById('status');
+
+        function setStatus(message, isError = false) {
+            status.textContent = message;
+            status.className = isError ? 'error' : 'success';
+        }
+
+        async function init() {
+            // Check WebGPU support
+            if (!navigator.gpu) {
+                setStatus('WebGPU is not supported in this browser', true);
+                return;
+            }
+
+            try {
+                // Request adapter
+                setStatus('Requesting GPU adapter...');
+                const adapter = await navigator.gpu.requestAdapter();
+                if (!adapter) {
+                    setStatus('Failed to get GPU adapter', true);
+                    return;
+                }
+
+                // Request device
+                setStatus('Requesting GPU device...');
+                const device = await adapter.requestDevice();
+                if (!device) {
+                    setStatus('Failed to get GPU device', true);
+                    return;
+                }
+
+                // Get canvas context
+                const canvas = document.getElementById('canvas');
+                const context = canvas.getContext('webgpu');
+                if (!context) {
+                    setStatus('Failed to get WebGPU context', true);
+                    return;
+                }
+
+                // Get preferred format
+                const format = navigator.gpu.getPreferredCanvasFormat();
+
+                // Configure canvas
+                context.configure({
+                    device: device,
+                    format: format,
+                    alphaMode: 'premultiplied',
+                });
+
+                // Load Swift WASM module
+                setStatus('Loading Swift WASM module...');
+                const { init: initWasm } = await import(
+                    '../../.build/plugins/PackageToJS/outputs/Package/index.js'
+                );
+
+                const runtime = await initWasm();
+
+                // Initialize Swift BitonicSort demo
+                setStatus('Initializing BitonicSort...');
+                runtime.exports.initializeBitonicSort(device, context, format);
+
+                // Handle keyboard input
+                document.addEventListener('keydown', (event) => {
+                    runtime.exports.keyPressed(event.key);
+                });
+
+                // Start render loop
+                setStatus('Running — sorting 65536 elements', false);
+
+                function renderLoop(time) {
+                    runtime.exports.renderFrame(time);
+                    requestAnimationFrame(renderLoop);
+                }
+                requestAnimationFrame(renderLoop);
+
+            } catch (error) {
+                setStatus(`Error: ${error.message}`, true);
+                console.error(error);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
