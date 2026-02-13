@@ -32,11 +32,11 @@ public final class GPUDevice {
 
 	private func descriptorToJS(_ d: GPUBufferDescriptor) -> JSObject {
 		let obj = JSObject()
-		obj["size"] = .number(Double(d.size))
-		obj["usage"] = .number(Double(d.usage.rawValue))
-		obj["mappedAtCreation"] = .boolean(d.mappedAtCreation)
+		obj.size = .number(Double(d.size))
+		obj.usage = .number(Double(d.usage.rawValue))
+		obj.mappedAtCreation = .boolean(d.mappedAtCreation)
 		if let label = d.label {
-			obj["label"] = .string(JSString(label))
+			obj.label = .string(JSString(label))
 		}
 		return obj
 	}

@@ -9,6 +9,7 @@
 // On native platforms this target builds a stub that prints instructions.
 
 #if arch(wasm32) || os(wasi)
+
 @_spi(Experimental) import JavaScriptKit
 import JavaScriptEventLoop
 import WebGPU
@@ -77,16 +78,52 @@ import WebGPU
 	@JS static func test2DContext() {
 		let document = JSObject.global.document
 
-		// 2D testing JavaScriptKit
-		let canvas = document.getElementById("canvas")
+		// create canvas element
+		let canvasContainer = document.querySelector(".canvas-container")
+		let canvas = document.createElement("canvas")
+		_ = canvasContainer.appendChild(canvas)
+
 		let ctx: JSValue = canvas.getContext("2d")
 		// Red square
 		ctx.fillStyle = "#ff0000"
 		_ = ctx.fillRect(20, 20, 100, 100)
 	}
 
-	@JS static func testWebGPUContext() {
-		// TODO
+	@JS static func testWebGPUContext() async {
+
+		print("Testing WebGPU context")
+		let document = JSObject.global.document
+
+		// create canvas element
+		let canvasContainer = document.querySelector(".canvas-container")
+		let canvas = document.createElement("canvas")
+		_ = canvasContainer.appendChild(canvas)
+
+		print("Got canvas")
+		let ctx: JSValue = canvas.getContext("webgpu")
+		print("Got context")
+		print(ctx)
+
+		print("Requesting adapter")
+		guard let adapter = try? await GPU.sharedInstance?.requestAdapter() else {
+			print("Failed to request adapter")
+			print("WebGPU not available (e.g. not in a browser or unsupported)")
+			return
+		}
+
+		print("Requesting device")
+		guard let device = try? await adapter.requestDevice(descriptor: nil) else {
+			print("Failed to request device")
+			return
+		}
+
+		print("Creating canvas context")
+		let context = GPUCanvasContext(canvas: canvas.object!)
+		print("Configuring canvas context")
+		context.configure(device: device, format: "bgra8unorm")
+
+		print("Canvas context configured")
+
 	}
 }
 #else  // native platforms

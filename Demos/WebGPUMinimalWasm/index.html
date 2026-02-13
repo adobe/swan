@@ -14,7 +14,14 @@
             gap: 10px;
         }
 
-        canvas {
+        .canvas-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .canvas-container canvas {
             border: 1px solid black;
         }
     </style>
@@ -69,7 +76,7 @@
     </div>
 
     <div class="canvas-container">
-        <canvas id="canvas"></canvas>
+        <!-- Canvas elements will be added here -->
     </div>
 
     </div>
