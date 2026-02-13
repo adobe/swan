@@ -202,7 +202,7 @@ struct BitonicSortWasmDemo {
 	private static func randomizeBuffer(device: GPUDevice, buffer: GPUBuffer) throws {
 		var elements = Array(0..<UInt32(totalElements))
 		elements.shuffle()
-		let typedArray = JSTypedArray(elements)
+		let typedArray = JSTypedArray<UInt32>(elements)
 		try device.queue.writeBuffer(buffer, 0, typedArray.jsObject)
 	}
 
@@ -214,7 +214,7 @@ struct BitonicSortWasmDemo {
 			UInt32(self.sortState.blockHeight),
 			self.highlightMode ? 1 : 0,
 		]
-		let typedArray = JSTypedArray(data)
+		let typedArray = JSTypedArray<UInt32>(data)
 		try self.device.queue.writeBuffer(self.uniformBuffer, 0, typedArray.jsObject)
 	}
 
