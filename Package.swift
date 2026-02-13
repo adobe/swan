@@ -197,6 +197,11 @@ let package = Package(
 				.product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
 			],
 			path: "Sources/WebGPU/Wasm",
+			exclude: [
+				"Generated/README.md",
+				"Generated/JavaScript",
+				"bridge-js.config.json",
+			],
 			swiftSettings: swiftSettings + [
 				.enableExperimentalFeature("Extern"),
 			],
