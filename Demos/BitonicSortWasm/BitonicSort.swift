@@ -16,7 +16,7 @@ let gridHeight = 256
 let totalElements = gridWidth * gridHeight
 let updatesPerSecond = 5.0
 
-struct BitonicSortWasmDemo {
+struct BitonicSortDemo {
 	// GPU resources (immutable after init)
 	let device: GPUDevice
 	let context: GPUCanvasContext
