@@ -10,7 +10,7 @@ import JavaScriptEventLoop
 @_spi(Experimental) import WebGPUWasm
 
 // Global state
-nonisolated(unsafe) var demo: BitonicSortWasmDemo!
+nonisolated(unsafe) var demo: BitonicSortDemo!
 
 /// JS-exported entry point — called from JavaScript after WebGPU initialization
 @JS public func initializeBitonicSort(
@@ -23,7 +23,7 @@ nonisolated(unsafe) var demo: BitonicSortWasmDemo!
 		let context = GPUCanvasContext(unsafelyWrapping: contextJS)
 		let format = GPUTextureFormat(rawValue: formatString) ?? .bgra8unorm
 
-		demo = try BitonicSortWasmDemo(device: device, context: context, format: format)
+		demo = try BitonicSortDemo(device: device, context: context, format: format)
 	} catch {
 		print("Failed to initialize BitonicSort: \(error)")
 	}
