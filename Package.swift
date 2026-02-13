@@ -92,10 +92,7 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-		.package(
-			url: "https://github.com/swiftwasm/JavaScriptKit.git",
-			branch: "examples-in-bjs"
-		),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.44.1"),
 	],
 	targets: [
 		dawnTarget,
@@ -193,7 +190,7 @@ let package = Package(
 		.target(
 			name: "WebGPUWasm",
 			dependencies: [
-				.product(name: "JavaScriptKit", package: "JavaScriptKit"),
+				"JavaScriptKit",
 				.product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
 			],
 			path: "Sources/WebGPU/Wasm",
@@ -203,7 +200,7 @@ let package = Package(
 				"bridge-js.config.json",
 			],
 			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern"),
+				.enableExperimentalFeature("Extern")
 			],
 			linkerSettings: asanLinkerSettings
 		),
@@ -269,29 +266,29 @@ let package = Package(
 		.executableTarget(
 			name: "WebGPUTriangleDemo",
 			dependencies: [
-				.target(name: "WebGPUWasm"),
+				.target(name: "WebGPUWasm")
 			],
 			path: "Demos/WebGPUTriangleDemo",
 			exclude: ["index.html", "triangle.wgsl"],
 			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern"),
+				.enableExperimentalFeature("Extern")
 			],
 			plugins: [
-				.plugin(name: "BridgeJS", package: "JavaScriptKit"),
+				.plugin(name: "BridgeJS", package: "JavaScriptKit")
 			]
 		),
 		.executableTarget(
 			name: "BitonicSortWasm",
 			dependencies: [
-				.target(name: "WebGPUWasm"),
+				.target(name: "WebGPUWasm")
 			],
 			path: "Demos/BitonicSortWasm",
 			exclude: ["index.html"],
 			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern"),
+				.enableExperimentalFeature("Extern")
 			],
 			plugins: [
-				.plugin(name: "BridgeJS", package: "JavaScriptKit"),
+				.plugin(name: "BridgeJS", package: "JavaScriptKit")
 			]
 		),
 		.testTarget(
