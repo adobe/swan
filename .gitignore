@@ -11,3 +11,4 @@ __pycache__
 .venv
 BindingsDebug
 .venv/
+.cursor/mcp.json

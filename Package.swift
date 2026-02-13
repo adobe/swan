@@ -40,7 +40,8 @@ let dawnTarget: Target = {
 }()
 
 var swiftSettings: [SwiftSetting] = [
-	.unsafeFlags(["-warnings-as-errors"])
+	.unsafeFlags(["-warnings-as-errors"]),
+	.enableExperimentalFeature("Extern"),
 ]
 
 // Generate PDB debug info on Windows for Visual Studio debugging compatibility
@@ -88,6 +89,7 @@ let package = Package(
 			url: "https://github.com/swiftlang/swift-testing.git",
 			from: "6.2.3"
 		),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit", from: "0.43.1"),
 		.package(url: "https://github.com/apple/swift-log", from: "1.9.1"),
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
@@ -189,7 +191,8 @@ let package = Package(
 		.target(
 			name: "WebGPUWasm",
 			dependencies: [
-				// WebGPUCore or similar core library for shared protocols and types ?
+				.product(name: "JavaScriptKit", package: "JavaScriptKit"),
+				.product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
 			],
 			path: "Sources/WebGPU/Wasm",
 			swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
@@ -252,6 +255,22 @@ let package = Package(
 				.linkedFramework("IOKit", .when(platforms: [.macOS])),
 				.linkedFramework("Metal", .when(platforms: [.macOS])),
 				.linkedLibrary("c++", .when(platforms: [.macOS])),
+			]
+		),
+		.executableTarget(
+			name: "WebGPUMinimalWasm",
+			dependencies: [
+				.product(name: "JavaScriptKit", package: "JavaScriptKit"),
+				.product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
+				.target(name: "WebGPU", condition: .when(platforms: wasmPlatforms)),
+			],
+			path: "Demos/WebGPUMinimalWasm",
+			exclude: ["README.md", "index.html", "Generated"],
+			swiftSettings: swiftSettings,
+			linkerSettings: asanLinkerSettings,
+			plugins: [
+				// Add build plugin for processing @JS and generate Swift glue code
+				.plugin(name: "BridgeJS", package: "JavaScriptKit")
 			]
 		),
 		.testTarget(
