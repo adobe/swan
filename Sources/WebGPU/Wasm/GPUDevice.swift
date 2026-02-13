@@ -88,5 +88,21 @@
 	@JSFunction
 	public func createCommandEncoder(_ descriptor: GPUCommandEncoderDescriptor) throws(JSException)
 		-> GPUCommandEncoder
+
+	@JSFunction
+	public func createBindGroupLayout(descriptor: GPUBindGroupLayoutDescriptor) throws(JSException)
+		-> GPUBindGroupLayout
+
+	@JSFunction
+	public func createBindGroup(descriptor: GPUBindGroupDescriptor) throws(JSException)
+		-> GPUBindGroup
+
+	@JSFunction
+	public func createPipelineLayout(descriptor: GPUPipelineLayoutDescriptor) throws(JSException)
+		-> GPUPipelineLayout
+
+	@JSFunction
+	public func createComputePipeline(descriptor: GPUComputePipelineDescriptor) throws(JSException)
+		-> GPUComputePipeline
 }
 

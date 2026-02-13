@@ -56,6 +56,10 @@ public struct GPUCommandEncoder {
 		-> GPURenderPassEncoder
 
 	@JSFunction
+	public func beginComputePass(descriptor: GPUComputePassDescriptor) throws(JSException)
+		-> GPUComputePassEncoder
+
+	@JSFunction
 	public func finish() throws(JSException) -> GPUCommandBuffer
 }
 

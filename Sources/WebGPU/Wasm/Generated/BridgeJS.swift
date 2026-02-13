@@ -1404,6 +1404,15 @@ fileprivate func bjs_GPUCommandEncoder_beginRenderPass(_ self: Int32, _ descript
 #endif
 
 #if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUCommandEncoder_beginComputePass")
+fileprivate func bjs_GPUCommandEncoder_beginComputePass(_ self: Int32, _ descriptor: Int32) -> Int32
+#else
+fileprivate func bjs_GPUCommandEncoder_beginComputePass(_ self: Int32, _ descriptor: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUCommandEncoder_finish")
 fileprivate func bjs_GPUCommandEncoder_finish(_ self: Int32) -> Int32
 #else
@@ -1429,6 +1438,16 @@ func _$GPUCommandEncoder_beginRenderPass(_ self: JSObject, _ descriptor: GPURend
         throw error
     }
     return GPURenderPassEncoder.bridgeJSLiftReturn(ret)
+}
+
+func _$GPUCommandEncoder_beginComputePass(_ self: JSObject, _ descriptor: GPUComputePassDescriptor) throws(JSException) -> GPUComputePassEncoder {
+    let selfValue = self.bridgeJSLowerParameter()
+    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
+    let ret = bjs_GPUCommandEncoder_beginComputePass(selfValue, descriptorObjectId)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return GPUComputePassEncoder.bridgeJSLiftReturn(ret)
 }
 
 func _$GPUCommandEncoder_finish(_ self: JSObject) throws(JSException) -> GPUCommandBuffer {
@@ -1604,6 +1623,42 @@ fileprivate func bjs_GPUDevice_createCommandEncoder(_ self: Int32, _ descriptor:
 }
 #endif
 
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice_createBindGroupLayout")
+fileprivate func bjs_GPUDevice_createBindGroupLayout(_ self: Int32, _ descriptor: Int32) -> Int32
+#else
+fileprivate func bjs_GPUDevice_createBindGroupLayout(_ self: Int32, _ descriptor: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice_createBindGroup")
+fileprivate func bjs_GPUDevice_createBindGroup(_ self: Int32, _ descriptor: Int32) -> Int32
+#else
+fileprivate func bjs_GPUDevice_createBindGroup(_ self: Int32, _ descriptor: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice_createPipelineLayout")
+fileprivate func bjs_GPUDevice_createPipelineLayout(_ self: Int32, _ descriptor: Int32) -> Int32
+#else
+fileprivate func bjs_GPUDevice_createPipelineLayout(_ self: Int32, _ descriptor: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice_createComputePipeline")
+fileprivate func bjs_GPUDevice_createComputePipeline(_ self: Int32, _ descriptor: Int32) -> Int32
+#else
+fileprivate func bjs_GPUDevice_createComputePipeline(_ self: Int32, _ descriptor: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
 func _$GPUDevice_queue_get(_ self: JSObject) throws(JSException) -> GPUQueue {
     let selfValue = self.bridgeJSLowerParameter()
     let ret = bjs_GPUDevice_queue_get(selfValue)
@@ -1660,6 +1715,46 @@ func _$GPUDevice_createCommandEncoder(_ self: JSObject, _ descriptor: GPUCommand
         throw error
     }
     return GPUCommandEncoder.bridgeJSLiftReturn(ret)
+}
+
+func _$GPUDevice_createBindGroupLayout(_ self: JSObject, _ descriptor: GPUBindGroupLayoutDescriptor) throws(JSException) -> GPUBindGroupLayout {
+    let selfValue = self.bridgeJSLowerParameter()
+    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
+    let ret = bjs_GPUDevice_createBindGroupLayout(selfValue, descriptorObjectId)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return GPUBindGroupLayout.bridgeJSLiftReturn(ret)
+}
+
+func _$GPUDevice_createBindGroup(_ self: JSObject, _ descriptor: GPUBindGroupDescriptor) throws(JSException) -> GPUBindGroup {
+    let selfValue = self.bridgeJSLowerParameter()
+    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
+    let ret = bjs_GPUDevice_createBindGroup(selfValue, descriptorObjectId)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return GPUBindGroup.bridgeJSLiftReturn(ret)
+}
+
+func _$GPUDevice_createPipelineLayout(_ self: JSObject, _ descriptor: GPUPipelineLayoutDescriptor) throws(JSException) -> GPUPipelineLayout {
+    let selfValue = self.bridgeJSLowerParameter()
+    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
+    let ret = bjs_GPUDevice_createPipelineLayout(selfValue, descriptorObjectId)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return GPUPipelineLayout.bridgeJSLiftReturn(ret)
+}
+
+func _$GPUDevice_createComputePipeline(_ self: JSObject, _ descriptor: GPUComputePipelineDescriptor) throws(JSException) -> GPUComputePipeline {
+    let selfValue = self.bridgeJSLowerParameter()
+    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
+    let ret = bjs_GPUDevice_createComputePipeline(selfValue, descriptorObjectId)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return GPUComputePipeline.bridgeJSLiftReturn(ret)
 }
 
 #if arch(wasm32)
@@ -1773,6 +1868,15 @@ fileprivate func bjs_GPURenderPassEncoder_draw(_ self: Int32, _ vertexCount: Int
 #endif
 
 #if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPURenderPassEncoder_setBindGroup")
+fileprivate func bjs_GPURenderPassEncoder_setBindGroup(_ self: Int32, _ groupIndex: Int32, _ group: Int32) -> Void
+#else
+fileprivate func bjs_GPURenderPassEncoder_setBindGroup(_ self: Int32, _ groupIndex: Int32, _ group: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPURenderPassEncoder_end")
 fileprivate func bjs_GPURenderPassEncoder_end(_ self: Int32) -> Void
 #else
@@ -1816,6 +1920,16 @@ func _$GPURenderPassEncoder_draw(_ self: JSObject, _ vertexCount: Int, _ instanc
     let firstVertexValue = firstVertex.bridgeJSLowerParameter()
     let firstInstanceValue = firstInstance.bridgeJSLowerParameter()
     bjs_GPURenderPassEncoder_draw(selfValue, vertexCountValue, instanceCountValue, firstVertexValue, firstInstanceValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+}
+
+func _$GPURenderPassEncoder_setBindGroup(_ self: JSObject, _ groupIndex: Int, _ group: GPUBindGroup) throws(JSException) -> Void {
+    let selfValue = self.bridgeJSLowerParameter()
+    let groupIndexValue = groupIndex.bridgeJSLowerParameter()
+    let groupValue = group.bridgeJSLowerParameter()
+    bjs_GPURenderPassEncoder_setBindGroup(selfValue, groupIndexValue, groupValue)
     if let error = _swift_js_take_exception() {
         throw error
     }

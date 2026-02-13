@@ -1757,6 +1757,24 @@
                 }
               },
               {
+                "name" : "beginComputePass",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUComputePassDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUComputePassEncoder"
+                  }
+                }
+              },
+              {
                 "name" : "finish",
                 "parameters" : [
 
@@ -2035,6 +2053,78 @@
                     "_0" : "GPUCommandEncoder"
                   }
                 }
+              },
+              {
+                "name" : "createBindGroupLayout",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUBindGroupLayoutDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUBindGroupLayout"
+                  }
+                }
+              },
+              {
+                "name" : "createBindGroup",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUBindGroupDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUBindGroup"
+                  }
+                }
+              },
+              {
+                "name" : "createPipelineLayout",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUPipelineLayoutDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUPipelineLayout"
+                  }
+                }
+              },
+              {
+                "name" : "createComputePipeline",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUComputePipelineDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUComputePipeline"
+                  }
+                }
               }
             ],
             "name" : "GPUDevice",
@@ -2264,6 +2354,32 @@
                     "type" : {
                       "int" : {
 
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "setBindGroup",
+                "parameters" : [
+                  {
+                    "name" : "groupIndex",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "group",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBindGroup"
                       }
                     }
                   }
