@@ -32,9 +32,36 @@ public extension GPUSurface {
 	}
 }
 
+// hacked up things to make NGE work 
+
 public extension GPUTexture {
 	func createView() -> GPUTextureView {
 		createView(descriptor: nil)
+	}
+}
+
+public extension GPUDevice {
+	func createCommandEncoder() -> GPUCommandEncoder {
+		return self.createCommandEncoder(descriptor: nil)
+	}
+}
+
+public extension GPUCommandEncoder {
+	func beginComputePass() -> GPUComputePassEncoder {
+		return self.beginComputePass(descriptor: nil)
+	}
+
+	func finish() -> GPUCommandBuffer {
+		return self.finish(descriptor: nil)! // why is this optional
+	}
+}
+
+public extension GPUComputePassEncoder {
+	func dispatchWorkgroups(workgroupCountX: UInt32, workgroupCountY: UInt32 = 1, workgroupCountZ: UInt32 = 1, hasDefaults : Bool = true) {
+		return self.dispatchWorkgroups(
+			workgroupCountX: workgroupCountX,
+			workgroupCountY: workgroupCountY,
+			workgroupCountZ: workgroupCountZ )
 	}
 }
 

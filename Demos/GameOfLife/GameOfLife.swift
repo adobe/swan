@@ -310,10 +310,10 @@ struct GameOfLifeDemo: DemoProvider {
 			return true
 		}
 
-		let encoder = device.createCommandEncoder(descriptor: GPUCommandEncoderDescriptor(label: "command encoder"))
+		let encoder = device.createCommandEncoder()
 
 		// Compute pass
-		let computePass = encoder.beginComputePass(descriptor: GPUComputePassDescriptor(label: "compute pass"))
+		let computePass = encoder.beginComputePass()
 		computePass.setPipeline(pipeline: simulationPipeline!)
 		computePass.setBindGroup(
 			groupIndex: 0,
@@ -324,8 +324,7 @@ struct GameOfLifeDemo: DemoProvider {
 		let workgroupCount = UInt32(ceil(Double(gridSize) / Double(workgroupSize)))
 		computePass.dispatchWorkgroups(
 			workgroupCountX: workgroupCount,
-			workgroupCountY: workgroupCount,
-			workgroupCountZ: 1
+			workgroupCountY: workgroupCount
 		)
 		computePass.end()
 
@@ -348,7 +347,7 @@ struct GameOfLifeDemo: DemoProvider {
 			)
 		}
 
-		let commandBuffer = encoder.finish(descriptor: nil)!
+		let commandBuffer = encoder.finish()
 		device.queue.submit(commands: [commandBuffer])
 
 		if let texture = screenShotTexture {
