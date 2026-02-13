@@ -280,6 +280,20 @@ let package = Package(
 				.plugin(name: "BridgeJS", package: "JavaScriptKit"),
 			]
 		),
+		.executableTarget(
+			name: "BitonicSortWasm",
+			dependencies: [
+				.target(name: "WebGPUWasm"),
+			],
+			path: "Demos/BitonicSortWasm",
+			exclude: ["index.html"],
+			swiftSettings: swiftSettings + [
+				.enableExperimentalFeature("Extern"),
+			],
+			plugins: [
+				.plugin(name: "BridgeJS", package: "JavaScriptKit"),
+			]
+		),
 		.testTarget(
 			name: "CodeGenerationTests",
 			dependencies: [

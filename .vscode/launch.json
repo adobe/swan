@@ -119,6 +119,26 @@
       "target": "WebGPUTriangleDemo",
       "configuration": "release",
       "preLaunchTask": "swift: Build Release WebGPUTriangleDemo"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:swan}",
+      "name": "Debug BitonicSortWasm",
+      "target": "BitonicSortWasm",
+      "configuration": "debug",
+      "preLaunchTask": "swift: Build Debug BitonicSortWasm"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:swan}",
+      "name": "Release BitonicSortWasm",
+      "target": "BitonicSortWasm",
+      "configuration": "release",
+      "preLaunchTask": "swift: Build Release BitonicSortWasm"
     }
   ]
 }
