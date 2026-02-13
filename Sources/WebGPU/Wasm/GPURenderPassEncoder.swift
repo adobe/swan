@@ -31,6 +31,9 @@
 	) throws(JSException)
 
 	@JSFunction
+	public func setBindGroup(_ groupIndex: Int, _ group: GPUBindGroup) throws(JSException)
+
+	@JSFunction
 	public func end() throws(JSException)
 }
 
