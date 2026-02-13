@@ -34,6 +34,9 @@ extension GPUCullMode: _BridgedSwiftEnumNoPayload, _BridgedSwiftRawValueEnum {
 extension GPUIndexFormat: _BridgedSwiftEnumNoPayload, _BridgedSwiftRawValueEnum {
 }
 
+extension GPUBufferBindingType: _BridgedSwiftEnumNoPayload, _BridgedSwiftRawValueEnum {
+}
+
 extension GPUBufferDescriptor: _BridgedSwiftStruct {
     @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBufferDescriptor {
         let mappedAtCreation = Bool.bridgeJSLiftParameter()
@@ -418,6 +421,300 @@ fileprivate func _bjs_struct_lift_GPUCommandEncoderDescriptor() -> Int32 {
 }
 #endif
 
+extension GPUBufferBinding: _BridgedSwiftStruct {
+    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBufferBinding {
+        let size = Optional<Int>.bridgeJSLiftParameter()
+        let offset = Optional<Int>.bridgeJSLiftParameter()
+        let buffer = GPUBuffer(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
+        return GPUBufferBinding(buffer: buffer, offset: offset, size: size)
+    }
+
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+        self.buffer.jsObject.bridgeJSLowerStackReturn()
+        let __bjs_isSome_offset = self.offset != nil
+        if let __bjs_unwrapped_offset = self.offset {
+            __bjs_unwrapped_offset.bridgeJSLowerStackReturn()
+        }
+        _swift_js_push_i32(__bjs_isSome_offset ? 1 : 0)
+        let __bjs_isSome_size = self.size != nil
+        if let __bjs_unwrapped_size = self.size {
+            __bjs_unwrapped_size.bridgeJSLowerStackReturn()
+        }
+        _swift_js_push_i32(__bjs_isSome_size ? 1 : 0)
+    }
+
+    public init(unsafelyCopying jsObject: JSObject) {
+        let __bjs_cleanupId = _bjs_struct_lower_GPUBufferBinding(jsObject.bridgeJSLowerParameter())
+        defer {
+            _swift_js_struct_cleanup(__bjs_cleanupId)
+        }
+        self = Self.bridgeJSLiftParameter()
+    }
+
+    public func toJSObject() -> JSObject {
+        let __bjs_self = self
+        __bjs_self.bridgeJSLowerReturn()
+        return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBufferBinding()))
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lower_GPUBufferBinding")
+fileprivate func _bjs_struct_lower_GPUBufferBinding(_ objectId: Int32) -> Int32
+#else
+fileprivate func _bjs_struct_lower_GPUBufferBinding(_ objectId: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lift_GPUBufferBinding")
+fileprivate func _bjs_struct_lift_GPUBufferBinding() -> Int32
+#else
+fileprivate func _bjs_struct_lift_GPUBufferBinding() -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+extension GPUBindGroupEntry: _BridgedSwiftStruct {
+    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBindGroupEntry {
+        let resource = GPUBufferBinding.bridgeJSLiftParameter()
+        let binding = Int.bridgeJSLiftParameter()
+        return GPUBindGroupEntry(binding: binding, resource: resource)
+    }
+
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+        self.binding.bridgeJSLowerStackReturn()
+        self.resource.bridgeJSLowerReturn()
+    }
+
+    public init(unsafelyCopying jsObject: JSObject) {
+        let __bjs_cleanupId = _bjs_struct_lower_GPUBindGroupEntry(jsObject.bridgeJSLowerParameter())
+        defer {
+            _swift_js_struct_cleanup(__bjs_cleanupId)
+        }
+        self = Self.bridgeJSLiftParameter()
+    }
+
+    public func toJSObject() -> JSObject {
+        let __bjs_self = self
+        __bjs_self.bridgeJSLowerReturn()
+        return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBindGroupEntry()))
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lower_GPUBindGroupEntry")
+fileprivate func _bjs_struct_lower_GPUBindGroupEntry(_ objectId: Int32) -> Int32
+#else
+fileprivate func _bjs_struct_lower_GPUBindGroupEntry(_ objectId: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lift_GPUBindGroupEntry")
+fileprivate func _bjs_struct_lift_GPUBindGroupEntry() -> Int32
+#else
+fileprivate func _bjs_struct_lift_GPUBindGroupEntry() -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+extension GPUBindGroupDescriptor: _BridgedSwiftStruct {
+    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBindGroupDescriptor {
+        let entries = [GPUBindGroupEntry].bridgeJSLiftParameter()
+        let layout = GPUBindGroupLayout(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
+        let label = Optional<String>.bridgeJSLiftParameter()
+        return GPUBindGroupDescriptor(label: label, layout: layout, entries: entries)
+    }
+
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+        let __bjs_isSome_label = self.label != nil
+        if let __bjs_unwrapped_label = self.label {
+            __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        }
+        _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
+        self.layout.jsObject.bridgeJSLowerStackReturn()
+        self.entries.bridgeJSLowerReturn()
+    }
+
+    public init(unsafelyCopying jsObject: JSObject) {
+        let __bjs_cleanupId = _bjs_struct_lower_GPUBindGroupDescriptor(jsObject.bridgeJSLowerParameter())
+        defer {
+            _swift_js_struct_cleanup(__bjs_cleanupId)
+        }
+        self = Self.bridgeJSLiftParameter()
+    }
+
+    public func toJSObject() -> JSObject {
+        let __bjs_self = self
+        __bjs_self.bridgeJSLowerReturn()
+        return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBindGroupDescriptor()))
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lower_GPUBindGroupDescriptor")
+fileprivate func _bjs_struct_lower_GPUBindGroupDescriptor(_ objectId: Int32) -> Int32
+#else
+fileprivate func _bjs_struct_lower_GPUBindGroupDescriptor(_ objectId: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lift_GPUBindGroupDescriptor")
+fileprivate func _bjs_struct_lift_GPUBindGroupDescriptor() -> Int32
+#else
+fileprivate func _bjs_struct_lift_GPUBindGroupDescriptor() -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+extension GPUBufferBindingLayout: _BridgedSwiftStruct {
+    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBufferBindingLayout {
+        let type = GPUBufferBindingType.bridgeJSLiftParameter(_swift_js_pop_i32(), _swift_js_pop_i32())
+        return GPUBufferBindingLayout(type: type)
+    }
+
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+        self.type.bridgeJSLowerStackReturn()
+    }
+
+    public init(unsafelyCopying jsObject: JSObject) {
+        let __bjs_cleanupId = _bjs_struct_lower_GPUBufferBindingLayout(jsObject.bridgeJSLowerParameter())
+        defer {
+            _swift_js_struct_cleanup(__bjs_cleanupId)
+        }
+        self = Self.bridgeJSLiftParameter()
+    }
+
+    public func toJSObject() -> JSObject {
+        let __bjs_self = self
+        __bjs_self.bridgeJSLowerReturn()
+        return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBufferBindingLayout()))
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lower_GPUBufferBindingLayout")
+fileprivate func _bjs_struct_lower_GPUBufferBindingLayout(_ objectId: Int32) -> Int32
+#else
+fileprivate func _bjs_struct_lower_GPUBufferBindingLayout(_ objectId: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lift_GPUBufferBindingLayout")
+fileprivate func _bjs_struct_lift_GPUBufferBindingLayout() -> Int32
+#else
+fileprivate func _bjs_struct_lift_GPUBufferBindingLayout() -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+extension GPUBindGroupLayoutEntry: _BridgedSwiftStruct {
+    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBindGroupLayoutEntry {
+        let buffer = Optional<GPUBufferBindingLayout>.bridgeJSLiftParameter()
+        let visibility = Int.bridgeJSLiftParameter()
+        let binding = Int.bridgeJSLiftParameter()
+        return GPUBindGroupLayoutEntry(binding: binding, visibility: visibility, buffer: buffer)
+    }
+
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+        self.binding.bridgeJSLowerStackReturn()
+        self.visibility.bridgeJSLowerStackReturn()
+        let __bjs_isSome_buffer = self.buffer != nil
+        if let __bjs_unwrapped_buffer = self.buffer {
+            __bjs_unwrapped_buffer.bridgeJSLowerReturn()
+        }
+        _swift_js_push_i32(__bjs_isSome_buffer ? 1 : 0)
+    }
+
+    public init(unsafelyCopying jsObject: JSObject) {
+        let __bjs_cleanupId = _bjs_struct_lower_GPUBindGroupLayoutEntry(jsObject.bridgeJSLowerParameter())
+        defer {
+            _swift_js_struct_cleanup(__bjs_cleanupId)
+        }
+        self = Self.bridgeJSLiftParameter()
+    }
+
+    public func toJSObject() -> JSObject {
+        let __bjs_self = self
+        __bjs_self.bridgeJSLowerReturn()
+        return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBindGroupLayoutEntry()))
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lower_GPUBindGroupLayoutEntry")
+fileprivate func _bjs_struct_lower_GPUBindGroupLayoutEntry(_ objectId: Int32) -> Int32
+#else
+fileprivate func _bjs_struct_lower_GPUBindGroupLayoutEntry(_ objectId: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lift_GPUBindGroupLayoutEntry")
+fileprivate func _bjs_struct_lift_GPUBindGroupLayoutEntry() -> Int32
+#else
+fileprivate func _bjs_struct_lift_GPUBindGroupLayoutEntry() -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+extension GPUBindGroupLayoutDescriptor: _BridgedSwiftStruct {
+    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBindGroupLayoutDescriptor {
+        let entries = [GPUBindGroupLayoutEntry].bridgeJSLiftParameter()
+        let label = Optional<String>.bridgeJSLiftParameter()
+        return GPUBindGroupLayoutDescriptor(label: label, entries: entries)
+    }
+
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+        let __bjs_isSome_label = self.label != nil
+        if let __bjs_unwrapped_label = self.label {
+            __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        }
+        _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
+        self.entries.bridgeJSLowerReturn()
+    }
+
+    public init(unsafelyCopying jsObject: JSObject) {
+        let __bjs_cleanupId = _bjs_struct_lower_GPUBindGroupLayoutDescriptor(jsObject.bridgeJSLowerParameter())
+        defer {
+            _swift_js_struct_cleanup(__bjs_cleanupId)
+        }
+        self = Self.bridgeJSLiftParameter()
+    }
+
+    public func toJSObject() -> JSObject {
+        let __bjs_self = self
+        __bjs_self.bridgeJSLowerReturn()
+        return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBindGroupLayoutDescriptor()))
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lower_GPUBindGroupLayoutDescriptor")
+fileprivate func _bjs_struct_lower_GPUBindGroupLayoutDescriptor(_ objectId: Int32) -> Int32
+#else
+fileprivate func _bjs_struct_lower_GPUBindGroupLayoutDescriptor(_ objectId: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lift_GPUBindGroupLayoutDescriptor")
+fileprivate func _bjs_struct_lift_GPUBindGroupLayoutDescriptor() -> Int32
+#else
+fileprivate func _bjs_struct_lift_GPUBindGroupLayoutDescriptor() -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
 extension GPUCanvasConfiguration: _BridgedSwiftStruct {
     @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUCanvasConfiguration {
         let alphaMode = String.bridgeJSLiftParameter()
@@ -563,6 +860,149 @@ fileprivate func _bjs_struct_lower_GPURenderPassDescriptor(_ objectId: Int32) ->
 fileprivate func _bjs_struct_lift_GPURenderPassDescriptor() -> Int32
 #else
 fileprivate func _bjs_struct_lift_GPURenderPassDescriptor() -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+extension GPUComputePassDescriptor: _BridgedSwiftStruct {
+    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUComputePassDescriptor {
+        let label = Optional<String>.bridgeJSLiftParameter()
+        return GPUComputePassDescriptor(label: label)
+    }
+
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+        let __bjs_isSome_label = self.label != nil
+        if let __bjs_unwrapped_label = self.label {
+            __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        }
+        _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
+    }
+
+    public init(unsafelyCopying jsObject: JSObject) {
+        let __bjs_cleanupId = _bjs_struct_lower_GPUComputePassDescriptor(jsObject.bridgeJSLowerParameter())
+        defer {
+            _swift_js_struct_cleanup(__bjs_cleanupId)
+        }
+        self = Self.bridgeJSLiftParameter()
+    }
+
+    public func toJSObject() -> JSObject {
+        let __bjs_self = self
+        __bjs_self.bridgeJSLowerReturn()
+        return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUComputePassDescriptor()))
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lower_GPUComputePassDescriptor")
+fileprivate func _bjs_struct_lower_GPUComputePassDescriptor(_ objectId: Int32) -> Int32
+#else
+fileprivate func _bjs_struct_lower_GPUComputePassDescriptor(_ objectId: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lift_GPUComputePassDescriptor")
+fileprivate func _bjs_struct_lift_GPUComputePassDescriptor() -> Int32
+#else
+fileprivate func _bjs_struct_lift_GPUComputePassDescriptor() -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+extension GPUComputeState: _BridgedSwiftStruct {
+    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUComputeState {
+        let entryPoint = String.bridgeJSLiftParameter()
+        let module = GPUShaderModule(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
+        return GPUComputeState(module: module, entryPoint: entryPoint)
+    }
+
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+        self.module.jsObject.bridgeJSLowerStackReturn()
+        self.entryPoint.bridgeJSLowerStackReturn()
+    }
+
+    public init(unsafelyCopying jsObject: JSObject) {
+        let __bjs_cleanupId = _bjs_struct_lower_GPUComputeState(jsObject.bridgeJSLowerParameter())
+        defer {
+            _swift_js_struct_cleanup(__bjs_cleanupId)
+        }
+        self = Self.bridgeJSLiftParameter()
+    }
+
+    public func toJSObject() -> JSObject {
+        let __bjs_self = self
+        __bjs_self.bridgeJSLowerReturn()
+        return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUComputeState()))
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lower_GPUComputeState")
+fileprivate func _bjs_struct_lower_GPUComputeState(_ objectId: Int32) -> Int32
+#else
+fileprivate func _bjs_struct_lower_GPUComputeState(_ objectId: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lift_GPUComputeState")
+fileprivate func _bjs_struct_lift_GPUComputeState() -> Int32
+#else
+fileprivate func _bjs_struct_lift_GPUComputeState() -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+extension GPUComputePipelineDescriptor: _BridgedSwiftStruct {
+    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUComputePipelineDescriptor {
+        let compute = GPUComputeState.bridgeJSLiftParameter()
+        let layout = GPUPipelineLayout(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
+        let label = Optional<String>.bridgeJSLiftParameter()
+        return GPUComputePipelineDescriptor(label: label, layout: layout, compute: compute)
+    }
+
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+        let __bjs_isSome_label = self.label != nil
+        if let __bjs_unwrapped_label = self.label {
+            __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        }
+        _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
+        self.layout.jsObject.bridgeJSLowerStackReturn()
+        self.compute.bridgeJSLowerReturn()
+    }
+
+    public init(unsafelyCopying jsObject: JSObject) {
+        let __bjs_cleanupId = _bjs_struct_lower_GPUComputePipelineDescriptor(jsObject.bridgeJSLowerParameter())
+        defer {
+            _swift_js_struct_cleanup(__bjs_cleanupId)
+        }
+        self = Self.bridgeJSLiftParameter()
+    }
+
+    public func toJSObject() -> JSObject {
+        let __bjs_self = self
+        __bjs_self.bridgeJSLowerReturn()
+        return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUComputePipelineDescriptor()))
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lower_GPUComputePipelineDescriptor")
+fileprivate func _bjs_struct_lower_GPUComputePipelineDescriptor(_ objectId: Int32) -> Int32
+#else
+fileprivate func _bjs_struct_lower_GPUComputePipelineDescriptor(_ objectId: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lift_GPUComputePipelineDescriptor")
+fileprivate func _bjs_struct_lift_GPUComputePipelineDescriptor() -> Int32
+#else
+fileprivate func _bjs_struct_lift_GPUComputePipelineDescriptor() -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
@@ -723,6 +1163,102 @@ fileprivate func _bjs_struct_lift_GPURenderPipelineDescriptor() -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
+
+extension GPUPipelineLayoutDescriptor: _BridgedSwiftStruct {
+    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUPipelineLayoutDescriptor {
+        let bindGroupLayouts = {
+    let __count = Int(_swift_js_pop_i32())
+    var __result: [GPUBindGroupLayout] = []
+    __result.reserveCapacity(__count)
+    for _ in 0 ..< __count {
+        __result.append(GPUBindGroupLayout(unsafelyWrapping: JSObject.bridgeJSLiftParameter()))
+    }
+    __result.reverse()
+    return __result
+        }()
+        let label = Optional<String>.bridgeJSLiftParameter()
+        return GPUPipelineLayoutDescriptor(label: label, bindGroupLayouts: bindGroupLayouts)
+    }
+
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+        let __bjs_isSome_label = self.label != nil
+        if let __bjs_unwrapped_label = self.label {
+            __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        }
+        _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
+        self.bindGroupLayouts.map {
+            $0.jsObject
+        } .bridgeJSLowerReturn()
+    }
+
+    public init(unsafelyCopying jsObject: JSObject) {
+        let __bjs_cleanupId = _bjs_struct_lower_GPUPipelineLayoutDescriptor(jsObject.bridgeJSLowerParameter())
+        defer {
+            _swift_js_struct_cleanup(__bjs_cleanupId)
+        }
+        self = Self.bridgeJSLiftParameter()
+    }
+
+    public func toJSObject() -> JSObject {
+        let __bjs_self = self
+        __bjs_self.bridgeJSLowerReturn()
+        return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUPipelineLayoutDescriptor()))
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lower_GPUPipelineLayoutDescriptor")
+fileprivate func _bjs_struct_lower_GPUPipelineLayoutDescriptor(_ objectId: Int32) -> Int32
+#else
+fileprivate func _bjs_struct_lower_GPUPipelineLayoutDescriptor(_ objectId: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lift_GPUPipelineLayoutDescriptor")
+fileprivate func _bjs_struct_lift_GPUPipelineLayoutDescriptor() -> Int32
+#else
+fileprivate func _bjs_struct_lift_GPUPipelineLayoutDescriptor() -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBindGroup_label_get")
+fileprivate func bjs_GPUBindGroup_label_get(_ self: Int32) -> Void
+#else
+fileprivate func bjs_GPUBindGroup_label_get(_ self: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+func _$GPUBindGroup_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+    let selfValue = self.bridgeJSLowerParameter()
+    bjs_GPUBindGroup_label_get(selfValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBindGroupLayout_label_get")
+fileprivate func bjs_GPUBindGroupLayout_label_get(_ self: Int32) -> Void
+#else
+fileprivate func bjs_GPUBindGroupLayout_label_get(_ self: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+func _$GPUBindGroupLayout_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+    let selfValue = self.bridgeJSLowerParameter()
+    bjs_GPUBindGroupLayout_label_get(selfValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
+}
 
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBuffer_size_get")
@@ -905,6 +1441,116 @@ func _$GPUCommandEncoder_finish(_ self: JSObject) throws(JSException) -> GPUComm
 }
 
 #if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUComputePassEncoder_label_get")
+fileprivate func bjs_GPUComputePassEncoder_label_get(_ self: Int32) -> Void
+#else
+fileprivate func bjs_GPUComputePassEncoder_label_get(_ self: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUComputePassEncoder_setPipeline")
+fileprivate func bjs_GPUComputePassEncoder_setPipeline(_ self: Int32, _ pipeline: Int32) -> Void
+#else
+fileprivate func bjs_GPUComputePassEncoder_setPipeline(_ self: Int32, _ pipeline: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUComputePassEncoder_setBindGroup")
+fileprivate func bjs_GPUComputePassEncoder_setBindGroup(_ self: Int32, _ groupIndex: Int32, _ group: Int32) -> Void
+#else
+fileprivate func bjs_GPUComputePassEncoder_setBindGroup(_ self: Int32, _ groupIndex: Int32, _ group: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUComputePassEncoder_dispatchWorkgroups")
+fileprivate func bjs_GPUComputePassEncoder_dispatchWorkgroups(_ self: Int32, _ workgroupCountX: Int32, _ workgroupCountY: Int32, _ workgroupCountZ: Int32) -> Void
+#else
+fileprivate func bjs_GPUComputePassEncoder_dispatchWorkgroups(_ self: Int32, _ workgroupCountX: Int32, _ workgroupCountY: Int32, _ workgroupCountZ: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUComputePassEncoder_end")
+fileprivate func bjs_GPUComputePassEncoder_end(_ self: Int32) -> Void
+#else
+fileprivate func bjs_GPUComputePassEncoder_end(_ self: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+func _$GPUComputePassEncoder_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+    let selfValue = self.bridgeJSLowerParameter()
+    bjs_GPUComputePassEncoder_label_get(selfValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
+}
+
+func _$GPUComputePassEncoder_setPipeline(_ self: JSObject, _ pipeline: GPUComputePipeline) throws(JSException) -> Void {
+    let selfValue = self.bridgeJSLowerParameter()
+    let pipelineValue = pipeline.bridgeJSLowerParameter()
+    bjs_GPUComputePassEncoder_setPipeline(selfValue, pipelineValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+}
+
+func _$GPUComputePassEncoder_setBindGroup(_ self: JSObject, _ groupIndex: Int, _ group: GPUBindGroup) throws(JSException) -> Void {
+    let selfValue = self.bridgeJSLowerParameter()
+    let groupIndexValue = groupIndex.bridgeJSLowerParameter()
+    let groupValue = group.bridgeJSLowerParameter()
+    bjs_GPUComputePassEncoder_setBindGroup(selfValue, groupIndexValue, groupValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+}
+
+func _$GPUComputePassEncoder_dispatchWorkgroups(_ self: JSObject, _ workgroupCountX: Int, _ workgroupCountY: Int, _ workgroupCountZ: Int) throws(JSException) -> Void {
+    let selfValue = self.bridgeJSLowerParameter()
+    let workgroupCountXValue = workgroupCountX.bridgeJSLowerParameter()
+    let workgroupCountYValue = workgroupCountY.bridgeJSLowerParameter()
+    let workgroupCountZValue = workgroupCountZ.bridgeJSLowerParameter()
+    bjs_GPUComputePassEncoder_dispatchWorkgroups(selfValue, workgroupCountXValue, workgroupCountYValue, workgroupCountZValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+}
+
+func _$GPUComputePassEncoder_end(_ self: JSObject) throws(JSException) -> Void {
+    let selfValue = self.bridgeJSLowerParameter()
+    bjs_GPUComputePassEncoder_end(selfValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUComputePipeline_label_get")
+fileprivate func bjs_GPUComputePipeline_label_get(_ self: Int32) -> Void
+#else
+fileprivate func bjs_GPUComputePipeline_label_get(_ self: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+func _$GPUComputePipeline_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+    let selfValue = self.bridgeJSLowerParameter()
+    bjs_GPUComputePipeline_label_get(selfValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
+}
+
+#if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice_queue_get")
 fileprivate func bjs_GPUDevice_queue_get(_ self: Int32) -> Int32
 #else
@@ -1014,6 +1660,24 @@ func _$GPUDevice_createCommandEncoder(_ self: JSObject, _ descriptor: GPUCommand
         throw error
     }
     return GPUCommandEncoder.bridgeJSLiftReturn(ret)
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUPipelineLayout_label_get")
+fileprivate func bjs_GPUPipelineLayout_label_get(_ self: Int32) -> Void
+#else
+fileprivate func bjs_GPUPipelineLayout_label_get(_ self: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+
+func _$GPUPipelineLayout_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+    let selfValue = self.bridgeJSLowerParameter()
+    bjs_GPUPipelineLayout_label_get(selfValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 #if arch(wasm32)
