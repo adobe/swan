@@ -14,6 +14,7 @@ let supportedNativePlatforms: [Platform] = [.macOS, .windows]
 let wasmPlatforms: [Platform] = [.wasi]
 
 let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"] != nil
+let isWasmBuild: Bool = ProcessInfo.processInfo.environment["SWAN_WASM"] != nil
 
 #if os(Windows)
 let useAddressSanitizer: Bool = false
@@ -63,38 +64,91 @@ let asanLinkerSettings: [LinkerSetting] =
 		.unsafeFlags(["-sanitize=address"])
 	] : []
 
-let package = Package(
-	name: "Swan",
-	platforms: [
-		.macOS(.v15),  // macOS 15
-		.iOS(.v18),  // iOS 18 (or adjust the version as needed)
-	],
-	products: [
-		.library(
-			name: "WebGPU",
-			targets: ["WebGPU"]
+// MARK: - Conditional products and targets based on build configuration
+
+var products: [Product] = [
+	.library(
+		name: "WebGPU",
+		targets: ["WebGPU"]
+	),
+]
+
+var targets: [Target] = []
+
+if isWasmBuild {
+	// WASM configuration: WebGPU via WebGPUWasm + WASM demos
+	targets = [
+		.target(
+			name: "WebGPUWasm",
+			dependencies: [
+				"JavaScriptKit",
+				.product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
+			],
+			path: "Sources/WebGPU/Wasm",
+			exclude: [
+				"Generated/README.md",
+				"Generated/JavaScript",
+				"bridge-js.config.json",
+			],
+			swiftSettings: swiftSettings + [
+				.enableExperimentalFeature("Extern")
+			],
+			linkerSettings: asanLinkerSettings
 		),
+		.target(
+			name: "WebGPU",
+			dependencies: [
+				.target(name: "WebGPUWasm", condition: .when(platforms: wasmPlatforms)),
+			],
+			exclude: [
+				"Dawn",
+				"Wasm",
+			],
+			swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
+			linkerSettings: asanLinkerSettings
+		),
+		.executableTarget(
+			name: "WebGPUTriangleDemo",
+			dependencies: [
+				.target(name: "WebGPUWasm")
+			],
+			path: "Demos/WebGPUTriangleDemo",
+			exclude: ["index.html", "triangle.wgsl"],
+			swiftSettings: swiftSettings + [
+				.enableExperimentalFeature("Extern")
+			],
+			plugins: [
+				.plugin(name: "BridgeJS", package: "JavaScriptKit")
+			]
+		),
+		.executableTarget(
+			name: "BitonicSortWasm",
+			dependencies: [
+				.target(name: "WebGPUWasm")
+			],
+			path: "Demos/BitonicSortWasm",
+			exclude: ["index.html"],
+			swiftSettings: swiftSettings + [
+				.enableExperimentalFeature("Extern")
+			],
+			plugins: [
+				.plugin(name: "BridgeJS", package: "JavaScriptKit")
+			]
+		),
+	]
+} else {
+	// Native configuration: WebGPU via Dawn + native demos, code gen, tests
+	products += [
 		.plugin(
 			name: "GenerateDawnBindingsPlugin",
-			targets: ["GenerateDawnBindingsPlugin"],
+			targets: ["GenerateDawnBindingsPlugin"]
 		),
 		.plugin(
 			name: "GenerateDawnAPINotesPlugin",
 			targets: ["GenerateDawnAPINotesPlugin"]
 		),
-	],
-	dependencies: [
-		.package(
-			url: "https://github.com/swiftlang/swift-testing.git",
-			from: "6.2.3"
-		),
-		.package(url: "https://github.com/apple/swift-log", from: "1.9.1"),
-		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
-		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
-		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.44.1"),
-	],
-	targets: [
+	]
+	targets = [
 		dawnTarget,
 		.executableTarget(
 			name: "GenerateDawnBindings",
@@ -188,27 +242,9 @@ let package = Package(
 			linkerSettings: asanLinkerSettings
 		),
 		.target(
-			name: "WebGPUWasm",
-			dependencies: [
-				"JavaScriptKit",
-				.product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
-			],
-			path: "Sources/WebGPU/Wasm",
-			exclude: [
-				"Generated/README.md",
-				"Generated/JavaScript",
-				"bridge-js.config.json",
-			],
-			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern")
-			],
-			linkerSettings: asanLinkerSettings
-		),
-		.target(
 			name: "WebGPU",
 			dependencies: [
 				.target(name: "WebGPUDawn", condition: .when(platforms: supportedNativePlatforms)),
-				.target(name: "WebGPUWasm", condition: .when(platforms: wasmPlatforms)),
 			],
 			exclude: [
 				"Dawn",
@@ -263,34 +299,6 @@ let package = Package(
 				.linkedLibrary("c++", .when(platforms: [.macOS])),
 			]
 		),
-		.executableTarget(
-			name: "WebGPUTriangleDemo",
-			dependencies: [
-				.target(name: "WebGPUWasm")
-			],
-			path: "Demos/WebGPUTriangleDemo",
-			exclude: ["index.html", "triangle.wgsl"],
-			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern")
-			],
-			plugins: [
-				.plugin(name: "BridgeJS", package: "JavaScriptKit")
-			]
-		),
-		.executableTarget(
-			name: "BitonicSortWasm",
-			dependencies: [
-				.target(name: "WebGPUWasm")
-			],
-			path: "Demos/BitonicSortWasm",
-			exclude: ["index.html"],
-			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern")
-			],
-			plugins: [
-				.plugin(name: "BridgeJS", package: "JavaScriptKit")
-			]
-		),
 		.testTarget(
 			name: "CodeGenerationTests",
 			dependencies: [
@@ -318,4 +326,25 @@ let package = Package(
 			]
 		),
 	]
+}
+
+let package = Package(
+	name: "Swan",
+	platforms: [
+		.macOS(.v15),  // macOS 15
+		.iOS(.v18),  // iOS 18 (or adjust the version as needed)
+	],
+	products: products,
+	dependencies: [
+		.package(
+			url: "https://github.com/swiftlang/swift-testing.git",
+			from: "6.2.3"
+		),
+		.package(url: "https://github.com/apple/swift-log", from: "1.9.1"),
+		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
+		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
+		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.45.0"),
+	],
+	targets: targets
 )
