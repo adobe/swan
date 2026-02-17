@@ -38,23 +38,23 @@ extension GPUBufferBindingType: _BridgedSwiftEnumNoPayload, _BridgedSwiftRawValu
 }
 
 extension GPUBufferDescriptor: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBufferDescriptor {
-        let mappedAtCreation = Bool.bridgeJSLiftParameter()
-        let usage = Int.bridgeJSLiftParameter()
-        let size = Int.bridgeJSLiftParameter()
-        let label = Optional<String>.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUBufferDescriptor {
+        let mappedAtCreation = Bool.bridgeJSStackPop()
+        let usage = Int.bridgeJSStackPop()
+        let size = Int.bridgeJSStackPop()
+        let label = Optional<String>.bridgeJSStackPop()
         return GPUBufferDescriptor(label: label, size: size, usage: usage, mappedAtCreation: mappedAtCreation)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
         let __bjs_isSome_label = self.label != nil
         if let __bjs_unwrapped_label = self.label {
-        __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
-        self.size.bridgeJSLowerStackReturn()
-        self.usage.bridgeJSLowerStackReturn()
-        self.mappedAtCreation.bridgeJSLowerStackReturn()
+        self.size.bridgeJSStackPush()
+        self.usage.bridgeJSStackPush()
+        self.mappedAtCreation.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -62,12 +62,12 @@ extension GPUBufferDescriptor: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBufferDescriptor()))
     }
 }
@@ -91,19 +91,19 @@ fileprivate func _bjs_struct_lift_GPUBufferDescriptor() -> Int32 {
 #endif
 
 extension GPUShaderModuleDescriptor: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUShaderModuleDescriptor {
-        let code = String.bridgeJSLiftParameter()
-        let label = Optional<String>.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUShaderModuleDescriptor {
+        let code = String.bridgeJSStackPop()
+        let label = Optional<String>.bridgeJSStackPop()
         return GPUShaderModuleDescriptor(label: label, code: code)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
         let __bjs_isSome_label = self.label != nil
         if let __bjs_unwrapped_label = self.label {
-        __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
-        self.code.bridgeJSLowerStackReturn()
+        self.code.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -111,12 +111,12 @@ extension GPUShaderModuleDescriptor: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUShaderModuleDescriptor()))
     }
 }
@@ -140,17 +140,17 @@ fileprivate func _bjs_struct_lift_GPUShaderModuleDescriptor() -> Int32 {
 #endif
 
 extension GPUVertexAttribute: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUVertexAttribute {
-        let shaderLocation = Int.bridgeJSLiftParameter()
-        let offset = Int.bridgeJSLiftParameter()
-        let format = GPUVertexFormat.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUVertexAttribute {
+        let shaderLocation = Int.bridgeJSStackPop()
+        let offset = Int.bridgeJSStackPop()
+        let format = GPUVertexFormat.bridgeJSStackPop()
         return GPUVertexAttribute(format: format, offset: offset, shaderLocation: shaderLocation)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.format.bridgeJSLowerStackReturn()
-        self.offset.bridgeJSLowerStackReturn()
-        self.shaderLocation.bridgeJSLowerStackReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.format.bridgeJSStackPush()
+        self.offset.bridgeJSStackPush()
+        self.shaderLocation.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -158,12 +158,12 @@ extension GPUVertexAttribute: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUVertexAttribute()))
     }
 }
@@ -187,17 +187,17 @@ fileprivate func _bjs_struct_lift_GPUVertexAttribute() -> Int32 {
 #endif
 
 extension GPUVertexBufferLayout: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUVertexBufferLayout {
-        let attributes = [GPUVertexAttribute].bridgeJSLiftParameter()
-        let stepMode = GPUVertexStepMode.bridgeJSLiftParameter()
-        let arrayStride = Int.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUVertexBufferLayout {
+        let attributes = [GPUVertexAttribute].bridgeJSStackPop()
+        let stepMode = GPUVertexStepMode.bridgeJSStackPop()
+        let arrayStride = Int.bridgeJSStackPop()
         return GPUVertexBufferLayout(arrayStride: arrayStride, stepMode: stepMode, attributes: attributes)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.arrayStride.bridgeJSLowerStackReturn()
-        self.stepMode.bridgeJSLowerStackReturn()
-        self.attributes.bridgeJSLowerReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.arrayStride.bridgeJSStackPush()
+        self.stepMode.bridgeJSStackPush()
+        self.attributes.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -205,12 +205,12 @@ extension GPUVertexBufferLayout: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUVertexBufferLayout()))
     }
 }
@@ -234,17 +234,17 @@ fileprivate func _bjs_struct_lift_GPUVertexBufferLayout() -> Int32 {
 #endif
 
 extension GPUPrimitiveState: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUPrimitiveState {
-        let cullMode = GPUCullMode.bridgeJSLiftParameter()
-        let frontFace = GPUFrontFace.bridgeJSLiftParameter()
-        let topology = GPUPrimitiveTopology.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUPrimitiveState {
+        let cullMode = GPUCullMode.bridgeJSStackPop()
+        let frontFace = GPUFrontFace.bridgeJSStackPop()
+        let topology = GPUPrimitiveTopology.bridgeJSStackPop()
         return GPUPrimitiveState(topology: topology, frontFace: frontFace, cullMode: cullMode)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.topology.bridgeJSLowerStackReturn()
-        self.frontFace.bridgeJSLowerStackReturn()
-        self.cullMode.bridgeJSLowerStackReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.topology.bridgeJSStackPush()
+        self.frontFace.bridgeJSStackPush()
+        self.cullMode.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -252,12 +252,12 @@ extension GPUPrimitiveState: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUPrimitiveState()))
     }
 }
@@ -281,15 +281,15 @@ fileprivate func _bjs_struct_lift_GPUPrimitiveState() -> Int32 {
 #endif
 
 extension GPUColorTargetState: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUColorTargetState {
-        let writeMask = Int.bridgeJSLiftParameter()
-        let format = GPUTextureFormat.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUColorTargetState {
+        let writeMask = Int.bridgeJSStackPop()
+        let format = GPUTextureFormat.bridgeJSStackPop()
         return GPUColorTargetState(format: format, writeMask: writeMask)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.format.bridgeJSLowerStackReturn()
-        self.writeMask.bridgeJSLowerStackReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.format.bridgeJSStackPush()
+        self.writeMask.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -297,12 +297,12 @@ extension GPUColorTargetState: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUColorTargetState()))
     }
 }
@@ -326,19 +326,19 @@ fileprivate func _bjs_struct_lift_GPUColorTargetState() -> Int32 {
 #endif
 
 extension GPUColor: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUColor {
-        let a = Double.bridgeJSLiftParameter()
-        let b = Double.bridgeJSLiftParameter()
-        let g = Double.bridgeJSLiftParameter()
-        let r = Double.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUColor {
+        let a = Double.bridgeJSStackPop()
+        let b = Double.bridgeJSStackPop()
+        let g = Double.bridgeJSStackPop()
+        let r = Double.bridgeJSStackPop()
         return GPUColor(r: r, g: g, b: b, a: a)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.r.bridgeJSLowerStackReturn()
-        self.g.bridgeJSLowerStackReturn()
-        self.b.bridgeJSLowerStackReturn()
-        self.a.bridgeJSLowerStackReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.r.bridgeJSStackPush()
+        self.g.bridgeJSStackPush()
+        self.b.bridgeJSStackPush()
+        self.a.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -346,12 +346,12 @@ extension GPUColor: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUColor()))
     }
 }
@@ -375,15 +375,15 @@ fileprivate func _bjs_struct_lift_GPUColor() -> Int32 {
 #endif
 
 extension GPUCommandEncoderDescriptor: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUCommandEncoderDescriptor {
-        let label = Optional<String>.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUCommandEncoderDescriptor {
+        let label = Optional<String>.bridgeJSStackPop()
         return GPUCommandEncoderDescriptor(label: label)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
         let __bjs_isSome_label = self.label != nil
         if let __bjs_unwrapped_label = self.label {
-        __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
     }
@@ -393,12 +393,12 @@ extension GPUCommandEncoderDescriptor: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUCommandEncoderDescriptor()))
     }
 }
@@ -422,23 +422,23 @@ fileprivate func _bjs_struct_lift_GPUCommandEncoderDescriptor() -> Int32 {
 #endif
 
 extension GPUBufferBinding: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBufferBinding {
-        let size = Optional<Int>.bridgeJSLiftParameter()
-        let offset = Optional<Int>.bridgeJSLiftParameter()
-        let buffer = GPUBuffer(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUBufferBinding {
+        let size = Optional<Int>.bridgeJSStackPop()
+        let offset = Optional<Int>.bridgeJSStackPop()
+        let buffer = GPUBuffer(unsafelyWrapping: JSObject.bridgeJSStackPop())
         return GPUBufferBinding(buffer: buffer, offset: offset, size: size)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.buffer.jsObject.bridgeJSLowerStackReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.buffer.jsObject.bridgeJSStackPush()
         let __bjs_isSome_offset = self.offset != nil
         if let __bjs_unwrapped_offset = self.offset {
-        __bjs_unwrapped_offset.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_offset.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_offset ? 1 : 0)
         let __bjs_isSome_size = self.size != nil
         if let __bjs_unwrapped_size = self.size {
-        __bjs_unwrapped_size.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_size.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_size ? 1 : 0)
     }
@@ -448,12 +448,12 @@ extension GPUBufferBinding: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBufferBinding()))
     }
 }
@@ -477,15 +477,15 @@ fileprivate func _bjs_struct_lift_GPUBufferBinding() -> Int32 {
 #endif
 
 extension GPUBindGroupEntry: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBindGroupEntry {
-        let resource = GPUBufferBinding.bridgeJSLiftParameter()
-        let binding = Int.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUBindGroupEntry {
+        let resource = GPUBufferBinding.bridgeJSStackPop()
+        let binding = Int.bridgeJSStackPop()
         return GPUBindGroupEntry(binding: binding, resource: resource)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.binding.bridgeJSLowerStackReturn()
-        self.resource.bridgeJSLowerReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.binding.bridgeJSStackPush()
+        self.resource.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -493,12 +493,12 @@ extension GPUBindGroupEntry: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBindGroupEntry()))
     }
 }
@@ -522,21 +522,21 @@ fileprivate func _bjs_struct_lift_GPUBindGroupEntry() -> Int32 {
 #endif
 
 extension GPUBindGroupDescriptor: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBindGroupDescriptor {
-        let entries = [GPUBindGroupEntry].bridgeJSLiftParameter()
-        let layout = GPUBindGroupLayout(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
-        let label = Optional<String>.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUBindGroupDescriptor {
+        let entries = [GPUBindGroupEntry].bridgeJSStackPop()
+        let layout = GPUBindGroupLayout(unsafelyWrapping: JSObject.bridgeJSStackPop())
+        let label = Optional<String>.bridgeJSStackPop()
         return GPUBindGroupDescriptor(label: label, layout: layout, entries: entries)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
         let __bjs_isSome_label = self.label != nil
         if let __bjs_unwrapped_label = self.label {
-        __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
-        self.layout.jsObject.bridgeJSLowerStackReturn()
-        self.entries.bridgeJSLowerReturn()
+        self.layout.jsObject.bridgeJSStackPush()
+        self.entries.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -544,12 +544,12 @@ extension GPUBindGroupDescriptor: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBindGroupDescriptor()))
     }
 }
@@ -573,13 +573,13 @@ fileprivate func _bjs_struct_lift_GPUBindGroupDescriptor() -> Int32 {
 #endif
 
 extension GPUBufferBindingLayout: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBufferBindingLayout {
-        let type = GPUBufferBindingType.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUBufferBindingLayout {
+        let type = GPUBufferBindingType.bridgeJSStackPop()
         return GPUBufferBindingLayout(type: type)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.type.bridgeJSLowerStackReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.type.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -587,12 +587,12 @@ extension GPUBufferBindingLayout: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBufferBindingLayout()))
     }
 }
@@ -616,17 +616,17 @@ fileprivate func _bjs_struct_lift_GPUBufferBindingLayout() -> Int32 {
 #endif
 
 extension GPUBindGroupLayoutEntry: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBindGroupLayoutEntry {
-        let buffer = Optional<GPUBufferBindingLayout>.bridgeJSLiftParameter()
-        let visibility = Int.bridgeJSLiftParameter()
-        let binding = Int.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUBindGroupLayoutEntry {
+        let buffer = Optional<GPUBufferBindingLayout>.bridgeJSStackPop()
+        let visibility = Int.bridgeJSStackPop()
+        let binding = Int.bridgeJSStackPop()
         return GPUBindGroupLayoutEntry(binding: binding, visibility: visibility, buffer: buffer)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.binding.bridgeJSLowerStackReturn()
-        self.visibility.bridgeJSLowerStackReturn()
-        self.buffer.bridgeJSLowerReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.binding.bridgeJSStackPush()
+        self.visibility.bridgeJSStackPush()
+        self.buffer.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -634,12 +634,12 @@ extension GPUBindGroupLayoutEntry: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBindGroupLayoutEntry()))
     }
 }
@@ -663,19 +663,19 @@ fileprivate func _bjs_struct_lift_GPUBindGroupLayoutEntry() -> Int32 {
 #endif
 
 extension GPUBindGroupLayoutDescriptor: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUBindGroupLayoutDescriptor {
-        let entries = [GPUBindGroupLayoutEntry].bridgeJSLiftParameter()
-        let label = Optional<String>.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUBindGroupLayoutDescriptor {
+        let entries = [GPUBindGroupLayoutEntry].bridgeJSStackPop()
+        let label = Optional<String>.bridgeJSStackPop()
         return GPUBindGroupLayoutDescriptor(label: label, entries: entries)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
         let __bjs_isSome_label = self.label != nil
         if let __bjs_unwrapped_label = self.label {
-        __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
-        self.entries.bridgeJSLowerReturn()
+        self.entries.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -683,12 +683,12 @@ extension GPUBindGroupLayoutDescriptor: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUBindGroupLayoutDescriptor()))
     }
 }
@@ -712,17 +712,17 @@ fileprivate func _bjs_struct_lift_GPUBindGroupLayoutDescriptor() -> Int32 {
 #endif
 
 extension GPUCanvasConfiguration: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUCanvasConfiguration {
-        let alphaMode = String.bridgeJSLiftParameter()
-        let format = GPUTextureFormat.bridgeJSLiftParameter()
-        let device = GPUDevice(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUCanvasConfiguration {
+        let alphaMode = String.bridgeJSStackPop()
+        let format = GPUTextureFormat.bridgeJSStackPop()
+        let device = GPUDevice(unsafelyWrapping: JSObject.bridgeJSStackPop())
         return GPUCanvasConfiguration(device: device, format: format, alphaMode: alphaMode)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.device.jsObject.bridgeJSLowerStackReturn()
-        self.format.bridgeJSLowerStackReturn()
-        self.alphaMode.bridgeJSLowerStackReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.device.jsObject.bridgeJSStackPush()
+        self.format.bridgeJSStackPush()
+        self.alphaMode.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -730,12 +730,12 @@ extension GPUCanvasConfiguration: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUCanvasConfiguration()))
     }
 }
@@ -759,19 +759,19 @@ fileprivate func _bjs_struct_lift_GPUCanvasConfiguration() -> Int32 {
 #endif
 
 extension GPURenderPassColorAttachment: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPURenderPassColorAttachment {
-        let clearValue = Optional<GPUColor>.bridgeJSLiftParameter()
-        let storeOp = GPUStoreOp.bridgeJSLiftParameter()
-        let loadOp = GPULoadOp.bridgeJSLiftParameter()
-        let view = GPUTextureView(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPURenderPassColorAttachment {
+        let clearValue = Optional<GPUColor>.bridgeJSStackPop()
+        let storeOp = GPUStoreOp.bridgeJSStackPop()
+        let loadOp = GPULoadOp.bridgeJSStackPop()
+        let view = GPUTextureView(unsafelyWrapping: JSObject.bridgeJSStackPop())
         return GPURenderPassColorAttachment(view: view, loadOp: loadOp, storeOp: storeOp, clearValue: clearValue)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.view.jsObject.bridgeJSLowerStackReturn()
-        self.loadOp.bridgeJSLowerStackReturn()
-        self.storeOp.bridgeJSLowerStackReturn()
-        self.clearValue.bridgeJSLowerReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.view.jsObject.bridgeJSStackPush()
+        self.loadOp.bridgeJSStackPush()
+        self.storeOp.bridgeJSStackPush()
+        self.clearValue.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -779,12 +779,12 @@ extension GPURenderPassColorAttachment: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPURenderPassColorAttachment()))
     }
 }
@@ -808,19 +808,19 @@ fileprivate func _bjs_struct_lift_GPURenderPassColorAttachment() -> Int32 {
 #endif
 
 extension GPURenderPassDescriptor: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPURenderPassDescriptor {
-        let colorAttachments = [GPURenderPassColorAttachment].bridgeJSLiftParameter()
-        let label = Optional<String>.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPURenderPassDescriptor {
+        let colorAttachments = [GPURenderPassColorAttachment].bridgeJSStackPop()
+        let label = Optional<String>.bridgeJSStackPop()
         return GPURenderPassDescriptor(label: label, colorAttachments: colorAttachments)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
         let __bjs_isSome_label = self.label != nil
         if let __bjs_unwrapped_label = self.label {
-        __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
-        self.colorAttachments.bridgeJSLowerReturn()
+        self.colorAttachments.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -828,12 +828,12 @@ extension GPURenderPassDescriptor: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPURenderPassDescriptor()))
     }
 }
@@ -857,15 +857,15 @@ fileprivate func _bjs_struct_lift_GPURenderPassDescriptor() -> Int32 {
 #endif
 
 extension GPUComputePassDescriptor: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUComputePassDescriptor {
-        let label = Optional<String>.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUComputePassDescriptor {
+        let label = Optional<String>.bridgeJSStackPop()
         return GPUComputePassDescriptor(label: label)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
         let __bjs_isSome_label = self.label != nil
         if let __bjs_unwrapped_label = self.label {
-        __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
     }
@@ -875,12 +875,12 @@ extension GPUComputePassDescriptor: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUComputePassDescriptor()))
     }
 }
@@ -904,15 +904,15 @@ fileprivate func _bjs_struct_lift_GPUComputePassDescriptor() -> Int32 {
 #endif
 
 extension GPUComputeState: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUComputeState {
-        let entryPoint = String.bridgeJSLiftParameter()
-        let module = GPUShaderModule(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUComputeState {
+        let entryPoint = String.bridgeJSStackPop()
+        let module = GPUShaderModule(unsafelyWrapping: JSObject.bridgeJSStackPop())
         return GPUComputeState(module: module, entryPoint: entryPoint)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.module.jsObject.bridgeJSLowerStackReturn()
-        self.entryPoint.bridgeJSLowerStackReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.module.jsObject.bridgeJSStackPush()
+        self.entryPoint.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -920,12 +920,12 @@ extension GPUComputeState: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUComputeState()))
     }
 }
@@ -949,21 +949,21 @@ fileprivate func _bjs_struct_lift_GPUComputeState() -> Int32 {
 #endif
 
 extension GPUComputePipelineDescriptor: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUComputePipelineDescriptor {
-        let compute = GPUComputeState.bridgeJSLiftParameter()
-        let layout = GPUPipelineLayout(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
-        let label = Optional<String>.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUComputePipelineDescriptor {
+        let compute = GPUComputeState.bridgeJSStackPop()
+        let layout = GPUPipelineLayout(unsafelyWrapping: JSObject.bridgeJSStackPop())
+        let label = Optional<String>.bridgeJSStackPop()
         return GPUComputePipelineDescriptor(label: label, layout: layout, compute: compute)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
         let __bjs_isSome_label = self.label != nil
         if let __bjs_unwrapped_label = self.label {
-        __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
-        self.layout.jsObject.bridgeJSLowerStackReturn()
-        self.compute.bridgeJSLowerReturn()
+        self.layout.jsObject.bridgeJSStackPush()
+        self.compute.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -971,12 +971,12 @@ extension GPUComputePipelineDescriptor: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUComputePipelineDescriptor()))
     }
 }
@@ -1000,17 +1000,17 @@ fileprivate func _bjs_struct_lift_GPUComputePipelineDescriptor() -> Int32 {
 #endif
 
 extension GPUVertexState: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUVertexState {
-        let buffers = [GPUVertexBufferLayout].bridgeJSLiftParameter()
-        let entryPoint = String.bridgeJSLiftParameter()
-        let module = GPUShaderModule(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUVertexState {
+        let buffers = [GPUVertexBufferLayout].bridgeJSStackPop()
+        let entryPoint = String.bridgeJSStackPop()
+        let module = GPUShaderModule(unsafelyWrapping: JSObject.bridgeJSStackPop())
         return GPUVertexState(module: module, entryPoint: entryPoint, buffers: buffers)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.module.jsObject.bridgeJSLowerStackReturn()
-        self.entryPoint.bridgeJSLowerStackReturn()
-        self.buffers.bridgeJSLowerReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.module.jsObject.bridgeJSStackPush()
+        self.entryPoint.bridgeJSStackPush()
+        self.buffers.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -1018,12 +1018,12 @@ extension GPUVertexState: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUVertexState()))
     }
 }
@@ -1047,17 +1047,17 @@ fileprivate func _bjs_struct_lift_GPUVertexState() -> Int32 {
 #endif
 
 extension GPUFragmentState: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUFragmentState {
-        let targets = [GPUColorTargetState].bridgeJSLiftParameter()
-        let entryPoint = String.bridgeJSLiftParameter()
-        let module = GPUShaderModule(unsafelyWrapping: JSObject.bridgeJSLiftParameter())
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUFragmentState {
+        let targets = [GPUColorTargetState].bridgeJSStackPop()
+        let entryPoint = String.bridgeJSStackPop()
+        let module = GPUShaderModule(unsafelyWrapping: JSObject.bridgeJSStackPop())
         return GPUFragmentState(module: module, entryPoint: entryPoint, targets: targets)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
-        self.module.jsObject.bridgeJSLowerStackReturn()
-        self.entryPoint.bridgeJSLowerStackReturn()
-        self.targets.bridgeJSLowerReturn()
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.module.jsObject.bridgeJSStackPush()
+        self.entryPoint.bridgeJSStackPush()
+        self.targets.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -1065,12 +1065,12 @@ extension GPUFragmentState: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUFragmentState()))
     }
 }
@@ -1094,25 +1094,25 @@ fileprivate func _bjs_struct_lift_GPUFragmentState() -> Int32 {
 #endif
 
 extension GPURenderPipelineDescriptor: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPURenderPipelineDescriptor {
-        let fragment = Optional<GPUFragmentState>.bridgeJSLiftParameter()
-        let primitive = Optional<GPUPrimitiveState>.bridgeJSLiftParameter()
-        let vertex = GPUVertexState.bridgeJSLiftParameter()
-        let layout = String.bridgeJSLiftParameter()
-        let label = Optional<String>.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPURenderPipelineDescriptor {
+        let fragment = Optional<GPUFragmentState>.bridgeJSStackPop()
+        let primitive = Optional<GPUPrimitiveState>.bridgeJSStackPop()
+        let vertex = GPUVertexState.bridgeJSStackPop()
+        let layout = String.bridgeJSStackPop()
+        let label = Optional<String>.bridgeJSStackPop()
         return GPURenderPipelineDescriptor(label: label, layout: layout, vertex: vertex, primitive: primitive, fragment: fragment)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
         let __bjs_isSome_label = self.label != nil
         if let __bjs_unwrapped_label = self.label {
-        __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
-        self.layout.bridgeJSLowerStackReturn()
-        self.vertex.bridgeJSLowerReturn()
-        self.primitive.bridgeJSLowerReturn()
-        self.fragment.bridgeJSLowerReturn()
+        self.layout.bridgeJSStackPush()
+        self.vertex.bridgeJSStackPush()
+        self.primitive.bridgeJSStackPush()
+        self.fragment.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -1120,12 +1120,12 @@ extension GPURenderPipelineDescriptor: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPURenderPipelineDescriptor()))
     }
 }
@@ -1149,19 +1149,19 @@ fileprivate func _bjs_struct_lift_GPURenderPipelineDescriptor() -> Int32 {
 #endif
 
 extension GPUPipelineLayoutDescriptor: _BridgedSwiftStruct {
-    @_spi(BridgeJS) @_transparent public static func bridgeJSLiftParameter() -> GPUPipelineLayoutDescriptor {
-        let bindGroupLayouts = [JSObject].bridgeJSLiftParameter().map { GPUBindGroupLayout(unsafelyWrapping: $0) }
-        let label = Optional<String>.bridgeJSLiftParameter()
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUPipelineLayoutDescriptor {
+        let bindGroupLayouts = [JSObject].bridgeJSStackPop().map { GPUBindGroupLayout(unsafelyWrapping: $0) }
+        let label = Optional<String>.bridgeJSStackPop()
         return GPUPipelineLayoutDescriptor(label: label, bindGroupLayouts: bindGroupLayouts)
     }
 
-    @_spi(BridgeJS) @_transparent public consuming func bridgeJSLowerReturn() {
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
         let __bjs_isSome_label = self.label != nil
         if let __bjs_unwrapped_label = self.label {
-        __bjs_unwrapped_label.bridgeJSLowerStackReturn()
+        __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
-        self.bindGroupLayouts.map { $0.jsObject }.bridgeJSLowerReturn()
+        self.bindGroupLayouts.map { $0.jsObject }.bridgeJSStackPush()
     }
 
     public init(unsafelyCopying jsObject: JSObject) {
@@ -1169,12 +1169,12 @@ extension GPUPipelineLayoutDescriptor: _BridgedSwiftStruct {
         defer {
             _swift_js_struct_cleanup(__bjs_cleanupId)
         }
-        self = Self.bridgeJSLiftParameter()
+        self = Self.bridgeJSStackPop()
     }
 
     public func toJSObject() -> JSObject {
         let __bjs_self = self
-        __bjs_self.bridgeJSLowerReturn()
+        __bjs_self.bridgeJSStackPush()
         return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUPipelineLayoutDescriptor()))
     }
 }
