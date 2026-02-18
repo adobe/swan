@@ -567,6 +567,27 @@ struct TestTypeDescriptor: TypeDescriptor {
 		#expect(structures.contains("init(wgpuStruct:"))
 	}
 
+	@Test("Method with inout struct uses withWGPUStructInOut")
+	func testMethodWithInoutStructUsesWithWGPUStructInOut() {
+		let data = try? JSONDecoder().decode(DawnData.self, from: inoutStructDawnData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+
+		guard case .object(let adapter) = data.data[Name("adapter")] else {
+			Issue.record("Failed to get adapter")
+			return
+		}
+		let getLimits = adapter.methods.first { $0.name == Name("get limits") }!
+
+		let generated = getLimits.methodWrapperDecl(data: data).formatted().description
+
+		// The wrapper should use withWGPUStructInOut to reconstruct the Swift struct
+		// after the C API mutates it, not withWGPUMutablePointer which discards mutations.
+		#expect(generated.contains("withWGPUStructInOut"))
+		#expect(!generated.contains("withWGPUMutablePointer"))
+	}
 
 	@Test("Struct withWGPUStruct derives count from array")
 	func testStructWithWGPUStructDerivesCount() {
