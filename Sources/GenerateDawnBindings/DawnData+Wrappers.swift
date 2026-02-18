@@ -147,6 +147,17 @@ extension DawnData {
 					{
 						structureNames.insert(returnType.type)
 					}
+					// Check method arguments for inout struct parameters (annotation "*")
+					if let args = method.args {
+						for arg in args {
+							if let structureEntity = data[arg.type],
+								case .structure = structureEntity,
+								arg.annotation == "*"
+							{
+								structureNames.insert(arg.type)
+							}
+						}
+					}
 				}
 			case .functionPointer(let functionPointer):
 				// Check method arguments for structure types
