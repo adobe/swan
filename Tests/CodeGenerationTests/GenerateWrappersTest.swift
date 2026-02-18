@@ -548,6 +548,26 @@ struct TestTypeDescriptor: TypeDescriptor {
 		#expect(wrappableStructs.contains(Name("limits")))
 	}
 
+	@Test("Inout structs get GPUStructWrappable conformance and init(wgpuStruct:)")
+	func testInoutStructsGetWrappableConformance() {
+		let data = try? JSONDecoder().decode(DawnData.self, from: inoutStructDawnData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+
+		let wrappers = try? data.generateWrappers(swiftFormatConfiguration: nil)
+		guard let wrappers = wrappers else {
+			Issue.record("Failed to generate wrappers")
+			return
+		}
+
+		let structures = wrappers["Structures"]!
+		#expect(structures.contains("GPUStructWrappable"))
+		#expect(structures.contains("init(wgpuStruct:"))
+	}
+
+
 	@Test("Struct withWGPUStruct derives count from array")
 	func testStructWithWGPUStructDerivesCount() {
 		let data = try? JSONDecoder().decode(DawnData.self, from: structWithArrayDawnData.data(using: .utf8)!)
