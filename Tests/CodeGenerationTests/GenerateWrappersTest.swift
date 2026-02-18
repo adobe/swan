@@ -533,6 +533,21 @@ struct TestTypeDescriptor: TypeDescriptor {
 		#expect(!combined.contains("public var entryCount"))
 	}
 
+	@Test("Inout struct parameters are detected for wrapping")
+	func testInoutStructParametersDetectedForWrapping() {
+		let data = try? JSONDecoder().decode(DawnData.self, from: inoutStructDawnData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+
+		let wrappableStructs = data.structuresRequiringWrapping()
+
+		// The limits struct is used as an inout parameter (annotation "*") in adapter.getLimits(),
+		// so it should be detected as requiring wrapping.
+		#expect(wrappableStructs.contains(Name("limits")))
+	}
+
 	@Test("Struct withWGPUStruct derives count from array")
 	func testStructWithWGPUStructDerivesCount() {
 		let data = try? JSONDecoder().decode(DawnData.self, from: structWithArrayDawnData.data(using: .utf8)!)
@@ -704,6 +719,40 @@ let dawnPrefixedDawnData = """
 		"uint32_t": {
 			"category": "native",
 			"wasm type": "i"
+		}
+	}
+	"""
+
+let inoutStructDawnData = """
+	{
+		"adapter": {
+			"category": "object",
+			"methods": [
+				{
+					"name": "get limits",
+					"returns": "status",
+					"args": [
+						{"name": "limits", "type": "limits", "annotation": "*"}
+					]
+				}
+			]
+		},
+		"limits": {
+			"category": "structure",
+			"extensible": "out",
+			"members": [
+				{"name": "max texture dimension 1D", "type": "uint32_t"}
+			]
+		},
+		"status": {
+			"category": "enum",
+			"values": [
+				{"value": 1, "name": "success"},
+				{"value": 2, "name": "error"}
+			]
+		},
+		"uint32_t": {
+			"category": "native"
 		}
 	}
 	"""
