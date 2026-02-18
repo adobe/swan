@@ -39,6 +39,12 @@ public func runDemo<Provider: DemoProvider>(
 		instance.processEvents()
 	}
 
+	var limits = GPULimits();
+	limits.maxTextureDimension1D = 23;
+	let limitsResult = adapter!.getLimits(limits : &limits);
+	assert( limitsResult == GPUStatus.success );
+	print ( limits );
+
 	var device: GPUDevice? = nil
 
 	var deviceDescriptor: GPUDeviceDescriptor = GPUDeviceDescriptor(

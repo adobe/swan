@@ -317,9 +317,7 @@ struct GameOfLifeDemo: DemoProvider {
 		computePass.setPipeline(pipeline: simulationPipeline!)
 		computePass.setBindGroup(
 			groupIndex: 0,
-			group: bindGroups[Int(step % 2)],
-			dynamicOffsetCount: 0,
-			dynamicOffsets: []
+			group: bindGroups[Int(step % 2)]
 		)
 		let workgroupCount = UInt32(ceil(Double(gridSize) / Double(workgroupSize)))
 		computePass.dispatchWorkgroups(
