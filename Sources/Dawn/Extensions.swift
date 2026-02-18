@@ -82,6 +82,79 @@ public extension GPUExtent3D {
 	}
 }
 
+
+
+public extension GPUAdapter {
+	func getInfo() -> GPUAdapterInfo {
+		func CStringViewToString(_ c : WGPUStringView ) -> String {
+			return c.data.withMemoryRebound(to: UInt8.self, capacity: c.length) { p in 
+				return String(bytes: UnsafeBufferPointer(start: p, count: c.length), encoding: .utf8 )!;
+			};
+		}
+		var i: WGPUAdapterInfo = WGPUAdapterInfo();
+		withUnsafeMutablePointer(to: &i) { ptr in 
+			let r = self.getInfo(info: ptr);
+			assert(r == .success);
+		}
+		return GPUAdapterInfo (
+			vendor: CStringViewToString(i.vendor),
+			architecture: CStringViewToString(i.architecture),
+			device: CStringViewToString(i.device),
+			description: CStringViewToString(i.description),
+			backendType: i.backendType,
+			adapterType: i.adapterType,
+			vendorID: i.vendorID,
+			deviceID: i.deviceID,
+			subgroupMinSize: i.subgroupMinSize,
+			subgroupMaxSize: i.subgroupMaxSize,
+			nextInChain: nil
+		) 
+	}
+
+	func getLimits() -> GPULimits {
+		var l: WGPULimits = WGPULimits();
+		withUnsafeMutablePointer(to: &l) { ptr in 
+			let r = self.getLimits(limits: ptr);
+			assert(r == .success);
+		}
+		return GPULimits (
+			maxTextureDimension1D: l.maxTextureDimension1D, 
+			maxTextureDimension2D: l.maxTextureDimension2D, 
+			maxTextureDimension3D: l.maxTextureDimension3D, 
+			maxTextureArrayLayers: l.maxTextureArrayLayers, 
+			maxBindGroups: l.maxBindGroups, 
+			maxBindGroupsPlusVertexBuffers: l.maxBindGroupsPlusVertexBuffers, 
+			maxBindingsPerBindGroup: l.maxBindingsPerBindGroup, 
+			maxDynamicUniformBuffersPerPipelineLayout: l.maxDynamicUniformBuffersPerPipelineLayout, 
+			maxDynamicStorageBuffersPerPipelineLayout: l.maxDynamicStorageBuffersPerPipelineLayout, 
+			maxSampledTexturesPerShaderStage: l.maxSampledTexturesPerShaderStage, 
+			maxSamplersPerShaderStage: l.maxSamplersPerShaderStage, 
+			maxStorageBuffersPerShaderStage: l.maxStorageBuffersPerShaderStage, 
+			maxStorageTexturesPerShaderStage: l.maxStorageTexturesPerShaderStage, 
+			maxUniformBuffersPerShaderStage: l.maxUniformBuffersPerShaderStage, 
+			maxUniformBufferBindingSize: l.maxUniformBufferBindingSize,
+			maxStorageBufferBindingSize: l.maxStorageBufferBindingSize, 
+			minUniformBufferOffsetAlignment: l.minUniformBufferOffsetAlignment, 
+			minStorageBufferOffsetAlignment: l.minStorageBufferOffsetAlignment, 
+			maxVertexBuffers: l.maxVertexBuffers, 
+			maxBufferSize: l.maxBufferSize, 
+			maxVertexAttributes: l.maxVertexAttributes, 
+			maxVertexBufferArrayStride: l.maxVertexBufferArrayStride, 
+			maxInterStageShaderVariables: l.maxInterStageShaderVariables, 
+			maxColorAttachments: l.maxColorAttachments, 
+			maxColorAttachmentBytesPerSample: l.maxColorAttachmentBytesPerSample, 
+			maxComputeWorkgroupStorageSize: l.maxComputeWorkgroupStorageSize, 
+			maxComputeInvocationsPerWorkgroup: l.maxComputeInvocationsPerWorkgroup, 
+			maxComputeWorkgroupSizeX: l.maxComputeWorkgroupSizeX, 
+			maxComputeWorkgroupSizeY: l.maxComputeWorkgroupSizeY, 
+			maxComputeWorkgroupSizeZ: l.maxComputeWorkgroupSizeZ, 
+			maxComputeWorkgroupsPerDimension: l.maxComputeWorkgroupsPerDimension, 
+			maxImmediateSize: l.maxImmediateSize, 
+			nextInChain: nil
+		)
+	}
+}
+
 extension GPUBuffer: @retroactive Equatable {
 	public static func == (lhs: GPUBuffer, rhs: GPUBuffer) -> Bool {
 		return withUnsafePointer(to: lhs) { 

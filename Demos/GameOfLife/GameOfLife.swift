@@ -119,11 +119,35 @@ struct GameOfLifeDemo: DemoProvider {
 
 		// Create shader modules
 		let cellShaderModule = device.createShaderModule(
-			descriptor: GPUShaderModuleDescriptor(label: "Cell shader", code: cellShader)
+			descriptor: GPUShaderModuleDescriptor(
+				label: "Cell shader", 
+				code: cellShader
+			)
 		)
 		let simulationShaderModule = device.createShaderModule(
 			descriptor: GPUShaderModuleDescriptor(label: "Game of Life simulation shader", code: simulationComputeShader)
 		)
+
+		_ = simulationShaderModule.getCompilationInfo(
+			callbackInfo: GPUCompilationInfoCallbackInfo(
+				mode: .allowProcessEvents,
+				callback: { status, result in
+					switch status {
+					case .success:
+						// Shader compilation will almost always have a success result code.
+						// Compilation messages will contain: INFO, WARNING, ERROR
+						print ( "Shader ok!" )
+						//if !result.messages.isEmpty {
+						//}
+					case .callbackCancelled:
+						print("Shader compiler cancelled callback")
+					case .force32: // should not be in enum (api notes?)
+						fatalError();
+					}
+				}
+			)
+		)
+
 
 		// Create bind group layout
 		let bindGroupLayout = device.createBindGroupLayout(
