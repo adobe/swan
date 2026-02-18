@@ -48,6 +48,8 @@ public func runDemo<Provider: DemoProvider>(
 	var device: GPUDevice? = nil
 
 	var deviceDescriptor: GPUDeviceDescriptor = GPUDeviceDescriptor(
+		requiredFeatures: [.shaderF16],
+		requiredLimits: nil,
 		defaultQueue: GPUQueueDescriptor(),
 		deviceLostCallbackInfo: GPUDeviceLostCallbackInfo(
 			mode: .allowProcessEvents,

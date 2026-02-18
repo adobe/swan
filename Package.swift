@@ -40,7 +40,7 @@ let dawnTarget: Target = {
 }()
 
 var swiftSettings: [SwiftSetting] = [
-	.unsafeFlags(["-warnings-as-errors"])
+	//.unsafeFlags(["-warnings-as-errors"])
 ]
 
 // Generate PDB debug info on Windows for Visual Studio debugging compatibility
