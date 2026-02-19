@@ -58,18 +58,6 @@ extension GPUSimpleStruct {
 	}
 }
 
-extension GPUStructWrappable {
-	/// Construct the WGPU struct and return the result of the lambda, also unpacking the WGPU struct back into the Swift struct
-	mutating func withWGPUStructInOut<R>(_ lambda: (UnsafeMutablePointer<WGPUType>) -> R) -> R {
-		withWGPUStruct() { wgpuStruct in
-			let result = withUnsafeMutablePointer(to: &wgpuStruct) { pointer in
-				lambda(pointer)
-			}
-			self = Self(wgpuStruct: wgpuStruct)
-			return result
-		}
-	}
-}
 
 public extension GPUChainedStruct {
 	/// Construct the linked chain of WGPUChainedStructs from the chain of wrapper structs
