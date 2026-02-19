@@ -17,11 +17,11 @@ public extension WithWGPUPointer where Self: GPUStruct {
 	}
 
 	mutating func withWGPUMutablePointer<R>(_ lambda: (UnsafeMutablePointer<WGPUType>) -> R) -> R {
-		withWGPUStruct { wgpuStruct in
-			withUnsafeMutablePointer(to: &wgpuStruct) { pointer in
-				lambda(pointer)
-			}
-		}
+		fatalError(
+			"withWGPUMutablePointer is not supported on GPUStruct types that don't conform to GPUStructWrappable. "
+				+ "The temporary C struct created by withWGPUStruct would be discarded after mutation. "
+				+ "Use GPUStructWrappable conformance to enable mutable pointer support with reconstruction."
+		)
 	}
 }
 
