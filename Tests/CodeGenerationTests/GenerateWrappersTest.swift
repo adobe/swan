@@ -533,8 +533,8 @@ struct TestTypeDescriptor: TypeDescriptor {
 		#expect(!combined.contains("public var entryCount"))
 	}
 
-	@Test("Inout struct parameters are detected for wrapping")
-	func testInoutStructParametersDetectedForWrapping() {
+	@Test("Mutable pointer struct parameters are detected for wrapping")
+	func testMutablePointerStructParametersDetectedForWrapping() {
 		let data = try? JSONDecoder().decode(DawnData.self, from: inoutStructDawnData.data(using: .utf8)!)
 		guard let data = data else {
 			Issue.record("Failed to decode data")
@@ -543,13 +543,13 @@ struct TestTypeDescriptor: TypeDescriptor {
 
 		let wrappableStructs = data.structuresRequiringWrapping()
 
-		// The limits struct is used as an inout parameter (annotation "*") in adapter.getLimits(),
+		// The limits struct is used as a mutable pointer parameter (annotation "*") in adapter.getLimits(),
 		// so it should be detected as requiring wrapping.
 		#expect(wrappableStructs.contains(Name("limits")))
 	}
 
-	@Test("Inout structs get GPUStructWrappable conformance and init(wgpuStruct:)")
-	func testInoutStructsGetWrappableConformance() {
+	@Test("Mutable pointer structs get GPUStructWrappable conformance and init(wgpuStruct:)")
+	func testMutablePointerStructsGetWrappableConformance() {
 		let data = try? JSONDecoder().decode(DawnData.self, from: inoutStructDawnData.data(using: .utf8)!)
 		guard let data = data else {
 			Issue.record("Failed to decode data")
@@ -567,8 +567,8 @@ struct TestTypeDescriptor: TypeDescriptor {
 		#expect(structures.contains("init(wgpuStruct:"))
 	}
 
-	@Test("Method with inout struct uses withWGPUMutablePointer")
-	func testMethodWithInoutStructUsesWithWGPUMutablePointer() {
+	@Test("Method with mutable pointer struct uses withWGPUMutablePointer")
+	func testMethodWithMutablePointerStructUsesWithWGPUMutablePointer() {
 		let data = try? JSONDecoder().decode(DawnData.self, from: inoutStructDawnData.data(using: .utf8)!)
 		guard let data = data else {
 			Issue.record("Failed to decode data")
