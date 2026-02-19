@@ -59,6 +59,9 @@ struct BitonicSortDemo: DemoProvider {
 		self.device = device
 		self.surface = surface
 
+		self.workgroupSize = maxWorkgroupSize(device: device)
+		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: self.workgroupSize)
+
 		let bufferSize = self.createElementBuffers(device: device)
 		let uniformSize = self.createUniformBuffer(device: device)
 		let (computeBindGroupLayout, renderBindGroupLayout) = self.createBindGroupLayouts(device: device)
@@ -368,6 +371,17 @@ struct BitonicSortDemo: DemoProvider {
 		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: self.workgroupSize)
 		self.currentBuffer = 0
 		print("Sort reset: \(totalElements) elements, \(self.sortState.totalSteps) steps")
+	}
+
+	private func maxWorkgroupSize(device: GPUDevice) -> Int {
+		var limits = GPULimits()
+		if device.getLimits(limits: &limits) == .success {
+			return min(
+				Int(limits.maxComputeWorkgroupSizeX),
+				Int(limits.maxComputeInvocationsPerWorkgroup)
+			)
+		}
+		return workgroupSize
 	}
 
 	private func keyIsPressed(_ key: UInt8) -> Bool {
