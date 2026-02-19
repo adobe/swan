@@ -5,9 +5,8 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
+import JavaScriptKit
 
-@_spi(Experimental)
 @JS public struct GPUBufferBinding {
 	public var buffer: GPUBuffer
 	public var offset: Int?
@@ -24,7 +23,6 @@
 	}
 }
 
-@_spi(Experimental)
 @JS public struct GPUBindGroupEntry {
 	public var binding: Int
 	public var resource: GPUBufferBinding
@@ -47,7 +45,6 @@
 	}
 }
 
-@_spi(Experimental)
 @JS public struct GPUBindGroupDescriptor {
 	public var label: String?
 	public var layout: GPUBindGroupLayout
@@ -64,7 +61,6 @@
 	}
 }
 
-@_spi(Experimental)
 @JSClass public struct GPUBindGroup {
 	public let jsObject: JSObject
 	public init(unsafelyWrapping jsObject: JSObject) {

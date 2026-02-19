@@ -94,7 +94,7 @@ let package = Package(
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
 		.package(
 			url: "https://github.com/swiftwasm/JavaScriptKit.git",
-			branch: "examples-in-bjs"
+			from: "0.46.0"
 		),
 	],
 	targets: [

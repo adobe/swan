@@ -5,9 +5,8 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
+import JavaScriptKit
 
-@_spi(Experimental)
 @JS public struct GPUVertexState {
 	public var module: GPUShaderModule
 	public var entryPoint: String
@@ -24,7 +23,6 @@
 	}
 }
 
-@_spi(Experimental)
 @JS public struct GPUFragmentState {
 	public var module: GPUShaderModule
 	public var entryPoint: String
@@ -41,7 +39,6 @@
 	}
 }
 
-@_spi(Experimental)
 @JS public struct GPURenderPipelineDescriptor {
 	public var label: String?
 	public var layout: String
@@ -64,7 +61,6 @@
 	}
 }
 
-@_spi(Experimental)
 @JSClass public struct GPUDevice {
 	public let jsObject: JSObject
 	public init(unsafelyWrapping jsObject: JSObject) {

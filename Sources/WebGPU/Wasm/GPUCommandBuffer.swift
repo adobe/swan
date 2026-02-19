@@ -5,9 +5,8 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 
-@_spi(Experimental) import JavaScriptKit
+import JavaScriptKit
 
-@_spi(Experimental)
 @JSClass
 public struct GPUCommandBuffer {
 	public let jsObject: JSObject
