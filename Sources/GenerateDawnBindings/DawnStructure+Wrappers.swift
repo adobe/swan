@@ -474,11 +474,11 @@ extension DawnStructure: DawnType {
 				}
 				"""
 		case "*":
-			// For mutable pointers to wrappable structs, use withWGPUStructInOut to
-			// reconstruct the Swift wrapper after the C call mutates it.
+			// For mutable pointers, use withWGPUMutablePointer. The GPUStructWrappable
+			// override reconstructs the Swift wrapper after the C call mutates it.
 			return
 				"""
-				\(raw: identifier).withWGPUStructInOut { \(raw: identifier) in
+				\(raw: identifier).withWGPUMutablePointer { \(raw: identifier) in
 					\(expression ?? "", format: TabFormat(initialIndentation: .tabs(0)))
 				}
 				"""
