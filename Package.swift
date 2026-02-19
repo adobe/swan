@@ -267,20 +267,6 @@ let package = Package(
 			]
 		),
 		.executableTarget(
-			name: "WebGPUTriangleDemo",
-			dependencies: [
-				.target(name: "WebGPUWasm"),
-			],
-			path: "Demos/WebGPUTriangleDemo",
-			exclude: ["index.html", "triangle.wgsl"],
-			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern"),
-			],
-			plugins: [
-				.plugin(name: "BridgeJS", package: "JavaScriptKit"),
-			]
-		),
-		.executableTarget(
 			name: "BitonicSortWasm",
 			dependencies: [
 				.target(name: "WebGPUWasm"),
