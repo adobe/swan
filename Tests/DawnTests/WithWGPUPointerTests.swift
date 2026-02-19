@@ -816,6 +816,15 @@ struct WithWGPUPointerTests {
 		#expect(result == "success")
 	}
 
+	@Test("withWGPUMutablePointer reconstructs GPUStructWrappable after mutation")
+	func testMutablePointerReconstructsWrappableStruct() {
+		var limits = GPULimits()
+		limits.withWGPUMutablePointer { pointer in
+			pointer.pointee.maxTextureDimension1D = 42
+		}
+		#expect(limits.maxTextureDimension1D == 42)
+	}
+
 	// Simple test class for AnyObject array tests
 	private class TestObject {
 		let value: Int
