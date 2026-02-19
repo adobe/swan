@@ -533,6 +533,61 @@ struct TestTypeDescriptor: TypeDescriptor {
 		#expect(!combined.contains("public var entryCount"))
 	}
 
+	@Test("Mutable pointer struct parameters are detected for wrapping")
+	func testMutablePointerStructParametersDetectedForWrapping() {
+		let data = try? JSONDecoder().decode(DawnData.self, from: inoutStructDawnData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+
+		let wrappableStructs = data.structuresRequiringWrapping()
+
+		// The limits struct is used as a mutable pointer parameter (annotation "*") in adapter.getLimits(),
+		// so it should be detected as requiring wrapping.
+		#expect(wrappableStructs.contains(Name("limits")))
+	}
+
+	@Test("Mutable pointer structs get GPUStructWrappable conformance and init(wgpuStruct:)")
+	func testMutablePointerStructsGetWrappableConformance() {
+		let data = try? JSONDecoder().decode(DawnData.self, from: inoutStructDawnData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+
+		let wrappers = try? data.generateWrappers(swiftFormatConfiguration: nil)
+		guard let wrappers = wrappers else {
+			Issue.record("Failed to generate wrappers")
+			return
+		}
+
+		let structures = wrappers["Structures"]!
+		#expect(structures.contains("GPUStructWrappable"))
+		#expect(structures.contains("init(wgpuStruct:"))
+	}
+
+	@Test("Method with mutable pointer struct uses withWGPUMutablePointer")
+	func testMethodWithMutablePointerStructUsesWithWGPUMutablePointer() {
+		let data = try? JSONDecoder().decode(DawnData.self, from: inoutStructDawnData.data(using: .utf8)!)
+		guard let data = data else {
+			Issue.record("Failed to decode data")
+			return
+		}
+
+		guard case .object(let adapter) = data.data[Name("adapter")] else {
+			Issue.record("Failed to get adapter")
+			return
+		}
+		let getLimits = adapter.methods.first { $0.name == Name("get limits") }!
+
+		let generated = getLimits.methodWrapperDecl(data: data).formatted().description
+
+		// The wrapper should use withWGPUMutablePointer, which reconstructs the Swift struct
+		// after the C API mutates it (via the GPUStructWrappable override).
+		#expect(generated.contains("withWGPUMutablePointer"))
+	}
+
 	@Test("Struct withWGPUStruct derives count from array")
 	func testStructWithWGPUStructDerivesCount() {
 		let data = try? JSONDecoder().decode(DawnData.self, from: structWithArrayDawnData.data(using: .utf8)!)
@@ -704,6 +759,40 @@ let dawnPrefixedDawnData = """
 		"uint32_t": {
 			"category": "native",
 			"wasm type": "i"
+		}
+	}
+	"""
+
+let inoutStructDawnData = """
+	{
+		"adapter": {
+			"category": "object",
+			"methods": [
+				{
+					"name": "get limits",
+					"returns": "status",
+					"args": [
+						{"name": "limits", "type": "limits", "annotation": "*"}
+					]
+				}
+			]
+		},
+		"limits": {
+			"category": "structure",
+			"extensible": "out",
+			"members": [
+				{"name": "max texture dimension 1D", "type": "uint32_t"}
+			]
+		},
+		"status": {
+			"category": "enum",
+			"values": [
+				{"value": 1, "name": "success"},
+				{"value": 2, "name": "error"}
+			]
+		},
+		"uint32_t": {
+			"category": "native"
 		}
 	}
 	"""
