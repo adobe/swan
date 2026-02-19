@@ -25,6 +25,18 @@ public extension WithWGPUPointer where Self: GPUStruct {
 	}
 }
 
+public extension WithWGPUPointer where Self: GPUStructWrappable {
+	mutating func withWGPUMutablePointer<R>(_ lambda: (UnsafeMutablePointer<WGPUType>) -> R) -> R {
+		withWGPUStruct { wgpuStruct in
+			let result = withUnsafeMutablePointer(to: &wgpuStruct) { pointer in
+				lambda(pointer)
+			}
+			self = Self(wgpuStruct: wgpuStruct)
+			return result
+		}
+	}
+}
+
 public extension WithWGPUPointer where Self: GPUSimpleStruct, Self.WGPUType == Self {
 	func withWGPUPointer<R>(_ lambda: (UnsafePointer<WGPUType>) -> R) -> R {
 		var copy = self
