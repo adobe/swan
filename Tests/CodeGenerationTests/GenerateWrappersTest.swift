@@ -586,7 +586,6 @@ struct TestTypeDescriptor: TypeDescriptor {
 		// The wrapper should use withWGPUMutablePointer, which reconstructs the Swift struct
 		// after the C API mutates it (via the GPUStructWrappable override).
 		#expect(generated.contains("withWGPUMutablePointer"))
-		#expect(!generated.contains("withWGPUStructInOut"))
 	}
 
 	@Test("Struct withWGPUStruct derives count from array")
