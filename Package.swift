@@ -200,7 +200,8 @@ let package = Package(
 				"bridge-js.config.json",
 			],
 			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern")
+				.enableExperimentalFeature("Extern"),
+				.treatWarning("EmbeddedRestrictions", as: .warning),
 			],
 			linkerSettings: asanLinkerSettings
 		),
