@@ -14,6 +14,7 @@ let supportedNativePlatforms: [Platform] = [.macOS, .windows]
 let wasmPlatforms: [Platform] = [.wasi]
 
 let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"] != nil
+let isWasmBuild: Bool = ProcessInfo.processInfo.environment["SWAN_WASM"] != nil
 
 #if os(Windows)
 let useAddressSanitizer: Bool = false
@@ -92,6 +93,7 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.46.0"),
 	],
 	targets: [
 		dawnTarget,
@@ -189,10 +191,18 @@ let package = Package(
 		.target(
 			name: "WebGPUWasm",
 			dependencies: [
-				// WebGPUCore or similar core library for shared protocols and types ?
+				.product(name: "JavaScriptKit", package: "JavaScriptKit"),
 			],
 			path: "Sources/WebGPU/Wasm",
-			swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
+			exclude: [
+				"Generated/README.md",
+				"Generated/JavaScript",
+				"bridge-js.config.json",
+			],
+			swiftSettings: swiftSettings + [
+				.enableExperimentalFeature("Extern"),
+				.treatWarning("EmbeddedRestrictions", as: .warning),
+			],
 			linkerSettings: asanLinkerSettings
 		),
 		.target(
@@ -282,3 +292,25 @@ let package = Package(
 		),
 	]
 )
+
+// WASM-only targets are only included when SWAN_WASM is set,
+// since they depend on JavaScriptKit's BridgeJS plugin which isn't available in native builds.
+if isWasmBuild {
+	package.targets.append(
+		.executableTarget(
+			name: "BitonicSortWasm",
+			dependencies: [
+				.target(name: "WebGPU"),
+				.target(name: "WebGPUWasm"),
+			],
+			path: "Demos/BitonicSortWasm",
+			exclude: ["index.html"],
+			swiftSettings: swiftSettings + [
+				.enableExperimentalFeature("Extern")
+			],
+			plugins: [
+				.plugin(name: "BridgeJS", package: "JavaScriptKit")
+			]
+		)
+	)
+}
