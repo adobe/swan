@@ -7,7 +7,7 @@
 
 import JavaScriptKit
 import JavaScriptEventLoop
-import WebGPUWasm
+import WebGPU
 
 // Global state
 nonisolated(unsafe) var demo: BitonicSortDemo!

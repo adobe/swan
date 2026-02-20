@@ -269,6 +269,7 @@ let package = Package(
 		.executableTarget(
 			name: "BitonicSortWasm",
 			dependencies: [
+				.target(name: "WebGPU"),
 				.target(name: "WebGPUWasm"),
 			],
 			path: "Demos/BitonicSortWasm",

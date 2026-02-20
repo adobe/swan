@@ -9,7 +9,7 @@
 // Ported from Demos/BitonicSort/BitonicSort.swift for browser via WebAssembly
 
 import JavaScriptKit
-import WebGPUWasm
+import WebGPU
 
 let gridWidth = 256
 let gridHeight = 256
