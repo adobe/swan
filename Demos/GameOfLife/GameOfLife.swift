@@ -15,6 +15,14 @@ let workgroupSize: UInt32 = 8
 let gridSize: Int = 32
 let updateInterval: Double = 0.2  // Update every 200ms (5 times/sec)
 
+struct IHazABuffer { 
+	var mine: GPUBuffer
+}
+
+@MainActor
+var cat : IHazABuffer? = nil;
+
+
 struct GameOfLifeDemo: DemoProvider {
 	private var device: GPUDevice?
 	private var surface: GPUSurface?
@@ -26,6 +34,7 @@ struct GameOfLifeDemo: DemoProvider {
 	private var bindGroups: [GPUBindGroup] = []
 	private var step: UInt32 = 0
 	private var nextUpdateTime: Double = 0
+
 
 	@MainActor
 	mutating func initialize(device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface) {
@@ -119,11 +128,41 @@ struct GameOfLifeDemo: DemoProvider {
 
 		// Create shader modules
 		let cellShaderModule = device.createShaderModule(
-			descriptor: GPUShaderModuleDescriptor(label: "Cell shader", code: cellShader)
+			descriptor: GPUShaderModuleDescriptor(
+				label: "Cell shader", 
+				code: cellShader
+			)
 		)
 		let simulationShaderModule = device.createShaderModule(
 			descriptor: GPUShaderModuleDescriptor(label: "Game of Life simulation shader", code: simulationComputeShader)
 		)
+/* 
+crash: TO FIX
+		cat = IHazABuffer(mine: self.uniformBuffer!)
+*/
+
+/*
+crash: TO FIX
+		_ = simulationShaderModule.getCompilationInfo(
+			callbackInfo: GPUCompilationInfoCallbackInfo(
+				mode: .allowProcessEvents,
+				callback: { status, result in
+					switch status {
+					case .success:
+						// Shader compilation will almost always have a success result code.
+						// Compilation messages will contain: INFO, WARNING, ERROR
+						print ( "Shader ok!" )
+						//if !result.messages.isEmpty {
+						//}
+					case .callbackCancelled:
+						print("Shader compiler cancelled callback")
+					case .force32: // should not be in enum (api notes?)
+						fatalError();
+					}
+				}
+			)
+		)
+*/ 
 
 		// Create bind group layout
 		let bindGroupLayout = device.createBindGroupLayout(
@@ -310,22 +349,19 @@ struct GameOfLifeDemo: DemoProvider {
 			return true
 		}
 
-		let encoder = device.createCommandEncoder(descriptor: GPUCommandEncoderDescriptor(label: "command encoder"))
+		let encoder = device.createCommandEncoder()
 
 		// Compute pass
-		let computePass = encoder.beginComputePass(descriptor: GPUComputePassDescriptor(label: "compute pass"))
+		let computePass = encoder.beginComputePass()
 		computePass.setPipeline(pipeline: simulationPipeline!)
 		computePass.setBindGroup(
 			groupIndex: 0,
-			group: bindGroups[Int(step % 2)],
-			dynamicOffsetCount: 0,
-			dynamicOffsets: []
+			group: bindGroups[Int(step % 2)]
 		)
 		let workgroupCount = UInt32(ceil(Double(gridSize) / Double(workgroupSize)))
 		computePass.dispatchWorkgroups(
 			workgroupCountX: workgroupCount,
-			workgroupCountY: workgroupCount,
-			workgroupCountZ: 1
+			workgroupCountY: workgroupCount
 		)
 		computePass.end()
 
@@ -348,7 +384,7 @@ struct GameOfLifeDemo: DemoProvider {
 			)
 		}
 
-		let commandBuffer = encoder.finish(descriptor: nil)!
+		let commandBuffer = encoder.finish()
 		device.queue.submit(commands: [commandBuffer])
 
 		if let texture = screenShotTexture {

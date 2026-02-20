@@ -39,9 +39,16 @@ public func runDemo<Provider: DemoProvider>(
 		instance.processEvents()
 	}
 
+	let limits = adapter!.getLimits();
+	print ( limits );
+	let info = adapter!.getInfo();
+	print ( info );
+
 	var device: GPUDevice? = nil
 
 	var deviceDescriptor: GPUDeviceDescriptor = GPUDeviceDescriptor(
+		requiredFeatures: [.shaderF16],
+		requiredLimits: nil,
 		defaultQueue: GPUQueueDescriptor(),
 		deviceLostCallbackInfo: GPUDeviceLostCallbackInfo(
 			mode: .allowProcessEvents,

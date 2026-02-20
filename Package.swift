@@ -40,7 +40,7 @@ let dawnTarget: Target = {
 }()
 
 var swiftSettings: [SwiftSetting] = [
-	.unsafeFlags(["-warnings-as-errors"])
+	//.unsafeFlags(["-warnings-as-errors"])
 ]
 
 // Generate PDB debug info on Windows for Visual Studio debugging compatibility
@@ -82,6 +82,7 @@ let package = Package(
 			name: "GenerateDawnAPINotesPlugin",
 			targets: ["GenerateDawnAPINotesPlugin"]
 		),
+		.library(name: "Swan", type: .static, targets: ["Dawn", "WebGPU"]),
 	],
 	dependencies: [
 		.package(

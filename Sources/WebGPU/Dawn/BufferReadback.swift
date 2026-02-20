@@ -98,7 +98,7 @@ public extension GPUTexture {
                 ),
                 buffer: stagingBuffer
             ),
-            copySize: GPUExtent3D(width: UInt32(width), height: UInt32(height), depthOrArrayLayers: 1)
+            copySize: GPUExtent3D(width: UInt32(width), height: UInt32(height))
         )
         let commandBuffer = encoder.finish(descriptor: nil)!
         device.queue.submit(commands: [commandBuffer])
