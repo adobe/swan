@@ -70,14 +70,14 @@ var products: [Product] = [
 	.library(
 		name: "WebGPU",
 		targets: ["WebGPU"]
-	),
+	)
 ]
 
 var targets: [Target] = []
 
 if isWasmBuild {
 	// WASM configuration: WebGPU via WebGPUWasm + WASM demos
-	targets = [
+	targets += [
 		.target(
 			name: "WebGPUWasm",
 			dependencies: [
@@ -93,12 +93,12 @@ if isWasmBuild {
 			swiftSettings: swiftSettings + [
 				.enableExperimentalFeature("Extern")
 			],
-			linkerSettings: asanLinkerSettings
+			linkerSettings: asanLinkerSettings,
 		),
 		.target(
 			name: "WebGPU",
 			dependencies: [
-				.target(name: "WebGPUWasm", condition: .when(platforms: wasmPlatforms)),
+				.target(name: "WebGPUWasm", condition: .when(platforms: wasmPlatforms))
 			],
 			exclude: [
 				"Dawn",
@@ -148,7 +148,7 @@ if isWasmBuild {
 			targets: ["GenerateDawnAPINotesPlugin"]
 		),
 	]
-	targets = [
+	targets += [
 		dawnTarget,
 		.executableTarget(
 			name: "GenerateDawnBindings",
@@ -244,7 +244,7 @@ if isWasmBuild {
 		.target(
 			name: "WebGPU",
 			dependencies: [
-				.target(name: "WebGPUDawn", condition: .when(platforms: supportedNativePlatforms)),
+				.target(name: "WebGPUDawn", condition: .when(platforms: supportedNativePlatforms))
 			],
 			exclude: [
 				"Dawn",
@@ -344,7 +344,7 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.45.0"),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.46.1"),
 	],
 	targets: targets
 )

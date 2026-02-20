@@ -1,13 +1,13 @@
 {
-  "originHash" : "8ddac00dd477b8ff867e962db5d5f13de763053b03e60fcfbd62957c18f9adc1",
+  "originHash" : "df6c2fdd96f01b9e9865bc893a8a735bbded0941a35c5e5ab836b8e3b991c9c3",
   "pins" : [
     {
       "identity" : "javascriptkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftwasm/JavaScriptKit.git",
       "state" : {
-        "revision" : "79bda2e399be0ac88d9173998d7b6412b7ffe54e",
-        "version" : "0.45.0"
+        "revision" : "bf69cdb6166b95774d3f7199fa51de146c38fb6a",
+        "version" : "0.46.1"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log",
       "state" : {
-        "revision" : "2778fd4e5a12a8aaa30a3ee8285f4ce54c5f3181",
-        "version" : "1.9.1"
+        "revision" : "bbd81b6725ae874c69e9b8c8804d462356b55523",
+        "version" : "1.10.1"
       }
     },
     {
