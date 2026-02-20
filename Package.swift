@@ -14,6 +14,7 @@ let supportedNativePlatforms: [Platform] = [.macOS, .windows]
 let wasmPlatforms: [Platform] = [.wasi]
 
 let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"] != nil
+let isWasmBuild: Bool = ProcessInfo.processInfo.environment["SWAN_WASM"] != nil
 
 #if os(Windows)
 let useAddressSanitizer: Bool = false
@@ -263,21 +264,6 @@ let package = Package(
 				.linkedLibrary("c++", .when(platforms: [.macOS])),
 			]
 		),
-		.executableTarget(
-			name: "BitonicSortWasm",
-			dependencies: [
-				.target(name: "WebGPU"),
-				.target(name: "WebGPUWasm"),
-			],
-			path: "Demos/BitonicSortWasm",
-			exclude: ["index.html"],
-			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern")
-			],
-			plugins: [
-				.plugin(name: "BridgeJS", package: "JavaScriptKit")
-			]
-		),
 		.testTarget(
 			name: "CodeGenerationTests",
 			dependencies: [
@@ -306,3 +292,25 @@ let package = Package(
 		),
 	]
 )
+
+// WASM-only targets are only included when SWAN_WASM is set,
+// since they depend on JavaScriptKit's BridgeJS plugin which isn't available in native builds.
+if isWasmBuild {
+	package.targets.append(
+		.executableTarget(
+			name: "BitonicSortWasm",
+			dependencies: [
+				.target(name: "WebGPU"),
+				.target(name: "WebGPUWasm"),
+			],
+			path: "Demos/BitonicSortWasm",
+			exclude: ["index.html"],
+			swiftSettings: swiftSettings + [
+				.enableExperimentalFeature("Extern")
+			],
+			plugins: [
+				.plugin(name: "BridgeJS", package: "JavaScriptKit")
+			]
+		)
+	)
+}
