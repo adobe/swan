@@ -66,7 +66,7 @@ let asanLinkerSettings: [LinkerSetting] =
 let package = Package(
 	name: "Swan",
 	platforms: [
-		.macOS(.v26),  // macOS 15
+		.macOS(.v15),  // macOS 15
 		.iOS(.v18),  // iOS 18 (or adjust the version as needed)
 	],
 	products: [

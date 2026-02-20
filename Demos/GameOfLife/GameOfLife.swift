@@ -15,6 +15,14 @@ let workgroupSize: UInt32 = 8
 let gridSize: Int = 32
 let updateInterval: Double = 0.2  // Update every 200ms (5 times/sec)
 
+struct IHazABuffer { 
+	var mine: GPUBuffer
+}
+
+@MainActor
+var cat : IHazABuffer? = nil;
+
+
 struct GameOfLifeDemo: DemoProvider {
 	private var device: GPUDevice?
 	private var surface: GPUSurface?
@@ -26,6 +34,7 @@ struct GameOfLifeDemo: DemoProvider {
 	private var bindGroups: [GPUBindGroup] = []
 	private var step: UInt32 = 0
 	private var nextUpdateTime: Double = 0
+
 
 	@MainActor
 	mutating func initialize(device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface) {
@@ -127,7 +136,13 @@ struct GameOfLifeDemo: DemoProvider {
 		let simulationShaderModule = device.createShaderModule(
 			descriptor: GPUShaderModuleDescriptor(label: "Game of Life simulation shader", code: simulationComputeShader)
 		)
+/* 
+crash: TO FIX
+		cat = IHazABuffer(mine: self.uniformBuffer!)
+*/
 
+/*
+crash: TO FIX
 		_ = simulationShaderModule.getCompilationInfo(
 			callbackInfo: GPUCompilationInfoCallbackInfo(
 				mode: .allowProcessEvents,
@@ -147,7 +162,7 @@ struct GameOfLifeDemo: DemoProvider {
 				}
 			)
 		)
-
+*/ 
 
 		// Create bind group layout
 		let bindGroupLayout = device.createBindGroupLayout(
