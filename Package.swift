@@ -92,10 +92,7 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-		.package(
-			url: "https://github.com/swiftwasm/JavaScriptKit.git",
-			from: "0.46.0"
-		),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.46.0"),
 	],
 	targets: [
 		dawnTarget,
@@ -203,7 +200,7 @@ let package = Package(
 				"bridge-js.config.json",
 			],
 			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern"),
+				.enableExperimentalFeature("Extern")
 			],
 			linkerSettings: asanLinkerSettings
 		),
@@ -275,10 +272,10 @@ let package = Package(
 			path: "Demos/BitonicSortWasm",
 			exclude: ["index.html"],
 			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern"),
+				.enableExperimentalFeature("Extern")
 			],
 			plugins: [
-				.plugin(name: "BridgeJS", package: "JavaScriptKit"),
+				.plugin(name: "BridgeJS", package: "JavaScriptKit")
 			]
 		),
 		.testTarget(
