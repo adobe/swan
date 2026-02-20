@@ -6,7 +6,6 @@
 // it.
 
 import JavaScriptKit
-import JavaScriptEventLoop
 import WebGPU
 
 // Global state
