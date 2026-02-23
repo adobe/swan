@@ -35,4 +35,3 @@ import JavaScriptKit
 	@JSFunction
 	public func end() throws(JSException)
 }
-

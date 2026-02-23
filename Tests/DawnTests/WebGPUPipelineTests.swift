@@ -7,6 +7,7 @@
 //
 
 import Testing
+
 @testable import WebGPU
 
 // Synchronous read-back helpers for tests only
@@ -160,7 +161,7 @@ struct WebGPUPipelineTests {
 		for i in 0..<pixelCount {
 			#expect(pixels[i * 4 + 0] == 128)  // R
 			#expect(pixels[i * 4 + 1] == 191)  // G
-			#expect(pixels[i * 4 + 2] == 64)   // B
+			#expect(pixels[i * 4 + 2] == 64)  // B
 			#expect(pixels[i * 4 + 3] == 255)  // A
 		}
 	}

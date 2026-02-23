@@ -16,4 +16,3 @@ public struct GPUCommandBuffer {
 
 	@JSGetter public var label: String?
 }
-

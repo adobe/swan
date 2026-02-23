@@ -25,4 +25,3 @@ import JavaScriptKit
 		_ data: JSObject
 	) throws(JSException)
 }
-

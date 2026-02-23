@@ -516,7 +516,7 @@ struct WithWGPUPointerTests {
 	@Test("withWGPUArrayPointer with RawRepresentable array")
 	func testWithWGPUArrayPointerRawRepresentable() {
 		let formats: [TestFormat] = [.first, .second, .third, .fourth]
-		let result = withWGPUArrayPointer(formats){ pointer in
+		let result = withWGPUArrayPointer(formats) { pointer in
 			#expect(pointer[0] == .first)
 			#expect(pointer[1] == .second)
 			#expect(pointer[2] == .third)
@@ -544,8 +544,8 @@ struct WithWGPUPointerTests {
 			#expect(pointer[2].b == 3.0)
 			return testStructs.count
 		}
-		#expect(result == 3)	
-	}		
+		#expect(result == 3)
+	}
 	@Test("withWGPUArrayPointer with optional GPUSimpleStruct array - nil")
 	func testWithWGPUArrayPointerNilGPUSimpleStruct() {
 		let testStructs: [TestStruct]? = nil
@@ -602,7 +602,7 @@ struct WithWGPUPointerTests {
 				binding: 3,
 				visibility: GPUShaderStage([.vertex]),
 				buffer: .init()
-			),
+			)
 		]
 
 		let result = withWGPUMutableArrayPointer(entries) { pointer in
@@ -652,7 +652,7 @@ struct WithWGPUPointerTests {
 	@Test("Array.withWGPUPointer return type propagation")
 	func testArrayWithWGPUPointerReturnType() {
 		let entries: [GPUBindGroupLayoutEntry] = [
-			.init(binding: 42, visibility: GPUShaderStage([.vertex]), buffer: .init()),
+			.init(binding: 42, visibility: GPUShaderStage([.vertex]), buffer: .init())
 		]
 
 		// Test that the return type is correctly propagated
