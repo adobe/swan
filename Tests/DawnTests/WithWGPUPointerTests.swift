@@ -825,6 +825,20 @@ struct WithWGPUPointerTests {
 		#expect(limits.maxTextureDimension1D == 42)
 	}
 
+	@Test("wrapArrayWithCount on nil UnsafePointer returns empty array")
+	func testWrapArrayWithCountNilPointer() {
+		// Simulate what Dawn returns on successful compilation:
+		// messageCount = 0, messages = NULL
+		let wgpuInfo = WGPUCompilationInfo(
+			nextInChain: nil,
+			messageCount: 0,
+			messages: nil
+		)
+		// This crashes before the fix: "Unexpectedly found nil while implicitly unwrapping an Optional value"
+		let info = GPUCompilationInfo(wgpuStruct: wgpuInfo)
+		#expect(info.messages.isEmpty)
+	}
+
 	// Simple test class for AnyObject array tests
 	private class TestObject {
 		let value: Int
