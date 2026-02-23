@@ -191,7 +191,7 @@ let package = Package(
 		.target(
 			name: "WebGPUWasm",
 			dependencies: [
-				.product(name: "JavaScriptKit", package: "JavaScriptKit"),
+				.product(name: "JavaScriptKit", package: "JavaScriptKit")
 			],
 			path: "Sources/WebGPU/Wasm",
 			exclude: [
