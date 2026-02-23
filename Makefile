@@ -35,6 +35,9 @@ build-release: ## Build all targets in release mode (native)
 wasm-build: ## Build the WebGPU library for WASM
 	SWAN_WASM=1 swift build --target WebGPU --swift-sdk $(WASM_SDK)
 
+wasm-build-bridgejs: ## Build the WebGPU library for WASM with BridgeJS
+	SWAN_WASM=1 swift package plugin --allow-writing-to-package-directory bridge-js
+
 wasm-demo-bitonic: ## Build the BitonicSortWasm demo for WASM
 	SWAN_WASM=1 swift package --swift-sdk $(WASM_SDK) js --product BitonicSortWasm
 	python3 -m http.server 3000
