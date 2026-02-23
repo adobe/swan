@@ -49,14 +49,17 @@ public struct GPUCommandEncoder {
 	@JSGetter public var label: String?
 
 	@JSFunction
-	public func beginRenderPass(_ descriptor: GPURenderPassDescriptor) throws(JSException)
+	public func beginRenderPass(
+		_ descriptor: GPURenderPassDescriptor
+	) throws(JSException)
 		-> GPURenderPassEncoder
 
 	@JSFunction
-	public func beginComputePass(descriptor: GPUComputePassDescriptor) throws(JSException)
+	public func beginComputePass(
+		descriptor: GPUComputePassDescriptor
+	) throws(JSException)
 		-> GPUComputePassEncoder
 
 	@JSFunction
 	public func finish() throws(JSException) -> GPUCommandBuffer
 }
-

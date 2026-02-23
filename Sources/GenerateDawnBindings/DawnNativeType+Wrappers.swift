@@ -54,7 +54,7 @@ extension DawnNativeType: DawnType {
 			case "*":
 				return "UnsafeMutableRawPointer?"
 			case "const*":
-				return length != nil ?  "UnsafeRawBufferPointer" : "UnsafeRawPointer"
+				return length != nil ? "UnsafeRawBufferPointer" : "UnsafeRawPointer"
 			default:
 				return "Void"
 			}

@@ -58,7 +58,6 @@ extension GPUSimpleStruct {
 	}
 }
 
-
 public extension GPUChainedStruct {
 	/// Construct the linked chain of WGPUChainedStructs from the chain of wrapper structs
 	func withNextInChain<R>(_ lambda: (UnsafeMutablePointer<WGPUChainedStruct>?) -> R) -> R {

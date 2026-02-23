@@ -32,4 +32,3 @@ public struct GPUCanvasContext {
 		self.alphaMode = alphaMode
 	}
 }
-

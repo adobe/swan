@@ -74,31 +74,44 @@ import JavaScriptKit
 	public func createBuffer(_ descriptor: GPUBufferDescriptor) throws(JSException) -> GPUBuffer
 
 	@JSFunction
-	public func createShaderModule(_ descriptor: GPUShaderModuleDescriptor) throws(JSException)
+	public func createShaderModule(
+		_ descriptor: GPUShaderModuleDescriptor
+	) throws(JSException)
 		-> GPUShaderModule
 
 	@JSFunction
-	public func createRenderPipeline(_ descriptor: GPURenderPipelineDescriptor) throws(JSException)
+	public func createRenderPipeline(
+		_ descriptor: GPURenderPipelineDescriptor
+	) throws(JSException)
 		-> GPURenderPipeline
 
 	@JSFunction
-	public func createCommandEncoder(_ descriptor: GPUCommandEncoderDescriptor) throws(JSException)
+	public func createCommandEncoder(
+		_ descriptor: GPUCommandEncoderDescriptor
+	) throws(JSException)
 		-> GPUCommandEncoder
 
 	@JSFunction
-	public func createBindGroupLayout(descriptor: GPUBindGroupLayoutDescriptor) throws(JSException)
+	public func createBindGroupLayout(
+		descriptor: GPUBindGroupLayoutDescriptor
+	) throws(JSException)
 		-> GPUBindGroupLayout
 
 	@JSFunction
-	public func createBindGroup(descriptor: GPUBindGroupDescriptor) throws(JSException)
+	public func createBindGroup(
+		descriptor: GPUBindGroupDescriptor
+	) throws(JSException)
 		-> GPUBindGroup
 
 	@JSFunction
-	public func createPipelineLayout(descriptor: GPUPipelineLayoutDescriptor) throws(JSException)
+	public func createPipelineLayout(
+		descriptor: GPUPipelineLayoutDescriptor
+	) throws(JSException)
 		-> GPUPipelineLayout
 
 	@JSFunction
-	public func createComputePipeline(descriptor: GPUComputePipelineDescriptor) throws(JSException)
+	public func createComputePipeline(
+		descriptor: GPUComputePipelineDescriptor
+	) throws(JSException)
 		-> GPUComputePipeline
 }
-

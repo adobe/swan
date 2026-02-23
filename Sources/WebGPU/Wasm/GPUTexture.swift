@@ -22,4 +22,3 @@ import JavaScriptKit
 	@JSFunction
 	public func destroy() throws(JSException)
 }
-

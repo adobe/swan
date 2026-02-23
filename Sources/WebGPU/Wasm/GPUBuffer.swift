@@ -21,4 +21,3 @@ public struct GPUBuffer {
 	@JSFunction
 	public func destroy() throws(JSException)
 }
-

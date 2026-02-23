@@ -172,77 +172,77 @@ func bitonicComputeShader(workgroupSize: Int) -> String {
 /// Vertex shader: generates fullscreen triangle from vertex index
 /// This is just a full-screen canvas on which to draw the sorted data.
 let bitonicDisplayVertexShader = """
-struct VertexOutput {
-    @builtin(position) position: vec4<f32>,
-    @location(0) uv: vec2<f32>,
-}
+	struct VertexOutput {
+	    @builtin(position) position: vec4<f32>,
+	    @location(0) uv: vec2<f32>,
+	}
 
-@vertex
-fn vertexMain(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {
-    // Generate fullscreen triangle (3 vertices cover the screen)
-    // Using the "fullscreen triangle" technique
-    var output: VertexOutput;
+	@vertex
+	fn vertexMain(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {
+	    // Generate fullscreen triangle (3 vertices cover the screen)
+	    // Using the "fullscreen triangle" technique
+	    var output: VertexOutput;
 
-    // Positions for fullscreen triangle
-    let x = f32((vertexIndex & 1u) << 2u) - 1.0;  // -1, 3, -1
-    let y = f32((vertexIndex & 2u) << 1u) - 1.0;  // -1, -1, 3
+	    // Positions for fullscreen triangle
+	    let x = f32((vertexIndex & 1u) << 2u) - 1.0;  // -1, 3, -1
+	    let y = f32((vertexIndex & 2u) << 1u) - 1.0;  // -1, -1, 3
 
-    output.position = vec4<f32>(x, y, 0.0, 1.0);
-    output.uv = vec2<f32>(x * 0.5 + 0.5, 0.5 - y * 0.5);  // [0,1] range, Y flipped
+	    output.position = vec4<f32>(x, y, 0.0, 1.0);
+	    output.uv = vec2<f32>(x * 0.5 + 0.5, 0.5 - y * 0.5);  // [0,1] range, Y flipped
 
-    return output;
-}
-"""
+	    return output;
+	}
+	"""
 
 /// Fragment shader: visualizes the sorting array as a grayscale grid
 /// Supports highlight mode to show comparison pairs in red/green
 // Ported from bitonicDisplay.frag.wgsl
 let bitonicDisplayFragmentShader = """
-\(Uniforms.wgslDefinition)
+	\(Uniforms.wgslDefinition)
 
-@group(0) @binding(0) var<storage, read> data: array<u32>;
-@group(0) @binding(1) var<uniform> uniforms: Uniforms;
+	@group(0) @binding(0) var<storage, read> data: array<u32>;
+	@group(0) @binding(1) var<uniform> uniforms: Uniforms;
 
-@fragment
-fn fragmentMain(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
-    let width = f32(uniforms.width);
-    let height = f32(uniforms.height);
+	@fragment
+	fn fragmentMain(@location(0) uv: vec2<f32>) -> @location(0) vec4<f32> {
+	    let width = f32(uniforms.width);
+	    let height = f32(uniforms.height);
 
-    // Map UV to grid cell
-    let pixel = vec2<u32>(
-        u32(uv.x * width),
-        u32(uv.y * height)
-    );
+	    // Map UV to grid cell
+	    let pixel = vec2<u32>(
+	        u32(uv.x * width),
+	        u32(uv.y * height)
+	    );
 
-    // Calculate element index from grid position
-    let elementIndex = pixel.y * uniforms.width + pixel.x;
-    let totalElements = uniforms.width * uniforms.height;
+	    // Calculate element index from grid position
+	    let elementIndex = pixel.y * uniforms.width + pixel.x;
+	    let totalElements = uniforms.width * uniforms.height;
 
-    // Bounds check
-    if (elementIndex >= totalElements) {
-        return vec4<f32>(0.0, 0.0, 0.0, 1.0);
-    }
+	    // Bounds check
+	    if (elementIndex >= totalElements) {
+	        return vec4<f32>(0.0, 0.0, 0.0, 1.0);
+	    }
 
-    // Get element value and normalize to [0, 1]
-    let value = f32(data[elementIndex]);
-    let normalized = value / f32(totalElements);
-    let intensity = 1.0 - normalized;
+	    // Get element value and normalize to [0, 1]
+	    let value = f32(data[elementIndex]);
+	    let normalized = value / f32(totalElements);
+	    let intensity = 1.0 - normalized;
 
-    // Highlight mode: show which elements are being compared
-    if (uniforms.highlight == 1u && uniforms.blockHeight >= 2u) {
-        // Check if element is in lower or upper half of its comparison block
-        let inLowerHalf = (elementIndex % uniforms.blockHeight) < (uniforms.blockHeight / 2u);
+	    // Highlight mode: show which elements are being compared
+	    if (uniforms.highlight == 1u && uniforms.blockHeight >= 2u) {
+	        // Check if element is in lower or upper half of its comparison block
+	        let inLowerHalf = (elementIndex % uniforms.blockHeight) < (uniforms.blockHeight / 2u);
 
-        if (inLowerHalf) {
-            // Lower half of block: RED (these compare with green elements)
-            return vec4<f32>(intensity, 0.0, 0.0, 1.0);
-        } else {
-            // Upper half of block: GREEN (these compare with red elements)
-            return vec4<f32>(0.0, intensity, 0.0, 1.0);
-        }
-    }
+	        if (inLowerHalf) {
+	            // Lower half of block: RED (these compare with green elements)
+	            return vec4<f32>(intensity, 0.0, 0.0, 1.0);
+	        } else {
+	            // Upper half of block: GREEN (these compare with red elements)
+	            return vec4<f32>(0.0, intensity, 0.0, 1.0);
+	        }
+	    }
 
-    // Default: grayscale (bright = small value, dark = large value)
-    return vec4<f32>(intensity, intensity, intensity, 1.0);
-}
-"""
+	    // Default: grayscale (bright = small value, dark = large value)
+	    return vec4<f32>(intensity, intensity, intensity, 1.0);
+	}
+	"""

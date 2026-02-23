@@ -90,7 +90,9 @@ struct BitonicSortDemo: DemoProvider {
 		print("Controls: P=pause/resume, R=reset, H=toggle highlight mode")
 	}
 
-	private func createShaderModules(device: GPUDevice)
+	private func createShaderModules(
+		device: GPUDevice
+	)
 		-> (compute: GPUShaderModule, vertex: GPUShaderModule, fragment: GPUShaderModule)
 	{
 		let computeModule = device.createShaderModule(

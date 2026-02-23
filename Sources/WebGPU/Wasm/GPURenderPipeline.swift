@@ -18,4 +18,3 @@ import JavaScriptKit
 	@JSFunction
 	public func getBindGroupLayout(_ index: Int) throws(JSException) -> GPUBindGroupLayout
 }
-
