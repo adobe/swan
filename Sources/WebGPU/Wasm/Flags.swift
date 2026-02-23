@@ -51,4 +51,3 @@ public struct GPUColorWrite: OptionSet, Sendable {
 	public static let alpha = GPUColorWrite(rawValue: 0x8)
 	public static let all = GPUColorWrite(rawValue: 0xF)
 }
-

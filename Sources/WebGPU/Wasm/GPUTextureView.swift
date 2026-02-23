@@ -15,4 +15,3 @@ import JavaScriptKit
 
 	@JSGetter public var label: String?
 }
-
