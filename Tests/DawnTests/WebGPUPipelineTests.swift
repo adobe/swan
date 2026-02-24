@@ -312,5 +312,4 @@ struct WebGPUPipelineTests {
 		storageBuffer.destroy()
 		stagingBuffer.destroy()
 	}
-
 }
