@@ -293,7 +293,7 @@ extension DawnStructure: DawnType {
 		let memberAssignments: CodeBlockItemListSyntax = CodeBlockItemListSyntax {
 			for member in members where !isArraySizeItem(member, allItems: members) {
 				if member.type.raw == "string view" {
-					"self.\(raw: member.name.camelCase) = String(wgpuStringView: wgpuStruct.\(raw: member.name.camelCase))!"
+					"self.\(raw: member.name.camelCase) = String(wgpuStringView: wgpuStruct.\(raw: member.name.camelCase))"
 				} else if member.isWrappedType(data: data) {
 					"self.\(raw: member.name.camelCase) = \(member.wrapValueWithIdentifier("wgpuStruct.\(member.name.camelCase)", data: data))"
 				} else {
