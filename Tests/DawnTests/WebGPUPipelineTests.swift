@@ -328,4 +328,40 @@ struct WebGPUPipelineTests {
 		#expect(!info.description.isEmpty)
 	}
 
+	@Test("GPUShaderModule.getCompilationInfo returns compilation info for valid shader")
+	@MainActor
+	func testSGPUShaderModuleGetCompilationInfo() {
+		let (instance, _, device) = setupGPU()
+
+		let shaderCode = """
+			@vertex
+			fn vertexMain() -> @builtin(position) vec4f {
+				return vec4f(0.0, 0.0, 0.0, 1.0);
+			}
+			"""
+		let shaderModule = device.createShaderModule(
+			descriptor: GPUShaderModuleDescriptor(label: "Test Shader", code: shaderCode)
+		)
+
+		var compilationInfo: GPUCompilationInfo?
+		_ = shaderModule.getCompilationInfo(
+			callbackInfo: GPUCompilationInfoCallbackInfo(
+				mode: .allowProcessEvents,
+				callback: { status, info in
+					#expect(status == .success)
+					compilationInfo = info
+				}
+			)
+		)
+
+		while compilationInfo == nil {
+			instance.processEvents()
+		}
+
+		// A valid shader should compile with no error messages
+		// (may have 0 messages or info-level messages depending on Dawn version)
+		for message in compilationInfo!.messages {
+			#expect(message.type != .error)
+		}
+	}
 }
