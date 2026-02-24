@@ -93,7 +93,7 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.46.0"),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.46.3"),
 	],
 	targets: [
 		dawnTarget,
