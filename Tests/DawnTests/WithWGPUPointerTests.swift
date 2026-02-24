@@ -922,6 +922,68 @@ struct WithWGPUPointerTests {
 		#expect(state.signaledValues?.isEmpty == true)
 	}
 
+	// Tests for non-nil array reconstruction in generated wrapArrayWithCount calls.
+	@Test("wrapArrayWithCount on non-nil struct array pointer wraps elements")
+	func testWrapArrayWithCountNonNilStructPointer() {
+		let messageText = "test warning"
+		messageText.withCString { cString in
+			var message = WGPUCompilationMessage()
+			message.message = WGPUStringView(data: cString, length: messageText.utf8.count)
+			message.type = .info
+			message.lineNum = 42
+			message.linePos = 7
+			withUnsafePointer(to: &message) { ptr in
+				let wgpuInfo = WGPUCompilationInfo(
+					nextInChain: nil,
+					messageCount: 1,
+					messages: ptr
+				)
+				let info = GPUCompilationInfo(wgpuStruct: wgpuInfo)
+				#expect(info.messages.count == 1)
+				#expect(info.messages[0].message == "test warning")
+				#expect(info.messages[0].type == .info)
+				#expect(info.messages[0].lineNum == 42)
+				#expect(info.messages[0].linePos == 7)
+			}
+		}
+	}
+
+	@Test("wrapArrayWithCount on non-nil enum array pointer wraps elements")
+	func testWrapArrayWithCountNonNilEnumPointer() {
+		let features: [WGPUWGSLLanguageFeatureName] = [
+			.readonlyAndReadwriteStorageTextures,
+			.packed4x8IntegerDotProduct,
+		]
+		features.withUnsafeBufferPointer { buffer in
+			let wgpuFeatures = WGPUSupportedWGSLLanguageFeatures(
+				featureCount: buffer.count,
+				features: buffer.baseAddress
+			)
+			let wrapped = GPUSupportedWGSLLanguageFeatures(wgpuStruct: wgpuFeatures)
+			#expect(wrapped.features.count == 2)
+			#expect(wrapped.features[0] == .readonlyAndReadwriteStorageTextures)
+			#expect(wrapped.features[1] == .packed4x8IntegerDotProduct)
+		}
+	}
+
+	@Test("wrapArrayWithCount on non-nil native type array pointer wraps elements")
+	func testWrapArrayWithCountNonNilNativeTypePointer() {
+		let values: [UInt64] = [100, 200]
+		values.withUnsafeBufferPointer { buffer in
+			let wgpuState = WGPUSharedBufferMemoryEndAccessState(
+				nextInChain: nil,
+				initialized: 1,
+				fenceCount: 2,
+				fences: nil,
+				signaledValues: buffer.baseAddress
+			)
+			let state = GPUSharedBufferMemoryEndAccessState(wgpuStruct: wgpuState)
+			#expect(state.signaledValues?.count == 2)
+			#expect(state.signaledValues?[0] == 100)
+			#expect(state.signaledValues?[1] == 200)
+		}
+	}
+
 	// Simple test class for AnyObject array tests
 	private class TestObject {
 		let value: Int
