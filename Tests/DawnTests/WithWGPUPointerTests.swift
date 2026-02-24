@@ -513,7 +513,7 @@ struct WithWGPUPointerTests {
 		case third = 3
 		case fourth = 4
 	}
-	@Test("withWGPUArrayPointer with RawRepresentable array")
+	@Test("withWGPUArrayPointer with non-optional RawRepresentable array")
 	func testWithWGPUArrayPointerRawRepresentable() {
 		let formats: [TestFormat] = [.first, .second, .third, .fourth]
 		let result = withWGPUArrayPointer(formats) { pointer in
@@ -527,12 +527,45 @@ struct WithWGPUPointerTests {
 		#expect(result == 4)
 	}
 
+	@Test("withWGPUArrayPointer with optional RawRepresentable array - nil")
+	func testWithWGPUArrayPointerOptionalRawRepresentableNil() {
+		let formats: [TestFormat]? = nil
+		let result = withWGPUArrayPointer(formats) { pointer in
+			#expect(pointer == nil)
+			return 42
+		}
+		#expect(result == 42)
+	}
+
+	@Test("withWGPUArrayPointer with optional RawRepresentable array - empty")
+	func testWithWGPUArrayPointerOptionalRawRepresentableEmpty() {
+		let formats: [TestFormat]? = []
+		let result = withWGPUArrayPointer(formats) { pointer in
+			#expect(pointer == nil)
+			return 99
+		}
+		#expect(result == 99)
+	}
+
+	@Test("withWGPUArrayPointer with optional RawRepresentable array - non-nil")
+	func testWithWGPUArrayPointerOptionalRawRepresentableNonNil() {
+		let formats: [TestFormat]? = [.first, .second, .third]
+		let result = withWGPUArrayPointer(formats) { pointer in
+			#expect(pointer != nil)
+			#expect(pointer![0] == .first)
+			#expect(pointer![1] == .second)
+			#expect(pointer![2] == .third)
+			return formats!.count
+		}
+		#expect(result == 3)
+	}
+
 	// A simple GPUSimpleStruct for testing
 	private struct TestStruct: GPUSimpleStruct {
 		var a: Int
 		var b: Float
 	}
-	@Test("withWGPUArrayPointer with GPUSimpleStruct array")
+	@Test("withWGPUArrayPointer with non-optional GPUSimpleStruct array")
 	func testWithWGPUArrayPointerGPUSimpleStruct() {
 		let testStructs = [TestStruct(a: 1, b: 1.0), TestStruct(a: 2, b: 2.0), TestStruct(a: 3, b: 3.0)]
 		let result = withWGPUArrayPointer(testStructs) { pointer in
@@ -554,6 +587,30 @@ struct WithWGPUPointerTests {
 			return 42
 		}
 		#expect(result == 42)
+	}
+
+	@Test("withWGPUArrayPointer with optional GPUSimpleStruct array - empty")
+	func testWithWGPUArrayPointerEmptyGPUSimpleStruct() {
+		let testStructs: [TestStruct]? = []
+		let result = withWGPUArrayPointer(testStructs) { pointer in
+			#expect(pointer == nil)
+			return 77
+		}
+		#expect(result == 77)
+	}
+
+	@Test("withWGPUArrayPointer with optional GPUSimpleStruct array - non-nil")
+	func testWithWGPUArrayPointerOptionalGPUSimpleStructNonNil() {
+		let testStructs: [TestStruct]? = [TestStruct(a: 10, b: 10.0), TestStruct(a: 20, b: 20.0)]
+		let result = withWGPUArrayPointer(testStructs) { pointer in
+			#expect(pointer != nil)
+			#expect(pointer![0].a == 10)
+			#expect(pointer![0].b == 10.0)
+			#expect(pointer![1].a == 20)
+			#expect(pointer![1].b == 20.0)
+			return testStructs!.count
+		}
+		#expect(result == 2)
 	}
 
 	@Test("withWGPUMutableArrayPointer with GPUStruct array")
