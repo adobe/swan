@@ -312,4 +312,20 @@ struct WebGPUPipelineTests {
 		storageBuffer.destroy()
 		stagingBuffer.destroy()
 	}
+
+	@Test("GPUAdapter.getInfo returns populated adapter info with strings")
+	@MainActor
+	func testGPUAdapterGetInfo() {
+		let (_, adapter, _) = setupGPU()
+
+		var info = GPUAdapterInfo()
+		let status = adapter.getInfo(info: &info)
+
+		#expect(status == .success)
+		#expect(!info.vendor.isEmpty)
+		#expect(!info.architecture.isEmpty)
+		#expect(!info.device.isEmpty)
+		#expect(!info.description.isEmpty)
+	}
+
 }
