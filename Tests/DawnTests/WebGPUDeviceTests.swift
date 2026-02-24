@@ -22,9 +22,9 @@ struct WebGPUDeviceTests {
 
 		#expect(status == .success)
 		#expect(!info.vendor.isEmpty)
-		#expect(!info.architecture.isEmpty)
 		#expect(!info.device.isEmpty)
 		#expect(!info.description.isEmpty)
+		// info.architecture may be empty on some CI/GPU configurations, so we're not checking that.
 	}
 
 	@Test("GPUShaderModule.getCompilationInfo returns compilation info for valid shader")
