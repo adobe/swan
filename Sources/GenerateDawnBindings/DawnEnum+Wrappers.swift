@@ -39,7 +39,9 @@ extension DawnEnum {
 		assert(length != nil)
 		assert(annotation == "const*")
 		let parentIdentifier = identifier.split(separator: ".").dropLast().joined(separator: ".")
-		return "\(raw: identifier).wrapArrayWithCount(\(raw: length!.sizeWithIdentifier(parentIdentifier)))"
+		let countExpr = length!.sizeWithIdentifier(parentIdentifier)
+		// The C pointer may be NULL (e.g. when the count is 0), so guard against nil.
+		return "{ if let p = \(raw: identifier) { return p.wrapArrayWithCount(\(raw: countExpr)) } else { return [] } }()"
 	}
 
 	func unwrapValueOfType(

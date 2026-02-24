@@ -500,8 +500,11 @@ extension DawnStructure: DawnType {
 			assert(annotation == "const*")
 			// When the length is an identifier, it will be a sibling of the identifier.
 			let parentIdentifier = identifier.split(separator: ".").dropLast().joined(separator: ".")
+			let typeCast = "[\(type.swiftTypePrefix())\(type.CamelCase)]"
+			let countExpr = length!.sizeWithIdentifier(parentIdentifier)
+			// The C pointer may be NULL (e.g. when the count is 0), so guard against nil.
 			return
-				"\(raw: identifier).wrapArrayWithCount(\(raw: length!.sizeWithIdentifier(parentIdentifier))) as [\(raw: type.swiftTypePrefix())\(raw: type.CamelCase)]"
+				"{ if let p = \(raw: identifier) { return p.wrapArrayWithCount(\(raw: countExpr)) as \(raw: typeCast) } else { return \(raw: typeCast)() } }()"
 		}
 		if annotation == "const*" {
 			if isWrappedType(type, data: data) {
