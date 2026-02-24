@@ -13,7 +13,7 @@ import CDawn
 extension WGPUSharedBufferMemoryD3D12ResourceDescriptor: ChainedStruct {}
 
 /// A structure that allows passing an existing ID3D12Resource object to create shared buffer memory.
-/// 
+///
 /// Example usage:
 /// ```swift
 /// let resource = UnsafeMutablePointer<ID3D12Resource>(...)

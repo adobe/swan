@@ -7,9 +7,9 @@
 //
 
 import DemoUtils
-import WebGPU
 import Foundation
 import RGFW
+import WebGPU
 
 let workgroupSize: UInt32 = 8
 let gridSize: Int = 32
@@ -331,7 +331,6 @@ crash: TO FIX
 		}
 	}
 
-
 	@MainActor
 	mutating func frame(time: Double) throws -> Bool {
 		guard let device = device else {
@@ -394,7 +393,12 @@ crash: TO FIX
 				height: screenShotH
 			) { pixels in
 				pixels.withUnsafeBufferPointer { buffer in
-					GameOfLifeDemo.savePPM(destFileName: "myshot.ppm", bgra: buffer.baseAddress!, w: screenShotW, h: screenShotH)
+					GameOfLifeDemo.savePPM(
+						destFileName: "myshot.ppm",
+						bgra: buffer.baseAddress!,
+						w: screenShotW,
+						h: screenShotH
+					)
 				}
 				texture.destroy()
 			}

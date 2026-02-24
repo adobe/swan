@@ -53,7 +53,6 @@ extension TypeDescriptor {
 		return isWrapped
 	}
 
-
 	/// Returns true if the Swift type for this descriptor includes the collection length.
 	///
 	/// When true, the corresponding size parameter in the C API can be derived from the Swift

@@ -17,10 +17,22 @@ public extension WithWGPUPointer where Self: GPUStruct {
 	}
 
 	mutating func withWGPUMutablePointer<R>(_ lambda: (UnsafeMutablePointer<WGPUType>) -> R) -> R {
+		fatalError(
+			"withWGPUMutablePointer is not supported on GPUStruct types that don't conform to GPUStructWrappable. "
+				+ "The temporary C struct created by withWGPUStruct would be discarded after mutation. "
+				+ "Use GPUStructWrappable conformance to enable mutable pointer support with reconstruction."
+		)
+	}
+}
+
+public extension WithWGPUPointer where Self: GPUStructWrappable {
+	mutating func withWGPUMutablePointer<R>(_ lambda: (UnsafeMutablePointer<WGPUType>) -> R) -> R {
 		withWGPUStruct { wgpuStruct in
-			withUnsafeMutablePointer(to: &wgpuStruct) { pointer in
+			let result = withUnsafeMutablePointer(to: &wgpuStruct) { pointer in
 				lambda(pointer)
 			}
+			self = Self(wgpuStruct: wgpuStruct)
+			return result
 		}
 	}
 }
@@ -127,18 +139,20 @@ public func withWGPUMutableArrayPointer<E: GPUStruct, R>(_ array: [E]?, _ lambda
 	return lambda(nil)
 }
 
-public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E], _ lambda: (UnsafePointer<E.WGPUType>) -> R) -> R where E.WGPUType == E {
+public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E], _ lambda: (UnsafePointer<E.WGPUType>) -> R) -> R
+where E.WGPUType == E {
 	precondition(!array.isEmpty, "withWGPUArrayPointer requires a non-empty array")
 	return array.withUnsafeBufferPointer { buffer in
 		return lambda(buffer.baseAddress!)
 	}
 }
 
-public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E]?, _ lambda: (UnsafePointer<E.WGPUType>?) -> R) -> R where E.WGPUType == E {
-	if let array = array {
-		return withWGPUArrayPointer(array, lambda)
+public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E]?, _ lambda: (UnsafePointer<E.WGPUType>?) -> R) -> R
+where E.WGPUType == E {
+	guard let array = array, !array.isEmpty else {
+		return lambda(nil)
 	}
-	return lambda(nil)
+	return withWGPUArrayPointer(array) { (pointer: UnsafePointer<E.WGPUType>) in lambda(pointer) }
 }
 
 public func withWGPUArrayPointer<E: Numeric, R>(_ array: [E], _ lambda: (UnsafePointer<E>) -> R) -> R {
@@ -162,18 +176,15 @@ public func withWGPUArrayPointer<E: RawRepresentable, R>(_ array: [E], _ lambda:
 }
 
 public func withWGPUArrayPointer<E: RawRepresentable, R>(_ array: [E]?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
-	guard let array = array else {
+	guard let array = array, !array.isEmpty else {
 		return lambda(nil)
 	}
-	return array.withUnsafeBufferPointer { buffer in
-		return lambda(buffer.baseAddress!)
-	}
-	//return withWGPUArrayPointer(array, lambda)
+	return withWGPUArrayPointer(array) { (pointer: UnsafePointer<E>) in lambda(pointer) }
 }
 
 // Tuples 7, 9, and 12 (used in color space conversion structures)
 public func withWGPUArrayPointer<E: Numeric, R>(_ tuple: (E, E, E, E, E, E, E), _ lambda: (UnsafePointer<E>) -> R) -> R {
-	var copy = tuple // Copy for mutability
+	var copy = tuple  // Copy for mutability
 	return withUnsafePointer(to: &copy) { tuplePointer in
 		tuplePointer.withMemoryRebound(to: E.self, capacity: 7) { pointer in
 			lambda(pointer)

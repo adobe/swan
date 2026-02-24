@@ -8,10 +8,12 @@ Swan is a Swift WebGPU binding library that provides Swift APIs for using WebGPU
 
 ### Core Components
 
+- **WebGPU**: Cross-platform facade that clients import. Conditionally re-exports `WebGPUDawn` (native) or `WebGPUWasm` (WASM)
+- **WebGPUDawn**: Native backend wrapping Dawn (macOS, Windows)
+- **WebGPUWasm**: WASM backend bridging to the browser's WebGPU API (WASI)
 - **Dawn**: Swift wrapper around Google's Dawn WebGPU implementation
 - **CDawn**: C bindings layer for Dawn
 - **DawnData**: Data structures and utilities for Dawn integration
-- **WebGPU**: High-level Swift WebGPU API built on Dawn
 - **GameOfLife**: Demo/example application
 
 ### Code Generation
@@ -30,8 +32,29 @@ The project uses a binary target `DawnLib` that contains pre-built Dawn WebGPU l
 ## Development Commands
 
 ### Building
+You need to use the swift version that is defined in .swift-version. 
+Please do so by ensuring that swiftly is first in the PATH variable:
+```bash
+export PATH="$HOME/.swiftly/bin:$PATH"
+```
+and let swiftly install and use the defined version:
+```bash
+swiftly install
+swiftly use
+```
+It might be useful to clean up old artifacts when the version was changed. In that case run:
+```bash
+swift package clean
+```
+before finally running a build with:
 ```bash
 swift build
+```
+
+#### WASM builds
+WASM builds need to set the swift-sdk and specify the WebGPU target in the build command:
+```bash
+SWAN_WASM=1 swift build --target WebGPU --swift-sdk DEVELOPMENT-SNAPSHOT-2026-02-19-a-wasm32-unknown-wasip1
 ```
 
 ### Testing
