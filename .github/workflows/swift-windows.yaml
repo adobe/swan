@@ -54,12 +54,35 @@ jobs:
               exit $Process.ExitCode
             }
           }
-          # Refresh PATH so subsequent steps see Swift (installer updates User/Machine Path)
-          $machinePath = [Environment]::GetEnvironmentVariable("Path", "Machine")
-          $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
-          $merged = ($env:Path, $userPath, $machinePath) -join ";"
-          $merged -Split ";" | Where-Object { $_ } | Select-Object -Unique | ForEach-Object { Add-Content -Path $env:GITHUB_PATH -Value $_ }
+          # Refresh environment so subsequent steps see Swift (installer sets PATH, SDKROOT, etc. in User/Machine)
+          foreach ($level in "Machine", "User") {
+            [Environment]::GetEnvironmentVariables($level).GetEnumerator() | ForEach-Object {
+              if ($_.Name -eq "Path") {
+                $env:Path = ("$env:Path;$($_.Value)" -Split ";" | Where-Object { $_ } | Select-Object -Unique) -Join ";"
+              } else {
+                Set-Item -Path "Env:$($_.Name)" -Value $_.Value -ErrorAction SilentlyContinue
+              }
+            }
+          }
+          echo "$env:Path" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
+          Get-ChildItem Env: | ForEach-Object { "$($_.Name)=$($_.Value)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append }
 
+      - name: Set SDKROOT if needed
+        shell: pwsh
+        run: |
+          # Installer may set SDKROOT; if not, set it from Swift install path so the standard library is found
+          if (-not $env:SDKROOT) {
+            $swiftBin = (Get-Command swift -ErrorAction SilentlyContinue).Source
+            if ($swiftBin) {
+              # swift.exe is at ...\Swift\usr\bin\swift.exe, SDK at ...\Swift\Library\Developer\...
+              $swiftRoot = (Split-Path (Split-Path (Split-Path $swiftBin -Parent) -Parent) -Parent)
+              $sdkRoot = Join-Path $swiftRoot "Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk"
+              if (Test-Path $sdkRoot) {
+                echo "SDKROOT=$sdkRoot" >> $env:GITHUB_ENV
+                Write-Host "Set SDKROOT=$sdkRoot"
+              }
+            }
+          }
       - name: Verify Swift
         shell: pwsh
         run: |
