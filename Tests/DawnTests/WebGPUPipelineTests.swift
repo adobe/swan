@@ -364,4 +364,39 @@ struct WebGPUPipelineTests {
 			#expect(message.type != .error)
 		}
 	}
+
+	@Test("GPUShaderModule.getCompilationInfo returns error for invalid shader")
+	@MainActor
+	func testGPUShaderModuleGetCompilationInfoInvalidShader() {
+		let (instance, _, device) = setupGPU()
+
+		let shaderCode = """
+			@vertex
+			fn vertexMain() -> @builtin(position) vec4f {
+				return notAVariable;
+			}
+			"""
+		let shaderModule = device.createShaderModule(
+			descriptor: GPUShaderModuleDescriptor(label: "Invalid Shader", code: shaderCode)
+		)
+
+		var compilationInfo: GPUCompilationInfo?
+		_ = shaderModule.getCompilationInfo(
+			callbackInfo: GPUCompilationInfoCallbackInfo(
+				mode: .allowProcessEvents,
+				callback: { status, info in
+					#expect(status == .success)
+					compilationInfo = info
+				}
+			)
+		)
+
+		while compilationInfo == nil {
+			instance.processEvents()
+		}
+
+		// An invalid shader should have at least one error message
+		let errorMessages = compilationInfo!.messages.filter { $0.type == .error }
+		#expect(!errorMessages.isEmpty)
+	}
 }
