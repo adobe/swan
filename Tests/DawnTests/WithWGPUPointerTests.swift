@@ -882,18 +882,44 @@ struct WithWGPUPointerTests {
 		#expect(limits.maxTextureDimension1D == 42)
 	}
 
-	@Test("wrapArrayWithCount on nil UnsafePointer returns empty array")
-	func testWrapArrayWithCountNilPointer() {
-		// Simulate what Dawn returns on successful compilation:
-		// messageCount = 0, messages = NULL
+	// Tests for nil pointer safety in generated wrapArrayWithCount calls.
+
+	@Test("wrapArrayWithCount on nil struct array pointer returns empty array")
+	func testWrapArrayWithCountNilStructPointer() {
+		// Covers: DawnStructure+Wrappers.swift codegen path (GPUStructWrappable arrays)
+		// Simulates what Dawn returns on successful compilation: messageCount = 0, messages = NULL
 		let wgpuInfo = WGPUCompilationInfo(
 			nextInChain: nil,
 			messageCount: 0,
 			messages: nil
 		)
-		// This crashes before the fix: "Unexpectedly found nil while implicitly unwrapping an Optional value"
 		let info = GPUCompilationInfo(wgpuStruct: wgpuInfo)
 		#expect(info.messages.isEmpty)
+	}
+
+	@Test("wrapArrayWithCount on nil enum array pointer returns empty array")
+	func testWrapArrayWithCountNilEnumPointer() {
+		// Covers: DawnEnum+Wrappers.swift codegen path (enum arrays)
+		let wgpuFeatures = WGPUSupportedWGSLLanguageFeatures(
+			featureCount: 0,
+			features: nil
+		)
+		let features = GPUSupportedWGSLLanguageFeatures(wgpuStruct: wgpuFeatures)
+		#expect(features.features.isEmpty)
+	}
+
+	@Test("wrapArrayWithCount on nil native type array pointer returns empty array")
+	func testWrapArrayWithCountNilNativeTypePointer() {
+		// Covers: DawnNativeType+Wrappers.swift codegen path (native type arrays like uint64_t)
+		let wgpuState = WGPUSharedBufferMemoryEndAccessState(
+			nextInChain: nil,
+			initialized: 0,
+			fenceCount: 0,
+			fences: nil,
+			signaledValues: nil
+		)
+		let state = GPUSharedBufferMemoryEndAccessState(wgpuStruct: wgpuState)
+		#expect(state.signaledValues?.isEmpty == true)
 	}
 
 	// Simple test class for AnyObject array tests
