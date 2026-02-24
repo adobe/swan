@@ -67,7 +67,8 @@ struct WebGPUDeviceTests {
 	@Test("GPUShaderModule.getCompilationInfo returns error for invalid shader")
 	@MainActor
 	func testGPUShaderModuleGetCompilationInfoInvalidShader() {
-		let (instance, _, device) = setupGPU()
+		// Suppress uncaptured error output — the invalid shader intentionally triggers a validation error
+		let (instance, _, device) = setupGPU(suppressErrors: true)
 
 		let shaderCode = """
 			@vertex
