@@ -1,0 +1,75 @@
+# Build and test Swift on Windows (x64 and ARM64).
+# Swift is installed manually because swift-actions/setup-swift does not support Windows.
+
+name: Build and Test (Windows)
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: Build and Test (Windows ${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # windows-11-arm is in public preview (public repos only); remove if your repo is private
+        include:
+          - runner: windows-latest
+            arch: x64
+            installer_url: https://download.swift.org/swift-6.3-branch/windows10/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-21-a/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-21-a-windows10.exe
+          - runner: windows-11-arm
+            arch: arm64
+            installer_url: https://download.swift.org/swift-6.3-branch/windows10-arm64/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-21-a/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-21-a-windows10-arm64.exe
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Download Swift installer
+        shell: pwsh
+        run: |
+          $url = "${{ matrix.installer_url }}"
+          $out = Join-Path $env:TEMP "swift-installer.exe"
+          Write-Host "Downloading Swift from $url ..."
+          Invoke-WebRequest -Uri $url -OutFile $out -UseBasicParsing
+          Write-Host "Downloaded to $out"
+
+      - name: Install Swift
+        id: install-swift
+        shell: pwsh
+        run: |
+          $Installer = Join-Path $env:TEMP "swift-installer.exe"
+          $LogFile = Join-Path $env:TEMP "swift-install.log"
+          $Arguments = @("/quiet", "/lv*x", $LogFile)
+          Write-Host "Running installer (quiet)..."
+          $Process = Start-Process -FilePath $Installer -ArgumentList $Arguments -Wait -PassThru -Verb RunAs
+          switch ($Process.ExitCode) {
+            0 { Write-Host "Installation successful" }
+            3010 { Write-Host "Installation successful; reboot would be required" }
+            default {
+              Write-Host "::error::Installer exited with code $($Process.ExitCode)"
+              if (Test-Path $LogFile) { Get-Content $LogFile -Tail 100 }
+              exit $Process.ExitCode
+            }
+          }
+          # Refresh PATH so subsequent steps see Swift (installer updates User/Machine Path)
+          $machinePath = [Environment]::GetEnvironmentVariable("Path", "Machine")
+          $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+          $merged = ($env:Path, $userPath, $machinePath) -join ";"
+          $merged -Split ";" | Where-Object { $_ } | Select-Object -Unique | ForEach-Object { Add-Content -Path $env:GITHUB_PATH -Value $_ }
+
+      - name: Verify Swift
+        shell: pwsh
+        run: |
+          swift --version
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      - name: Build
+        shell: pwsh
+        run: swift build -v
+
+      - name: Run tests
+        shell: pwsh
+        run: swift test -v
