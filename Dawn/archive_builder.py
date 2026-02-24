@@ -91,7 +91,7 @@ def write_bundle_manifest(version: str) -> None:
                 "variants": target_manifests,
             },
             "dxcompiler": {
-                "type": "staticLibrary",
+                "type": "experimentalWindowsDLL",
                 "version": "1.0.0",
                 "variants": [
                     {
@@ -105,7 +105,7 @@ def write_bundle_manifest(version: str) -> None:
                 ],
             },
             "dxil": {
-                "type": "staticLibrary",
+                "type": "experimentalWindowsDLL",
                 "version": "1.0.0",
                 "variants": [
                     {
@@ -119,7 +119,7 @@ def write_bundle_manifest(version: str) -> None:
                 ],
             },
             "d3dcompiler_47": {
-                "type": "staticLibrary",
+                "type": "experimentalWindowsDLL",
                 "version": "1.0.0",
                 "variants": [
                     {

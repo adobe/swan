@@ -5,7 +5,7 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 //
-// swift-tools-version: 6.2
+// swift-tools-version: 6.3;(experimentalCGen)
 
 import Foundation
 import PackageDescription
