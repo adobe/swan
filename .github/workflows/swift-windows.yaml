@@ -93,6 +93,7 @@ jobs:
         shell: pwsh
         run: swift build -v
 
-      - name: Run tests
-        shell: pwsh
-        run: swift test -v
+      # Need a GPU instance to run tests
+      # - name: Run tests
+      #   shell: pwsh
+      #   run: swift test -v
