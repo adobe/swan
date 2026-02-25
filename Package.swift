@@ -5,7 +5,7 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 //
-// swift-tools-version: 6.2
+// swift-tools-version: 6.3;(experimentalCGen)
 
 import Foundation
 import PackageDescription
@@ -34,8 +34,8 @@ let dawnTarget: Target = {
 		return .binaryTarget(
 			name: "DawnLib",
 			url:
-				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-146.0.7666.0/dawn-chromium-canary-146.0.7666.0-release.zip",
-			checksum: "eff4297d456101289f2105b7da4686d1963cf15ad0aa5000fe9447dcfcb30c1a"
+				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-147.0.7702.0/dawn-chromium-canary-147.0.7702.0-release.zip",
+			checksum: "a011bdd8466210df9f6437cdbcd654995ede3039532c269236e558d1abd3564d"
 		)
 	}
 }()
@@ -93,7 +93,7 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.46.3"),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", branch: "cf7a4f31f1f191f4eea84bb79c6aeffbccb7140e"),
 	],
 	targets: [
 		dawnTarget,
