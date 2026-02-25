@@ -40,10 +40,10 @@ extension GPUBufferBindingType: _BridgedSwiftEnumNoPayload, _BridgedSwiftRawValu
 extension GPUBufferDescriptor: _BridgedSwiftStruct {
     @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUBufferDescriptor {
         let mappedAtCreation = Bool.bridgeJSStackPop()
-        let usage = Int.bridgeJSStackPop()
         let size = Int.bridgeJSStackPop()
+        let usage = Int.bridgeJSStackPop()
         let label = Optional<String>.bridgeJSStackPop()
-        return GPUBufferDescriptor(label: label, size: size, usage: usage, mappedAtCreation: mappedAtCreation)
+        return GPUBufferDescriptor(label: label, usage: usage, size: size, mappedAtCreation: mappedAtCreation)
     }
 
     @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
@@ -52,8 +52,8 @@ extension GPUBufferDescriptor: _BridgedSwiftStruct {
         __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
-        self.size.bridgeJSStackPush()
         self.usage.bridgeJSStackPush()
+        self.size.bridgeJSStackPush()
         self.mappedAtCreation.bridgeJSStackPush()
     }
 
@@ -1164,7 +1164,7 @@ extension GPURenderPipelineDescriptor: _BridgedSwiftStruct {
         let fragment = Optional<GPUFragmentState>.bridgeJSStackPop()
         let primitive = Optional<GPUPrimitiveState>.bridgeJSStackPop()
         let vertex = GPUVertexState.bridgeJSStackPop()
-        let layout = String.bridgeJSStackPop()
+        let layout = GPUPipelineLayout(unsafelyWrapping: JSObject.bridgeJSStackPop())
         let label = Optional<String>.bridgeJSStackPop()
         return GPURenderPipelineDescriptor(label: label, layout: layout, vertex: vertex, primitive: primitive, fragment: fragment)
     }
@@ -1175,7 +1175,7 @@ extension GPURenderPipelineDescriptor: _BridgedSwiftStruct {
         __bjs_unwrapped_label.bridgeJSStackPush()
         }
         _swift_js_push_i32(__bjs_isSome_label ? 1 : 0)
-        self.layout.bridgeJSStackPush()
+        self.layout.jsObject.bridgeJSStackPush()
         self.vertex.bridgeJSStackPush()
         self.primitive.bridgeJSStackPush()
         self.fragment.bridgeJSStackPush()

@@ -527,7 +527,7 @@
           {
             "isReadonly" : true,
             "isStatic" : false,
-            "name" : "size",
+            "name" : "usage",
             "type" : {
               "int" : {
 
@@ -537,7 +537,7 @@
           {
             "isReadonly" : true,
             "isStatic" : false,
-            "name" : "usage",
+            "name" : "size",
             "type" : {
               "int" : {
 
@@ -1413,8 +1413,8 @@
             "isStatic" : false,
             "name" : "layout",
             "type" : {
-              "string" : {
-
+              "jsObject" : {
+                "_0" : "GPUPipelineLayout"
               }
             }
           },

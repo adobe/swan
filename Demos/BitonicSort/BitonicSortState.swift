@@ -7,8 +7,6 @@
 //
 // Ported from https://github.com/webgpu/webgpu-samples/tree/main/sample/bitonicSort
 
-import Foundation
-
 // Local vs Global: When blockHeight ≤ workgroupSize×2, all comparisons fit in one workgroup's
 // shared memory (fast). Otherwise, we use global memory (slower but necessary).
 enum StepType: UInt32 {
@@ -43,7 +41,8 @@ struct BitonicSortState {
 		self.workgroupSize = workgroupSize
 
 		// Total steps = (log2(n) * (log2(n) + 1)) / 2
-		let log2n = Int(log2(Double(totalElements)))
+		// Integer log2 via bit counting (avoids Foundation dependency)
+		let log2n = Int.bitWidth - 1 - totalElements.leadingZeroBitCount
 		self.totalSteps = (log2n * (log2n + 1)) / 2
 	}
 

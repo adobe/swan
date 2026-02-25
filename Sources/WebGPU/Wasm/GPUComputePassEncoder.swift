@@ -39,3 +39,17 @@ import JavaScriptKit
 	@JSFunction
 	public func end() throws(JSException)
 }
+
+public extension GPUComputePassEncoder {
+	func setPipeline(pipeline: GPUComputePipeline) {
+		try! setPipeline(pipeline)
+	}
+
+	func setBindGroup(groupIndex: UInt32, group: GPUBindGroup, dynamicOffsets: [UInt32]) {
+		try! setBindGroup(Int(groupIndex), group)
+	}
+
+	func dispatchWorkgroups(workgroupCountX: UInt32, workgroupCountY: UInt32, workgroupCountZ: UInt32) {
+		try! dispatchWorkgroups(Int(workgroupCountX), Int(workgroupCountY), Int(workgroupCountZ))
+	}
+}

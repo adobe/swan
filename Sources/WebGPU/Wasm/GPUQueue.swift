@@ -25,3 +25,22 @@ import JavaScriptKit
 		_ data: JSObject
 	) throws(JSException)
 }
+
+public extension GPUQueue {
+	func submit(commands: [GPUCommandBuffer]) {
+		let jsArray = JSObject.global.Array.function!.new()
+		for cmd in commands {
+			_ = jsArray.push!(cmd.jsObject)
+		}
+		try! submit(jsArray)
+	}
+
+	func writeBuffer(buffer: GPUBuffer, bufferOffset: UInt64, data: UnsafeRawBufferPointer) {
+		let bytes = Array(UnsafeBufferPointer(
+			start: data.baseAddress?.assumingMemoryBound(to: UInt8.self),
+			count: data.count
+		))
+		let jsArray = JSTypedArray<UInt8>(bytes)
+		try! writeBuffer(buffer, Int(bufferOffset), jsArray.jsObject)
+	}
+}

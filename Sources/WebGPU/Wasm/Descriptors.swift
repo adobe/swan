@@ -9,29 +9,29 @@ import JavaScriptKit
 
 @JS public struct GPUBufferDescriptor {
 	public var label: String?
-	public var size: Int
 	public var usage: Int
+	public var size: Int
 	public var mappedAtCreation: Bool = false
 
 	public init(
 		label: String? = nil,
-		size: Int,
 		usage: Int,
+		size: Int,
 		mappedAtCreation: Bool = false
 	) {
 		self.label = label
-		self.size = size
 		self.usage = usage
+		self.size = size
 		self.mappedAtCreation = mappedAtCreation
 	}
 
 	public init(
 		label: String? = nil,
-		size: Int,
 		usage: GPUBufferUsage,
+		size: UInt64,
 		mappedAtCreation: Bool = false
 	) {
-		self.init(label: label, size: size, usage: Int(usage.rawValue), mappedAtCreation: mappedAtCreation)
+		self.init(label: label, usage: Int(usage.rawValue), size: Int(size), mappedAtCreation: mappedAtCreation)
 	}
 }
 

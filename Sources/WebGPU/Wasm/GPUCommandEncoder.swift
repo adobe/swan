@@ -63,3 +63,13 @@ public struct GPUCommandEncoder {
 	@JSFunction
 	public func finish() throws(JSException) -> GPUCommandBuffer
 }
+
+public extension GPUCommandEncoder {
+	func beginRenderPass(descriptor: GPURenderPassDescriptor) -> GPURenderPassEncoder {
+		try! beginRenderPass(descriptor)
+	}
+
+	func finish(descriptor: (any Any)?) -> GPUCommandBuffer? {
+		try! finish()
+	}
+}

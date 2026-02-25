@@ -41,14 +41,14 @@ import JavaScriptKit
 
 @JS public struct GPURenderPipelineDescriptor {
 	public var label: String?
-	public var layout: String
+	public var layout: GPUPipelineLayout
 	public var vertex: GPUVertexState
 	public var primitive: GPUPrimitiveState?
 	public var fragment: GPUFragmentState?
 
 	public init(
 		label: String? = nil,
-		layout: String = "auto",
+		layout: GPUPipelineLayout,
 		vertex: GPUVertexState,
 		primitive: GPUPrimitiveState? = nil,
 		fragment: GPUFragmentState? = nil
@@ -114,4 +114,23 @@ import JavaScriptKit
 		descriptor: GPUComputePipelineDescriptor
 	) throws(JSException)
 		-> GPUComputePipeline
+}
+
+public extension GPUDevice {
+	func createBuffer(descriptor: GPUBufferDescriptor) -> GPUBuffer {
+		try! createBuffer(descriptor)
+	}
+
+	func createShaderModule(descriptor: GPUShaderModuleDescriptor) -> GPUShaderModule {
+		try! createShaderModule(descriptor)
+	}
+
+	func createRenderPipeline(descriptor: GPURenderPipelineDescriptor) -> GPURenderPipeline {
+		try! createRenderPipeline(descriptor)
+	}
+
+	func createCommandEncoder(descriptor: GPUCommandEncoderDescriptor) -> GPUCommandEncoder {
+		try! createCommandEncoder(descriptor)
+	}
+
 }
