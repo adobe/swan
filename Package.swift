@@ -254,11 +254,14 @@ let package = Package(
 		),
 		.executableTarget(
 			name: "BitonicSort",
-			dependencies: [
-				.target(name: "DemoUtils", condition: .when(platforms: supportedNativePlatforms)),
-				.target(name: "WebGPU", condition: .when(platforms: wasmPlatforms)),
-				.target(name: "WebGPUWasm", condition: .when(platforms: wasmPlatforms)),
-			],
+			dependencies: (isWasmBuild
+				? [
+					.target(name: "WebGPU"),
+					.target(name: "WebGPUWasm"),
+				]
+				: [
+					.target(name: "DemoUtils")
+				]),
 			path: "Demos/BitonicSort",
 			exclude: ["index.html"],
 			swiftSettings: swiftSettings + (isWasmBuild ? [.enableExperimentalFeature("Extern")] : []),
@@ -298,4 +301,3 @@ let package = Package(
 		),
 	]
 )
-
