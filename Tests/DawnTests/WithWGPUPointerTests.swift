@@ -513,7 +513,7 @@ struct WithWGPUPointerTests {
 		case third = 3
 		case fourth = 4
 	}
-	@Test("withWGPUArrayPointer with RawRepresentable array")
+	@Test("withWGPUArrayPointer with non-optional RawRepresentable array")
 	func testWithWGPUArrayPointerRawRepresentable() {
 		let formats: [TestFormat] = [.first, .second, .third, .fourth]
 		let result = withWGPUArrayPointer(formats) { pointer in
@@ -527,12 +527,45 @@ struct WithWGPUPointerTests {
 		#expect(result == 4)
 	}
 
+	@Test("withWGPUArrayPointer with optional RawRepresentable array - nil")
+	func testWithWGPUArrayPointerOptionalRawRepresentableNil() {
+		let formats: [TestFormat]? = nil
+		let result = withWGPUArrayPointer(formats) { pointer in
+			#expect(pointer == nil)
+			return 42
+		}
+		#expect(result == 42)
+	}
+
+	@Test("withWGPUArrayPointer with optional RawRepresentable array - empty")
+	func testWithWGPUArrayPointerOptionalRawRepresentableEmpty() {
+		let formats: [TestFormat]? = []
+		let result = withWGPUArrayPointer(formats) { pointer in
+			#expect(pointer == nil)
+			return 99
+		}
+		#expect(result == 99)
+	}
+
+	@Test("withWGPUArrayPointer with optional RawRepresentable array - non-nil")
+	func testWithWGPUArrayPointerOptionalRawRepresentableNonNil() {
+		let formats: [TestFormat]? = [.first, .second, .third]
+		let result = withWGPUArrayPointer(formats) { pointer in
+			#expect(pointer != nil)
+			#expect(pointer![0] == .first)
+			#expect(pointer![1] == .second)
+			#expect(pointer![2] == .third)
+			return formats!.count
+		}
+		#expect(result == 3)
+	}
+
 	// A simple GPUSimpleStruct for testing
 	private struct TestStruct: GPUSimpleStruct {
 		var a: Int
 		var b: Float
 	}
-	@Test("withWGPUArrayPointer with GPUSimpleStruct array")
+	@Test("withWGPUArrayPointer with non-optional GPUSimpleStruct array")
 	func testWithWGPUArrayPointerGPUSimpleStruct() {
 		let testStructs = [TestStruct(a: 1, b: 1.0), TestStruct(a: 2, b: 2.0), TestStruct(a: 3, b: 3.0)]
 		let result = withWGPUArrayPointer(testStructs) { pointer in
@@ -554,6 +587,30 @@ struct WithWGPUPointerTests {
 			return 42
 		}
 		#expect(result == 42)
+	}
+
+	@Test("withWGPUArrayPointer with optional GPUSimpleStruct array - empty")
+	func testWithWGPUArrayPointerEmptyGPUSimpleStruct() {
+		let testStructs: [TestStruct]? = []
+		let result = withWGPUArrayPointer(testStructs) { pointer in
+			#expect(pointer == nil)
+			return 77
+		}
+		#expect(result == 77)
+	}
+
+	@Test("withWGPUArrayPointer with optional GPUSimpleStruct array - non-nil")
+	func testWithWGPUArrayPointerOptionalGPUSimpleStructNonNil() {
+		let testStructs: [TestStruct]? = [TestStruct(a: 10, b: 10.0), TestStruct(a: 20, b: 20.0)]
+		let result = withWGPUArrayPointer(testStructs) { pointer in
+			#expect(pointer != nil)
+			#expect(pointer![0].a == 10)
+			#expect(pointer![0].b == 10.0)
+			#expect(pointer![1].a == 20)
+			#expect(pointer![1].b == 20.0)
+			return testStructs!.count
+		}
+		#expect(result == 2)
 	}
 
 	@Test("withWGPUMutableArrayPointer with GPUStruct array")
@@ -823,6 +880,108 @@ struct WithWGPUPointerTests {
 			pointer.pointee.maxTextureDimension1D = 42
 		}
 		#expect(limits.maxTextureDimension1D == 42)
+	}
+
+	// Tests for nil pointer safety in generated wrapArrayWithCount calls.
+
+	@Test("wrapArrayWithCount on nil struct array pointer returns empty array")
+	func testWrapArrayWithCountNilStructPointer() {
+		// Covers: DawnStructure+Wrappers.swift codegen path (GPUStructWrappable arrays)
+		// Simulates what Dawn returns on successful compilation: messageCount = 0, messages = NULL
+		let wgpuInfo = WGPUCompilationInfo(
+			nextInChain: nil,
+			messageCount: 0,
+			messages: nil
+		)
+		let info = GPUCompilationInfo(wgpuStruct: wgpuInfo)
+		#expect(info.messages.isEmpty)
+	}
+
+	@Test("wrapArrayWithCount on nil enum array pointer returns empty array")
+	func testWrapArrayWithCountNilEnumPointer() {
+		// Covers: DawnEnum+Wrappers.swift codegen path (enum arrays)
+		let wgpuFeatures = WGPUSupportedWGSLLanguageFeatures(
+			featureCount: 0,
+			features: nil
+		)
+		let features = GPUSupportedWGSLLanguageFeatures(wgpuStruct: wgpuFeatures)
+		#expect(features.features.isEmpty)
+	}
+
+	@Test("wrapArrayWithCount on nil native type array pointer returns empty array")
+	func testWrapArrayWithCountNilNativeTypePointer() {
+		// Covers: DawnNativeType+Wrappers.swift codegen path (native type arrays like uint64_t)
+		let wgpuState = WGPUSharedBufferMemoryEndAccessState(
+			nextInChain: nil,
+			initialized: 0,
+			fenceCount: 0,
+			fences: nil,
+			signaledValues: nil
+		)
+		let state = GPUSharedBufferMemoryEndAccessState(wgpuStruct: wgpuState)
+		#expect(state.signaledValues?.isEmpty == true)
+	}
+
+	// Tests for non-nil array reconstruction in generated wrapArrayWithCount calls.
+	@Test("wrapArrayWithCount on non-nil struct array pointer wraps elements")
+	func testWrapArrayWithCountNonNilStructPointer() {
+		let messageText = "test warning"
+		messageText.withCString { cString in
+			var message = WGPUCompilationMessage()
+			message.message = WGPUStringView(data: cString, length: messageText.utf8.count)
+			message.type = .info
+			message.lineNum = 42
+			message.linePos = 7
+			withUnsafePointer(to: &message) { ptr in
+				let wgpuInfo = WGPUCompilationInfo(
+					nextInChain: nil,
+					messageCount: 1,
+					messages: ptr
+				)
+				let info = GPUCompilationInfo(wgpuStruct: wgpuInfo)
+				#expect(info.messages.count == 1)
+				#expect(info.messages[0].message == "test warning")
+				#expect(info.messages[0].type == .info)
+				#expect(info.messages[0].lineNum == 42)
+				#expect(info.messages[0].linePos == 7)
+			}
+		}
+	}
+
+	@Test("wrapArrayWithCount on non-nil enum array pointer wraps elements")
+	func testWrapArrayWithCountNonNilEnumPointer() {
+		let features: [WGPUWGSLLanguageFeatureName] = [
+			.readonlyAndReadwriteStorageTextures,
+			.packed4x8IntegerDotProduct,
+		]
+		features.withUnsafeBufferPointer { buffer in
+			let wgpuFeatures = WGPUSupportedWGSLLanguageFeatures(
+				featureCount: buffer.count,
+				features: buffer.baseAddress
+			)
+			let wrapped = GPUSupportedWGSLLanguageFeatures(wgpuStruct: wgpuFeatures)
+			#expect(wrapped.features.count == 2)
+			#expect(wrapped.features[0] == .readonlyAndReadwriteStorageTextures)
+			#expect(wrapped.features[1] == .packed4x8IntegerDotProduct)
+		}
+	}
+
+	@Test("wrapArrayWithCount on non-nil native type array pointer wraps elements")
+	func testWrapArrayWithCountNonNilNativeTypePointer() {
+		let values: [UInt64] = [100, 200]
+		values.withUnsafeBufferPointer { buffer in
+			let wgpuState = WGPUSharedBufferMemoryEndAccessState(
+				nextInChain: nil,
+				initialized: 1,
+				fenceCount: 2,
+				fences: nil,
+				signaledValues: buffer.baseAddress
+			)
+			let state = GPUSharedBufferMemoryEndAccessState(wgpuStruct: wgpuState)
+			#expect(state.signaledValues?.count == 2)
+			#expect(state.signaledValues?[0] == 100)
+			#expect(state.signaledValues?[1] == 200)
+		}
 	}
 
 	// Simple test class for AnyObject array tests

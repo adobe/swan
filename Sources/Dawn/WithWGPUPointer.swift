@@ -149,10 +149,10 @@ where E.WGPUType == E {
 
 public func withWGPUArrayPointer<E: GPUSimpleStruct, R>(_ array: [E]?, _ lambda: (UnsafePointer<E.WGPUType>?) -> R) -> R
 where E.WGPUType == E {
-	if let array = array {
-		return withWGPUArrayPointer(array, lambda)
+	guard let array = array, !array.isEmpty else {
+		return lambda(nil)
 	}
-	return lambda(nil)
+	return withWGPUArrayPointer(array) { (pointer: UnsafePointer<E.WGPUType>) in lambda(pointer) }
 }
 
 public func withWGPUArrayPointer<E: Numeric, R>(_ array: [E], _ lambda: (UnsafePointer<E>) -> R) -> R {
@@ -176,10 +176,10 @@ public func withWGPUArrayPointer<E: RawRepresentable, R>(_ array: [E], _ lambda:
 }
 
 public func withWGPUArrayPointer<E: RawRepresentable, R>(_ array: [E]?, _ lambda: (UnsafePointer<E>?) -> R) -> R {
-	guard let array = array else {
+	guard let array = array, !array.isEmpty else {
 		return lambda(nil)
 	}
-	return withWGPUArrayPointer(array, lambda)
+	return withWGPUArrayPointer(array) { (pointer: UnsafePointer<E>) in lambda(pointer) }
 }
 
 // Tuples 7, 9, and 12 (used in color space conversion structures)
@@ -257,6 +257,26 @@ extension UnsafePointer {
 			structArray.append(self[i])
 		}
 		return structArray
+	}
+}
+
+// Parallel versions of the above wrapArrayWithCount extensions for Optional<UnsafePointer>.
+// These handle the cases where the pointer returned from Dawn is nil by returning an empty array.
+extension Optional {
+	func wrapArrayWithCount<SType: GPUStructWrappable>(_ count: Int) -> [SType]
+	where Wrapped == UnsafePointer<SType.WGPUType>, SType.WGPUType: WGPUStruct {
+		guard let self else { return [] }
+		return self.wrapArrayWithCount(count)
+	}
+
+	func wrapArrayWithCount<T>(_ count: Int) -> [T] where Wrapped == UnsafePointer<T> {
+		guard let self else { return [] }
+		return self.wrapArrayWithCount(count)
+	}
+
+	func wrapWGPUArrayWithCount<T>(_ count: Int) -> [T] where Wrapped == UnsafePointer<Optional<T>> {
+		guard let self else { return [] }
+		return self.wrapWGPUArrayWithCount(count)
 	}
 }
 
