@@ -79,6 +79,6 @@ jobs:
             - `*.artifactbundleindex` — index referencing all platform bundles
 
             These are just the raw Dawn libraries and do not include the Swift API layer.
-          artifacts: dawn-bundles/*
+          artifacts: dawn-bundles/*.zip,dawn-bundles/*.artifactbundleindex
           artifactErrorsFailBuild: true
           removeArtifacts: true
