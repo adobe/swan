@@ -46,30 +46,23 @@ public struct GPUCommandEncoder {
 		self.jsObject = jsObject
 	}
 
-	@JSGetter public var label: String?
+	public var label: String? { jsObject.label.string }
 
 	@JSFunction
-	public func beginRenderPass(
-		_ descriptor: GPURenderPassDescriptor
-	) throws(JSException)
-		-> GPURenderPassEncoder
+	func beginRenderPass(_ descriptor: GPURenderPassDescriptor) throws(JSException) -> GPURenderPassEncoder
 
 	@JSFunction
-	public func beginComputePass(
-		descriptor: GPUComputePassDescriptor
-	) throws(JSException)
-		-> GPUComputePassEncoder
+	func beginComputePass(_ descriptor: GPUComputePassDescriptor) throws(JSException) -> GPUComputePassEncoder
 
-	@JSFunction
-	public func finish() throws(JSException) -> GPUCommandBuffer
-}
-
-public extension GPUCommandEncoder {
-	func beginRenderPass(descriptor: GPURenderPassDescriptor) -> GPURenderPassEncoder {
+	public func beginRenderPass(descriptor: GPURenderPassDescriptor) -> GPURenderPassEncoder {
 		try! beginRenderPass(descriptor)
 	}
 
-	func finish(descriptor: (any Any)?) -> GPUCommandBuffer? {
-		try! finish()
+	public func beginComputePass(descriptor: GPUComputePassDescriptor) -> GPUComputePassEncoder {
+		try! beginComputePass(descriptor)
+	}
+
+	public func finish(descriptor: (any Any)?) -> GPUCommandBuffer? {
+		GPUCommandBuffer(unsafelyWrapping: jsObject.finish!().object!)
 	}
 }

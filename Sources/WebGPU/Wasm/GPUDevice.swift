@@ -86,70 +86,62 @@ import JavaScriptKit
 		self.jsObject = jsObject
 	}
 
-	@JSGetter public var queue: GPUQueue
-	@JSGetter public var label: String?
+	public var queue: GPUQueue { GPUQueue(unsafelyWrapping: jsObject.queue.object!) }
+	public var label: String? { jsObject.label.string }
 
 	@JSFunction
-	public func createBuffer(_ descriptor: GPUBufferDescriptor) throws(JSException) -> GPUBuffer
+	func createBuffer(_ descriptor: GPUBufferDescriptor) throws(JSException) -> GPUBuffer
 
 	@JSFunction
-	public func createShaderModule(
-		_ descriptor: GPUShaderModuleDescriptor
-	) throws(JSException)
-		-> GPUShaderModule
+	func createShaderModule(_ descriptor: GPUShaderModuleDescriptor) throws(JSException) -> GPUShaderModule
 
 	@JSFunction
-	public func createRenderPipeline(
-		_ descriptor: GPURenderPipelineDescriptor
-	) throws(JSException)
-		-> GPURenderPipeline
+	func createRenderPipeline(_ descriptor: GPURenderPipelineDescriptor) throws(JSException) -> GPURenderPipeline
 
 	@JSFunction
-	public func createCommandEncoder(
-		_ descriptor: GPUCommandEncoderDescriptor
-	) throws(JSException)
-		-> GPUCommandEncoder
+	func createCommandEncoder(_ descriptor: GPUCommandEncoderDescriptor) throws(JSException) -> GPUCommandEncoder
 
 	@JSFunction
-	public func createBindGroupLayout(
-		descriptor: GPUBindGroupLayoutDescriptor
-	) throws(JSException)
-		-> GPUBindGroupLayout
+	func createBindGroupLayout(_ descriptor: GPUBindGroupLayoutDescriptor) throws(JSException) -> GPUBindGroupLayout
 
 	@JSFunction
-	public func createBindGroup(
-		descriptor: GPUBindGroupDescriptor
-	) throws(JSException)
-		-> GPUBindGroup
+	func createBindGroup(_ descriptor: GPUBindGroupDescriptor) throws(JSException) -> GPUBindGroup
 
 	@JSFunction
-	public func createPipelineLayout(
-		descriptor: GPUPipelineLayoutDescriptor
-	) throws(JSException)
-		-> GPUPipelineLayout
+	func createPipelineLayout(_ descriptor: GPUPipelineLayoutDescriptor) throws(JSException) -> GPUPipelineLayout
 
 	@JSFunction
-	public func createComputePipeline(
-		descriptor: GPUComputePipelineDescriptor
-	) throws(JSException)
-		-> GPUComputePipeline
-}
+	func createComputePipeline(_ descriptor: GPUComputePipelineDescriptor) throws(JSException) -> GPUComputePipeline
 
-public extension GPUDevice {
-	func createBuffer(descriptor: GPUBufferDescriptor) -> GPUBuffer {
+	public func createBuffer(descriptor: GPUBufferDescriptor) -> GPUBuffer {
 		try! createBuffer(descriptor)
 	}
 
-	func createShaderModule(descriptor: GPUShaderModuleDescriptor) -> GPUShaderModule {
+	public func createShaderModule(descriptor: GPUShaderModuleDescriptor) -> GPUShaderModule {
 		try! createShaderModule(descriptor)
 	}
 
-	func createRenderPipeline(descriptor: GPURenderPipelineDescriptor) -> GPURenderPipeline {
+	public func createRenderPipeline(descriptor: GPURenderPipelineDescriptor) -> GPURenderPipeline {
 		try! createRenderPipeline(descriptor)
 	}
 
-	func createCommandEncoder(descriptor: GPUCommandEncoderDescriptor) -> GPUCommandEncoder {
+	public func createCommandEncoder(descriptor: GPUCommandEncoderDescriptor) -> GPUCommandEncoder {
 		try! createCommandEncoder(descriptor)
 	}
 
+	public func createBindGroupLayout(descriptor: GPUBindGroupLayoutDescriptor) -> GPUBindGroupLayout {
+		try! createBindGroupLayout(descriptor)
+	}
+
+	public func createBindGroup(descriptor: GPUBindGroupDescriptor) -> GPUBindGroup {
+		try! createBindGroup(descriptor)
+	}
+
+	public func createPipelineLayout(descriptor: GPUPipelineLayoutDescriptor) -> GPUPipelineLayout {
+		try! createPipelineLayout(descriptor)
+	}
+
+	public func createComputePipeline(descriptor: GPUComputePipelineDescriptor) -> GPUComputePipeline {
+		try! createComputePipeline(descriptor)
+	}
 }

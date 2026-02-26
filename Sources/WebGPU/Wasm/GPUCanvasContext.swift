@@ -15,10 +15,15 @@ public struct GPUCanvasContext {
 	}
 
 	@JSFunction
-	public func configure(_ configuration: GPUCanvasConfiguration) throws(JSException)
+	func configure(_ configuration: GPUCanvasConfiguration) throws(JSException)
 
-	@JSFunction
-	public func getCurrentTexture() throws(JSException) -> GPUTexture
+	public func configure(configuration: GPUCanvasConfiguration) {
+		try! configure(configuration)
+	}
+
+	public func getCurrentTexture() -> GPUTexture {
+		GPUTexture(unsafelyWrapping: jsObject.getCurrentTexture!().object!)
+	}
 }
 
 @JS public struct GPUCanvasConfiguration {

@@ -13,21 +13,15 @@ import JavaScriptKit
 		self.jsObject = jsObject
 	}
 
-	@JSGetter public var label: String?
+	public var label: String? { jsObject.label.string }
 
 	@JSFunction
-	public func submit(_ commandBuffers: JSObject) throws(JSException)
+	func submit(_ commandBuffers: JSObject) throws(JSException)
 
 	@JSFunction
-	public func writeBuffer(
-		_ buffer: GPUBuffer,
-		_ bufferOffset: Int,
-		_ data: JSObject
-	) throws(JSException)
-}
+	func writeBuffer(_ buffer: GPUBuffer, _ bufferOffset: Int, _ data: JSObject) throws(JSException)
 
-public extension GPUQueue {
-	func submit(commands: [GPUCommandBuffer]) {
+	public func submit(commands: [GPUCommandBuffer]) {
 		let jsArray = JSObject.global.Array.function!.new()
 		for cmd in commands {
 			_ = jsArray.push!(cmd.jsObject)
@@ -35,7 +29,7 @@ public extension GPUQueue {
 		try! submit(jsArray)
 	}
 
-	func writeBuffer(buffer: GPUBuffer, bufferOffset: UInt64, data: UnsafeRawBufferPointer) {
+	public func writeBuffer(buffer: GPUBuffer, bufferOffset: UInt64, data: UnsafeRawBufferPointer) {
 		let bytes = Array(UnsafeBufferPointer(
 			start: data.baseAddress?.assumingMemoryBound(to: UInt8.self),
 			count: data.count

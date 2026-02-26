@@ -13,8 +13,12 @@ import JavaScriptKit
 		self.jsObject = jsObject
 	}
 
-	@JSGetter public var label: String?
+	public var label: String? { jsObject.label.string }
 
 	@JSFunction
-	public func getBindGroupLayout(_ index: Int) throws(JSException) -> GPUBindGroupLayout
+	func getBindGroupLayout(_ index: Int) throws(JSException) -> GPUBindGroupLayout
+
+	public func getBindGroupLayout(index: UInt32) -> GPUBindGroupLayout {
+		try! getBindGroupLayout(Int(index))
+	}
 }

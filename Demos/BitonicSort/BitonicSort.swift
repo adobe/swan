@@ -66,11 +66,7 @@ struct BitonicSortDemo {
 
 	private mutating func setupGPU(device: GPUDevice, format: GPUTextureFormat) {
 		self.device = device
-		#if arch(wasm32)
-		self.queue = try! device.queue
-		#else
 		self.queue = device.queue
-		#endif
 
 		#if !arch(wasm32)
 		self.workgroupSize = maxWorkgroupSize(device: device)
@@ -102,75 +98,6 @@ struct BitonicSortDemo {
 			"BitonicSort initialized: \(totalElements) elements, \(self.sortState.totalSteps) steps, workgroup size: \(self.workgroupSize)"
 		)
 		print("Controls: P=pause/resume, R=reset, H=toggle highlight mode")
-	}
-
-	// MARK: - Platform bridging helpers
-	// These methods exist because Wasm @JSFunction methods throw(JSException) while Dawn
-	// methods are non-throwing. Swift disallows overloading on throws alone when parameter
-	// labels match, so we centralize the #if here to keep the rest of the code clean.
-
-	private func createBindGroupLayout(_ device: GPUDevice, _ descriptor: GPUBindGroupLayoutDescriptor) -> GPUBindGroupLayout {
-		#if arch(wasm32)
-		try! device.createBindGroupLayout(descriptor: descriptor)
-		#else
-		device.createBindGroupLayout(descriptor: descriptor)
-		#endif
-	}
-
-	private func createBindGroup(_ device: GPUDevice, _ descriptor: GPUBindGroupDescriptor) -> GPUBindGroup {
-		#if arch(wasm32)
-		try! device.createBindGroup(descriptor: descriptor)
-		#else
-		device.createBindGroup(descriptor: descriptor)
-		#endif
-	}
-
-	private func createPipelineLayout(_ device: GPUDevice, _ descriptor: GPUPipelineLayoutDescriptor) -> GPUPipelineLayout {
-		#if arch(wasm32)
-		try! device.createPipelineLayout(descriptor: descriptor)
-		#else
-		device.createPipelineLayout(descriptor: descriptor)
-		#endif
-	}
-
-	private func createComputePipeline(_ device: GPUDevice, _ descriptor: GPUComputePipelineDescriptor) -> GPUComputePipeline {
-		#if arch(wasm32)
-		try! device.createComputePipeline(descriptor: descriptor)
-		#else
-		device.createComputePipeline(descriptor: descriptor)
-		#endif
-	}
-
-	private func beginComputePass(_ encoder: GPUCommandEncoder, _ descriptor: GPUComputePassDescriptor) -> GPUComputePassEncoder {
-		#if arch(wasm32)
-		try! encoder.beginComputePass(descriptor: descriptor)
-		#else
-		encoder.beginComputePass(descriptor: descriptor)
-		#endif
-	}
-
-	private func end(_ encoder: GPUComputePassEncoder) {
-		#if arch(wasm32)
-		try! encoder.end()
-		#else
-		encoder.end()
-		#endif
-	}
-
-	private func end(_ encoder: GPURenderPassEncoder) {
-		#if arch(wasm32)
-		try! encoder.end()
-		#else
-		encoder.end()
-		#endif
-	}
-
-	private func createView(_ texture: GPUTexture) -> GPUTextureView {
-		#if arch(wasm32)
-		try! texture.createView()
-		#else
-		texture.createView()
-		#endif
 	}
 
 	// MARK: - Resource Creation (shared)
@@ -251,9 +178,8 @@ struct BitonicSortDemo {
 	}
 
 	private func createBindGroupLayouts(device: GPUDevice) -> (GPUBindGroupLayout, GPUBindGroupLayout) {
-		let computeBindGroupLayout = self.createBindGroupLayout(
-			device,
-			GPUBindGroupLayoutDescriptor(
+		let computeBindGroupLayout = device.createBindGroupLayout(
+			descriptor: GPUBindGroupLayoutDescriptor(
 				label: "Compute Bind Group Layout",
 				entries: [
 					GPUBindGroupLayoutEntry(
@@ -274,9 +200,8 @@ struct BitonicSortDemo {
 				]
 			)
 		)
-		let renderBindGroupLayout = self.createBindGroupLayout(
-			device,
-			GPUBindGroupLayoutDescriptor(
+		let renderBindGroupLayout = device.createBindGroupLayout(
+			descriptor: GPUBindGroupLayoutDescriptor(
 				label: "Render Bind Group Layout",
 				entries: [
 					GPUBindGroupLayoutEntry(
@@ -302,9 +227,8 @@ struct BitonicSortDemo {
 		bufferSize: UInt64,
 		uniformSize: UInt64
 	) {
-		self.computeBindGroupA = self.createBindGroup(
-			device,
-			GPUBindGroupDescriptor(
+		self.computeBindGroupA = device.createBindGroup(
+			descriptor: GPUBindGroupDescriptor(
 				label: "Compute Bind Group A",
 				layout: computeBindGroupLayout,
 				entries: [
@@ -314,9 +238,8 @@ struct BitonicSortDemo {
 				]
 			)
 		)
-		self.computeBindGroupB = self.createBindGroup(
-			device,
-			GPUBindGroupDescriptor(
+		self.computeBindGroupB = device.createBindGroup(
+			descriptor: GPUBindGroupDescriptor(
 				label: "Compute Bind Group B",
 				layout: computeBindGroupLayout,
 				entries: [
@@ -327,9 +250,8 @@ struct BitonicSortDemo {
 			)
 		)
 
-		self.renderBindGroupA = self.createBindGroup(
-			device,
-			GPUBindGroupDescriptor(
+		self.renderBindGroupA = device.createBindGroup(
+			descriptor: GPUBindGroupDescriptor(
 				label: "Render Bind Group A",
 				layout: renderBindGroupLayout,
 				entries: [
@@ -338,9 +260,8 @@ struct BitonicSortDemo {
 				]
 			)
 		)
-		self.renderBindGroupB = self.createBindGroup(
-			device,
-			GPUBindGroupDescriptor(
+		self.renderBindGroupB = device.createBindGroup(
+			descriptor: GPUBindGroupDescriptor(
 				label: "Render Bind Group B",
 				layout: renderBindGroupLayout,
 				entries: [
@@ -358,24 +279,21 @@ struct BitonicSortDemo {
 		computeBindGroupLayout: GPUBindGroupLayout,
 		renderBindGroupLayout: GPUBindGroupLayout
 	) {
-		let computePipelineLayout = self.createPipelineLayout(
-			device,
-			GPUPipelineLayoutDescriptor(
+		let computePipelineLayout = device.createPipelineLayout(
+			descriptor: GPUPipelineLayoutDescriptor(
 				label: "Compute Pipeline Layout",
 				bindGroupLayouts: [computeBindGroupLayout]
 			)
 		)
-		let renderPipelineLayout = self.createPipelineLayout(
-			device,
-			GPUPipelineLayoutDescriptor(
+		let renderPipelineLayout = device.createPipelineLayout(
+			descriptor: GPUPipelineLayoutDescriptor(
 				label: "Render Pipeline Layout",
 				bindGroupLayouts: [renderBindGroupLayout]
 			)
 		)
 
-		self.computePipeline = self.createComputePipeline(
-			device,
-			GPUComputePipelineDescriptor(
+		self.computePipeline = device.createComputePipeline(
+			descriptor: GPUComputePipelineDescriptor(
 				label: "Bitonic Sort Compute Pipeline",
 				layout: computePipelineLayout,
 				compute: GPUComputeState(module: shaderModules.compute, entryPoint: "computeMain")
@@ -425,7 +343,7 @@ struct BitonicSortDemo {
 		self.updateUniforms()
 
 		let encoder = device.createCommandEncoder(descriptor: GPUCommandEncoderDescriptor(label: "Sort Step Encoder"))
-		let computePass = self.beginComputePass(encoder, GPUComputePassDescriptor(label: "Sort Step"))
+		let computePass = encoder.beginComputePass(descriptor: GPUComputePassDescriptor(label: "Sort Step"))
 		computePass.setPipeline(pipeline: computePipeline)
 
 		let bindGroup = (self.currentBuffer == 0) ? self.computeBindGroupA! : self.computeBindGroupB!
@@ -433,7 +351,7 @@ struct BitonicSortDemo {
 
 		let workgroupCount = UInt32(self.sortState.workgroupsForCurrentStep)
 		computePass.dispatchWorkgroups(workgroupCountX: workgroupCount, workgroupCountY: 1, workgroupCountZ: 1)
-		self.end(computePass)
+		computePass.end()
 
 		let commandBuffer = encoder.finish(descriptor: nil)!
 		self.queue!.submit(commands: [commandBuffer])
@@ -480,9 +398,9 @@ struct BitonicSortDemo {
 		#if !arch(wasm32)
 		let backbuffer = self.surface!.getCurrentTexture()
 		#else
-		let backbuffer = try! self.context!.getCurrentTexture()
+		let backbuffer = self.context!.getCurrentTexture()
 		#endif
-		let textureView = self.createView(backbuffer)
+		let textureView = backbuffer.createView()
 
 		let renderPass = encoder.beginRenderPass(
 			descriptor: GPURenderPassDescriptor(
@@ -501,7 +419,7 @@ struct BitonicSortDemo {
 		let renderBindGroup = (self.currentBuffer == 0) ? self.renderBindGroupA! : self.renderBindGroupB!
 		renderPass.setBindGroup(groupIndex: 0, group: renderBindGroup, dynamicOffsets: [])
 		renderPass.draw(vertexCount: 3, instanceCount: 1, firstVertex: 0, firstInstance: 0)
-		self.end(renderPass)
+		renderPass.end()
 
 		let commandBuffer = encoder.finish(descriptor: nil)!
 		self.queue!.submit(commands: [commandBuffer])

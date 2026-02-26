@@ -26,5 +26,5 @@ import JavaScriptKit
 		self.jsObject = jsObject
 	}
 
-	@JSGetter public var label: String?
+	public var label: String? { jsObject.label.string }
 }

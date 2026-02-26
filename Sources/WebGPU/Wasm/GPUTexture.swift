@@ -13,12 +13,14 @@ import JavaScriptKit
 		self.jsObject = jsObject
 	}
 
-	@JSGetter public var label: String?
-	@JSGetter public var format: String  // Returns string, convert to GPUTextureFormat if needed
+	public var label: String? { jsObject.label.string }
+	public var format: String { jsObject.format.string! }
 
-	@JSFunction
-	public func createView() throws(JSException) -> GPUTextureView
+	public func createView() -> GPUTextureView {
+		GPUTextureView(unsafelyWrapping: jsObject.createView!().object!)
+	}
 
-	@JSFunction
-	public func destroy() throws(JSException)
+	public func destroy() {
+		_ = jsObject.destroy!()
+	}
 }

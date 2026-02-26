@@ -14,10 +14,11 @@ public struct GPUBuffer {
 		self.jsObject = jsObject
 	}
 
-	@JSGetter public var size: Int
-	@JSGetter public var usage: Int
-	@JSGetter public var label: String?
+	public var size: Int { Int(jsObject.size.number!) }
+	public var usage: Int { Int(jsObject.usage.number!) }
+	public var label: String? { jsObject.label.string }
 
-	@JSFunction
-	public func destroy() throws(JSException)
+	public func destroy() {
+		_ = jsObject.destroy!()
+	}
 }

@@ -13,39 +13,37 @@ import JavaScriptKit
 		self.jsObject = jsObject
 	}
 
-	@JSGetter public var label: String?
+	public var label: String? { jsObject.label.string }
 
 	@JSFunction
-	public func setPipeline(_ pipeline: GPURenderPipeline) throws(JSException)
+	func setPipeline(_ pipeline: GPURenderPipeline) throws(JSException)
 
 	@JSFunction
-	public func setVertexBuffer(_ slot: Int, _ buffer: GPUBuffer) throws(JSException)
+	func setVertexBuffer(_ slot: Int, _ buffer: GPUBuffer) throws(JSException)
 
 	@JSFunction
-	public func draw(
-		_ vertexCount: Int,
-		_ instanceCount: Int,
-		_ firstVertex: Int,
-		_ firstInstance: Int
-	) throws(JSException)
+	func draw(_ vertexCount: Int, _ instanceCount: Int, _ firstVertex: Int, _ firstInstance: Int) throws(JSException)
 
 	@JSFunction
-	public func setBindGroup(_ groupIndex: Int, _ group: GPUBindGroup) throws(JSException)
+	func setBindGroup(_ groupIndex: Int, _ group: GPUBindGroup) throws(JSException)
 
-	@JSFunction
-	public func end() throws(JSException)
-}
-
-public extension GPURenderPassEncoder {
-	func setPipeline(pipeline: GPURenderPipeline) {
+	public func setPipeline(pipeline: GPURenderPipeline) {
 		try! setPipeline(pipeline)
 	}
 
-	func setBindGroup(groupIndex: UInt32, group: GPUBindGroup, dynamicOffsets: [UInt32]) {
+	public func setVertexBuffer(slot: UInt32, buffer: GPUBuffer) {
+		try! setVertexBuffer(Int(slot), buffer)
+	}
+
+	public func setBindGroup(groupIndex: UInt32, group: GPUBindGroup, dynamicOffsets: [UInt32]) {
 		try! setBindGroup(Int(groupIndex), group)
 	}
 
-	func draw(vertexCount: UInt32, instanceCount: UInt32, firstVertex: UInt32, firstInstance: UInt32) {
+	public func draw(vertexCount: UInt32, instanceCount: UInt32, firstVertex: UInt32, firstInstance: UInt32) {
 		try! draw(Int(vertexCount), Int(instanceCount), Int(firstVertex), Int(firstInstance))
+	}
+
+	public func end() {
+		_ = jsObject.end!()
 	}
 }
