@@ -265,12 +265,14 @@ let package = Package(
 			path: "Demos/BitonicSort",
 			exclude: ["index.html"],
 			swiftSettings: swiftSettings + (isWasmBuild ? [.enableExperimentalFeature("Extern")] : []),
-			linkerSettings: asanLinkerSettings + [
-				.linkedFramework("Cocoa", .when(platforms: [.macOS])),
-				.linkedFramework("IOKit", .when(platforms: [.macOS])),
-				.linkedFramework("Metal", .when(platforms: [.macOS])),
-				.linkedLibrary("c++", .when(platforms: [.macOS])),
-			],
+			linkerSettings: isWasmBuild
+				? []
+				: asanLinkerSettings + [
+					.linkedFramework("Cocoa", .when(platforms: [.macOS])),
+					.linkedFramework("IOKit", .when(platforms: [.macOS])),
+					.linkedFramework("Metal", .when(platforms: [.macOS])),
+					.linkedLibrary("c++", .when(platforms: [.macOS])),
+				],
 			plugins: isWasmBuild ? [.plugin(name: "BridgeJS", package: "JavaScriptKit")] : []
 		),
 		.testTarget(

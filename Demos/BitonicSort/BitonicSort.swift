@@ -382,7 +382,6 @@ struct BitonicSortDemo {
 			)
 		)
 
-		#if !arch(wasm32)
 		self.renderPipeline = device.createRenderPipeline(
 			descriptor: GPURenderPipelineDescriptor(
 				label: "Display Render Pipeline",
@@ -397,21 +396,6 @@ struct BitonicSortDemo {
 				)
 			)
 		)
-		#else
-		self.renderPipeline = device.createRenderPipeline(
-			descriptor: GPURenderPipelineDescriptor(
-				label: "Display Render Pipeline",
-				layout: renderPipelineLayout,
-				vertex: GPUVertexState(module: shaderModules.vertex, entryPoint: "vertexMain"),
-				primitive: GPUPrimitiveState(topology: .triangleList),
-				fragment: GPUFragmentState(
-					module: shaderModules.fragment,
-					entryPoint: "fragmentMain",
-					targets: [GPUColorTargetState(format: format)]
-				)
-			)
-		)
-		#endif
 	}
 
 	// MARK: - Uniforms & Sort Logic (shared)

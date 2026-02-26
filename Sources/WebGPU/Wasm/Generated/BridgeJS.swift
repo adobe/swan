@@ -1162,11 +1162,12 @@ fileprivate func _bjs_struct_lift_GPUFragmentState_extern() -> Int32 {
 extension GPURenderPipelineDescriptor: _BridgedSwiftStruct {
     @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPURenderPipelineDescriptor {
         let fragment = Optional<GPUFragmentState>.bridgeJSStackPop()
+        let multisample = Optional<GPUMultisampleState>.bridgeJSStackPop()
         let primitive = Optional<GPUPrimitiveState>.bridgeJSStackPop()
         let vertex = GPUVertexState.bridgeJSStackPop()
         let layout = GPUPipelineLayout(unsafelyWrapping: JSObject.bridgeJSStackPop())
         let label = Optional<String>.bridgeJSStackPop()
-        return GPURenderPipelineDescriptor(label: label, layout: layout, vertex: vertex, primitive: primitive, fragment: fragment)
+        return GPURenderPipelineDescriptor(label: label, layout: layout, vertex: vertex, primitive: primitive, multisample: multisample, fragment: fragment)
     }
 
     @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
@@ -1178,6 +1179,7 @@ extension GPURenderPipelineDescriptor: _BridgedSwiftStruct {
         self.layout.jsObject.bridgeJSStackPush()
         self.vertex.bridgeJSStackPush()
         self.primitive.bridgeJSStackPush()
+        self.multisample.bridgeJSStackPush()
         self.fragment.bridgeJSStackPush()
     }
 
@@ -1215,6 +1217,56 @@ fileprivate func _bjs_struct_lift_GPURenderPipelineDescriptor_extern() -> Int32 
 #endif
 @inline(never) fileprivate func _bjs_struct_lift_GPURenderPipelineDescriptor() -> Int32 {
     return _bjs_struct_lift_GPURenderPipelineDescriptor_extern()
+}
+
+extension GPUMultisampleState: _BridgedSwiftStruct {
+    @_spi(BridgeJS) @_transparent public static func bridgeJSStackPop() -> GPUMultisampleState {
+        let alphaToCoverageEnabled = Bool.bridgeJSStackPop()
+        let mask = UInt.bridgeJSStackPop()
+        let count = UInt.bridgeJSStackPop()
+        return GPUMultisampleState(count: count, mask: mask, alphaToCoverageEnabled: alphaToCoverageEnabled)
+    }
+
+    @_spi(BridgeJS) @_transparent public consuming func bridgeJSStackPush() {
+        self.count.bridgeJSStackPush()
+        self.mask.bridgeJSStackPush()
+        self.alphaToCoverageEnabled.bridgeJSStackPush()
+    }
+
+    public init(unsafelyCopying jsObject: JSObject) {
+        _bjs_struct_lower_GPUMultisampleState(jsObject.bridgeJSLowerParameter())
+        self = Self.bridgeJSStackPop()
+    }
+
+    public func toJSObject() -> JSObject {
+        let __bjs_self = self
+        __bjs_self.bridgeJSStackPush()
+        return JSObject(id: UInt32(bitPattern: _bjs_struct_lift_GPUMultisampleState()))
+    }
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lower_GPUMultisampleState")
+fileprivate func _bjs_struct_lower_GPUMultisampleState_extern(_ objectId: Int32) -> Void
+#else
+fileprivate func _bjs_struct_lower_GPUMultisampleState_extern(_ objectId: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+@inline(never) fileprivate func _bjs_struct_lower_GPUMultisampleState(_ objectId: Int32) -> Void {
+    return _bjs_struct_lower_GPUMultisampleState_extern(objectId)
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "swift_js_struct_lift_GPUMultisampleState")
+fileprivate func _bjs_struct_lift_GPUMultisampleState_extern() -> Int32
+#else
+fileprivate func _bjs_struct_lift_GPUMultisampleState_extern() -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+@inline(never) fileprivate func _bjs_struct_lift_GPUMultisampleState() -> Int32 {
+    return _bjs_struct_lift_GPUMultisampleState_extern()
 }
 
 extension GPUPipelineLayoutDescriptor: _BridgedSwiftStruct {

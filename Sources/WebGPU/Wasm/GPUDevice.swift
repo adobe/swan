@@ -44,6 +44,7 @@ import JavaScriptKit
 	public var layout: GPUPipelineLayout
 	public var vertex: GPUVertexState
 	public var primitive: GPUPrimitiveState?
+	public var multisample: GPUMultisampleState?
 	public var fragment: GPUFragmentState?
 
 	public init(
@@ -51,13 +52,31 @@ import JavaScriptKit
 		layout: GPUPipelineLayout,
 		vertex: GPUVertexState,
 		primitive: GPUPrimitiveState? = nil,
+		multisample: GPUMultisampleState? = nil,
 		fragment: GPUFragmentState? = nil
 	) {
 		self.label = label
 		self.layout = layout
 		self.vertex = vertex
 		self.primitive = primitive
+		self.multisample = multisample
 		self.fragment = fragment
+	}
+}
+
+@JS public struct GPUMultisampleState {
+	public var count: UInt
+	public var mask: UInt
+	public var alphaToCoverageEnabled: Bool
+
+	public init(
+		count: UInt = 1,
+		mask: UInt = 0xFFFFFFFF,
+		alphaToCoverageEnabled: Bool = false
+	) {
+		self.count = count
+		self.mask = mask
+		self.alphaToCoverageEnabled = alphaToCoverageEnabled
 	}
 }
 

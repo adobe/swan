@@ -1446,6 +1446,21 @@
           {
             "isReadonly" : true,
             "isStatic" : false,
+            "name" : "multisample",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUMultisampleState"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
             "name" : "fragment",
             "type" : {
               "nullable" : {
@@ -1460,6 +1475,46 @@
           }
         ],
         "swiftCallName" : "GPURenderPipelineDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUMultisampleState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "count",
+            "type" : {
+              "uint" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "mask",
+            "type" : {
+              "uint" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "alphaToCoverageEnabled",
+            "type" : {
+              "bool" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUMultisampleState"
       },
       {
         "explicitAccessControl" : "public",
