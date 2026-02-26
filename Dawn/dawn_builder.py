@@ -43,6 +43,12 @@ def _subprocess_exception_message(exc: subprocess.CalledProcessError) -> None:
     print(f"stderr: {exc.stderr}")
 
 
+class PlatformGroup(str, Enum):
+    APPLE = "apple"
+    WINDOWS = "windows"
+    LINUX = "linux"
+
+
 class OS(Enum):
     MACOS = "macosx"
     WINDOWS = "windows"
@@ -67,6 +73,38 @@ class OS(Enum):
             True if this is a Windows OS
         """
         return self == OS.WINDOWS
+
+    def platform_group(self) -> PlatformGroup:
+        """
+        Get the platform group for this OS.
+
+        Returns:
+            The PlatformGroup for this OS
+        """
+        if self.is_apple():
+            return PlatformGroup.APPLE
+        if self.is_windows():
+            return PlatformGroup.WINDOWS
+        return PlatformGroup.LINUX
+
+    @classmethod
+    def from_target_name(cls, target_name: str) -> "OS":
+        """
+        Parse an OS from a target name string.
+
+        Args:
+            target_name: Target name string (e.g. "macosx_arm64_release")
+
+        Returns:
+            The matching OS enum value
+
+        Raises:
+            ValueError: If no matching OS is found
+        """
+        for member in cls:
+            if target_name.startswith(member.value):
+                return member
+        raise ValueError(f"Could not determine OS from target name: {target_name}")
 
 
 def get_current_os() -> OS:
