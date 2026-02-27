@@ -299,7 +299,7 @@ def create_bundle_index(
 
     index_data = {
         "schemaVersion": "1.0",
-        "bundles": bundle_entries,
+        "archives": bundle_entries,
     }
 
     index_file = dist_directory() / f"{base_name}.artifactbundleindex"
@@ -367,7 +367,9 @@ def create_artifact_bundles(
         )
         platform_zip_paths[platform] = zip_path
 
-    index_zip = create_bundle_index(platform_zip_paths, manifests_by_platform, base_name)
+    index_zip = create_bundle_index(
+        platform_zip_paths, manifests_by_platform, base_name
+    )
     return index_zip
 
 
