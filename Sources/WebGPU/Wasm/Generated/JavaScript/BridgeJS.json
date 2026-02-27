@@ -1613,9 +1613,9 @@
             "name" : "GPUBindGroup",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -1649,9 +1649,9 @@
             "name" : "GPUBindGroupLayout",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -1679,7 +1679,7 @@
             "getters" : [
               {
                 "jsName" : "size",
-                "name" : "internalSize",
+                "name" : "_size",
                 "type" : {
                   "int" : {
 
@@ -1688,7 +1688,7 @@
               },
               {
                 "jsName" : "usage",
-                "name" : "internalUsage",
+                "name" : "_usage",
                 "type" : {
                   "int" : {
 
@@ -1699,7 +1699,7 @@
             "methods" : [
               {
                 "jsName" : "destroy",
-                "name" : "internalDestroy",
+                "name" : "_destroy",
                 "parameters" : [
 
                 ],
@@ -1713,9 +1713,9 @@
             "name" : "GPUBuffer",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -1745,7 +1745,8 @@
             ],
             "methods" : [
               {
-                "name" : "configure",
+                "jsName" : "configure",
+                "name" : "_configure",
                 "parameters" : [
                   {
                     "name" : "configuration",
@@ -1764,7 +1765,7 @@
               },
               {
                 "jsName" : "getCurrentTexture",
-                "name" : "internalGetCurrentTexture",
+                "name" : "_getCurrentTexture",
                 "parameters" : [
 
                 ],
@@ -1800,9 +1801,9 @@
             "name" : "GPUCommandBuffer",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -1832,7 +1833,8 @@
             ],
             "methods" : [
               {
-                "name" : "beginRenderPass",
+                "jsName" : "beginRenderPass",
+                "name" : "_beginRenderPass",
                 "parameters" : [
                   {
                     "name" : "descriptor",
@@ -1850,7 +1852,8 @@
                 }
               },
               {
-                "name" : "beginComputePass",
+                "jsName" : "beginComputePass",
+                "name" : "_beginComputePass",
                 "parameters" : [
                   {
                     "name" : "descriptor",
@@ -1869,7 +1872,7 @@
               },
               {
                 "jsName" : "finish",
-                "name" : "internalFinish",
+                "name" : "_finish",
                 "parameters" : [
                   {
                     "name" : "descriptor",
@@ -1890,9 +1893,9 @@
             "name" : "GPUCommandEncoder",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -1922,7 +1925,8 @@
             ],
             "methods" : [
               {
-                "name" : "setPipeline",
+                "jsName" : "setPipeline",
+                "name" : "_setPipeline",
                 "parameters" : [
                   {
                     "name" : "pipeline",
@@ -1940,7 +1944,8 @@
                 }
               },
               {
-                "name" : "setBindGroup",
+                "jsName" : "setBindGroup",
+                "name" : "_setBindGroup",
                 "parameters" : [
                   {
                     "name" : "groupIndex",
@@ -1966,7 +1971,8 @@
                 }
               },
               {
-                "name" : "dispatchWorkgroups",
+                "jsName" : "dispatchWorkgroups",
+                "name" : "_dispatchWorkgroups",
                 "parameters" : [
                   {
                     "name" : "workgroupCountX",
@@ -2001,7 +2007,7 @@
               },
               {
                 "jsName" : "end",
-                "name" : "internalEnd",
+                "name" : "_end",
                 "parameters" : [
 
                 ],
@@ -2015,9 +2021,9 @@
             "name" : "GPUComputePassEncoder",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -2051,9 +2057,9 @@
             "name" : "GPUComputePipeline",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -2081,7 +2087,7 @@
             "getters" : [
               {
                 "jsName" : "queue",
-                "name" : "internalQueue",
+                "name" : "_queue",
                 "type" : {
                   "jsObject" : {
                     "_0" : "GPUQueue"
@@ -2091,7 +2097,8 @@
             ],
             "methods" : [
               {
-                "name" : "createBuffer",
+                "jsName" : "createBuffer",
+                "name" : "_createBuffer",
                 "parameters" : [
                   {
                     "name" : "descriptor",
@@ -2109,7 +2116,8 @@
                 }
               },
               {
-                "name" : "createShaderModule",
+                "jsName" : "createShaderModule",
+                "name" : "_createShaderModule",
                 "parameters" : [
                   {
                     "name" : "descriptor",
@@ -2127,7 +2135,8 @@
                 }
               },
               {
-                "name" : "createRenderPipeline",
+                "jsName" : "createRenderPipeline",
+                "name" : "_createRenderPipeline",
                 "parameters" : [
                   {
                     "name" : "descriptor",
@@ -2145,7 +2154,8 @@
                 }
               },
               {
-                "name" : "createCommandEncoder",
+                "jsName" : "createCommandEncoder",
+                "name" : "_createCommandEncoder",
                 "parameters" : [
                   {
                     "name" : "descriptor",
@@ -2163,7 +2173,8 @@
                 }
               },
               {
-                "name" : "createBindGroupLayout",
+                "jsName" : "createBindGroupLayout",
+                "name" : "_createBindGroupLayout",
                 "parameters" : [
                   {
                     "name" : "descriptor",
@@ -2181,7 +2192,8 @@
                 }
               },
               {
-                "name" : "createBindGroup",
+                "jsName" : "createBindGroup",
+                "name" : "_createBindGroup",
                 "parameters" : [
                   {
                     "name" : "descriptor",
@@ -2199,7 +2211,8 @@
                 }
               },
               {
-                "name" : "createPipelineLayout",
+                "jsName" : "createPipelineLayout",
+                "name" : "_createPipelineLayout",
                 "parameters" : [
                   {
                     "name" : "descriptor",
@@ -2217,7 +2230,8 @@
                 }
               },
               {
-                "name" : "createComputePipeline",
+                "jsName" : "createComputePipeline",
+                "name" : "_createComputePipeline",
                 "parameters" : [
                   {
                     "name" : "descriptor",
@@ -2238,9 +2252,9 @@
             "name" : "GPUDevice",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -2274,9 +2288,9 @@
             "name" : "GPUPipelineLayout",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -2306,7 +2320,8 @@
             ],
             "methods" : [
               {
-                "name" : "submit",
+                "jsName" : "submit",
+                "name" : "_submit",
                 "parameters" : [
                   {
                     "name" : "commandBuffers",
@@ -2324,7 +2339,8 @@
                 }
               },
               {
-                "name" : "writeBuffer",
+                "jsName" : "writeBuffer",
+                "name" : "_writeBuffer",
                 "parameters" : [
                   {
                     "name" : "buffer",
@@ -2361,9 +2377,9 @@
             "name" : "GPUQueue",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -2393,7 +2409,8 @@
             ],
             "methods" : [
               {
-                "name" : "setPipeline",
+                "jsName" : "setPipeline",
+                "name" : "_setPipeline",
                 "parameters" : [
                   {
                     "name" : "pipeline",
@@ -2411,7 +2428,8 @@
                 }
               },
               {
-                "name" : "setVertexBuffer",
+                "jsName" : "setVertexBuffer",
+                "name" : "_setVertexBuffer",
                 "parameters" : [
                   {
                     "name" : "slot",
@@ -2437,7 +2455,8 @@
                 }
               },
               {
-                "name" : "draw",
+                "jsName" : "draw",
+                "name" : "_draw",
                 "parameters" : [
                   {
                     "name" : "vertexCount",
@@ -2479,7 +2498,8 @@
                 }
               },
               {
-                "name" : "setBindGroup",
+                "jsName" : "setBindGroup",
+                "name" : "_setBindGroup",
                 "parameters" : [
                   {
                     "name" : "groupIndex",
@@ -2506,7 +2526,7 @@
               },
               {
                 "jsName" : "end",
-                "name" : "internalEnd",
+                "name" : "_end",
                 "parameters" : [
 
                 ],
@@ -2520,9 +2540,9 @@
             "name" : "GPURenderPassEncoder",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -2552,7 +2572,8 @@
             ],
             "methods" : [
               {
-                "name" : "getBindGroupLayout",
+                "jsName" : "getBindGroupLayout",
+                "name" : "_getBindGroupLayout",
                 "parameters" : [
                   {
                     "name" : "index",
@@ -2573,9 +2594,9 @@
             "name" : "GPURenderPipeline",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -2609,9 +2630,9 @@
             "name" : "GPUShaderModule",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -2639,7 +2660,7 @@
             "getters" : [
               {
                 "jsName" : "format",
-                "name" : "internalFormat",
+                "name" : "_format",
                 "type" : {
                   "string" : {
 
@@ -2650,7 +2671,7 @@
             "methods" : [
               {
                 "jsName" : "createView",
-                "name" : "internalCreateView",
+                "name" : "_createView",
                 "parameters" : [
 
                 ],
@@ -2662,7 +2683,7 @@
               },
               {
                 "jsName" : "destroy",
-                "name" : "internalDestroy",
+                "name" : "_destroy",
                 "parameters" : [
 
                 ],
@@ -2676,9 +2697,9 @@
             "name" : "GPUTexture",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {
@@ -2712,9 +2733,9 @@
             "name" : "GPUTextureView",
             "setters" : [
               {
-                "functionName" : "internalLabel_set",
+                "functionName" : "label__set",
                 "jsName" : "label",
-                "name" : "internalLabel",
+                "name" : "label_",
                 "type" : {
                   "nullable" : {
                     "_0" : {

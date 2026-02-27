@@ -22,17 +22,17 @@ import JavaScriptKit
 @JSClass
 public struct GPUCanvasContext {
 
-	@JSFunction
-	func configure(_ configuration: GPUCanvasConfiguration) throws(JSException)
+	@JSFunction(jsName: "configure")
+	func _configure(_ configuration: GPUCanvasConfiguration) throws(JSException)
 
 	@JSFunction(jsName: "getCurrentTexture")
-	func internalGetCurrentTexture() throws(JSException) -> GPUTexture
+	func _getCurrentTexture() throws(JSException) -> GPUTexture
 
 	public func configure(configuration: GPUCanvasConfiguration) {
-		try! configure(configuration)
+		try! _configure(configuration)
 	}
 
 	public func getCurrentTexture() -> GPUTexture {
-		try! internalGetCurrentTexture()
+		try! _getCurrentTexture()
 	}
 }

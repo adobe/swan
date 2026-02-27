@@ -81,73 +81,74 @@ import JavaScriptKit
 }
 
 @JSClass public struct GPUDevice {
-	@JSGetter(jsName: "queue") public var internalQueue: GPUQueue
+	@JSGetter(jsName: "queue") var _queue: GPUQueue
 
 	public var queue: GPUQueue {
 		get {
-			return try! internalQueue
+			return try! _queue
 		}
 	}
 
-	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
+	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
 
 	public func setLabel(_ value: String?) {
-		try! setInternalLabel(value)
+		try! setLabel_(value)
 	}
 
-	@JSFunction
-	func createBuffer(_ descriptor: GPUBufferDescriptor) throws(JSException) -> GPUBuffer
+	@JSFunction(jsName: "createBuffer")
+	func _createBuffer(_ descriptor: GPUBufferDescriptor) throws(JSException) -> GPUBuffer
 
-	@JSFunction
-	func createShaderModule(_ descriptor: GPUShaderModuleDescriptor) throws(JSException) -> GPUShaderModule
+	@JSFunction(jsName: "createShaderModule")
+	func _createShaderModule(_ descriptor: GPUShaderModuleDescriptor) throws(JSException) -> GPUShaderModule
 
-	@JSFunction
-	func createRenderPipeline(_ descriptor: GPURenderPipelineDescriptor) throws(JSException) -> GPURenderPipeline
+	@JSFunction(jsName: "createRenderPipeline")
+	func _createRenderPipeline(_ descriptor: GPURenderPipelineDescriptor) throws(JSException) -> GPURenderPipeline
 
-	@JSFunction
-	func createCommandEncoder(_ descriptor: GPUCommandEncoderDescriptor) throws(JSException) -> GPUCommandEncoder
+	@JSFunction(jsName: "createCommandEncoder")
+	func _createCommandEncoder(_ descriptor: GPUCommandEncoderDescriptor) throws(JSException) -> GPUCommandEncoder
 
-	@JSFunction
-	func createBindGroupLayout(_ descriptor: GPUBindGroupLayoutDescriptor) throws(JSException) -> GPUBindGroupLayout
+	@JSFunction(jsName: "createBindGroupLayout")
+	func _createBindGroupLayout(_ descriptor: GPUBindGroupLayoutDescriptor) throws(JSException) -> GPUBindGroupLayout
 
-	@JSFunction
-	func createBindGroup(_ descriptor: GPUBindGroupDescriptor) throws(JSException) -> GPUBindGroup
+	@JSFunction(jsName: "createBindGroup")
+	func _createBindGroup(_ descriptor: GPUBindGroupDescriptor) throws(JSException) -> GPUBindGroup
 
-	@JSFunction
-	func createPipelineLayout(_ descriptor: GPUPipelineLayoutDescriptor) throws(JSException) -> GPUPipelineLayout
+	@JSFunction(jsName: "createPipelineLayout")
+	func _createPipelineLayout(_ descriptor: GPUPipelineLayoutDescriptor) throws(JSException) -> GPUPipelineLayout
 
-	@JSFunction
-	func createComputePipeline(_ descriptor: GPUComputePipelineDescriptor) throws(JSException) -> GPUComputePipeline
+	@JSFunction(jsName: "createComputePipeline")
+	func _createComputePipeline(_ descriptor: GPUComputePipelineDescriptor) throws(JSException) -> GPUComputePipeline
 
 	public func createBuffer(descriptor: GPUBufferDescriptor) -> GPUBuffer {
-		try! createBuffer(descriptor)
+		try! _createBuffer(descriptor)
 	}
 
 	public func createShaderModule(descriptor: GPUShaderModuleDescriptor) -> GPUShaderModule {
-		try! createShaderModule(descriptor)
+		try! _createShaderModule(descriptor)
 	}
 
 	public func createRenderPipeline(descriptor: GPURenderPipelineDescriptor) -> GPURenderPipeline {
-		try! createRenderPipeline(descriptor)
+		try! _createRenderPipeline(descriptor)
 	}
 
 	public func createCommandEncoder(descriptor: GPUCommandEncoderDescriptor) -> GPUCommandEncoder {
-		try! createCommandEncoder(descriptor)
+		try! _createCommandEncoder(descriptor)
 	}
 
 	public func createBindGroupLayout(descriptor: GPUBindGroupLayoutDescriptor) -> GPUBindGroupLayout {
-		try! createBindGroupLayout(descriptor)
+		try! _createBindGroupLayout(descriptor)
 	}
 
 	public func createBindGroup(descriptor: GPUBindGroupDescriptor) -> GPUBindGroup {
-		try! createBindGroup(descriptor)
+		try! _createBindGroup(descriptor)
 	}
 
 	public func createPipelineLayout(descriptor: GPUPipelineLayoutDescriptor) -> GPUPipelineLayout {
-		try! createPipelineLayout(descriptor)
+		try! _createPipelineLayout(descriptor)
 	}
 
 	public func createComputePipeline(descriptor: GPUComputePipelineDescriptor) -> GPUComputePipeline {
-		try! createComputePipeline(descriptor)
+		try! _createComputePipeline(descriptor)
 	}
 }

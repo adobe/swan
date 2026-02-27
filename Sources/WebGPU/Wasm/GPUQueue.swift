@@ -8,24 +8,25 @@
 import JavaScriptKit
 
 @JSClass public struct GPUQueue {
-	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
+	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
 
 	public func setLabel(_ value: String?) {
-		try! setInternalLabel(value)
+		try! setLabel_(value)
 	}
 
-	@JSFunction
-	func submit(_ commandBuffers: JSObject) throws(JSException)
+	@JSFunction(jsName: "submit")
+	func _submit(_ commandBuffers: JSObject) throws(JSException)
 
-	@JSFunction
-	func writeBuffer(_ buffer: GPUBuffer, _ bufferOffset: Int, _ data: JSObject) throws(JSException)
+	@JSFunction(jsName: "writeBuffer")
+	func _writeBuffer(_ buffer: GPUBuffer, _ bufferOffset: Int, _ data: JSObject) throws(JSException)
 
 	public func submit(commands: [GPUCommandBuffer]) {
 		let jsArray = JSObject.global.Array.function!.new()
 		for cmd in commands {
 			_ = jsArray.push!(cmd.jsObject)
 		}
-		try! submit(jsArray)
+		try! _submit(jsArray)
 	}
 
 	public func writeBuffer(buffer: GPUBuffer, bufferOffset: UInt64, data: UnsafeRawBufferPointer) {
@@ -36,6 +37,6 @@ import JavaScriptKit
 			)
 		)
 		let jsArray = JSTypedArray<UInt8>(bytes)
-		try! writeBuffer(buffer, Int(bufferOffset), jsArray.jsObject)
+		try! _writeBuffer(buffer, Int(bufferOffset), jsArray.jsObject)
 	}
 }
