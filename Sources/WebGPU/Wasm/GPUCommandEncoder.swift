@@ -41,18 +41,16 @@ import JavaScriptKit
 
 @JSClass
 public struct GPUCommandEncoder {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
-	}
-
-	public var label: String? { jsObject.label.string }
+	@JSGetter public var label: String?
 
 	@JSFunction
 	func beginRenderPass(_ descriptor: GPURenderPassDescriptor) throws(JSException) -> GPURenderPassEncoder
 
 	@JSFunction
 	func beginComputePass(_ descriptor: GPUComputePassDescriptor) throws(JSException) -> GPUComputePassEncoder
+
+	@JSFunction(jsName: "finish")
+	func internalFinish(descriptor: GPUCommandBufferDescriptor) throws(JSException) -> GPUCommandBuffer
 
 	public func beginRenderPass(descriptor: GPURenderPassDescriptor) -> GPURenderPassEncoder {
 		try! beginRenderPass(descriptor)
@@ -62,7 +60,8 @@ public struct GPUCommandEncoder {
 		try! beginComputePass(descriptor)
 	}
 
-	public func finish(descriptor: (any Any)?) -> GPUCommandBuffer? {
-		GPUCommandBuffer(unsafelyWrapping: jsObject.finish!().object!)
+	// TODO: dawn API has optional descriptor parameter
+	public func finish(descriptor: GPUCommandBufferDescriptor) -> GPUCommandBuffer {
+		try! internalFinish(descriptor: descriptor)
 	}
 }

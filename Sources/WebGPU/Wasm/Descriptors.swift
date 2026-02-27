@@ -124,3 +124,11 @@ import JavaScriptKit
 		self.label = label
 	}
 }
+
+@JS public struct GPUCommandBufferDescriptor {
+	public var label: String?
+
+	public init(label: String? = nil) {
+		self.label = label
+	}
+}

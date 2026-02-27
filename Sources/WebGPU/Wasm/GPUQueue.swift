@@ -8,12 +8,7 @@
 import JavaScriptKit
 
 @JSClass public struct GPUQueue {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
-	}
-
-	public var label: String? { jsObject.label.string }
+	@JSGetter public var label: String?
 
 	@JSFunction
 	func submit(_ commandBuffers: JSObject) throws(JSException)
@@ -30,10 +25,12 @@ import JavaScriptKit
 	}
 
 	public func writeBuffer(buffer: GPUBuffer, bufferOffset: UInt64, data: UnsafeRawBufferPointer) {
-		let bytes = Array(UnsafeBufferPointer(
-			start: data.baseAddress?.assumingMemoryBound(to: UInt8.self),
-			count: data.count
-		))
+		let bytes = Array(
+			UnsafeBufferPointer(
+				start: data.baseAddress?.assumingMemoryBound(to: UInt8.self),
+				count: data.count
+			)
+		)
 		let jsArray = JSTypedArray<UInt8>(bytes)
 		try! writeBuffer(buffer, Int(bufferOffset), jsArray.jsObject)
 	}

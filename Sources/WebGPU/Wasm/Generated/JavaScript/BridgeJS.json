@@ -832,6 +832,31 @@
         "methods" : [
 
         ],
+        "name" : "GPUCommandBufferDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUCommandBufferDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
         "name" : "GPUBufferBinding",
         "properties" : [
           {
@@ -1566,7 +1591,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
 
@@ -1588,7 +1625,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
 
@@ -1610,10 +1659,49 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "size",
+                "type" : {
+                  "int" : {
 
+                  }
+                }
+              },
+              {
+                "name" : "usage",
+                "type" : {
+                  "int" : {
+
+                  }
+                }
+              },
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
+              {
+                "jsName" : "destroy",
+                "name" : "internalDestroy",
+                "parameters" : [
 
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              }
             ],
             "name" : "GPUBuffer",
             "setters" : [
@@ -1652,6 +1740,18 @@
 
                   }
                 }
+              },
+              {
+                "jsName" : "getCurrentTexture",
+                "name" : "internalGetCurrentTexture",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUTexture"
+                  }
+                }
               }
             ],
             "name" : "GPUCanvasContext",
@@ -1671,7 +1771,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
 
@@ -1693,7 +1805,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
               {
@@ -1731,6 +1855,25 @@
                     "_0" : "GPUComputePassEncoder"
                   }
                 }
+              },
+              {
+                "jsName" : "finish",
+                "name" : "internalFinish",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUCommandBufferDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUCommandBuffer"
+                  }
+                }
               }
             ],
             "name" : "GPUCommandEncoder",
@@ -1750,7 +1893,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
               {
@@ -1830,6 +1985,18 @@
 
                   }
                 }
+              },
+              {
+                "jsName" : "end",
+                "name" : "internalEnd",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
               }
             ],
             "name" : "GPUComputePassEncoder",
@@ -1849,7 +2016,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
 
@@ -2036,7 +2215,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
 
@@ -2058,7 +2249,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
               {
@@ -2131,7 +2334,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
               {
@@ -2245,6 +2460,18 @@
 
                   }
                 }
+              },
+              {
+                "jsName" : "end",
+                "name" : "internalEnd",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
               }
             ],
             "name" : "GPURenderPassEncoder",
@@ -2264,7 +2491,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
               {
@@ -2303,7 +2542,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
 
@@ -2325,10 +2576,53 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              },
+              {
+                "name" : "format",
+                "type" : {
+                  "string" : {
+
+                  }
+                }
+              }
             ],
             "methods" : [
+              {
+                "jsName" : "createView",
+                "name" : "internalCreateView",
+                "parameters" : [
 
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUTextureView"
+                  }
+                }
+              },
+              {
+                "jsName" : "destroy",
+                "name" : "internalDestroy",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              }
             ],
             "name" : "GPUTexture",
             "setters" : [
@@ -2347,7 +2641,19 @@
         "types" : [
           {
             "getters" : [
+              {
+                "name" : "label",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
 
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
             ],
             "methods" : [
 

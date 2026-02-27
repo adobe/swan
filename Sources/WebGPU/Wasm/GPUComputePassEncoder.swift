@@ -16,12 +16,7 @@ import JavaScriptKit
 }
 
 @JSClass public struct GPUComputePassEncoder {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
-	}
-
-	public var label: String? { jsObject.label.string }
+	@JSGetter public var label: String?
 
 	@JSFunction
 	func setPipeline(_ pipeline: GPUComputePipeline) throws(JSException)
@@ -31,6 +26,9 @@ import JavaScriptKit
 
 	@JSFunction
 	func dispatchWorkgroups(_ workgroupCountX: Int, _ workgroupCountY: Int, _ workgroupCountZ: Int) throws(JSException)
+
+	@JSFunction(jsName: "end")
+	func internalEnd() throws(JSException)
 
 	public func setPipeline(pipeline: GPUComputePipeline) {
 		try! setPipeline(pipeline)
@@ -45,6 +43,6 @@ import JavaScriptKit
 	}
 
 	public func end() {
-		_ = jsObject.end!()
+		try! internalEnd()
 	}
 }

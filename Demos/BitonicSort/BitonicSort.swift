@@ -353,7 +353,7 @@ struct BitonicSortDemo {
 		computePass.dispatchWorkgroups(workgroupCountX: workgroupCount, workgroupCountY: 1, workgroupCountZ: 1)
 		computePass.end()
 
-		let commandBuffer = encoder.finish(descriptor: nil)!
+		let commandBuffer = encoder.finish(descriptor: GPUCommandBufferDescriptor(label: "Sort Step Command Buffer"))
 		self.queue!.submit(commands: [commandBuffer])
 
 		print(
@@ -421,7 +421,7 @@ struct BitonicSortDemo {
 		renderPass.draw(vertexCount: 3, instanceCount: 1, firstVertex: 0, firstInstance: 0)
 		renderPass.end()
 
-		let commandBuffer = encoder.finish(descriptor: nil)!
+		let commandBuffer = encoder.finish(descriptor: GPUCommandBufferDescriptor(label: "Render Command Buffer"))
 		self.queue!.submit(commands: [commandBuffer])
 
 		#if !arch(wasm32)

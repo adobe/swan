@@ -60,19 +60,5 @@ import JavaScriptKit
 }
 
 @JSClass public struct GPUBindGroup {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
-	}
-
-	public var label: String? { jsObject.label.string }
+	@JSGetter public var label: String?
 }
-
-// public extension GPUBindGroupEntry {
-// 	init(binding: UInt32, buffer: GPUBuffer, offset: UInt64, size: UInt64) {
-// 		self.init(
-// 			binding: Int(binding),
-// 			resource: GPUBufferBinding(buffer: buffer, offset: Int(offset), size: Int(size))
-// 		)
-// 	}
-// }

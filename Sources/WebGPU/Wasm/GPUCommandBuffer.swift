@@ -9,10 +9,5 @@ import JavaScriptKit
 
 @JSClass
 public struct GPUCommandBuffer {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
-	}
-
-	public var label: String? { jsObject.label.string }
+	@JSGetter public var label: String?
 }
