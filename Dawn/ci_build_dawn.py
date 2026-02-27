@@ -33,14 +33,14 @@ def build_target(target: str, archs: list[str], config: str = "release") -> None
 
 def bundle(chromium_version: str, dawn_hash: str, bundle_name: str) -> None:
     """
-    Create an artifact bundle from the current Dawn build.
+    Create per-platform artifact bundles and a bundle index from the current Dawn build.
     """
-    archive_path = archive_builder.create_artifact_bundle(
+    index_zip = archive_builder.create_artifact_bundles(
         chromium_version,
         dawn_hash,
         bundle_name,
     )
-    print(f"Archive created: {archive_path}")
+    print(f"Bundle index created: {index_zip}")
 
 
 def upload(debug: bool) -> None:

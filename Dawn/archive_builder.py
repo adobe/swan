@@ -5,13 +5,15 @@
 # accordance with the terms of the Adobe license agreement accompanying
 # it.
 
+import hashlib
 import pathlib
 import json
 import shutil
 import dawn_source
 import dawn_builder
+from collections import defaultdict
 from typing import List, Dict, Any
-from dawn_builder import TargetConfig
+from dawn_builder import OS, PlatformGroup, TargetConfig
 
 
 def write_target_manifest(
@@ -56,18 +58,52 @@ def read_target_manifests() -> List[Dict[str, Any]]:
     return manifests
 
 
-def write_bundle_manifest(version: str) -> None:
+def platform_group_for_target_name(target_name: str) -> PlatformGroup:
     """
-    Write the main bundle manifest file for the artifact bundle.
+    Determine the platform group for a given target name.
 
     Args:
-        version: Version string for the bundle
-    """
-    archive_dir = pathlib.Path("dist") / "dawn_webgpu.artifactbundle"
-    archive_dir.mkdir(exist_ok=True, parents=True)
-    archive_manifest_file = archive_dir / "info.json"
+        target_name: The target name string (e.g. "macosx_arm64_release")
 
-    target_manifests = [
+    Returns:
+        The PlatformGroup for the target name
+    """
+    return OS.from_target_name(target_name).platform_group()
+
+
+def group_manifests_by_platform(
+    manifests: List[Dict[str, Any]],
+) -> Dict[PlatformGroup, List[Dict[str, Any]]]:
+    """
+    Group target manifests by platform (apple, windows, linux).
+
+    Args:
+        manifests: List of target manifest dictionaries
+
+    Returns:
+        Dictionary mapping PlatformGroup to list of manifests
+    """
+    groups: Dict[PlatformGroup, List[Dict[str, Any]]] = defaultdict(list)
+    for manifest in manifests:
+        groups[platform_group_for_target_name(manifest["targetName"])].append(manifest)
+    return groups
+
+
+def _build_platform_info_json(
+    platform: PlatformGroup, manifests: List[Dict[str, Any]], version: str
+) -> Dict[str, Any]:
+    """
+    Build the info.json artifact manifest for a platform bundle.
+
+    Args:
+        platform: The PlatformGroup for this bundle
+        manifests: Target manifests for this platform
+        version: Version string for the artifacts
+
+    Returns:
+        Dictionary representing the info.json content
+    """
+    target_variants = [
         {
             "path": (
                 pathlib.Path(manifest["targetName"]) / manifest["libraryName"]
@@ -79,62 +115,197 @@ def write_bundle_manifest(version: str) -> None:
             },
             "supportedTriples": manifest["supportedTriples"],
         }
-        for manifest in read_target_manifests()
+        for manifest in manifests
     ]
 
-    archive_manifest = {
-        "schemaVersion": "1.0",
-        "artifacts": {
-            "dawn_webgpu": {
-                "version": version,
-                "type": "staticLibrary",
-                "variants": target_manifests,
-            },
-            "dxcompiler": {
-                "type": "experimentalWindowsDLL",
-                "version": "1.0.0",
-                "variants": [
-                    {
-                        "path": "windows_arm64_release/bin/dxcompiler.dll",
-                        "supportedTriples": ["aarch64-unknown-windows-msvc"],
-                    },
-                    {
-                        "path": "windows_x86_64_release/bin/dxcompiler.dll",
-                        "supportedTriples": ["x86_64-unknown-windows-msvc"],
-                    },
-                ],
-            },
-            "dxil": {
-                "type": "experimentalWindowsDLL",
-                "version": "1.0.0",
-                "variants": [
-                    {
-                        "path": "windows_arm64_release/bin/dxil.dll",
-                        "supportedTriples": ["aarch64-unknown-windows-msvc"],
-                    },
-                    {
-                        "path": "windows_x86_64_release/bin/dxil.dll",
-                        "supportedTriples": ["x86_64-unknown-windows-msvc"],
-                    },
-                ],
-            },
-            "d3dcompiler_47": {
-                "type": "experimentalWindowsDLL",
-                "version": "1.0.0",
-                "variants": [
-                    {
-                        "path": "windows_arm64_release/bin/d3dcompiler_47.dll",
-                        "supportedTriples": ["aarch64-unknown-windows-msvc"],
-                    },
-                    {
-                        "path": "windows_x86_64_release/bin/d3dcompiler_47.dll",
-                        "supportedTriples": ["x86_64-unknown-windows-msvc"],
-                    },
-                ],
-            },
-        },
+    artifacts: Dict[str, Any] = {
+        "dawn_webgpu": {
+            "version": version,
+            "type": "staticLibrary",
+            "variants": target_variants,
+        }
     }
-    archive_manifest_file.write_text(json.dumps(archive_manifest, indent=2))
+
+    # Windows DLL artifacts are only included in the Windows bundle
+    if platform == PlatformGroup.WINDOWS:
+        artifacts["dxcompiler"] = {
+            "type": "experimentalWindowsDLL",
+            "version": "1.0.0",
+            "variants": [
+                {
+                    "path": "windows_arm64_release/bin/dxcompiler.dll",
+                    "supportedTriples": ["aarch64-unknown-windows-msvc"],
+                },
+                {
+                    "path": "windows_x86_64_release/bin/dxcompiler.dll",
+                    "supportedTriples": ["x86_64-unknown-windows-msvc"],
+                },
+            ],
+        }
+        artifacts["dxil"] = {
+            "type": "experimentalWindowsDLL",
+            "version": "1.0.0",
+            "variants": [
+                {
+                    "path": "windows_arm64_release/bin/dxil.dll",
+                    "supportedTriples": ["aarch64-unknown-windows-msvc"],
+                },
+                {
+                    "path": "windows_x86_64_release/bin/dxil.dll",
+                    "supportedTriples": ["x86_64-unknown-windows-msvc"],
+                },
+            ],
+        }
+        artifacts["d3dcompiler_47"] = {
+            "type": "experimentalWindowsDLL",
+            "version": "1.0.0",
+            "variants": [
+                {
+                    "path": "windows_arm64_release/bin/d3dcompiler_47.dll",
+                    "supportedTriples": ["aarch64-unknown-windows-msvc"],
+                },
+                {
+                    "path": "windows_x86_64_release/bin/d3dcompiler_47.dll",
+                    "supportedTriples": ["x86_64-unknown-windows-msvc"],
+                },
+            ],
+        }
+
+    return {"schemaVersion": "1.0", "artifacts": artifacts}
+
+
+def compute_checksum(file_path: pathlib.Path) -> str:
+    """
+    Compute the SHA-256 checksum of a file.
+
+    Args:
+        file_path: Path to the file
+
+    Returns:
+        Hex-encoded SHA-256 digest string
+    """
+    sha256 = hashlib.sha256()
+    with open(file_path, "rb") as f:
+        for chunk in iter(lambda: f.read(65536), b""):
+            sha256.update(chunk)
+    return sha256.hexdigest()
+
+
+def create_platform_artifact_bundle(
+    platform: PlatformGroup,
+    manifests: List[Dict[str, Any]],
+    chromium_version: str,
+    dawn_hash: str,
+    dawn_json: pathlib.Path,
+    base_name: str,
+) -> pathlib.Path:
+    """
+    Create an artifact bundle zip for a single platform group.
+
+    Args:
+        platform: The PlatformGroup for this bundle
+        manifests: Target manifests for this platform
+        chromium_version: Chromium version string
+        dawn_hash: Dawn hash string
+        dawn_json: Path to the dawn.json source file
+        base_name: Base name for the bundle (e.g. "dawn_webgpu")
+
+    Returns:
+        Path to the created zip archive (without the .zip extension appended by
+        shutil.make_archive; the actual file is at the returned path + ".zip")
+    """
+    bundle_name = f"{base_name}_{platform}.artifactbundle"
+    bundle_dir = dist_directory() / bundle_name
+
+    # Remove any existing bundle directory
+    if bundle_dir.exists():
+        shutil.rmtree(bundle_dir)
+    bundle_dir.mkdir(exist_ok=True, parents=True)
+
+    # Copy libraries, headers, and (for Windows) binaries
+    for manifest in manifests:
+        target_dir = bundle_dir / manifest["targetName"]
+        shutil.copytree(manifest["libraryPath"], target_dir)
+        shutil.copytree(manifest["includePath"], target_dir / "include")
+        if "binPath" in manifest:
+            shutil.copytree(manifest["binPath"], target_dir / "bin")
+
+    # Copy dawn.json
+    shutil.copy2(dawn_json, bundle_dir / "dawn.json")
+
+    # Write dawn_version.json
+    version_data = {
+        "dawn_hash": dawn_hash,
+        "chromium_version": chromium_version,
+    }
+    (bundle_dir / "dawn_version.json").write_text(json.dumps(version_data, indent=2))
+
+    # Write info.json
+    info = _build_platform_info_json(platform, manifests, chromium_version)
+    (bundle_dir / "info.json").write_text(json.dumps(info, indent=2))
+
+    # Create the zip archive
+    archive_stem = dist_directory() / bundle_name
+    archive_path_no_ext = archive_stem
+
+    # Remove existing zip if present
+    zip_path = pathlib.Path(str(archive_path_no_ext) + ".zip")
+    if zip_path.exists():
+        zip_path.unlink()
+
+    shutil.make_archive(
+        str(archive_path_no_ext),
+        "zip",
+        root_dir=dist_directory(),
+        base_dir=bundle_name,
+    )
+
+    return zip_path
+
+
+def create_bundle_index(
+    platform_zip_paths: Dict[PlatformGroup, pathlib.Path],
+    manifests_by_platform: Dict[PlatformGroup, List[Dict[str, Any]]],
+    base_name: str,
+) -> pathlib.Path:
+    """
+    Create the artifact bundle index zip that references all platform bundles.
+
+    The .artifactbundleindex file is written directly to dist/, alongside the
+    platform zip archives it references.
+
+    Args:
+        platform_zip_paths: Mapping from PlatformGroup to zip path
+        manifests_by_platform: Mapping from PlatformGroup to list of manifests
+        base_name: Base name for the index (e.g. "dawn_webgpu")
+
+    Returns:
+        Path to the created .artifactbundleindex file
+    """
+    # Build the list of bundle entries
+    bundle_entries = []
+    for platform, zip_path in sorted(platform_zip_paths.items()):
+        triples: List[str] = []
+        for manifest in manifests_by_platform.get(platform, []):
+            triples.extend(manifest["supportedTriples"])
+
+        bundle_entries.append(
+            {
+                "fileName": zip_path.name,
+                "checksum": compute_checksum(zip_path),
+                "supportedTriples": triples,
+            }
+        )
+
+    index_data = {
+        "schemaVersion": "1.0",
+        "archives": bundle_entries,
+    }
+
+    index_file = dist_directory() / f"{base_name}.artifactbundleindex"
+    index_file.write_text(json.dumps(index_data, indent=2))
+
+    return index_file
 
 
 def build_bundle_target(target_config: TargetConfig) -> None:
@@ -159,78 +330,47 @@ def build_bundle_target(target_config: TargetConfig) -> None:
     write_target_manifest(manifest_file, target_config)
 
 
-def create_artifact_bundle(
-    chromium_version: str, dawn_hash: str, archive_name: str
+def create_artifact_bundles(
+    chromium_version: str, dawn_hash: str, base_name: str
 ) -> pathlib.Path:
     """
-    Create a complete artifact bundle with all built targets.
+    Create per-platform artifact bundles and a bundle index zip.
+
+    Produces one artifact bundle zip per platform group (apple, windows, linux)
+    and a .artifactbundleindex zip that references all of them.
 
     Args:
-        chromium_version: Chromium version string for the bundle
-        dawn_hash: Dawn hash string for the bundle
-        archive_name: Name for the archive file
+        chromium_version: Chromium version string
+        dawn_hash: Dawn hash string
+        base_name: Base name used for all output files (e.g. "dawn_webgpu")
 
     Returns:
-        Path to the created archive file
+        Path to the created .artifactbundleindex file
     """
     dawn_path = dawn_source.get_dawn_path()
     dawn_json = dawn_path / "src" / "dawn" / "dawn.json"
 
-    # Remove the artifact bundle directory if it exists
-    if artifact_bundle_directory().exists():
-        shutil.rmtree(artifact_bundle_directory())
+    dist_directory().mkdir(exist_ok=True, parents=True)
 
-    # Create the final archive bundle directory
-    archive_dir = artifact_bundle_directory()
-    archive_dir.mkdir(exist_ok=True, parents=True)
-
-    # Copy the libraries from the target manifests
     manifests = read_target_manifests()
-    for manifest in manifests:
-        library_path = manifest["libraryPath"]
-        target_dir = archive_dir / manifest["targetName"]
-        shutil.copytree(library_path, target_dir)
+    manifests_by_platform = group_manifests_by_platform(manifests)
 
-        # Copy the include directory for this platform
-        include_dir = manifest["includePath"]
-        include_target_dir = target_dir / "include"
-        shutil.copytree(include_dir, include_target_dir)
+    platform_zip_paths: Dict[PlatformGroup, pathlib.Path] = {}
+    for platform, platform_manifests in manifests_by_platform.items():
+        zip_path = create_platform_artifact_bundle(
+            platform,
+            platform_manifests,
+            chromium_version,
+            dawn_hash,
+            dawn_json,
+            base_name,
+        )
+        platform_zip_paths[platform] = zip_path
 
-        # Copy the bin directory if it exists (Windows targets)
-        if "binPath" in manifest:
-            bin_path = manifest["binPath"]
-            bin_target_dir = target_dir / "bin"
-            shutil.copytree(bin_path, bin_target_dir)
-
-    # Copy the dawn.json file to the archive directory
-    shutil.copy2(dawn_json, archive_dir / "dawn.json")
-
-    # Write the archive manifest
-    write_bundle_manifest(chromium_version)
-
-    # Write the dawn version file
-    dawn_version_file = archive_dir / "dawn_version.json"
-    version_data = {
-        "dawn_hash": dawn_hash,
-        "chromium_version": chromium_version,
-    }
-    dawn_version_file.write_text(json.dumps(version_data, indent=2))
-
-    # Create the archive
-    archive_path = pathlib.Path("dist") / f"{archive_name}"
-
-    # Remove the archive if it exists (from shutil.make_archive)
-    if archive_path.exists():
-        archive_path.unlink()
-
-    shutil.make_archive(
-        archive_path,
-        "zip",
-        root_dir=dist_directory(),
-        base_dir=archive_dir.name,
+    index_zip = create_bundle_index(
+        platform_zip_paths, manifests_by_platform, base_name
     )
-
-    return archive_path
+    return index_zip
 
 
 def dist_directory() -> pathlib.Path:
@@ -264,11 +404,19 @@ def remove_build_directory() -> None:
 
 def remove_artifact_bundle_directory() -> None:
     """
-    Remove the artifact bundle directory and all its contents.
+    Remove all per-platform artifact bundle directories and index artifacts from dist/.
     """
-    dir_path = artifact_bundle_directory()
-    if dir_path.exists():
-        shutil.rmtree(dir_path)
+    dist = dist_directory()
+    if not dist.exists():
+        return
+
+    for entry in dist.iterdir():
+        if entry.is_dir() and entry.name.endswith(".artifactbundle"):
+            shutil.rmtree(entry)
+        elif entry.is_file() and entry.name.endswith(".artifactbundle.zip"):
+            entry.unlink()
+        elif entry.is_file() and entry.name.endswith(".artifactbundleindex"):
+            entry.unlink()
 
 
 def manifests_dir() -> pathlib.Path:
