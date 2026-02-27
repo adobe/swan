@@ -254,15 +254,26 @@ let package = Package(
 		),
 		.executableTarget(
 			name: "BitonicSort",
-			dependencies: ["DemoUtils"],
+			dependencies: (isWasmBuild
+				? [
+					.target(name: "WebGPU"),
+					.target(name: "WebGPUWasm"),
+				]
+				: [
+					.target(name: "DemoUtils")
+				]),
 			path: "Demos/BitonicSort",
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings + [
-				.linkedFramework("Cocoa", .when(platforms: [.macOS])),
-				.linkedFramework("IOKit", .when(platforms: [.macOS])),
-				.linkedFramework("Metal", .when(platforms: [.macOS])),
-				.linkedLibrary("c++", .when(platforms: [.macOS])),
-			]
+			exclude: ["index.html"],
+			swiftSettings: swiftSettings + (isWasmBuild ? [.enableExperimentalFeature("Extern")] : []),
+			linkerSettings: isWasmBuild
+				? []
+				: asanLinkerSettings + [
+					.linkedFramework("Cocoa", .when(platforms: [.macOS])),
+					.linkedFramework("IOKit", .when(platforms: [.macOS])),
+					.linkedFramework("Metal", .when(platforms: [.macOS])),
+					.linkedLibrary("c++", .when(platforms: [.macOS])),
+				],
+			plugins: isWasmBuild ? [.plugin(name: "BridgeJS", package: "JavaScriptKit")] : []
 		),
 		.testTarget(
 			name: "CodeGenerationTests",
@@ -292,25 +303,3 @@ let package = Package(
 		),
 	]
 )
-
-// WASM-only targets are only included when SWAN_WASM is set,
-// since they depend on JavaScriptKit's BridgeJS plugin which isn't available in native builds.
-if isWasmBuild {
-	package.targets.append(
-		.executableTarget(
-			name: "BitonicSortWasm",
-			dependencies: [
-				.target(name: "WebGPU"),
-				.target(name: "WebGPUWasm"),
-			],
-			path: "Demos/BitonicSortWasm",
-			exclude: ["index.html"],
-			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern")
-			],
-			plugins: [
-				.plugin(name: "BridgeJS", package: "JavaScriptKit")
-			]
-		)
-	)
-}

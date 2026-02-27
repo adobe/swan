@@ -7,20 +7,6 @@
 
 import JavaScriptKit
 
-@JSClass
-public struct GPUCanvasContext {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
-	}
-
-	@JSFunction
-	public func configure(_ configuration: GPUCanvasConfiguration) throws(JSException)
-
-	@JSFunction
-	public func getCurrentTexture() throws(JSException) -> GPUTexture
-}
-
 @JS public struct GPUCanvasConfiguration {
 	public var device: GPUDevice
 	public var format: GPUTextureFormat
@@ -30,5 +16,23 @@ public struct GPUCanvasContext {
 		self.device = device
 		self.format = format
 		self.alphaMode = alphaMode
+	}
+}
+
+@JSClass
+public struct GPUCanvasContext {
+
+	@JSFunction
+	func configure(_ configuration: GPUCanvasConfiguration) throws(JSException)
+
+	@JSFunction(jsName: "getCurrentTexture")
+	func internalGetCurrentTexture() throws(JSException) -> GPUTexture
+
+	public func configure(configuration: GPUCanvasConfiguration) {
+		try! configure(configuration)
+	}
+
+	public func getCurrentTexture() -> GPUTexture {
+		try! internalGetCurrentTexture()
 	}
 }

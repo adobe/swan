@@ -8,13 +8,16 @@
 import JavaScriptKit
 
 @JSClass public struct GPURenderPipeline {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+
+	public func setLabel(_ value: String?) {
+		try! setInternalLabel(value)
 	}
 
-	@JSGetter public var label: String?
-
 	@JSFunction
-	public func getBindGroupLayout(_ index: Int) throws(JSException) -> GPUBindGroupLayout
+	func getBindGroupLayout(_ index: Int) throws(JSException) -> GPUBindGroupLayout
+
+	public func getBindGroupLayout(index: UInt32) -> GPUBindGroupLayout {
+		return try! getBindGroupLayout(Int(index))
+	}
 }

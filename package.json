@@ -12,7 +12,7 @@
     "build:release": "swift build -c release",
     "wasm:build": "SWAN_WASM=1 swift build --target WebGPU --swift-sdk $npm_package_config_swift_sdk_wasm",
     "wasm:build:bridgejs": "SWAN_WASM=1 swift package plugin --allow-writing-to-package-directory bridge-js",
-    "wasm:demo:bitonic": "SWAN_WASM=1 swift package --swift-sdk $npm_package_config_swift_sdk_wasm js --product BitonicSortWasm && pnpx serve .",
+    "wasm:demo:bitonic": "SWAN_WASM=1 swift package --swift-sdk $npm_package_config_swift_sdk_wasm js --product BitonicSort && pnpx serve .",
     "test": "swift test",
     "generate:apinotes": "swift package --allow-writing-to-package-directory generate-dawn-apinotes",
     "demo:gameoflife": "swift run GameOfLife",

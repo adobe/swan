@@ -9,19 +9,26 @@
 // Bitonic Sort Demo - GPU-accelerated parallel sorting with visualization
 // Ported from https://github.com/webgpu/webgpu-samples/tree/main/sample/bitonicSort
 
-import DemoUtils
-import Foundation
-import RGFW
 import WebGPU
+
+#if !arch(wasm32)
+import DemoUtils
+import RGFW
+#endif
 
 let gridWidth = 256
 let gridHeight = 256
 let totalElements = gridWidth * gridHeight
 let updatesPerSecond = 5.0
 
-struct BitonicSortDemo: DemoProvider {
+struct BitonicSortDemo {
 	var device: GPUDevice?
+
+	#if !arch(wasm32)
 	var surface: GPUSurface?
+	#else
+	var context: GPUCanvasContext?
+	#endif
 
 	// Buffers
 	var elementsBufferA: GPUBuffer?  // Ping buffer
@@ -54,13 +61,15 @@ struct BitonicSortDemo: DemoProvider {
 		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: workgroupSize)
 	}
 
-	@MainActor
-	mutating func initialize(device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface) {
-		self.device = device
-		self.surface = surface
+	// MARK: - Shared GPU Setup
 
+	private mutating func setupGPU(device: GPUDevice, format: GPUTextureFormat) {
+		self.device = device
+
+		#if !arch(wasm32)
 		self.workgroupSize = maxWorkgroupSize(device: device)
 		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: self.workgroupSize)
+		#endif
 
 		let bufferSize = self.createElementBuffers(device: device)
 		let uniformSize = self.createUniformBuffer(device: device)
@@ -89,6 +98,8 @@ struct BitonicSortDemo: DemoProvider {
 		)
 		print("Controls: P=pause/resume, R=reset, H=toggle highlight mode")
 	}
+
+	// MARK: - Resource Creation (shared)
 
 	private func createShaderModules(
 		device: GPUDevice
@@ -301,11 +312,7 @@ struct BitonicSortDemo: DemoProvider {
 					frontFace: .CCW,
 					cullMode: .none
 				),
-				multisample: GPUMultisampleState(
-					count: 1,
-					mask: 0xFFFFFFFF,
-					alphaToCoverageEnabled: false
-				),
+				multisample: GPUMultisampleState(count: 1, mask: 0xFFFFFFFF, alphaToCoverageEnabled: false),
 				fragment: GPUFragmentState(
 					module: shaderModules.fragment,
 					entryPoint: "fragmentMain",
@@ -314,6 +321,8 @@ struct BitonicSortDemo: DemoProvider {
 			)
 		)
 	}
+
+	// MARK: - Uniforms & Sort Logic (shared)
 
 	private func updateUniforms() {
 		let uniforms = Uniforms(
@@ -352,7 +361,7 @@ struct BitonicSortDemo: DemoProvider {
 		computePass.dispatchWorkgroups(workgroupCountX: workgroupCount, workgroupCountY: 1, workgroupCountZ: 1)
 		computePass.end()
 
-		let commandBuffer = encoder.finish(descriptor: nil)!
+		let commandBuffer = encoder.finish(descriptor: GPUCommandBufferDescriptor(label: "Sort Step Command Buffer"))
 		device.queue.submit(commands: [commandBuffer])
 
 		// Log progress
@@ -373,6 +382,87 @@ struct BitonicSortDemo: DemoProvider {
 		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: self.workgroupSize)
 		self.currentBuffer = 0
 		print("Sort reset: \(totalElements) elements, \(self.sortState.totalSteps) steps")
+	}
+
+	// MARK: - Shared Rendering
+
+	private mutating func stepAndRender(time: Double) {
+		guard let device = self.device, let renderPipeline = self.renderPipeline else {
+			return
+		}
+
+		// If we're not paused and it's time for the next update, execute a step
+		if !self.isPaused && time >= self.nextUpdateTime && !self.sortState.sortIsComplete {
+			self.executeStep()
+			self.nextUpdateTime = time + (1.0 / updatesPerSecond)
+
+			if self.sortState.sortIsComplete {
+				print("Sort complete!")
+			}
+		}
+
+		// Update uniforms before rendering (ensures highlight toggle takes effect)
+		self.updateUniforms()
+
+		// Render current state
+		let encoder = device.createCommandEncoder(
+			descriptor: GPUCommandEncoderDescriptor(label: "Render Encoder")
+		)
+
+		#if !arch(wasm32)
+		let backbuffer = self.surface!.getCurrentTexture()
+		#else
+		let backbuffer = self.context!.getCurrentTexture()
+		#endif
+		let textureView = backbuffer.createView()
+
+		// just checking the API
+		textureView.setLabel(label: "Backbuffer")
+
+		let renderPass = encoder.beginRenderPass(
+			descriptor: GPURenderPassDescriptor(
+				colorAttachments: [
+					GPURenderPassColorAttachment(
+						view: textureView,
+						loadOp: .clear,
+						storeOp: .store,
+						clearValue: GPUColor(r: 0.1, g: 0.1, b: 0.1, a: 1.0)
+					)
+				]
+			)
+		)
+		renderPass.setPipeline(pipeline: renderPipeline)
+
+		// Display the current buffer (after compute, this is the output)
+		let renderBindGroup = (self.currentBuffer == 0) ? self.renderBindGroupA! : self.renderBindGroupB!
+		renderPass.setBindGroup(groupIndex: 0, group: renderBindGroup, dynamicOffsets: [])
+		renderPass.draw(vertexCount: 3, instanceCount: 1, firstVertex: 0, firstInstance: 0)
+		renderPass.end()
+
+		let commandBuffer = encoder.finish(descriptor: GPUCommandBufferDescriptor(label: "Render Command Buffer"))
+		device.queue.submit(commands: [commandBuffer])
+
+		#if !arch(wasm32)
+		self.surface!.present()
+		#endif
+	}
+}
+
+// MARK: - Native Platform (DemoProvider)
+
+#if !arch(wasm32)
+extension BitonicSortDemo: DemoProvider {
+	@MainActor
+	mutating func initialize(device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface) {
+		self.surface = surface
+		self.setupGPU(device: device, format: format)
+	}
+
+	@MainActor
+	mutating func frame(time: Double) throws -> Bool {
+		self.handleInput()
+		self.stepAndRender(time: time)
+		return true
 	}
 
 	private func maxWorkgroupSize(device: GPUDevice) -> Int {
@@ -403,67 +493,36 @@ struct BitonicSortDemo: DemoProvider {
 			print("Highlight mode: \(self.highlightMode ? "ON" : "OFF")")
 		}
 	}
+}
+#endif
 
-	@MainActor
-	mutating func frame(time: Double) throws -> Bool {
-		guard let device = self.device, let surface = self.surface, let renderPipeline = self.renderPipeline else {
-			return false
+// MARK: - WASM Platform
+
+#if arch(wasm32)
+extension BitonicSortDemo {
+	init(device: GPUDevice, context: GPUCanvasContext, format: GPUTextureFormat) {
+		self.init()
+		self.context = context
+		self.setupGPU(device: device, format: format)
+	}
+
+	mutating func frame(time: Double) {
+		self.stepAndRender(time: time)
+	}
+
+	mutating func handleKey(_ key: String) {
+		switch key.lowercased() {
+		case "r":
+			self.resetSort()
+		case "p":
+			self.isPaused.toggle()
+			print(self.isPaused ? "Paused" : "Resumed")
+		case "h":
+			self.highlightMode.toggle()
+			print("Highlight mode: \(self.highlightMode ? "ON" : "OFF")")
+		default:
+			break
 		}
-
-		self.handleInput()
-
-		// If we're not paused and it's time for the next update, execute a step
-		if !self.isPaused && time >= self.nextUpdateTime && !self.sortState.sortIsComplete {
-			self.executeStep()
-			self.nextUpdateTime = time + (1.0 / updatesPerSecond)
-
-			if self.sortState.sortIsComplete {
-				print("Sort complete!")
-			}
-		}
-
-		// Update uniforms before rendering (ensures highlight toggle takes effect)
-		self.updateUniforms()
-
-		// Render current state
-		let encoder = device.createCommandEncoder(
-			descriptor: GPUCommandEncoderDescriptor(label: "Render Encoder")
-		)
-		let backbuffer = surface.getCurrentTexture()
-		let textureView = backbuffer.createView()
-
-		let renderPass = encoder.beginRenderPass(
-			descriptor: GPURenderPassDescriptor(
-				colorAttachments: [
-					GPURenderPassColorAttachment(
-						view: textureView,
-						loadOp: .clear,
-						storeOp: .store,
-						clearValue: GPUColor(r: 0.1, g: 0.1, b: 0.1, a: 1.0)
-					)
-				]
-			)
-		)
-		renderPass.setPipeline(pipeline: renderPipeline)
-
-		// Display the current buffer (after compute, this is the output)
-		let renderBindGroup = (self.currentBuffer == 0) ? self.renderBindGroupA! : self.renderBindGroupB!
-		renderPass.setBindGroup(groupIndex: 0, group: renderBindGroup, dynamicOffsets: [])
-		renderPass.draw(vertexCount: 3, instanceCount: 1, firstVertex: 0, firstInstance: 0)
-		renderPass.end()
-
-		let commandBuffer = encoder.finish(descriptor: nil)!
-		device.queue.submit(commands: [commandBuffer])
-
-		surface.present()
-
-		return true
 	}
 }
-
-@main
-struct Main {
-	static func main() throws {
-		try runDemo(title: "Bitonic Sort", provider: BitonicSortDemo())
-	}
-}
+#endif

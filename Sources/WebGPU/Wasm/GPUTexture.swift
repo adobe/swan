@@ -8,17 +8,32 @@
 import JavaScriptKit
 
 @JSClass public struct GPUTexture {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+
+	public func setLabel(_ value: String?) {
+		try! setInternalLabel(value)
 	}
 
-	@JSGetter public var label: String?
-	@JSGetter public var format: String  // Returns string, convert to GPUTextureFormat if needed
+	// Returns string, convert to GPUTextureFormat if needed
+	@JSGetter(jsName: "format") var internalFormat: String
 
-	@JSFunction
-	public func createView() throws(JSException) -> GPUTextureView
+	public var format: String {
+		get {
+			return try! internalFormat
+		}
+	}
 
-	@JSFunction
-	public func destroy() throws(JSException)
+	@JSFunction(jsName: "createView")
+	func internalCreateView() throws(JSException) -> GPUTextureView
+
+	@JSFunction(jsName: "destroy")
+	func internalDestroy() throws(JSException)
+
+	public func createView() -> GPUTextureView {
+		try! internalCreateView()
+	}
+
+	public func destroy() {
+		try! internalDestroy()
+	}
 }

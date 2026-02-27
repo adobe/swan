@@ -16,26 +16,37 @@ import JavaScriptKit
 }
 
 @JSClass public struct GPUComputePassEncoder {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+
+	public func setLabel(_ value: String?) {
+		try! setInternalLabel(value)
 	}
 
-	@JSGetter public var label: String?
+	@JSFunction
+	func setPipeline(_ pipeline: GPUComputePipeline) throws(JSException)
 
 	@JSFunction
-	public func setPipeline(_ pipeline: GPUComputePipeline) throws(JSException)
+	func setBindGroup(_ groupIndex: Int, _ group: GPUBindGroup) throws(JSException)
 
 	@JSFunction
-	public func setBindGroup(_ groupIndex: Int, _ group: GPUBindGroup) throws(JSException)
+	func dispatchWorkgroups(_ workgroupCountX: Int, _ workgroupCountY: Int, _ workgroupCountZ: Int) throws(JSException)
 
-	@JSFunction
-	public func dispatchWorkgroups(
-		_ workgroupCountX: Int,
-		_ workgroupCountY: Int,
-		_ workgroupCountZ: Int
-	) throws(JSException)
+	@JSFunction(jsName: "end")
+	func internalEnd() throws(JSException)
 
-	@JSFunction
-	public func end() throws(JSException)
+	public func setPipeline(pipeline: GPUComputePipeline) {
+		try! setPipeline(pipeline)
+	}
+
+	public func setBindGroup(groupIndex: UInt32, group: GPUBindGroup, dynamicOffsets: [UInt32]) {
+		try! setBindGroup(Int(groupIndex), group)
+	}
+
+	public func dispatchWorkgroups(workgroupCountX: UInt32, workgroupCountY: UInt32, workgroupCountZ: UInt32) {
+		try! dispatchWorkgroups(Int(workgroupCountX), Int(workgroupCountY), Int(workgroupCountZ))
+	}
+
+	public func end() {
+		try! internalEnd()
+	}
 }

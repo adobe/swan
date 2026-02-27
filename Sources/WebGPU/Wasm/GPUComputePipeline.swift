@@ -37,10 +37,9 @@ import JavaScriptKit
 }
 
 @JSClass public struct GPUComputePipeline {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
-	}
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
 
-	@JSGetter public var label: String?
+	public func setLabel(_ value: String?) {
+		try! setInternalLabel(value)
+	}
 }

@@ -41,25 +41,31 @@ import JavaScriptKit
 
 @JSClass
 public struct GPUCommandEncoder {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+
+	public func setLabel(_ value: String?) {
+		try! setInternalLabel(value)
 	}
 
-	@JSGetter public var label: String?
+	@JSFunction
+	func beginRenderPass(_ descriptor: GPURenderPassDescriptor) throws(JSException) -> GPURenderPassEncoder
 
 	@JSFunction
-	public func beginRenderPass(
-		_ descriptor: GPURenderPassDescriptor
-	) throws(JSException)
-		-> GPURenderPassEncoder
+	func beginComputePass(_ descriptor: GPUComputePassDescriptor) throws(JSException) -> GPUComputePassEncoder
 
-	@JSFunction
-	public func beginComputePass(
-		descriptor: GPUComputePassDescriptor
-	) throws(JSException)
-		-> GPUComputePassEncoder
+	@JSFunction(jsName: "finish")
+	func internalFinish(descriptor: GPUCommandBufferDescriptor) throws(JSException) -> GPUCommandBuffer
 
-	@JSFunction
-	public func finish() throws(JSException) -> GPUCommandBuffer
+	public func beginRenderPass(descriptor: GPURenderPassDescriptor) -> GPURenderPassEncoder {
+		try! beginRenderPass(descriptor)
+	}
+
+	public func beginComputePass(descriptor: GPUComputePassDescriptor) -> GPUComputePassEncoder {
+		try! beginComputePass(descriptor)
+	}
+
+	// TODO: dawn API has optional descriptor parameter
+	public func finish(descriptor: GPUCommandBufferDescriptor) -> GPUCommandBuffer {
+		try! internalFinish(descriptor: descriptor)
+	}
 }
