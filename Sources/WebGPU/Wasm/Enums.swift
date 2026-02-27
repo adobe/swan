@@ -82,8 +82,10 @@ import JavaScriptKit
 }
 
 @JS public enum GPUIndexFormat: String, Sendable {
+	case undefined = "undefined"
 	case uint16 = "uint16"
 	case uint32 = "uint32"
+	case force32 = "force32"
 }
 
 @JS public enum GPUBufferBindingType: String, Sendable {

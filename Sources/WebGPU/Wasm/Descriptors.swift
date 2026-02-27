@@ -80,6 +80,7 @@ import JavaScriptKit
 
 	public init(
 		topology: GPUPrimitiveTopology = .triangleList,
+		stripIndexFormat: GPUIndexFormat = .undefined,
 		frontFace: GPUFrontFace = .ccw,
 		cullMode: GPUCullMode = .none
 	) {

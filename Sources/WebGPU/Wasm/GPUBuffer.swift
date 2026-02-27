@@ -9,9 +9,27 @@ import JavaScriptKit
 
 @JSClass
 public struct GPUBuffer {
-	@JSGetter public var size: Int
-	@JSGetter public var usage: Int
-	@JSGetter public var label: String?
+	@JSGetter(jsName: "size") var internalSize: Int
+
+	public var size: Int {
+		get {
+			return try! internalSize
+		}
+	}
+
+	@JSGetter(jsName: "usage") var internalUsage: Int
+
+	public var usage: Int {
+		get {
+			return try! internalUsage
+		}
+	}
+
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+
+	public func setLabel(_ value: String?) {
+		try! setInternalLabel(value)
+	}
 
 	@JSFunction(jsName: "destroy")
 	func internalDestroy() throws(JSException)

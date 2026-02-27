@@ -8,7 +8,11 @@
 import JavaScriptKit
 
 @JSClass public struct GPURenderPipeline {
-	@JSGetter public var label: String?
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+
+	public func setLabel(_ value: String?) {
+		try! setInternalLabel(value)
+	}
 
 	@JSFunction
 	func getBindGroupLayout(_ index: Int) throws(JSException) -> GPUBindGroupLayout

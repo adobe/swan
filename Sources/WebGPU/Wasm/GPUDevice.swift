@@ -81,13 +81,19 @@ import JavaScriptKit
 }
 
 @JSClass public struct GPUDevice {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
+	@JSGetter(jsName: "queue") public var internalQueue: GPUQueue
+
+	public var queue: GPUQueue {
+		get {
+			return try! internalQueue
+		}
 	}
 
-	public var queue: GPUQueue { GPUQueue(unsafelyWrapping: jsObject.queue.object!) }
-	public var label: String? { jsObject.label.string }
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+
+	public func setLabel(_ value: String?) {
+		try! setInternalLabel(value)
+	}
 
 	@JSFunction
 	func createBuffer(_ descriptor: GPUBufferDescriptor) throws(JSException) -> GPUBuffer

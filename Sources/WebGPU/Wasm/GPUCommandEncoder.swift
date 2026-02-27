@@ -41,7 +41,11 @@ import JavaScriptKit
 
 @JSClass
 public struct GPUCommandEncoder {
-	@JSGetter public var label: String?
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+
+	public func setLabel(_ value: String?) {
+		try! setInternalLabel(value)
+	}
 
 	@JSFunction
 	func beginRenderPass(_ descriptor: GPURenderPassDescriptor) throws(JSException) -> GPURenderPassEncoder

@@ -16,7 +16,11 @@ import JavaScriptKit
 }
 
 @JSClass public struct GPUComputePassEncoder {
-	@JSGetter public var label: String?
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+
+	public func setLabel(_ value: String?) {
+		try! setInternalLabel(value)
+	}
 
 	@JSFunction
 	func setPipeline(_ pipeline: GPUComputePipeline) throws(JSException)

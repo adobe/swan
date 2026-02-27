@@ -23,7 +23,6 @@ let updatesPerSecond = 5.0
 
 struct BitonicSortDemo {
 	var device: GPUDevice?
-	var queue: GPUQueue?
 
 	#if !arch(wasm32)
 	var surface: GPUSurface?
@@ -66,7 +65,6 @@ struct BitonicSortDemo {
 
 	private mutating func setupGPU(device: GPUDevice, format: GPUTextureFormat) {
 		self.device = device
-		self.queue = device.queue
 
 		#if !arch(wasm32)
 		self.workgroupSize = maxWorkgroupSize(device: device)
@@ -92,6 +90,7 @@ struct BitonicSortDemo {
 			renderBindGroupLayout: renderBindGroupLayout
 		)
 
+		// Initialize uniform buffer with valid data for the first frame
 		self.updateUniforms()
 
 		print(
@@ -155,7 +154,7 @@ struct BitonicSortDemo {
 		var elements = Array(0..<UInt32(totalElements))
 		elements.shuffle()
 		elements.withUnsafeBytes { data in
-			self.queue!.writeBuffer(
+			device.queue.writeBuffer(
 				buffer: buffer,
 				bufferOffset: 0,
 				data: data
@@ -227,6 +226,7 @@ struct BitonicSortDemo {
 		bufferSize: UInt64,
 		uniformSize: UInt64
 	) {
+		// Compute bind groups (A reads from A, writes to B; B reads from B, writes to A)
 		self.computeBindGroupA = device.createBindGroup(
 			descriptor: GPUBindGroupDescriptor(
 				label: "Compute Bind Group A",
@@ -250,6 +250,7 @@ struct BitonicSortDemo {
 			)
 		)
 
+		// Render bind groups
 		self.renderBindGroupA = device.createBindGroup(
 			descriptor: GPUBindGroupDescriptor(
 				label: "Render Bind Group A",
@@ -305,8 +306,13 @@ struct BitonicSortDemo {
 				label: "Display Render Pipeline",
 				layout: renderPipelineLayout,
 				vertex: GPUVertexState(module: shaderModules.vertex, entryPoint: "vertexMain"),
-				primitive: GPUPrimitiveState(topology: .triangleList),
-				multisample: GPUMultisampleState(),
+				primitive: GPUPrimitiveState(
+					topology: .triangleList,
+					stripIndexFormat: .undefined,
+					frontFace: .CCW,
+					cullMode: .none
+				),
+				multisample: GPUMultisampleState(count: 1, mask: 0xFFFFFFFF, alphaToCoverageEnabled: false),
 				fragment: GPUFragmentState(
 					module: shaderModules.fragment,
 					entryPoint: "fragmentMain",
@@ -327,7 +333,7 @@ struct BitonicSortDemo {
 			highlight: self.highlightMode ? 1 : 0
 		)
 		withUnsafeBytes(of: uniforms) { data in
-			self.queue!.writeBuffer(
+			self.device!.queue.writeBuffer(
 				buffer: self.uniformBuffer!,
 				bufferOffset: 0,
 				data: data
@@ -346,21 +352,26 @@ struct BitonicSortDemo {
 		let computePass = encoder.beginComputePass(descriptor: GPUComputePassDescriptor(label: "Sort Step"))
 		computePass.setPipeline(pipeline: computePipeline)
 
+		// Select bind group based on current buffer
 		let bindGroup = (self.currentBuffer == 0) ? self.computeBindGroupA! : self.computeBindGroupB!
-		computePass.setBindGroup(groupIndex: 0, group: bindGroup, dynamicOffsets: [])
+		computePass.setBindGroup(groupIndex: 0, group: bindGroup, dynamicOffsets: [])  // TODO: bmedina - dynamicOffsets should not be needed
 
+		// Dispatch workgroups
 		let workgroupCount = UInt32(self.sortState.workgroupsForCurrentStep)
 		computePass.dispatchWorkgroups(workgroupCountX: workgroupCount, workgroupCountY: 1, workgroupCountZ: 1)
 		computePass.end()
 
 		let commandBuffer = encoder.finish(descriptor: GPUCommandBufferDescriptor(label: "Sort Step Command Buffer"))
-		self.queue!.submit(commands: [commandBuffer])
+		device.queue.submit(commands: [commandBuffer])
 
+		// Log progress
 		print(
 			"Step \(self.sortState.currentStep + 1)/\(self.sortState.totalSteps): \(self.sortState.currentStepType), blockHeight=\(self.sortState.blockHeight)"
 		)
 
 		self.sortState.advanceStep()
+
+		// Swap buffers (output becomes input for next step)
 		self.currentBuffer = self.currentBuffer == 0 ? 1 : 0
 	}
 
@@ -380,6 +391,7 @@ struct BitonicSortDemo {
 			return
 		}
 
+		// If we're not paused and it's time for the next update, execute a step
 		if !self.isPaused && time >= self.nextUpdateTime && !self.sortState.sortIsComplete {
 			self.executeStep()
 			self.nextUpdateTime = time + (1.0 / updatesPerSecond)
@@ -389,8 +401,10 @@ struct BitonicSortDemo {
 			}
 		}
 
+		// Update uniforms before rendering (ensures highlight toggle takes effect)
 		self.updateUniforms()
 
+		// Render current state
 		let encoder = device.createCommandEncoder(
 			descriptor: GPUCommandEncoderDescriptor(label: "Render Encoder")
 		)
@@ -401,6 +415,9 @@ struct BitonicSortDemo {
 		let backbuffer = self.context!.getCurrentTexture()
 		#endif
 		let textureView = backbuffer.createView()
+
+		// just checking the API
+		textureView.setLabel(label: "Backbuffer")
 
 		let renderPass = encoder.beginRenderPass(
 			descriptor: GPURenderPassDescriptor(
@@ -416,13 +433,14 @@ struct BitonicSortDemo {
 		)
 		renderPass.setPipeline(pipeline: renderPipeline)
 
+		// Display the current buffer (after compute, this is the output)
 		let renderBindGroup = (self.currentBuffer == 0) ? self.renderBindGroupA! : self.renderBindGroupB!
 		renderPass.setBindGroup(groupIndex: 0, group: renderBindGroup, dynamicOffsets: [])
 		renderPass.draw(vertexCount: 3, instanceCount: 1, firstVertex: 0, firstInstance: 0)
 		renderPass.end()
 
 		let commandBuffer = encoder.finish(descriptor: GPUCommandBufferDescriptor(label: "Render Command Buffer"))
-		self.queue!.submit(commands: [commandBuffer])
+		device.queue.submit(commands: [commandBuffer])
 
 		#if !arch(wasm32)
 		self.surface!.present()

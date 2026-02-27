@@ -1372,81 +1372,81 @@ fileprivate func _bjs_struct_lift_GPUPipelineLayoutDescriptor_extern() -> Int32 
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBindGroup_label_get")
-fileprivate func bjs_GPUBindGroup_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBindGroup_internalLabel_set")
+fileprivate func bjs_GPUBindGroup_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUBindGroup_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUBindGroup_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUBindGroup_label_get(_ self: Int32) -> Void {
-    return bjs_GPUBindGroup_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUBindGroup_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUBindGroup_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
-func _$GPUBindGroup_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUBindGroup_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUBindGroup_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUBindGroup_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBindGroupLayout_label_get")
-fileprivate func bjs_GPUBindGroupLayout_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBindGroupLayout_internalLabel_set")
+fileprivate func bjs_GPUBindGroupLayout_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUBindGroupLayout_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUBindGroupLayout_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUBindGroupLayout_label_get(_ self: Int32) -> Void {
-    return bjs_GPUBindGroupLayout_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUBindGroupLayout_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUBindGroupLayout_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
-func _$GPUBindGroupLayout_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUBindGroupLayout_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUBindGroupLayout_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUBindGroupLayout_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBuffer_size_get")
-fileprivate func bjs_GPUBuffer_size_get_extern(_ self: Int32) -> Int32
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBuffer_internalSize_get")
+fileprivate func bjs_GPUBuffer_internalSize_get_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUBuffer_size_get_extern(_ self: Int32) -> Int32 {
+fileprivate func bjs_GPUBuffer_internalSize_get_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUBuffer_size_get(_ self: Int32) -> Int32 {
-    return bjs_GPUBuffer_size_get_extern(self)
+@inline(never) fileprivate func bjs_GPUBuffer_internalSize_get(_ self: Int32) -> Int32 {
+    return bjs_GPUBuffer_internalSize_get_extern(self)
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBuffer_usage_get")
-fileprivate func bjs_GPUBuffer_usage_get_extern(_ self: Int32) -> Int32
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBuffer_internalUsage_get")
+fileprivate func bjs_GPUBuffer_internalUsage_get_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUBuffer_usage_get_extern(_ self: Int32) -> Int32 {
+fileprivate func bjs_GPUBuffer_internalUsage_get_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUBuffer_usage_get(_ self: Int32) -> Int32 {
-    return bjs_GPUBuffer_usage_get_extern(self)
+@inline(never) fileprivate func bjs_GPUBuffer_internalUsage_get(_ self: Int32) -> Int32 {
+    return bjs_GPUBuffer_internalUsage_get_extern(self)
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBuffer_label_get")
-fileprivate func bjs_GPUBuffer_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUBuffer_internalLabel_set")
+fileprivate func bjs_GPUBuffer_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUBuffer_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUBuffer_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUBuffer_label_get(_ self: Int32) -> Void {
-    return bjs_GPUBuffer_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUBuffer_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUBuffer_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
 #if arch(wasm32)
@@ -1461,31 +1461,31 @@ fileprivate func bjs_GPUBuffer_internalDestroy_extern(_ self: Int32) -> Void {
     return bjs_GPUBuffer_internalDestroy_extern(self)
 }
 
-func _$GPUBuffer_size_get(_ self: JSObject) throws(JSException) -> Int {
+func _$GPUBuffer_internalSize_get(_ self: JSObject) throws(JSException) -> Int {
     let selfValue = self.bridgeJSLowerParameter()
-    let ret = bjs_GPUBuffer_size_get(selfValue)
+    let ret = bjs_GPUBuffer_internalSize_get(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
     return Int.bridgeJSLiftReturn(ret)
 }
 
-func _$GPUBuffer_usage_get(_ self: JSObject) throws(JSException) -> Int {
+func _$GPUBuffer_internalUsage_get(_ self: JSObject) throws(JSException) -> Int {
     let selfValue = self.bridgeJSLowerParameter()
-    let ret = bjs_GPUBuffer_usage_get(selfValue)
+    let ret = bjs_GPUBuffer_internalUsage_get(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
     return Int.bridgeJSLiftReturn(ret)
 }
 
-func _$GPUBuffer_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUBuffer_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUBuffer_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUBuffer_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 func _$GPUBuffer_internalDestroy(_ self: JSObject) throws(JSException) -> Void {
@@ -1539,36 +1539,36 @@ func _$GPUCanvasContext_internalGetCurrentTexture(_ self: JSObject) throws(JSExc
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUCommandBuffer_label_get")
-fileprivate func bjs_GPUCommandBuffer_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUCommandBuffer_internalLabel_set")
+fileprivate func bjs_GPUCommandBuffer_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUCommandBuffer_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUCommandBuffer_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUCommandBuffer_label_get(_ self: Int32) -> Void {
-    return bjs_GPUCommandBuffer_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUCommandBuffer_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUCommandBuffer_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
-func _$GPUCommandBuffer_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUCommandBuffer_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUCommandBuffer_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUCommandBuffer_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUCommandEncoder_label_get")
-fileprivate func bjs_GPUCommandEncoder_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUCommandEncoder_internalLabel_set")
+fileprivate func bjs_GPUCommandEncoder_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUCommandEncoder_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUCommandEncoder_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUCommandEncoder_label_get(_ self: Int32) -> Void {
-    return bjs_GPUCommandEncoder_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUCommandEncoder_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUCommandEncoder_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
 #if arch(wasm32)
@@ -1607,13 +1607,13 @@ fileprivate func bjs_GPUCommandEncoder_internalFinish_extern(_ self: Int32, _ de
     return bjs_GPUCommandEncoder_internalFinish_extern(self, descriptor)
 }
 
-func _$GPUCommandEncoder_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUCommandEncoder_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUCommandEncoder_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUCommandEncoder_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 func _$GPUCommandEncoder_beginRenderPass(_ self: JSObject, _ descriptor: GPURenderPassDescriptor) throws(JSException) -> GPURenderPassEncoder {
@@ -1647,15 +1647,15 @@ func _$GPUCommandEncoder_internalFinish(_ self: JSObject, _ descriptor: GPUComma
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUComputePassEncoder_label_get")
-fileprivate func bjs_GPUComputePassEncoder_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUComputePassEncoder_internalLabel_set")
+fileprivate func bjs_GPUComputePassEncoder_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUComputePassEncoder_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUComputePassEncoder_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUComputePassEncoder_label_get(_ self: Int32) -> Void {
-    return bjs_GPUComputePassEncoder_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUComputePassEncoder_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUComputePassEncoder_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
 #if arch(wasm32)
@@ -1706,13 +1706,13 @@ fileprivate func bjs_GPUComputePassEncoder_internalEnd_extern(_ self: Int32) -> 
     return bjs_GPUComputePassEncoder_internalEnd_extern(self)
 }
 
-func _$GPUComputePassEncoder_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUComputePassEncoder_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUComputePassEncoder_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUComputePassEncoder_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 func _$GPUComputePassEncoder_setPipeline(_ self: JSObject, _ pipeline: GPUComputePipeline) throws(JSException) -> Void {
@@ -1754,24 +1754,48 @@ func _$GPUComputePassEncoder_internalEnd(_ self: JSObject) throws(JSException) -
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUComputePipeline_label_get")
-fileprivate func bjs_GPUComputePipeline_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUComputePipeline_internalLabel_set")
+fileprivate func bjs_GPUComputePipeline_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUComputePipeline_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUComputePipeline_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUComputePipeline_label_get(_ self: Int32) -> Void {
-    return bjs_GPUComputePipeline_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUComputePipeline_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUComputePipeline_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
-func _$GPUComputePipeline_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUComputePipeline_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUComputePipeline_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUComputePipeline_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice_internalQueue_get")
+fileprivate func bjs_GPUDevice_internalQueue_get_extern(_ self: Int32) -> Int32
+#else
+fileprivate func bjs_GPUDevice_internalQueue_get_extern(_ self: Int32) -> Int32 {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+@inline(never) fileprivate func bjs_GPUDevice_internalQueue_get(_ self: Int32) -> Int32 {
+    return bjs_GPUDevice_internalQueue_get_extern(self)
+}
+
+#if arch(wasm32)
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice_internalLabel_set")
+fileprivate func bjs_GPUDevice_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
+#else
+fileprivate func bjs_GPUDevice_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    fatalError("Only available on WebAssembly")
+}
+#endif
+@inline(never) fileprivate func bjs_GPUDevice_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUDevice_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
 #if arch(wasm32)
@@ -1870,6 +1894,24 @@ fileprivate func bjs_GPUDevice_createComputePipeline_extern(_ self: Int32, _ des
     return bjs_GPUDevice_createComputePipeline_extern(self, descriptor)
 }
 
+func _$GPUDevice_internalQueue_get(_ self: JSObject) throws(JSException) -> GPUQueue {
+    let selfValue = self.bridgeJSLowerParameter()
+    let ret = bjs_GPUDevice_internalQueue_get(selfValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+    return GPUQueue.bridgeJSLiftReturn(ret)
+}
+
+func _$GPUDevice_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
+    let selfValue = self.bridgeJSLowerParameter()
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUDevice_internalLabel_set(selfValue, newValueIsSome, newValueValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
+}
+
 func _$GPUDevice_createBuffer(_ self: JSObject, _ descriptor: GPUBufferDescriptor) throws(JSException) -> GPUBuffer {
     let selfValue = self.bridgeJSLowerParameter()
     let descriptorObjectId = descriptor.bridgeJSLowerParameter()
@@ -1951,36 +1993,36 @@ func _$GPUDevice_createComputePipeline(_ self: JSObject, _ descriptor: GPUComput
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUPipelineLayout_label_get")
-fileprivate func bjs_GPUPipelineLayout_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUPipelineLayout_internalLabel_set")
+fileprivate func bjs_GPUPipelineLayout_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUPipelineLayout_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUPipelineLayout_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUPipelineLayout_label_get(_ self: Int32) -> Void {
-    return bjs_GPUPipelineLayout_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUPipelineLayout_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUPipelineLayout_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
-func _$GPUPipelineLayout_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUPipelineLayout_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUPipelineLayout_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUPipelineLayout_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUQueue_label_get")
-fileprivate func bjs_GPUQueue_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUQueue_internalLabel_set")
+fileprivate func bjs_GPUQueue_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUQueue_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUQueue_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUQueue_label_get(_ self: Int32) -> Void {
-    return bjs_GPUQueue_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUQueue_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUQueue_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
 #if arch(wasm32)
@@ -2007,13 +2049,13 @@ fileprivate func bjs_GPUQueue_writeBuffer_extern(_ self: Int32, _ buffer: Int32,
     return bjs_GPUQueue_writeBuffer_extern(self, buffer, bufferOffset, data)
 }
 
-func _$GPUQueue_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUQueue_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUQueue_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUQueue_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 func _$GPUQueue_submit(_ self: JSObject, _ commandBuffers: JSObject) throws(JSException) -> Void {
@@ -2037,15 +2079,15 @@ func _$GPUQueue_writeBuffer(_ self: JSObject, _ buffer: GPUBuffer, _ bufferOffse
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPURenderPassEncoder_label_get")
-fileprivate func bjs_GPURenderPassEncoder_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPURenderPassEncoder_internalLabel_set")
+fileprivate func bjs_GPURenderPassEncoder_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPURenderPassEncoder_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPURenderPassEncoder_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPURenderPassEncoder_label_get(_ self: Int32) -> Void {
-    return bjs_GPURenderPassEncoder_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPURenderPassEncoder_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPURenderPassEncoder_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
 #if arch(wasm32)
@@ -2108,13 +2150,13 @@ fileprivate func bjs_GPURenderPassEncoder_internalEnd_extern(_ self: Int32) -> V
     return bjs_GPURenderPassEncoder_internalEnd_extern(self)
 }
 
-func _$GPURenderPassEncoder_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPURenderPassEncoder_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPURenderPassEncoder_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPURenderPassEncoder_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 func _$GPURenderPassEncoder_setPipeline(_ self: JSObject, _ pipeline: GPURenderPipeline) throws(JSException) -> Void {
@@ -2167,15 +2209,15 @@ func _$GPURenderPassEncoder_internalEnd(_ self: JSObject) throws(JSException) ->
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPURenderPipeline_label_get")
-fileprivate func bjs_GPURenderPipeline_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPURenderPipeline_internalLabel_set")
+fileprivate func bjs_GPURenderPipeline_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPURenderPipeline_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPURenderPipeline_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPURenderPipeline_label_get(_ self: Int32) -> Void {
-    return bjs_GPURenderPipeline_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPURenderPipeline_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPURenderPipeline_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
 #if arch(wasm32)
@@ -2190,13 +2232,13 @@ fileprivate func bjs_GPURenderPipeline_getBindGroupLayout_extern(_ self: Int32, 
     return bjs_GPURenderPipeline_getBindGroupLayout_extern(self, index)
 }
 
-func _$GPURenderPipeline_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPURenderPipeline_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPURenderPipeline_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPURenderPipeline_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 func _$GPURenderPipeline_getBindGroupLayout(_ self: JSObject, _ index: Int) throws(JSException) -> GPUBindGroupLayout {
@@ -2210,48 +2252,48 @@ func _$GPURenderPipeline_getBindGroupLayout(_ self: JSObject, _ index: Int) thro
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUShaderModule_label_get")
-fileprivate func bjs_GPUShaderModule_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUShaderModule_internalLabel_set")
+fileprivate func bjs_GPUShaderModule_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUShaderModule_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUShaderModule_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUShaderModule_label_get(_ self: Int32) -> Void {
-    return bjs_GPUShaderModule_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUShaderModule_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUShaderModule_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
-func _$GPUShaderModule_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUShaderModule_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUShaderModule_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUShaderModule_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUTexture_label_get")
-fileprivate func bjs_GPUTexture_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUTexture_internalFormat_get")
+fileprivate func bjs_GPUTexture_internalFormat_get_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUTexture_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUTexture_internalFormat_get_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUTexture_label_get(_ self: Int32) -> Void {
-    return bjs_GPUTexture_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUTexture_internalFormat_get(_ self: Int32) -> Int32 {
+    return bjs_GPUTexture_internalFormat_get_extern(self)
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUTexture_format_get")
-fileprivate func bjs_GPUTexture_format_get_extern(_ self: Int32) -> Int32
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUTexture_internalLabel_set")
+fileprivate func bjs_GPUTexture_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUTexture_format_get_extern(_ self: Int32) -> Int32 {
+fileprivate func bjs_GPUTexture_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUTexture_format_get(_ self: Int32) -> Int32 {
-    return bjs_GPUTexture_format_get_extern(self)
+@inline(never) fileprivate func bjs_GPUTexture_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUTexture_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
 #if arch(wasm32)
@@ -2278,22 +2320,22 @@ fileprivate func bjs_GPUTexture_internalDestroy_extern(_ self: Int32) -> Void {
     return bjs_GPUTexture_internalDestroy_extern(self)
 }
 
-func _$GPUTexture_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUTexture_internalFormat_get(_ self: JSObject) throws(JSException) -> String {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUTexture_label_get(selfValue)
-    if let error = _swift_js_take_exception() {
-        throw error
-    }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
-}
-
-func _$GPUTexture_format_get(_ self: JSObject) throws(JSException) -> String {
-    let selfValue = self.bridgeJSLowerParameter()
-    let ret = bjs_GPUTexture_format_get(selfValue)
+    let ret = bjs_GPUTexture_internalFormat_get(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
     return String.bridgeJSLiftReturn(ret)
+}
+
+func _$GPUTexture_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
+    let selfValue = self.bridgeJSLowerParameter()
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUTexture_internalLabel_set(selfValue, newValueIsSome, newValueValue)
+    if let error = _swift_js_take_exception() {
+        throw error
+    }
 }
 
 func _$GPUTexture_internalCreateView(_ self: JSObject) throws(JSException) -> GPUTextureView {
@@ -2314,22 +2356,22 @@ func _$GPUTexture_internalDestroy(_ self: JSObject) throws(JSException) -> Void 
 }
 
 #if arch(wasm32)
-@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUTextureView_label_get")
-fileprivate func bjs_GPUTextureView_label_get_extern(_ self: Int32) -> Void
+@_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUTextureView_internalLabel_set")
+fileprivate func bjs_GPUTextureView_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void
 #else
-fileprivate func bjs_GPUTextureView_label_get_extern(_ self: Int32) -> Void {
+fileprivate func bjs_GPUTextureView_internalLabel_set_extern(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUTextureView_label_get(_ self: Int32) -> Void {
-    return bjs_GPUTextureView_label_get_extern(self)
+@inline(never) fileprivate func bjs_GPUTextureView_internalLabel_set(_ self: Int32, _ newValueIsSome: Int32, _ newValueValue: Int32) -> Void {
+    return bjs_GPUTextureView_internalLabel_set_extern(self, newValueIsSome, newValueValue)
 }
 
-func _$GPUTextureView_label_get(_ self: JSObject) throws(JSException) -> Optional<String> {
+func _$GPUTextureView_internalLabel_set(_ self: JSObject, _ newValue: Optional<String>) throws(JSException) -> Void {
     let selfValue = self.bridgeJSLowerParameter()
-    bjs_GPUTextureView_label_get(selfValue)
+    let (newValueIsSome, newValueValue) = newValue.bridgeJSLowerParameter()
+    bjs_GPUTextureView_internalLabel_set(selfValue, newValueIsSome, newValueValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
-    return Optional<String>.bridgeJSLiftReturnFromSideChannel()
 }

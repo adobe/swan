@@ -60,5 +60,9 @@ import JavaScriptKit
 }
 
 @JSClass public struct GPUBindGroup {
-	@JSGetter public var label: String?
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+
+	public func setLabel(_ value: String?) {
+		try! setInternalLabel(value)
+	}
 }

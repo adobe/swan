@@ -8,5 +8,9 @@
 import JavaScriptKit
 
 @JSClass public struct GPUTextureView {
-	@JSGetter public var label: String?
+	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+
+	public func setLabel(label: String?) {
+		try! setInternalLabel(label)
+	}
 }
