@@ -9,32 +9,33 @@ import JavaScriptKit
 
 @JSClass
 public struct GPUBuffer {
-	@JSGetter(jsName: "size") var internalSize: Int
+	@JSGetter(jsName: "size") var _size: Int
 
 	public var size: Int {
 		get {
-			return try! internalSize
+			return try! _size
 		}
 	}
 
-	@JSGetter(jsName: "usage") var internalUsage: Int
+	@JSGetter(jsName: "usage") var _usage: Int
 
 	public var usage: Int {
 		get {
-			return try! internalUsage
+			return try! _usage
 		}
 	}
 
-	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
+	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
 
 	public func setLabel(_ value: String?) {
-		try! setInternalLabel(value)
+		try! setLabel_(value)
 	}
 
 	@JSFunction(jsName: "destroy")
-	func internalDestroy() throws(JSException)
+	func _destroy() throws(JSException)
 
 	public func destroy() {
-		try! internalDestroy()
+		try! _destroy()
 	}
 }
