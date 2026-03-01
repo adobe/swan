@@ -16,6 +16,23 @@ from typing import List, Dict, Any
 from dawn_builder import OS, PlatformGroup, TargetConfig
 
 
+# Extra SDK-version-qualified triples to include in the .artifactbundleindex for
+# Apple platforms, in addition to the generic OS triples produced by TargetConfig.
+# Add new SDK versions here as Xcode / macOS / iOS releases ship.
+EXTRA_APPLE_SDK_TRIPLES: Dict[OS, List[str]] = {
+    OS.MACOS: [
+        "arm64-apple-macos26.2",
+        "arm64-apple-macos26.3",
+    ],
+    OS.IPHONE: [
+        "arm64-apple-iphoneos26.2",
+        "arm64-apple-iphoneos26.3",
+        "arm64-apple-iphonesimulator26.2",
+        "arm64-apple-iphonesimulator26.3",
+    ],
+}
+
+
 def write_target_manifest(
     manifest_file: pathlib.Path, target_config: TargetConfig
 ) -> None:
@@ -288,6 +305,17 @@ def create_bundle_index(
         triples: List[str] = []
         for manifest in manifests_by_platform.get(platform, []):
             triples.extend(manifest["supportedTriples"])
+
+        # Append extra SDK-version-qualified triples for Apple platforms.
+        # Collect them per OS (deduplicated) so each SDK triple appears once.
+        if platform == PlatformGroup.APPLE:
+            seen_extra: set = set()
+            for manifest in manifests_by_platform.get(platform, []):
+                os_value = OS.from_target_name(manifest["targetName"])
+                for extra in EXTRA_APPLE_SDK_TRIPLES.get(os_value, []):
+                    if extra not in seen_extra:
+                        seen_extra.add(extra)
+                        triples.append(extra)
 
         bundle_entries.append(
             {
