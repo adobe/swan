@@ -93,10 +93,30 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
+	] + (isWasmBuild ? [
 		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", branch: "cf7a4f31f1f191f4eea84bb79c6aeffbccb7140e"),
-	],
+	] : []),
 	targets: [
 		dawnTarget,
+	] + (isWasmBuild ? [
+		.target(
+			name: "WebGPUWasm",
+			dependencies: [
+				.product(name: "JavaScriptKit", package: "JavaScriptKit")
+			],
+			path: "Sources/WebGPU/Wasm",
+			exclude: [
+				"Generated/README.md",
+				"Generated/JavaScript",
+				"bridge-js.config.json",
+			],
+			swiftSettings: swiftSettings + [
+				.enableExperimentalFeature("Extern"),
+				.treatWarning("EmbeddedRestrictions", as: .warning),
+			],
+			linkerSettings: asanLinkerSettings
+		),
+	] : []) + [
 		.executableTarget(
 			name: "GenerateDawnBindings",
 			dependencies: [
@@ -189,28 +209,12 @@ let package = Package(
 			linkerSettings: asanLinkerSettings
 		),
 		.target(
-			name: "WebGPUWasm",
-			dependencies: [
-				.product(name: "JavaScriptKit", package: "JavaScriptKit")
-			],
-			path: "Sources/WebGPU/Wasm",
-			exclude: [
-				"Generated/README.md",
-				"Generated/JavaScript",
-				"bridge-js.config.json",
-			],
-			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern"),
-				.treatWarning("EmbeddedRestrictions", as: .warning),
-			],
-			linkerSettings: asanLinkerSettings
-		),
-		.target(
 			name: "WebGPU",
 			dependencies: [
 				.target(name: "WebGPUDawn", condition: .when(platforms: supportedNativePlatforms)),
+			] + (isWasmBuild ? [
 				.target(name: "WebGPUWasm", condition: .when(platforms: wasmPlatforms)),
-			],
+			] : []),
 			exclude: [
 				"Dawn",
 				"Wasm",
