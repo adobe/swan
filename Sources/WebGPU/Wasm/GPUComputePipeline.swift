@@ -37,9 +37,10 @@ import JavaScriptKit
 }
 
 @JSClass public struct GPUComputePipeline {
-	@JSSetter(jsName: "label") func setInternalLabel(_ value: String?) throws(JSException)
+	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
+	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
 
 	public func setLabel(_ value: String?) {
-		try! setInternalLabel(value)
+		try! setLabel_(value)
 	}
 }

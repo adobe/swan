@@ -384,6 +384,21 @@ struct BitonicSortDemo {
 		print("Sort reset: \(totalElements) elements, \(self.sortState.totalSteps) steps")
 	}
 
+	mutating func handleKey(_ key: String) {
+		switch key.lowercased() {
+		case "r":
+			self.resetSort()
+		case "p":
+			self.isPaused.toggle()
+			print(self.isPaused ? "Paused" : "Resumed")
+		case "h":
+			self.highlightMode.toggle()
+			print("Highlight mode: \(self.highlightMode ? "ON" : "OFF")")
+		default:
+			break
+		}
+	}
+
 	// MARK: - Shared Rendering
 
 	private mutating func stepAndRender(time: Double) {
@@ -482,15 +497,13 @@ extension BitonicSortDemo: DemoProvider {
 
 	private mutating func handleInput() {
 		if self.keyIsPressed(UInt8(RGFW_r)) {
-			self.resetSort()
+			self.handleKey("r")
 		}
 		if self.keyIsPressed(UInt8(RGFW_p)) {
-			self.isPaused.toggle()
-			print(self.isPaused ? "Paused" : "Resumed")
+			self.handleKey("p")
 		}
 		if self.keyIsPressed(UInt8(RGFW_h)) {
-			self.highlightMode.toggle()
-			print("Highlight mode: \(self.highlightMode ? "ON" : "OFF")")
+			self.handleKey("h")
 		}
 	}
 }
@@ -508,21 +521,6 @@ extension BitonicSortDemo {
 
 	mutating func frame(time: Double) {
 		self.stepAndRender(time: time)
-	}
-
-	mutating func handleKey(_ key: String) {
-		switch key.lowercased() {
-		case "r":
-			self.resetSort()
-		case "p":
-			self.isPaused.toggle()
-			print(self.isPaused ? "Paused" : "Resumed")
-		case "h":
-			self.highlightMode.toggle()
-			print("Highlight mode: \(self.highlightMode ? "ON" : "OFF")")
-		default:
-			break
-		}
 	}
 }
 #endif
