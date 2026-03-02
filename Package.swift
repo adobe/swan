@@ -34,8 +34,8 @@ let dawnTarget: Target = {
 		return .binaryTarget(
 			name: "DawnLib",
 			url:
-				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-147.0.7706.0/dawn-chromium-canary-147.0.7706.0-release.artifactbundleindex",
-			checksum: "a3e0675e20191241715f0445aeb186680e0aedada76552e0a753a0ce7ec17339"
+				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-147.0.7712.0/dawn-chromium-canary-147.0.7712.0-release.artifactbundleindex",
+			checksum: "ec22871c1022f5fa526cfa4a1872caf2dfda3fad705207903154330878e46430"
 		)
 	}
 }()
