@@ -159,5 +159,5 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: dawn-bundle-${{ inputs.config }}
-          path: Dawn/dist/${{ inputs.bundle_name }}.zip
+          path: Dawn/dist/
           retention-days: 1

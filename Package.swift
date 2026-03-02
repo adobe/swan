@@ -5,7 +5,7 @@
 // accordance with the terms of the Adobe license agreement accompanying
 // it.
 //
-// swift-tools-version: 6.2
+// swift-tools-version: 6.3;(experimentalCGen)
 
 import Foundation
 import PackageDescription
@@ -34,8 +34,8 @@ let dawnTarget: Target = {
 		return .binaryTarget(
 			name: "DawnLib",
 			url:
-				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-146.0.7666.0/dawn-chromium-canary-146.0.7666.0-release.zip",
-			checksum: "eff4297d456101289f2105b7da4686d1963cf15ad0aa5000fe9447dcfcb30c1a"
+				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-147.0.7706.0/dawn-chromium-canary-147.0.7706.0-release.artifactbundleindex",
+			checksum: "a3e0675e20191241715f0445aeb186680e0aedada76552e0a753a0ce7ec17339"
 		)
 	}
 }()
@@ -94,7 +94,7 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.46.3"),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", branch: "cf7a4f31f1f191f4eea84bb79c6aeffbccb7140e"),
 	],
 	targets: [
 		dawnTarget,
@@ -255,15 +255,26 @@ let package = Package(
 		),
 		.executableTarget(
 			name: "BitonicSort",
-			dependencies: ["DemoUtils"],
+			dependencies: (isWasmBuild
+				? [
+					.target(name: "WebGPU"),
+					.target(name: "WebGPUWasm"),
+				]
+				: [
+					.target(name: "DemoUtils")
+				]),
 			path: "Demos/BitonicSort",
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings + [
-				.linkedFramework("Cocoa", .when(platforms: [.macOS])),
-				.linkedFramework("IOKit", .when(platforms: [.macOS])),
-				.linkedFramework("Metal", .when(platforms: [.macOS])),
-				.linkedLibrary("c++", .when(platforms: [.macOS])),
-			]
+			exclude: ["index.html"],
+			swiftSettings: swiftSettings + (isWasmBuild ? [.enableExperimentalFeature("Extern")] : []),
+			linkerSettings: isWasmBuild
+				? []
+				: asanLinkerSettings + [
+					.linkedFramework("Cocoa", .when(platforms: [.macOS])),
+					.linkedFramework("IOKit", .when(platforms: [.macOS])),
+					.linkedFramework("Metal", .when(platforms: [.macOS])),
+					.linkedLibrary("c++", .when(platforms: [.macOS])),
+				],
+			plugins: isWasmBuild ? [.plugin(name: "BridgeJS", package: "JavaScriptKit")] : []
 		),
 		.testTarget(
 			name: "CodeGenerationTests",
@@ -293,25 +304,3 @@ let package = Package(
 		),
 	]
 )
-
-// WASM-only targets are only included when SWAN_WASM is set,
-// since they depend on JavaScriptKit's BridgeJS plugin which isn't available in native builds.
-if isWasmBuild {
-	package.targets.append(
-		.executableTarget(
-			name: "BitonicSortWasm",
-			dependencies: [
-				.target(name: "WebGPU"),
-				.target(name: "WebGPUWasm"),
-			],
-			path: "Demos/BitonicSortWasm",
-			exclude: ["index.html"],
-			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern")
-			],
-			plugins: [
-				.plugin(name: "BridgeJS", package: "JavaScriptKit")
-			]
-		)
-	)
-}

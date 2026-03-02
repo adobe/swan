@@ -50,7 +50,11 @@ import JavaScriptKit
 	case bgra8unormSrgb = "bgra8unorm-srgb"
 	case rgba8unorm = "rgba8unorm"
 	case rgba8unormSrgb = "rgba8unorm-srgb"
-	// Add more as needed
+
+	public static let BGRA8Unorm = GPUTextureFormat.bgra8unorm
+	public static let BGRA8UnormSrgb = GPUTextureFormat.bgra8unormSrgb
+	public static let RGBA8Unorm = GPUTextureFormat.rgba8unorm
+	public static let RGBA8UnormSrgb = GPUTextureFormat.rgba8unormSrgb
 }
 
 @JS public enum GPULoadOp: String, Sendable {
@@ -66,6 +70,9 @@ import JavaScriptKit
 @JS public enum GPUFrontFace: String, Sendable {
 	case ccw = "ccw"
 	case cw = "cw"
+
+	public static let CCW = GPUFrontFace.ccw
+	public static let CW = GPUFrontFace.cw
 }
 
 @JS public enum GPUCullMode: String, Sendable {
@@ -75,8 +82,10 @@ import JavaScriptKit
 }
 
 @JS public enum GPUIndexFormat: String, Sendable {
+	case undefined = "undefined"
 	case uint16 = "uint16"
 	case uint32 = "uint32"
+	case force32 = "force32"
 }
 
 @JS public enum GPUBufferBindingType: String, Sendable {

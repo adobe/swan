@@ -71,15 +71,14 @@ jobs:
             **Chromium version:** ${{ needs.get-dawn-info.outputs.chromium_dawn_version }}
             **Dawn hash:** ${{ needs.get-dawn-info.outputs.chromium_dawn_hash }}
 
-            This release contains pre-built Dawn WebGPU libraries in an archive bundle for multiple platforms:
+            This release contains pre-built Dawn WebGPU libraries as separate per-platform artifact bundles:
 
-            - linux (x86_64, arm64)
-            - macosx (x86_64 + arm64 universal)
-            - iphoneos (arm64)
-            - iphonesimulator (arm64)
-            - windows (x86_64, arm64)
+            - `*_apple.artifactbundle.zip` — macOS (universal), iOS device (arm64), iOS simulator (x86_64)
+            - `*_linux.artifactbundle.zip` — Linux (x86_64, arm64)
+            - `*_windows.artifactbundle.zip` — Windows (x86_64, arm64)
+            - `*.artifactbundleindex` — index referencing all platform bundles
 
             These are just the raw Dawn libraries and do not include the Swift API layer.
-          artifacts: dawn-bundles/*
+          artifacts: dawn-bundles/*.zip,dawn-bundles/*.artifactbundleindex
           artifactErrorsFailBuild: true
           removeArtifacts: true

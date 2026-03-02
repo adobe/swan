@@ -21,12 +21,3 @@ endif()
 # Add Dawn from source
 add_subdirectory(dawn_source)
 
-# ---- Overrides MUST come AFTER add_subdirectory ----
-
-if (MSVC)
-  if (TARGET webgpu_dawn)
-    set_target_properties(webgpu_dawn PROPERTIES
-      OUTPUT_NAME "libwebgpu_dawn"
-    )
-  endif()
-endif()

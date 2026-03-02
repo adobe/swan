@@ -3,7 +3,7 @@ import Dawn
 /// Initialize a GPU adapter and device for testing purposes.
 /// Returns a tuple containing the instance, adapter, and device.
 @MainActor
-public func setupGPU() -> (GPUInstance, GPUAdapter, GPUDevice) {
+public func setupGPU(suppressErrors: Bool = false) -> (GPUInstance, GPUAdapter, GPUDevice) {
 	let instance = GPUInstance(descriptor: nil)!
 
 	var adapter: GPUAdapter? = nil
@@ -45,6 +45,7 @@ public func setupGPU() -> (GPUInstance, GPUAdapter, GPUDevice) {
 		),
 		uncapturedErrorCallbackInfo: GPUUncapturedErrorCallbackInfo(
 			callback: { device, type, message in
+				guard !suppressErrors else { return }
 				print("Uncaptured Error!")
 				print("  Type: \(type)")
 				if let message = message {

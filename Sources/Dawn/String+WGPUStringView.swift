@@ -21,9 +21,10 @@ extension String {
 	}
 
 	/// Initialize a String from a WGPUStringView.
-	init?(wgpuStringView: WGPUStringView) {
+	init(wgpuStringView: WGPUStringView) {
 		guard let data = wgpuStringView.data, wgpuStringView.length > 0 else {
-			return nil
+			self.init("")
+			return
 		}
 		var string: String = ""
 		data.withMemoryRebound(to: UInt8.self, capacity: wgpuStringView.length) { data in

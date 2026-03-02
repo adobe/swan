@@ -29,4 +29,21 @@ struct WGSLStringViewTest {
 			#expect(stringView.length == string.count)
 		}
 	}
+
+	@Test("Empty WGPUStringView returns empty string")
+	func testEmptyStringView() {
+		let stringView = WGPUStringView(data: nil, length: 0)
+		let result = String(wgpuStringView: stringView)
+		#expect(result == "")
+	}
+
+	@Test("Zero-length WGPUStringView with non-nil data returns empty string")
+	func testZeroLengthStringView() {
+		"hello".withWGPUStruct { stringView in
+			var zeroLength = stringView
+			zeroLength.length = 0
+			let result = String(wgpuStringView: zeroLength)
+			#expect(result == "")
+		}
+	}
 }

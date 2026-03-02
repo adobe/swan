@@ -35,13 +35,11 @@ import JavaScriptKit
 		self.resource = resource
 	}
 
-	public init(
-		binding: Int,
-		buffer: GPUBuffer,
-		offset: Int? = nil,
-		size: Int? = nil
-	) {
-		self.init(binding: binding, resource: GPUBufferBinding(buffer: buffer, offset: offset, size: size))
+	public init(binding: UInt32, buffer: GPUBuffer, offset: UInt64, size: UInt64) {
+		self.init(
+			binding: Int(binding),
+			resource: GPUBufferBinding(buffer: buffer, offset: Int(offset), size: Int(size))
+		)
 	}
 }
 
@@ -62,10 +60,10 @@ import JavaScriptKit
 }
 
 @JSClass public struct GPUBindGroup {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
-	}
+	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
+	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
 
-	@JSGetter public var label: String?
+	public func setLabel(_ value: String?) {
+		try! setLabel_(value)
+	}
 }

@@ -260,6 +260,26 @@ extension UnsafePointer {
 	}
 }
 
+// Parallel versions of the above wrapArrayWithCount extensions for Optional<UnsafePointer>.
+// These handle the cases where the pointer returned from Dawn is nil by returning an empty array.
+extension Optional {
+	func wrapArrayWithCount<SType: GPUStructWrappable>(_ count: Int) -> [SType]
+	where Wrapped == UnsafePointer<SType.WGPUType>, SType.WGPUType: WGPUStruct {
+		guard let self else { return [] }
+		return self.wrapArrayWithCount(count)
+	}
+
+	func wrapArrayWithCount<T>(_ count: Int) -> [T] where Wrapped == UnsafePointer<T> {
+		guard let self else { return [] }
+		return self.wrapArrayWithCount(count)
+	}
+
+	func wrapWGPUArrayWithCount<T>(_ count: Int) -> [T] where Wrapped == UnsafePointer<Optional<T>> {
+		guard let self else { return [] }
+		return self.wrapWGPUArrayWithCount(count)
+	}
+}
+
 extension UnsafePointer where Pointee: FloatingPoint {
 	func wrapTuple7() -> (Pointee, Pointee, Pointee, Pointee, Pointee, Pointee, Pointee) {
 		return (self[0], self[1], self[2], self[3], self[4], self[5], self[6])

@@ -21,10 +21,10 @@ import JavaScriptKit
 }
 
 @JSClass public struct GPUPipelineLayout {
-	public let jsObject: JSObject
-	public init(unsafelyWrapping jsObject: JSObject) {
-		self.jsObject = jsObject
-	}
+	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
+	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
 
-	@JSGetter public var label: String?
+	public func setLabel(_ value: String?) {
+		try! setLabel_(value)
+	}
 }

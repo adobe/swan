@@ -9,19 +9,26 @@
 // Bitonic Sort Demo - GPU-accelerated parallel sorting with visualization
 // Ported from https://github.com/webgpu/webgpu-samples/tree/main/sample/bitonicSort
 
-import DemoUtils
-import Foundation
-import RGFW
 import WebGPU
+
+#if !arch(wasm32)
+import DemoUtils
+import RGFW
+#endif
 
 let gridWidth = 256
 let gridHeight = 256
 let totalElements = gridWidth * gridHeight
 let updatesPerSecond = 5.0
 
-struct BitonicSortDemo: DemoProvider {
+struct BitonicSortDemo {
 	var device: GPUDevice?
+
+	#if !arch(wasm32)
 	var surface: GPUSurface?
+	#else
+	var context: GPUCanvasContext?
+	#endif
 
 	// Buffers
 	var elementsBufferA: GPUBuffer?  // Ping buffer
@@ -54,13 +61,15 @@ struct BitonicSortDemo: DemoProvider {
 		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: workgroupSize)
 	}
 
-	@MainActor
-	mutating func initialize(device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface) {
-		self.device = device
-		self.surface = surface
+	// MARK: - Shared GPU Setup
 
+	private mutating func setupGPU(device: GPUDevice, format: GPUTextureFormat) {
+		self.device = device
+
+		#if !arch(wasm32)
 		self.workgroupSize = maxWorkgroupSize(device: device)
 		self.sortState = BitonicSortState(totalElements: totalElements, workgroupSize: self.workgroupSize)
+		#endif
 
 		let bufferSize = self.createElementBuffers(device: device)
 		let uniformSize = self.createUniformBuffer(device: device)
@@ -89,6 +98,8 @@ struct BitonicSortDemo: DemoProvider {
 		)
 		print("Controls: P=pause/resume, R=reset, H=toggle highlight mode")
 	}
+
+	// MARK: - Resource Creation (shared)
 
 	private func createShaderModules(
 		device: GPUDevice
@@ -301,11 +312,7 @@ struct BitonicSortDemo: DemoProvider {
 					frontFace: .CCW,
 					cullMode: .none
 				),
-				multisample: GPUMultisampleState(
-					count: 1,
-					mask: 0xFFFFFFFF,
-					alphaToCoverageEnabled: false
-				),
+				multisample: GPUMultisampleState(count: 1, mask: 0xFFFFFFFF, alphaToCoverageEnabled: false),
 				fragment: GPUFragmentState(
 					module: shaderModules.fragment,
 					entryPoint: "fragmentMain",
@@ -314,6 +321,8 @@ struct BitonicSortDemo: DemoProvider {
 			)
 		)
 	}
+
+	// MARK: - Uniforms & Sort Logic (shared)
 
 	private func updateUniforms() {
 		let uniforms = Uniforms(
@@ -352,7 +361,7 @@ struct BitonicSortDemo: DemoProvider {
 		computePass.dispatchWorkgroups(workgroupCountX: workgroupCount, workgroupCountY: 1, workgroupCountZ: 1)
 		computePass.end()
 
-		let commandBuffer = encoder.finish(descriptor: nil)!
+		let commandBuffer = encoder.finish(descriptor: GPUCommandBufferDescriptor(label: "Sort Step Command Buffer"))
 		device.queue.submit(commands: [commandBuffer])
 
 		// Log progress
@@ -375,42 +384,27 @@ struct BitonicSortDemo: DemoProvider {
 		print("Sort reset: \(totalElements) elements, \(self.sortState.totalSteps) steps")
 	}
 
-	private func maxWorkgroupSize(device: GPUDevice) -> Int {
-		var limits = GPULimits()
-		if device.getLimits(limits: &limits) == .success {
-			return min(
-				Int(limits.maxComputeWorkgroupSizeX),
-				Int(limits.maxComputeInvocationsPerWorkgroup)
-			)
-		}
-		return workgroupSize
-	}
-
-	private func keyIsPressed(_ key: UInt8) -> Bool {
-		return RGFW_isKeyReleased(key) != 0
-	}
-
-	private mutating func handleInput() {
-		if self.keyIsPressed(UInt8(RGFW_r)) {
+	mutating func handleKey(_ key: String) {
+		switch key.lowercased() {
+		case "r":
 			self.resetSort()
-		}
-		if self.keyIsPressed(UInt8(RGFW_p)) {
+		case "p":
 			self.isPaused.toggle()
 			print(self.isPaused ? "Paused" : "Resumed")
-		}
-		if self.keyIsPressed(UInt8(RGFW_h)) {
+		case "h":
 			self.highlightMode.toggle()
 			print("Highlight mode: \(self.highlightMode ? "ON" : "OFF")")
+		default:
+			break
 		}
 	}
 
-	@MainActor
-	mutating func frame(time: Double) throws -> Bool {
-		guard let device = self.device, let surface = self.surface, let renderPipeline = self.renderPipeline else {
-			return false
-		}
+	// MARK: - Shared Rendering
 
-		self.handleInput()
+	private mutating func stepAndRender(time: Double) {
+		guard let device = self.device, let renderPipeline = self.renderPipeline else {
+			return
+		}
 
 		// If we're not paused and it's time for the next update, execute a step
 		if !self.isPaused && time >= self.nextUpdateTime && !self.sortState.sortIsComplete {
@@ -429,8 +423,16 @@ struct BitonicSortDemo: DemoProvider {
 		let encoder = device.createCommandEncoder(
 			descriptor: GPUCommandEncoderDescriptor(label: "Render Encoder")
 		)
-		let backbuffer = surface.getCurrentTexture()
+
+		#if !arch(wasm32)
+		let backbuffer = self.surface!.getCurrentTexture()
+		#else
+		let backbuffer = self.context!.getCurrentTexture()
+		#endif
 		let textureView = backbuffer.createView()
+
+		// just checking the API
+		textureView.setLabel(label: "Backbuffer")
 
 		let renderPass = encoder.beginRenderPass(
 			descriptor: GPURenderPassDescriptor(
@@ -452,18 +454,73 @@ struct BitonicSortDemo: DemoProvider {
 		renderPass.draw(vertexCount: 3, instanceCount: 1, firstVertex: 0, firstInstance: 0)
 		renderPass.end()
 
-		let commandBuffer = encoder.finish(descriptor: nil)!
+		let commandBuffer = encoder.finish(descriptor: GPUCommandBufferDescriptor(label: "Render Command Buffer"))
 		device.queue.submit(commands: [commandBuffer])
 
-		surface.present()
+		#if !arch(wasm32)
+		self.surface!.present()
+		#endif
+	}
+}
 
+// MARK: - Native Platform (DemoProvider)
+
+#if !arch(wasm32)
+extension BitonicSortDemo: DemoProvider {
+	@MainActor
+	mutating func initialize(device: GPUDevice, format: GPUTextureFormat, surface: GPUSurface) {
+		self.surface = surface
+		self.setupGPU(device: device, format: format)
+	}
+
+	@MainActor
+	mutating func frame(time: Double) throws -> Bool {
+		self.handleInput()
+		self.stepAndRender(time: time)
 		return true
 	}
-}
 
-@main
-struct Main {
-	static func main() throws {
-		try runDemo(title: "Bitonic Sort", provider: BitonicSortDemo())
+	private func maxWorkgroupSize(device: GPUDevice) -> Int {
+		var limits = GPULimits()
+		if device.getLimits(limits: &limits) == .success {
+			return min(
+				Int(limits.maxComputeWorkgroupSizeX),
+				Int(limits.maxComputeInvocationsPerWorkgroup)
+			)
+		}
+		return workgroupSize
+	}
+
+	private func keyIsPressed(_ key: UInt8) -> Bool {
+		return RGFW_isKeyReleased(key) != 0
+	}
+
+	private mutating func handleInput() {
+		if self.keyIsPressed(UInt8(RGFW_r)) {
+			self.handleKey("r")
+		}
+		if self.keyIsPressed(UInt8(RGFW_p)) {
+			self.handleKey("p")
+		}
+		if self.keyIsPressed(UInt8(RGFW_h)) {
+			self.handleKey("h")
+		}
 	}
 }
+#endif
+
+// MARK: - WASM Platform
+
+#if arch(wasm32)
+extension BitonicSortDemo {
+	init(device: GPUDevice, context: GPUCanvasContext, format: GPUTextureFormat) {
+		self.init()
+		self.context = context
+		self.setupGPU(device: device, format: format)
+	}
+
+	mutating func frame(time: Double) {
+		self.stepAndRender(time: time)
+	}
+}
+#endif
