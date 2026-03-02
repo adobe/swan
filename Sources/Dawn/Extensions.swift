@@ -146,8 +146,8 @@ public extension GPUTextureFormat {
 			case .R8BG8Biplanar444Unorm: return "r8bg8biplanar444unorm"
 			case .R10X6BG10X6Biplanar422Unorm: return "r10x6bg10x6biplanar422unorm"
 			case .R10X6BG10X6Biplanar444Unorm: return "r10x6bg10x6biplanar444unorm"
-			case .External: return "external"
-			case .force32: assert(false); return ("force32")
+			case .opaqueYCbCrAndroid: return "opaqueYCbCrAndroid"
+			case .force32: assert(false); return "force32"
 	}}
 }
 
