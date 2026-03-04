@@ -2,14 +2,6 @@
   "originHash" : "531f77f327774cb851fdc6280628c5a9dd21edd0b39dbe117b35d679ddfea38e",
   "pins" : [
     {
-      "identity" : "javascriptkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftwasm/JavaScriptKit.git",
-      "state" : {
-        "revision" : "cf7a4f31f1f191f4eea84bb79c6aeffbccb7140e"
-      }
-    },
-    {
       "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
@@ -59,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-testing.git",
       "state" : {
-        "revision" : "48a471ab313e858258ab0b9b0bf2cea55a50cefb",
-        "version" : "6.2.3"
+        "revision" : "5ee435b15ad40ec1f644b5eb9d247f263ccd2170",
+        "version" : "6.2.4"
       }
     }
   ],

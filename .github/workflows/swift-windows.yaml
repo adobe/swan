@@ -19,10 +19,10 @@ jobs:
         include:
           - runner: windows-latest
             arch: x64
-            installer_url: https://download.swift.org/swift-6.3-branch/windows10/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-21-a/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-21-a-windows10.exe
+            installer_url: https://download.swift.org/swift-6.3-branch/windows10/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a-windows10.exe
           - runner: windows-11-arm
             arch: arm64
-            installer_url: https://download.swift.org/swift-6.3-branch/windows10-arm64/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-21-a/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-21-a-windows10-arm64.exe
+            installer_url: https://download.swift.org/swift-6.3-branch/windows10-arm64/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a-windows10-arm64.exe
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v6
