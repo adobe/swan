@@ -231,7 +231,7 @@ def create_platform_artifact_bundle(
         Path to the created zip archive (without the .zip extension appended by
         shutil.make_archive; the actual file is at the returned path + ".zip")
     """
-    bundle_name = f"{base_name}_{platform}.artifactbundle"
+    bundle_name = f"{base_name}_{platform.value}.artifactbundle"
     bundle_dir = dist_directory() / bundle_name
 
     # Remove any existing bundle directory
