@@ -89,8 +89,7 @@ let package = Package(
 			url: "https://github.com/swiftlang/swift-testing.git",
 			from: "6.2.3"
 		),
-		.package(url: "https://github.com/apple/swift-log", from: "1.10.1"),
-		.package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
+		.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", branch: "cf7a4f31f1f191f4eea84bb79c6aeffbccb7140e"),
@@ -100,7 +99,6 @@ let package = Package(
 		.executableTarget(
 			name: "GenerateDawnBindings",
 			dependencies: [
-				.product(name: "Logging", package: "swift-log"),
 				.product(name: "ArgumentParser", package: "swift-argument-parser"),
 				.product(name: "SwiftSyntax", package: "swift-syntax"),
 				.product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
@@ -117,7 +115,6 @@ let package = Package(
 		.executableTarget(
 			name: "GenerateDawnAPINotes",
 			dependencies: [
-				.product(name: "Logging", package: "swift-log"),
 				"DawnData",
 			],
 			exclude: [
@@ -162,7 +159,6 @@ let package = Package(
 		.target(
 			name: "DawnData",
 			dependencies: [
-				.product(name: "Logging", package: "swift-log"),
 				"DawnLib",
 			],
 			swiftSettings: swiftSettings,
