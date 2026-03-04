@@ -6,13 +6,6 @@
 // it.
 
 import Foundation
-import Logging
-
-let logger: Logger = {
-	var log = Logger(label: "UpdateDawnBindings")
-	log.logLevel = .debug
-	return log
-}()
 
 /// DawnData is a struct that represents the root of the Dawn JSON data.
 ///
@@ -31,7 +24,7 @@ public struct DawnData: Decodable {
 				let value = try container?.decode(DawnEntity.self, forKey: key)
 				self.data[Name(key.stringValue)] = value
 			} catch {
-				logger.error("Error decoding key: \(key.stringValue): \(error)")
+				fatalError("Error decoding key: \(key.stringValue): \(error)")
 			}
 		}
 	}
