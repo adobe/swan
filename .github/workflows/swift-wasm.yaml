@@ -1,0 +1,37 @@
+# Build Swift for WASM to verify the WebGPU WASM backend compiles.
+
+name: Build (WASM)
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: Build (WASM)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: swift-actions/setup-swift@v3
+        with:
+          swift-version: "6.3-snapshot-2026-02-27"
+
+      - name: Read WASM SDK version
+        id: wasm-sdk
+        run: echo "version=$(cat .wasm-sdk-version)" >> "$GITHUB_OUTPUT"
+
+      - name: Install Swift WASM SDK
+        run: swift sdk install "${{ steps.wasm-sdk.outputs.version }}"
+
+      - name: Build WebGPU
+        run: >
+          SWAN_WASM=1 swift build --target WebGPU
+          --swift-sdk "${{ steps.wasm-sdk.outputs.version }}"
+
+      - name: Build BitonicSort
+        run: >
+          SWAN_WASM=1 swift build --target BitonicSort
+          --swift-sdk "${{ steps.wasm-sdk.outputs.version }}"
