@@ -19,18 +19,32 @@ jobs:
         include:
           - runner: windows-latest
             arch: x64
-            installer_url: https://download.swift.org/swift-6.3-branch/windows10/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a-windows10.exe
+            platform: windows10
           - runner: windows-11-arm
             arch: arm64
-            installer_url: https://download.swift.org/swift-6.3-branch/windows10-arm64/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a/swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a-windows10-arm64.exe
+            platform: windows10-arm64
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v6
 
+      - name: Read Swift version
+        id: swift-version
+        shell: pwsh
+        run: |
+          $raw = (Get-Content .swift-version -Raw).Trim()
+          # .swift-version contains e.g. "6.3-snapshot-2026-02-27"
+          # Convert to Swift download tag: "swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a"
+          $tag = $raw -replace '(\d+\.\d+)-snapshot-(.+)', 'swift-$1-DEVELOPMENT-SNAPSHOT-$2-a'
+          echo "tag=$tag" >> $env:GITHUB_OUTPUT
+          Write-Host "Swift download tag: $tag"
+
       - name: Download Swift installer
         shell: pwsh
         run: |
-          $url = "${{ matrix.installer_url }}"
+          $tag = "${{ steps.swift-version.outputs.tag }}"
+          $branch = $tag -replace 'swift-(\d+\.\d+)-.*', 'swift-$1-branch'
+          $platform = "${{ matrix.platform }}"
+          $url = "https://download.swift.org/$branch/$platform/$tag/$tag-$platform.exe"
           $out = Join-Path $env:TEMP "swift-installer.exe"
           Write-Host "Downloading Swift from $url ..."
           Invoke-WebRequest -Uri $url -OutFile $out -UseBasicParsing

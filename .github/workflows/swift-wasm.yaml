@@ -15,9 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Read Swift version
+        id: swift-version
+        run: echo "version=$(cat .swift-version)" >> "$GITHUB_OUTPUT"
+
       - uses: swift-actions/setup-swift@v3
         with:
-          swift-version: "6.3-snapshot-2026-02-27"
+          swift-version: "${{ steps.swift-version.outputs.version }}"
 
       - name: Read WASM SDK version
         id: wasm-sdk
