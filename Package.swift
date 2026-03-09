@@ -75,16 +75,19 @@ let package = Package(
 			name: "WebGPU",
 			targets: ["WebGPU"]
 		),
+	] + (isWasmBuild ? [] : [
 		.plugin(
 			name: "GenerateDawnBindingsPlugin",
-			targets: ["GenerateDawnBindingsPlugin"],
+			targets: ["GenerateDawnBindingsPlugin"]
 		),
 		.plugin(
 			name: "GenerateDawnAPINotesPlugin",
 			targets: ["GenerateDawnAPINotesPlugin"]
 		),
-	],
-	dependencies: [
+	]),
+	dependencies: isWasmBuild ? [
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", branch: "cf7a4f31f1f191f4eea84bb79c6aeffbccb7140e"),
+	] : [
 		.package(
 			url: "https://github.com/swiftlang/swift-testing.git",
 			from: "6.2.4"
@@ -92,12 +95,8 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-	] + (isWasmBuild ? [
-		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", branch: "cf7a4f31f1f191f4eea84bb79c6aeffbccb7140e"),
-	] : []),
-	targets: [
-		dawnTarget,
-	] + (isWasmBuild ? [
+	],
+	targets: isWasmBuild ? [
 		.target(
 			name: "WebGPUWasm",
 			dependencies: [
@@ -115,7 +114,31 @@ let package = Package(
 			],
 			linkerSettings: asanLinkerSettings
 		),
-	] : []) + [
+		.target(
+			name: "WebGPU",
+			dependencies: [
+				.target(name: "WebGPUWasm", condition: .when(platforms: wasmPlatforms)),
+			],
+			exclude: [
+				"Dawn",
+				"Wasm",
+			],
+			swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
+			linkerSettings: asanLinkerSettings
+		),
+		.executableTarget(
+			name: "BitonicSort",
+			dependencies: [
+				.target(name: "WebGPU"),
+				.target(name: "WebGPUWasm"),
+			],
+			path: "Demos/BitonicSort",
+			exclude: ["index.html"],
+			swiftSettings: swiftSettings + [.enableExperimentalFeature("Extern")],
+			plugins: [.plugin(name: "BridgeJS", package: "JavaScriptKit")]
+		),
+	] : [
+		dawnTarget,
 		.executableTarget(
 			name: "GenerateDawnBindings",
 			dependencies: [
@@ -208,9 +231,7 @@ let package = Package(
 			name: "WebGPU",
 			dependencies: [
 				.target(name: "WebGPUDawn", condition: .when(platforms: supportedNativePlatforms)),
-			] + (isWasmBuild ? [
-				.target(name: "WebGPUWasm", condition: .when(platforms: wasmPlatforms)),
-			] : []),
+			],
 			exclude: [
 				"Dawn",
 				"Wasm",
@@ -254,26 +275,18 @@ let package = Package(
 		),
 		.executableTarget(
 			name: "BitonicSort",
-			dependencies: (isWasmBuild
-				? [
-					.target(name: "WebGPU"),
-					.target(name: "WebGPUWasm"),
-				]
-				: [
-					.target(name: "DemoUtils")
-				]),
+			dependencies: [
+				.target(name: "DemoUtils")
+			],
 			path: "Demos/BitonicSort",
 			exclude: ["index.html"],
-			swiftSettings: swiftSettings + (isWasmBuild ? [.enableExperimentalFeature("Extern")] : []),
-			linkerSettings: isWasmBuild
-				? []
-				: asanLinkerSettings + [
-					.linkedFramework("Cocoa", .when(platforms: [.macOS])),
-					.linkedFramework("IOKit", .when(platforms: [.macOS])),
-					.linkedFramework("Metal", .when(platforms: [.macOS])),
-					.linkedLibrary("c++", .when(platforms: [.macOS])),
-				],
-			plugins: isWasmBuild ? [.plugin(name: "BridgeJS", package: "JavaScriptKit")] : []
+			swiftSettings: swiftSettings,
+			linkerSettings: asanLinkerSettings + [
+				.linkedFramework("Cocoa", .when(platforms: [.macOS])),
+				.linkedFramework("IOKit", .when(platforms: [.macOS])),
+				.linkedFramework("Metal", .when(platforms: [.macOS])),
+				.linkedLibrary("c++", .when(platforms: [.macOS])),
+			]
 		),
 		.testTarget(
 			name: "CodeGenerationTests",
