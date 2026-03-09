@@ -26,10 +26,17 @@ jobs:
 
       - name: Read WASM SDK version
         id: wasm-sdk
-        run: echo "version=$(cat .wasm-sdk-version)" >> "$GITHUB_OUTPUT"
+        run: |
+          sdk="$(cat .wasm-sdk-version)"
+          # sdk is e.g. "DEVELOPMENT-SNAPSHOT-2026-02-19-a-wasm32-unknown-wasip1"
+          # Extract the release tag by stripping the "-wasm32-*" triple suffix
+          tag="swift-wasm-${sdk%-wasm32-*}"
+          url="https://github.com/swiftwasm/swift/releases/download/${tag}/swift-wasm-${sdk}.artifactbundle.zip"
+          echo "version=${sdk}" >> "$GITHUB_OUTPUT"
+          echo "url=${url}" >> "$GITHUB_OUTPUT"
 
       - name: Install Swift WASM SDK
-        run: swift sdk install "${{ steps.wasm-sdk.outputs.version }}"
+        run: swift sdk install "${{ steps.wasm-sdk.outputs.url }}"
 
       - name: Build WebGPU
         run: >
