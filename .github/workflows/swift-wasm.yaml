@@ -22,6 +22,7 @@ jobs:
       - uses: swift-actions/setup-swift@v3
         with:
           swift-version: "${{ steps.swift-version.outputs.version }}"
+          skip-verify-signature: true
 
       - name: Read WASM SDK version
         id: wasm-sdk
