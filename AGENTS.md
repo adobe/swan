@@ -52,9 +52,9 @@ swift build
 ```
 
 #### WASM builds
-WASM builds need to set the swift-sdk and specify the WebGPU target in the build command:
+The WASM SDK version is defined in `.wasm-sdk-version`. WASM builds need to set the swift-sdk and specify the WebGPU target in the build command:
 ```bash
-SWAN_WASM=1 swift build --target WebGPU --swift-sdk DEVELOPMENT-SNAPSHOT-2026-02-19-a-wasm32-unknown-wasip1
+SWAN_WASM=1 swift build --target WebGPU --swift-sdk $(cat .wasm-sdk-version)
 ```
 
 ### Testing
@@ -95,6 +95,7 @@ The project uses swift-format with configuration in `.swift-format`:
 
 - `Package.swift`: Swift Package Manager configuration
 - `Dawn/ci_build_dawn.py`: Python script for building dawn in CI
+- `.wasm-sdk-version`: WASM SDK version for cross-compilation to WebAssembly
 - `.swift-format`: Code formatting configuration
 - `.vscode/settings.json`: VS Code configuration with specific Swift toolchain path
 
