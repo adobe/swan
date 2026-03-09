@@ -36,7 +36,9 @@ jobs:
           echo "url=${url}" >> "$GITHUB_OUTPUT"
 
       - name: Install Swift WASM SDK
-        run: swift sdk install "${{ steps.wasm-sdk.outputs.url }}"
+        run: |
+          checksum=$(curl -sL "${{ steps.wasm-sdk.outputs.url }}.sha256" | awk '{ print $1 }')
+          swift sdk install "${{ steps.wasm-sdk.outputs.url }}" --checksum "$checksum"
 
       - name: Build WebGPU
         run: >
