@@ -86,7 +86,7 @@ let package = Package(
 		),
 	]),
 	dependencies: isWasmBuild ? [
-		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", branch: "cf7a4f31f1f191f4eea84bb79c6aeffbccb7140e"),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.47.0"),
 	] : [
 		.package(
 			url: "https://github.com/swiftlang/swift-testing.git",
