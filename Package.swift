@@ -24,11 +24,19 @@ let useAddressSanitizer: Bool = ProcessInfo.processInfo.environment["USE_ADDRESS
 let usePDBDebugInfo: Bool = false
 #endif
 
+let dawnArtifactURL: String? = ProcessInfo.processInfo.environment["DAWN_ARTIFACT_URL"]
+
 let dawnTarget: Target = {
 	if swanLocalDawn {
 		return .binaryTarget(
 			name: "DawnLib",
 			path: "Dawn/dist/dawn_webgpu.artifactbundle"
+		)
+	} else if let dawnArtifactURL {
+		return .binaryTarget(
+			name: "DawnLib",
+			url: dawnArtifactURL,
+			checksum: ProcessInfo.processInfo.environment["DAWN_ARTIFACT_CHECKSUM"] ?? ""
 		)
 	} else {
 		return .binaryTarget(
