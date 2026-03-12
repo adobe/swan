@@ -385,13 +385,13 @@ struct BitonicSortDemo {
 	}
 
 	mutating func handleKey(_ key: String) {
-		switch key.lowercased() {
-		case "r":
+		switch key {
+		case "r", "R":
 			self.resetSort()
-		case "p":
+		case "p", "P":
 			self.isPaused.toggle()
 			print(self.isPaused ? "Paused" : "Resumed")
-		case "h":
+		case "h", "H":
 			self.highlightMode.toggle()
 			print("Highlight mode: \(self.highlightMode ? "ON" : "OFF")")
 		default:

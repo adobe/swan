@@ -98,6 +98,10 @@ let package = Package(
 	],
 	targets: isWasmBuild ? [
 		.target(
+			name: "EmbeddedStubs",
+			path: "Sources/EmbeddedStubs"
+		),
+		.target(
 			name: "WebGPUWasm",
 			dependencies: [
 				.product(name: "JavaScriptKit", package: "JavaScriptKit")
@@ -131,6 +135,7 @@ let package = Package(
 			dependencies: [
 				.target(name: "WebGPU"),
 				.target(name: "WebGPUWasm"),
+				.target(name: "EmbeddedStubs"),
 			],
 			path: "Demos/BitonicSort",
 			exclude: ["index.html"],
