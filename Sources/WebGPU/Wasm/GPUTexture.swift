@@ -20,7 +20,7 @@ import JavaScriptKit
 	public var format: GPUTextureFormat {
 		get {
 			let s = try! _format
-			return GPUTextureFormat(rawValue: s) ?? .undefined
+			return GPUTextureFormat(rawValue: s) ?? .Undefined
 		}
 	}
 

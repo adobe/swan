@@ -164,7 +164,7 @@ import JavaScriptKit
 		let promise = JSPromise(unsafelyWrapping: try! _popErrorScope())
 		promise.then(
 			success: { errorVal in
-				guard case .object(let errObj) = errorVal else {
+				guard let errObj = errorVal.object else {
 					callbackInfo.callback(.success, .noError, nil)
 					return .undefined
 				}

@@ -309,7 +309,7 @@ struct BitonicSortDemo {
 				primitive: GPUPrimitiveState(
 					topology: .triangleList,
 					stripIndexFormat: .undefined,
-					frontFace: .CCW,
+					frontFace: .ccw,
 					cullMode: .none
 				),
 				multisample: GPUMultisampleState(count: 1, mask: 0xFFFFFFFF, alphaToCoverageEnabled: false),
