@@ -16,7 +16,7 @@ let wasmPlatforms: [Platform] = [.wasi]
 let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"] != nil
 let isWasmBuild: Bool = ProcessInfo.processInfo.environment["SWAN_WASM"] != nil
 // When set, lowers the macOS deployment target to 14 for compatibility with PS CI machines.
-let psBuild: Bool = ProcessInfo.processInfo.environment["PS_BUILD"] == "1"
+let buildMacOS14: Bool = ProcessInfo.processInfo.environment["BUILD_MACOS14"] == "1"
 
 #if os(Windows)
 let useAddressSanitizer: Bool = false
@@ -77,7 +77,7 @@ let asanLinkerSettings: [LinkerSetting] =
 let package = Package(
 	name: "Swan",
 	platforms: [
-		.macOS(psBuild ? .v14 : .v15),
+		.macOS(buildMacOS14 ? .v14 : .v15),
 		.iOS(.v18),
 	],
 	products: [
@@ -101,7 +101,7 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-	] + (psBuild ? [] : [
+	] + (buildMacOS14 ? [] : [
 		.package(
 			url: "https://github.com/swiftlang/swift-testing.git",
 			from: "6.2.4"
@@ -299,7 +299,9 @@ let package = Package(
 				.linkedLibrary("c++", .when(platforms: [.macOS])),
 			]
 		),
-	] + (psBuild ? [] : [
+	] + (buildMacOS14 ? [] : [
+		// swift-testing uses unsafe build flags which SPM rejects when targeting macOS 14.
+		// Test targets are excluded under BUILD_MACOS14 to avoid this.
 		.testTarget(
 			name: "CodeGenerationTests",
 			dependencies: [
