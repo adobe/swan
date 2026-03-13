@@ -925,6 +925,94 @@ public struct GPUCreateComputePipelineAsyncCallbackInfo {
 	}
 }
 
+@JS public struct GPUMultisampleState {
+	public var count: UInt32
+	public var mask: UInt32
+	public var alphaToCoverageEnabled: Bool
+
+	public init(
+		count: UInt32 = 1,
+		mask: UInt32 = 0xFFFFFFFF,
+		alphaToCoverageEnabled: Bool = false
+	) {
+		self.count = count
+		self.mask = mask
+		self.alphaToCoverageEnabled = alphaToCoverageEnabled
+	}
+}
+
+@JS public struct GPUVertexState {
+	public var module: GPUShaderModule
+	public var entryPoint: String?
+	public var buffers: [GPUVertexBufferLayout]
+
+	public init(
+		module: GPUShaderModule,
+		entryPoint: String? = nil,
+		buffers: [GPUVertexBufferLayout] = []
+	) {
+		self.module = module
+		self.entryPoint = entryPoint
+		self.buffers = buffers
+	}
+}
+
+@JS public struct GPUFragmentState {
+	public var module: GPUShaderModule
+	public var entryPoint: String?
+	public var targets: [GPUColorTargetState]
+
+	public init(
+		module: GPUShaderModule,
+		entryPoint: String? = nil,
+		targets: [GPUColorTargetState] = []
+	) {
+		self.module = module
+		self.entryPoint = entryPoint
+		self.targets = targets
+	}
+
+	// Dawn-compatible init with constants param (ignored on WASM)
+	public init(
+		module: GPUShaderModule,
+		entryPoint: String? = nil,
+		constants: [String: Double],
+		targets: [GPUColorTargetState]
+	) {
+		self.module = module
+		self.entryPoint = entryPoint
+		self.targets = targets
+	}
+}
+
+@JS public struct GPURenderPipelineDescriptor {
+	public var label: String?
+	public var layout: GPUPipelineLayout?
+	public var vertex: GPUVertexState
+	public var primitive: GPUPrimitiveState
+	public var depthStencil: GPUDepthStencilState?
+	public var multisample: GPUMultisampleState
+	public var fragment: GPUFragmentState?
+
+	public init(
+		label: String? = nil,
+		layout: GPUPipelineLayout? = nil,
+		vertex: GPUVertexState,
+		primitive: GPUPrimitiveState,
+		depthStencil: GPUDepthStencilState? = nil,
+		multisample: GPUMultisampleState,
+		fragment: GPUFragmentState? = nil
+	) {
+		self.label = label
+		self.layout = layout
+		self.vertex = vertex
+		self.primitive = primitive
+		self.depthStencil = depthStencil
+		self.multisample = multisample
+		self.fragment = fragment
+	}
+}
+
 // GPUFuture stub — returned by async Dawn operations, not used on WASM
 public struct GPUFuture {
 	public var id: UInt64
