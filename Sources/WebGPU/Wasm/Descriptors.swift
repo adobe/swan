@@ -32,6 +32,14 @@ import JavaScriptKit
 		self.size = Int(size)
 		self.mappedAtCreation = mappedAtCreation
 	}
+
+	// Overload for BridgeJS compatibility — generated code passes Int for usage and size
+	public init(label: String? = nil, usage: Int, size: Int, mappedAtCreation: Bool = false) {
+		self.label = label
+		self.usage = usage
+		self.size = size
+		self.mappedAtCreation = mappedAtCreation
+	}
 }
 
 @JS public struct GPUShaderModuleDescriptor {
@@ -120,12 +128,19 @@ import JavaScriptKit
 @JS public struct GPUColorTargetState {
 	public var format: GPUTextureFormat
 	public var blend: GPUBlendState?
-	public var writeMask: Int = Int(GPUColorWrite.all.rawValue)
+	public var writeMask: Int = Int(GPUColorWriteMask.all.rawValue)
 
-	public init(format: GPUTextureFormat, blend: GPUBlendState? = nil, writeMask: GPUColorWrite = .all) {
+	public init(format: GPUTextureFormat, blend: GPUBlendState? = nil, writeMask: GPUColorWriteMask = .all) {
 		self.format = format
 		self.blend = blend
 		self.writeMask = Int(writeMask.rawValue)
+	}
+
+	// Overload for BridgeJS compatibility — generated code passes Int for writeMask
+	public init(format: GPUTextureFormat, blend: GPUBlendState? = nil, writeMask: Int) {
+		self.format = format
+		self.blend = blend
+		self.writeMask = writeMask
 	}
 }
 
@@ -331,6 +346,13 @@ import JavaScriptKit
 		self.height = Int(height)
 		self.depthOrArrayLayers = Int(depthOrArrayLayers)
 	}
+
+	// Overload for BridgeJS compatibility — generated code passes Int for all fields
+	public init(width: Int, height: Int, depthOrArrayLayers: Int = 1) {
+		self.width = width
+		self.height = height
+		self.depthOrArrayLayers = depthOrArrayLayers
+	}
 }
 
 @JS public struct GPUOrigin3D {
@@ -371,6 +393,25 @@ import JavaScriptKit
 		self.dimension = dimension
 		self.format = format
 		self.usage = Int(usage.rawValue)
+	}
+
+	// Overload for BridgeJS compatibility — generated code uses this parameter order and passes Int for usage, mipLevelCount, and sampleCount
+	public init(
+		label: String? = nil,
+		size: GPUExtent3D,
+		mipLevelCount: Int,
+		sampleCount: Int,
+		dimension: GPUTextureDimension,
+		format: GPUTextureFormat,
+		usage: Int
+	) {
+		self.label = label
+		self.size = size
+		self.mipLevelCount = mipLevelCount
+		self.sampleCount = sampleCount
+		self.dimension = dimension
+		self.format = format
+		self.usage = usage
 	}
 }
 
@@ -532,6 +573,13 @@ public struct GPUTexelCopyTextureInfo {
 		self.type = type
 		self.hasDynamicOffset = hasDynamicOffset
 		self.minBindingSize = Int(minBindingSize)
+	}
+
+	// Overload for BridgeJS compatibility — generated code passes Int for minBindingSize
+	public init(type: GPUBufferBindingType, hasDynamicOffset: Bool, minBindingSize: Int) {
+		self.type = type
+		self.hasDynamicOffset = hasDynamicOffset
+		self.minBindingSize = minBindingSize
 	}
 }
 
@@ -939,6 +987,13 @@ public struct GPUCreateComputePipelineAsyncCallbackInfo {
 		self.mask = Int(mask)
 		self.alphaToCoverageEnabled = alphaToCoverageEnabled
 	}
+
+	// Overload for BridgeJS compatibility — generated code passes Int for count and mask
+	public init(count: Int, mask: Int, alphaToCoverageEnabled: Bool = false) {
+		self.count = count
+		self.mask = mask
+		self.alphaToCoverageEnabled = alphaToCoverageEnabled
+	}
 }
 
 @JS public struct GPUVertexState {
@@ -1011,6 +1066,12 @@ public struct GPUCreateComputePipelineAsyncCallbackInfo {
 		self.multisample = multisample
 		self.fragment = fragment
 	}
+}
+
+// GPUSurfaceConfiguration stub — surface management uses GPUCanvasContext on WASM;
+// this exists only for source compatibility with native call sites.
+public struct GPUSurfaceConfiguration {
+	public init() {}
 }
 
 // GPUFuture stub — returned by async Dawn operations, not used on WASM
