@@ -522,7 +522,7 @@ public struct GPUTexelCopyTextureInfo {
 @JS public struct GPUBufferBindingLayout {
 	public var type: GPUBufferBindingType
 	public var hasDynamicOffset: Bool
-	public var minBindingSize: UInt64
+	public var minBindingSize: Int  // UInt64 stored as Int for BridgeJS
 
 	public init(
 		type: GPUBufferBindingType = .uniform,
@@ -531,7 +531,7 @@ public struct GPUTexelCopyTextureInfo {
 	) {
 		self.type = type
 		self.hasDynamicOffset = hasDynamicOffset
-		self.minBindingSize = minBindingSize
+		self.minBindingSize = Int(minBindingSize)
 	}
 }
 
@@ -926,8 +926,8 @@ public struct GPUCreateComputePipelineAsyncCallbackInfo {
 }
 
 @JS public struct GPUMultisampleState {
-	public var count: UInt32
-	public var mask: UInt32
+	public var count: Int   // UInt32 stored as Int for BridgeJS
+	public var mask: Int    // UInt32 stored as Int for BridgeJS
 	public var alphaToCoverageEnabled: Bool
 
 	public init(
@@ -935,8 +935,8 @@ public struct GPUCreateComputePipelineAsyncCallbackInfo {
 		mask: UInt32 = 0xFFFFFFFF,
 		alphaToCoverageEnabled: Bool = false
 	) {
-		self.count = count
-		self.mask = mask
+		self.count = Int(count)
+		self.mask = Int(mask)
 		self.alphaToCoverageEnabled = alphaToCoverageEnabled
 	}
 }
