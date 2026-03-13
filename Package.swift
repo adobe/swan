@@ -93,9 +93,8 @@ let package = Package(
 			targets: ["GenerateDawnAPINotesPlugin"]
 		),
 	]),
-	dependencies: isWasmBuild ? [
-		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", branch: "cf7a4f31f1f191f4eea84bb79c6aeffbccb7140e"),
-	] : [
+	dependencies: [
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.47.0"),
 		.package(
 			url: "https://github.com/swiftlang/swift-testing.git",
 			from: "6.2.4"
@@ -105,6 +104,10 @@ let package = Package(
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
 	],
 	targets: isWasmBuild ? [
+		.target(
+			name: "EmbeddedStubs",
+			path: "Sources/EmbeddedStubs"
+		),
 		.target(
 			name: "WebGPUWasm",
 			dependencies: [
@@ -139,6 +142,7 @@ let package = Package(
 			dependencies: [
 				.target(name: "WebGPU"),
 				.target(name: "WebGPUWasm"),
+				.target(name: "EmbeddedStubs"),
 			],
 			path: "Demos/BitonicSort",
 			exclude: ["index.html"],

@@ -24,28 +24,11 @@ jobs:
           swift-version: "${{ steps.swift-version.outputs.version }}"
           skip-verify-signature: true
 
-      - name: Read WASM SDK version
-        id: wasm-sdk
-        run: |
-          sdk="$(cat .wasm-sdk-version)"
-          # sdk is e.g. "DEVELOPMENT-SNAPSHOT-2026-02-19-a-wasm32-unknown-wasip1"
-          # Extract the release tag by stripping the "-wasm32-*" triple suffix
-          tag="swift-wasm-${sdk%-wasm32-*}"
-          url="https://github.com/swiftwasm/swift/releases/download/${tag}/swift-wasm-${sdk}.artifactbundle.zip"
-          echo "version=${sdk}" >> "$GITHUB_OUTPUT"
-          echo "url=${url}" >> "$GITHUB_OUTPUT"
-
       - name: Install Swift WASM SDK
-        run: |
-          checksum=$(curl -sL "${{ steps.wasm-sdk.outputs.url }}.sha256" | awk '{ print $1 }')
-          swift sdk install "${{ steps.wasm-sdk.outputs.url }}" --checksum "$checksum"
+        run: make sdk-install
 
       - name: Build WebGPU
-        run: >
-          SWAN_WASM=1 swift build --target WebGPU
-          --swift-sdk "${{ steps.wasm-sdk.outputs.version }}"
+        run: make wasm-build
 
       - name: Build BitonicSort
-        run: >
-          SWAN_WASM=1 swift build --target BitonicSort
-          --swift-sdk "${{ steps.wasm-sdk.outputs.version }}"
+        run: make wasm-build-bitonic
