@@ -21,6 +21,9 @@ import JavaScriptKit
 	@JSFunction(jsName: "writeBuffer")
 	func _writeBuffer(_ buffer: GPUBuffer, _ bufferOffset: Int, _ data: JSObject) throws(JSException)
 
+	@JSFunction(jsName: "writeTexture")
+	func _writeTexture(_ destination: JSObject, _ data: JSObject, _ dataLayout: JSObject, _ size: JSObject) throws(JSException)
+
 	public func submit(commands: [GPUCommandBuffer]) {
 		let jsArray = JSObject.global.Array.function!.new()
 		for cmd in commands {
@@ -38,5 +41,47 @@ import JavaScriptKit
 		)
 		let jsArray = JSTypedArray<UInt8>(bytes)
 		try! _writeBuffer(buffer, Int(bufferOffset), jsArray.jsObject)
+	}
+
+	public func writeTexture(
+		destination: GPUTexelCopyTextureInfo,
+		data: UnsafeRawBufferPointer,
+		dataLayout: GPUTexelCopyBufferLayout,
+		writeSize: GPUExtent3D
+	) {
+		let bytes = Array(
+			UnsafeBufferPointer(
+				start: data.baseAddress?.assumingMemoryBound(to: UInt8.self),
+				count: data.count
+			)
+		)
+		let jsData = JSTypedArray<UInt8>(bytes)
+
+		// Build JS objects for destination, dataLayout, writeSize
+		let destObj = JSObject.global.Object.function!.new()
+		destObj.texture = destination.texture.jsObject.jsValue
+		destObj.mipLevel = .number(Double(destination.mipLevel))
+		let originObj = JSObject.global.Object.function!.new()
+		originObj.x = .number(Double(destination.origin.x))
+		originObj.y = .number(Double(destination.origin.y))
+		originObj.z = .number(Double(destination.origin.z))
+		destObj.origin = originObj.jsValue
+		destObj.aspect = .string(destination.aspect.rawValue)
+
+		let layoutObj = JSObject.global.Object.function!.new()
+		layoutObj.offset = .number(Double(dataLayout.offset))
+		if let bpr = dataLayout.bytesPerRow {
+			layoutObj.bytesPerRow = .number(Double(bpr))
+		}
+		if let rpi = dataLayout.rowsPerImage {
+			layoutObj.rowsPerImage = .number(Double(rpi))
+		}
+
+		let sizeObj = JSObject.global.Object.function!.new()
+		sizeObj.width = .number(Double(writeSize.width))
+		sizeObj.height = .number(Double(writeSize.height))
+		sizeObj.depthOrArrayLayers = .number(Double(writeSize.depthOrArrayLayers))
+
+		try! _writeTexture(destObj, jsData.jsObject, layoutObj, sizeObj)
 	}
 }
