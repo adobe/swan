@@ -88,7 +88,12 @@ let package = Package(
 		)
 	]
 		+ (isWasmBuild
-			? []
+			? [
+				.library(
+					name: "WebGPUWasm",
+					targets: ["WebGPUWasm"]
+				),
+			]
 			: [
 				.plugin(
 					name: "GenerateDawnBindingsPlugin",
