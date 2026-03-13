@@ -1,77 +1,61 @@
-# Environment variables with defaults
-SWIFT_TC   ?= $(shell cat .swift-version)
-SWIFT_MODE ?= full
-DEBUG      ?= true
+SWIFT_MODE ?=
+DEBUG      ?= 1
 
-# SDK presets
-SWIFT_SDK_6_3_WASM      := swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a_wasm
-SWIFT_SDK_6_3_EMBEDDED  := swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a_wasm-embedded
-SWIFT_SDK_MAIN_WASM     := swift-DEVELOPMENT-SNAPSHOT-2026-03-09-a_wasm
-SWIFT_SDK_MAIN_EMBEDDED := swift-DEVELOPMENT-SNAPSHOT-2026-03-09-a_wasm-embedded
+# Load SDK versions as Make variables (6.3-snapshot=..., main-snapshot=...)
+include .wasm-sdk-versions
 
-# Derive SDK from toolchain (1) and mode (2)
-# Returns empty for mode=full (native build needs no SDK)
-_sdk = $(if $(filter wasm,$(2)),\
-         $(if $(findstring 6.3-snapshot,$(1)),$(SWIFT_SDK_6_3_WASM),$(SWIFT_SDK_MAIN_WASM)),\
-       $(if $(filter embedded,$(2)),\
-         $(if $(findstring 6.3-snapshot,$(1)),$(SWIFT_SDK_6_3_EMBEDDED),$(SWIFT_SDK_MAIN_EMBEDDED)),))
+# Strip everything after "snapshot" to get SDK key
+# e.g. 6.3-snapshot-2026-03-05 -> 6.3-snapshot
+_SWIFT_TC := $(shell cat .swift-version)
+_SDK_KEY  := $(firstword $(subst snapshot,snapshot ,$(_SWIFT_TC)))
+_SDK_BASE := $($(_SDK_KEY))
 
-# Remember whether SWIFT_SDK was explicitly provided before applying defaults
-_SDK_EXPLICIT := $(if $(SWIFT_SDK),true,)
+SWIFT_SDK ?= $(if $(_SDK_BASE),$(_SDK_BASE)$(if $(filter embedded,$(SWIFT_MODE)),-embedded))
 
-# Wasm targets treat SWIFT_MODE=full as wasm
-_WASM_MODE := $(if $(filter full,$(SWIFT_MODE)),wasm,$(SWIFT_MODE))
-
-# SDK for wasm targets: explicit override wins, otherwise derived from TC + wasm mode
-_WASM_SDK = $(strip $(if $(_SDK_EXPLICIT),$(SWIFT_SDK),$(call _sdk,$(SWIFT_TC),$(_WASM_MODE))))
-
-# SDK for native build: derived from TC + SWIFT_MODE (empty when full)
-SWIFT_SDK ?= $(strip $(call _sdk,$(SWIFT_TC),$(SWIFT_MODE)))
-
-BUILD_CONFIG  := $(if $(filter false,$(DEBUG)),release,debug)
-SWIFT_TC_USE  := $(if $(SWIFT_TC),swiftly use $(SWIFT_TC) &&)
-SWIFT_SDK_USE := $(if $(strip $(SWIFT_SDK)),--swift-sdk $(SWIFT_SDK))
+BUILD_CONFIG := $(if $(filter 0 false,$(DEBUG)),release,debug)
 
 .PHONY: help
 help: ## Show this help
-	@echo "Current Swift toolchain: '$(SWIFT_TC_CURRENT)'"
-	@grep -E '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | \
+	@grep -E '^[a-zA-Z_-]+:.*##' $(firstword $(MAKEFILE_LIST)) | \
 		awk 'BEGIN {FS = ":.*## "}; {printf "  \033[36m%-25s\033[0m %s\n", $$1, $$2}'
 	@echo ""
 	@echo "Environment variables:"
-	@echo "  SWIFT_TC    Toolchain (from .swift-version)               Default: $$(cat .swift-version)"
-	@echo "  SWIFT_MODE  full | wasm | embedded                        Default: full"
-	@echo "              (wasm-* targets default to wasm when SWIFT_MODE is not set)"
-	@echo "  SWIFT_SDK   Override derived SDK (optional)"
-	@echo "  DEBUG       true = debug, false = release                 Default: true"
+	@echo "  SWIFT_MODE  embedded (append -embedded to SDK)              Default: (none)"
+	@echo "  SWIFT_SDK   Override derived SDK                            Default: $(_SDK_BASE)"
+	@echo "  DEBUG       1 or true = debug, 0 or false = release         Default: 1"
 	@echo ""
-	@echo "SWIFT_SDK is derived from SWIFT_TC + SWIFT_MODE:"
-	@echo "  6.3-snapshot  + wasm     -> $(SWIFT_SDK_6_3_WASM)"
-	@echo "  6.3-snapshot  + embedded -> $(SWIFT_SDK_6_3_EMBEDDED)"
-	@echo "  main-snapshot + wasm     -> $(SWIFT_SDK_MAIN_WASM)"
-	@echo "  main-snapshot + embedded -> $(SWIFT_SDK_MAIN_EMBEDDED)"
-	@echo "  *             + full     -> (none, native build)"
+	@echo "Current toolchain: $(_SWIFT_TC)"
+	@echo "Derived SDK:       $(SWIFT_SDK)"
 	@echo ""
 	@echo "Examples:"
 	@echo "  make build                                     # native debug build"
-	@echo "  make build DEBUG=false                         # native release build"
-	@echo "  make wasm-build                                # WASM build (default mode: wasm)"
+	@echo "  make build DEBUG=0                             # native release build"
+	@echo "  make wasm-build                                # WASM build"
 	@echo "  make wasm-build SWIFT_MODE=embedded            # embedded WASM build"
-	@echo "  make wasm-build SWIFT_TC=6.3-snapshot          # WASM build (6.3 toolchain)"
-	@echo "  make wasm-all DEBUG=false                      # clean + release WASM build"
-	@echo "  make wasm-all SWIFT_MODE=embedded DEBUG=false  # clean + release embedded build"
+	@echo "  make wasm-all DEBUG=0                          # clean + release WASM build"
+	@echo "  make wasm-all SWIFT_MODE=embedded DEBUG=0      # clean + release embedded build"
+
+.PHONY: debug
+debug: ## Echo all Make variables
+	@echo "DEBUG: $(DEBUG)"
+	@echo "BUILD_CONFIG: $(BUILD_CONFIG)"
+	@echo "SWIFT_MODE: $(SWIFT_MODE)"
+	@echo "SWIFT_SDK: $(SWIFT_SDK)"
+	@echo "_SWIFT_TC: $(_SWIFT_TC)"
+	@echo "_SDK_KEY: $(_SDK_KEY)"
+	@echo "_SDK_BASE: $(_SDK_BASE)"
 
 .PHONY: swift-setup
-swift-setup: ## Install and activate Swift toolchain (SWIFT_TC)
-	swiftly install $(SWIFT_TC) && swiftly use $(SWIFT_TC)
+swift-setup: ## Install and activate Swift toolchain
+	swiftly install && swiftly use
 
 .PHONY: serve
 serve: ## Start local dev server
 	pnpx serve .
 
 .PHONY: build
-build: ## Native Swift build (SWIFT_TC, DEBUG)
-	$(SWIFT_TC_USE) swift build $(SWIFT_SDK_USE) -c $(BUILD_CONFIG)
+build: ## Native Swift build (DEBUG)
+	swift build -c $(BUILD_CONFIG)
 
 .PHONY: test
 test: ## Run Swift tests
@@ -102,16 +86,16 @@ demo-bitonic: ## Run BitonicSort demo
 	swift run BitonicSort
 
 .PHONY: wasm-build-bridgejs
-wasm-build-bridgejs: ## Generate BridgeJS bindings (SWIFT_MODE, SWIFT_TC)
-	$(SWIFT_TC_USE) SWAN_WASM=1 swift package --swift-sdk $(_WASM_SDK) plugin --allow-writing-to-package-directory bridge-js
+wasm-build-bridgejs: ## Generate BridgeJS bindings (SWIFT_MODE)
+	SWAN_WASM=1 swift package --swift-sdk $(SWIFT_SDK) plugin --allow-writing-to-package-directory bridge-js
 
 .PHONY: wasm-build
-wasm-build: wasm-build-bridgejs ## WASM build, depends on bridgejs (SWIFT_MODE, SWIFT_TC, DEBUG)
-	$(SWIFT_TC_USE) SWAN_WASM=1 swift build --swift-sdk $(_WASM_SDK) --target WebGPU -c $(BUILD_CONFIG)
+wasm-build: wasm-build-bridgejs ## WASM build, depends on bridgejs (SWIFT_MODE, DEBUG)
+	SWAN_WASM=1 swift build --swift-sdk $(SWIFT_SDK) --target WebGPU -c $(BUILD_CONFIG)
 
 .PHONY: wasm-all
 wasm-all: clean wasm-build ## Clean + full WASM build
 
 .PHONY: wasm-demo-bitonic
-wasm-demo-bitonic: wasm-build ## Build and serve BitonicSort WASM demo (SWIFT_MODE, SWIFT_TC)
-	$(SWIFT_TC_USE) SWAN_WASM=1 swift package --swift-sdk $(_WASM_SDK) js --product BitonicSort -c $(BUILD_CONFIG) && pnpx serve .
+wasm-demo-bitonic: wasm-build ## Build and serve BitonicSort WASM demo (SWIFT_MODE)
+	SWAN_WASM=1 swift package --swift-sdk $(SWIFT_SDK) js --product BitonicSort -c $(BUILD_CONFIG) && pnpx serve .

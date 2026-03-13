@@ -27,9 +27,8 @@ jobs:
       - name: Read WASM SDK version
         id: wasm-sdk
         run: |
-          sdk="$(cat .wasm-sdk-version)"
-          # sdk is e.g. "DEVELOPMENT-SNAPSHOT-2026-02-19-a-wasm32-unknown-wasip1"
-          # Extract the release tag by stripping the "-wasm32-*" triple suffix
+          source .wasm-sdk-versions
+          sdk="$CI"
           tag="swift-wasm-${sdk%-wasm32-*}"
           url="https://github.com/swiftwasm/swift/releases/download/${tag}/swift-wasm-${sdk}.artifactbundle.zip"
           echo "version=${sdk}" >> "$GITHUB_OUTPUT"
