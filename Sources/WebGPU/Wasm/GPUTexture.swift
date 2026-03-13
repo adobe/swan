@@ -11,27 +11,55 @@ import JavaScriptKit
 	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
 	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
 
-	public func setLabel(_ value: String?) {
-		try! setLabel_(value)
+	public func setLabel(label: String?) {
+		try! setLabel_(label)
 	}
 
-	// Returns string, convert to GPUTextureFormat if needed
 	@JSGetter(jsName: "format") var _format: String
 
-	public var format: String {
+	public var format: GPUTextureFormat {
 		get {
-			return try! _format
+			let s = try! _format
+			return GPUTextureFormat(rawValue: s) ?? .undefined
 		}
+	}
+
+	// NOTE: The native (Dawn) backend exposes these as methods (getWidth(), getHeight(),
+	// getDepthOrArrayLayers(), getFormat()) rather than properties. If we need to resovle
+	// the discrepancy, either the native side needs corresponding property wrappers added
+	// or we need to add similar methods here in the WASM API.
+	@JSGetter(jsName: "width") var _width: Int
+
+	public var width: Int {
+		get { return try! _width }
+	}
+
+	@JSGetter(jsName: "height") var _height: Int
+
+	public var height: Int {
+		get { return try! _height }
+	}
+
+	@JSGetter(jsName: "depthOrArrayLayers") var _depthOrArrayLayers: Int
+
+	public var depthOrArrayLayers: Int {
+		get { return try! _depthOrArrayLayers }
 	}
 
 	@JSFunction(jsName: "createView")
 	func _createView() throws(JSException) -> GPUTextureView
 
+	@JSFunction(jsName: "createView")
+	func _createViewWithDescriptor(_ descriptor: GPUTextureViewDescriptor) throws(JSException) -> GPUTextureView
+
 	@JSFunction(jsName: "destroy")
 	func _destroy() throws(JSException)
 
-	public func createView() -> GPUTextureView {
-		try! _createView()
+	public func createView(descriptor: GPUTextureViewDescriptor? = nil) -> GPUTextureView {
+		if let descriptor {
+			return try! _createViewWithDescriptor(descriptor)
+		}
+		return try! _createView()
 	}
 
 	public func destroy() {
