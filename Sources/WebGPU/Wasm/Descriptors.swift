@@ -7,6 +7,14 @@
 
 import JavaScriptKit
 
+// This file contains all plain-data types that are not GPU objects — i.e., types that have no
+// JS-backed identity or lifetime and carry no `@JSClass` decoration. This includes:
+//   - Descriptor structs passed to GPU object creation methods (e.g. GPUBufferDescriptor)
+//   - Attachment and state structs used as fields within descriptors (e.g. GPURenderPassColorAttachment)
+//   - Geometry and layout types (e.g. GPUExtent3D, GPUTexelCopyBufferLayout)
+//   - Callback info types that wrap Swift closures for async completions
+//   - Stub types required for API compatibility with the native (Dawn) backend
+
 @JS public struct GPUBufferDescriptor {
 	public var label: String?
 	public var usage: Int
@@ -148,6 +156,98 @@ import JavaScriptKit
 
 	public init(label: String? = nil) {
 		self.label = label
+	}
+}
+
+@JS public struct GPURenderPassColorAttachment {
+	public var view: GPUTextureView
+	public var loadOp: GPULoadOp
+	public var storeOp: GPUStoreOp
+	public var clearValue: GPUColor?
+
+	public init(
+		view: GPUTextureView,
+		loadOp: GPULoadOp,
+		storeOp: GPUStoreOp,
+		clearValue: GPUColor? = nil
+	) {
+		self.view = view
+		self.loadOp = loadOp
+		self.storeOp = storeOp
+		self.clearValue = clearValue
+	}
+}
+
+// @JS — fields use Double/Int for BridgeJS compatibility
+@JS public struct GPURenderPassDepthStencilAttachment {
+	public var view: GPUTextureView
+	public var depthLoadOp: GPULoadOp?
+	public var depthStoreOp: GPUStoreOp?
+	public var depthClearValue: Double  // Float stored as Double for BridgeJS
+	public var depthReadOnly: Bool
+	public var stencilLoadOp: GPULoadOp?
+	public var stencilStoreOp: GPUStoreOp?
+	public var stencilClearValue: Int   // UInt32 stored as Int for BridgeJS
+	public var stencilReadOnly: Bool
+
+	// Primary init — uses stored types (Double/Int) for BridgeJS compatibility
+	public init(
+		view: GPUTextureView,
+		depthLoadOp: GPULoadOp? = nil,
+		depthStoreOp: GPUStoreOp? = nil,
+		depthClearValue: Double = 1.0,
+		depthReadOnly: Bool = false,
+		stencilLoadOp: GPULoadOp? = nil,
+		stencilStoreOp: GPUStoreOp? = nil,
+		stencilClearValue: Int = 0,
+		stencilReadOnly: Bool = false
+	) {
+		self.view = view
+		self.depthLoadOp = depthLoadOp
+		self.depthStoreOp = depthStoreOp
+		self.depthClearValue = depthClearValue
+		self.depthReadOnly = depthReadOnly
+		self.stencilLoadOp = stencilLoadOp
+		self.stencilStoreOp = stencilStoreOp
+		self.stencilClearValue = stencilClearValue
+		self.stencilReadOnly = stencilReadOnly
+	}
+
+	// Convenience init — Float/UInt32 for Dawn API compatibility
+	public init(
+		view: GPUTextureView,
+		depthLoadOp: GPULoadOp? = nil,
+		depthStoreOp: GPUStoreOp? = nil,
+		depthClearValue: Float,
+		depthReadOnly: Bool = false,
+		stencilLoadOp: GPULoadOp? = nil,
+		stencilStoreOp: GPUStoreOp? = nil,
+		stencilClearValue: UInt32 = 0,
+		stencilReadOnly: Bool = false
+	) {
+		self.init(view: view, depthLoadOp: depthLoadOp, depthStoreOp: depthStoreOp,
+			depthClearValue: Double(depthClearValue), depthReadOnly: depthReadOnly,
+			stencilLoadOp: stencilLoadOp, stencilStoreOp: stencilStoreOp,
+			stencilClearValue: Int(stencilClearValue), stencilReadOnly: stencilReadOnly)
+	}
+}
+
+@JS public struct GPURenderPassDescriptor {
+	public var label: String?
+	public var colorAttachments: [GPURenderPassColorAttachment]
+	public var depthStencilAttachment: GPURenderPassDepthStencilAttachment?
+	public var timestampWrites: GPUPassTimestampWrites?
+
+	public init(
+		label: String? = nil,
+		colorAttachments: [GPURenderPassColorAttachment],
+		depthStencilAttachment: GPURenderPassDepthStencilAttachment? = nil,
+		timestampWrites: GPUPassTimestampWrites? = nil
+	) {
+		self.label = label
+		self.colorAttachments = colorAttachments
+		self.depthStencilAttachment = depthStencilAttachment
+		self.timestampWrites = timestampWrites
 	}
 }
 
