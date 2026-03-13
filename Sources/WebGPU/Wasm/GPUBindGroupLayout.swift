@@ -7,56 +7,11 @@
 
 import JavaScriptKit
 
-@JS public struct GPUBufferBindingLayout {
-	public var type: GPUBufferBindingType
-
-	public init(type: GPUBufferBindingType) {
-		self.type = type
-	}
-}
-
-@JS public struct GPUBindGroupLayoutEntry {
-	public var binding: Int
-	public var visibility: Int
-	public var buffer: GPUBufferBindingLayout?
-
-	public init(
-		binding: Int,
-		visibility: Int,
-		buffer: GPUBufferBindingLayout? = nil
-	) {
-		self.binding = binding
-		self.visibility = visibility
-		self.buffer = buffer
-	}
-
-	public init(
-		binding: Int,
-		visibility: GPUShaderStage,
-		buffer: GPUBufferBindingLayout? = nil
-	) {
-		self.init(binding: binding, visibility: Int(visibility.rawValue), buffer: buffer)
-	}
-}
-
-@JS public struct GPUBindGroupLayoutDescriptor {
-	public var label: String?
-	public var entries: [GPUBindGroupLayoutEntry]
-
-	public init(
-		label: String? = nil,
-		entries: [GPUBindGroupLayoutEntry]
-	) {
-		self.label = label
-		self.entries = entries
-	}
-}
-
 @JSClass public struct GPUBindGroupLayout {
 	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
-	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
+	@JSSetter(jsName: "label") func setLabel_(_ value: String) throws(JSException)
 
-	public func setLabel(_ value: String?) {
-		try! setLabel_(value)
+	public func setLabel(label: String) {
+		try! setLabel_(label)
 	}
 }

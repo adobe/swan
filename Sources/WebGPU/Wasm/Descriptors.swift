@@ -409,6 +409,22 @@ public struct GPUTexelCopyTextureInfo {
 	}
 }
 
+@JS public struct GPUBufferBindingLayout {
+	public var type: GPUBufferBindingType
+	public var hasDynamicOffset: Bool
+	public var minBindingSize: UInt64
+
+	public init(
+		type: GPUBufferBindingType = .uniform,
+		hasDynamicOffset: Bool = false,
+		minBindingSize: UInt64 = 0
+	) {
+		self.type = type
+		self.hasDynamicOffset = hasDynamicOffset
+		self.minBindingSize = minBindingSize
+	}
+}
+
 @JS public struct GPUSamplerBindingLayout {
 	public var type: GPUSamplerBindingType
 
@@ -446,6 +462,84 @@ public struct GPUTexelCopyTextureInfo {
 		self.access = access
 		self.format = format
 		self.viewDimension = viewDimension
+	}
+}
+
+@JS public struct GPUBindGroupLayoutEntry {
+	public var binding: Int
+	public var visibility: Int
+	public var buffer: GPUBufferBindingLayout?
+	public var sampler: GPUSamplerBindingLayout?
+	public var texture: GPUTextureBindingLayout?
+	public var storageTexture: GPUStorageTextureBindingLayout?
+
+	public init(
+		binding: Int,
+		visibility: Int,
+		buffer: GPUBufferBindingLayout? = nil,
+		sampler: GPUSamplerBindingLayout? = nil,
+		texture: GPUTextureBindingLayout? = nil,
+		storageTexture: GPUStorageTextureBindingLayout? = nil
+	) {
+		self.binding = binding
+		self.visibility = visibility
+		self.buffer = buffer
+		self.sampler = sampler
+		self.texture = texture
+		self.storageTexture = storageTexture
+	}
+
+	public init(
+		binding: Int,
+		visibility: GPUShaderStage,
+		buffer: GPUBufferBindingLayout? = nil,
+		sampler: GPUSamplerBindingLayout? = nil,
+		texture: GPUTextureBindingLayout? = nil,
+		storageTexture: GPUStorageTextureBindingLayout? = nil
+	) {
+		self.init(
+			binding: binding,
+			visibility: Int(visibility.rawValue),
+			buffer: buffer,
+			sampler: sampler,
+			texture: texture,
+			storageTexture: storageTexture
+		)
+	}
+
+	public init(
+		binding: UInt32,
+		visibility: GPUShaderStage,
+		buffer: GPUBufferBindingLayout? = nil,
+		sampler: GPUSamplerBindingLayout? = nil,
+		texture: GPUTextureBindingLayout? = nil,
+		storageTexture: GPUStorageTextureBindingLayout? = nil
+	) {
+		self.init(binding: Int(binding), visibility: visibility, buffer: buffer, sampler: sampler, texture: texture, storageTexture: storageTexture)
+	}
+
+	public init(
+		binding: UInt32,
+		visibility: Int,
+		buffer: GPUBufferBindingLayout? = nil,
+		sampler: GPUSamplerBindingLayout? = nil,
+		texture: GPUTextureBindingLayout? = nil,
+		storageTexture: GPUStorageTextureBindingLayout? = nil
+	) {
+		self.init(binding: Int(binding), visibility: visibility, buffer: buffer, sampler: sampler, texture: texture, storageTexture: storageTexture)
+	}
+}
+
+@JS public struct GPUBindGroupLayoutDescriptor {
+	public var label: String?
+	public var entries: [GPUBindGroupLayoutEntry]
+
+	public init(
+		label: String? = nil,
+		entries: [GPUBindGroupLayoutEntry]
+	) {
+		self.label = label
+		self.entries = entries
 	}
 }
 
