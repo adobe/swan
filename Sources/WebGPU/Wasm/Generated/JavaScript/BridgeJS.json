@@ -261,29 +261,722 @@
             "associatedValues" : [
 
             ],
-            "name" : "bgra8unorm",
-            "rawValue" : "bgra8unorm"
+            "name" : "Undefined",
+            "rawValue" : ""
           },
           {
             "associatedValues" : [
 
             ],
-            "name" : "bgra8unormSrgb",
-            "rawValue" : "bgra8unorm-srgb"
+            "name" : "R8Unorm",
+            "rawValue" : "r8unorm"
           },
           {
             "associatedValues" : [
 
             ],
-            "name" : "rgba8unorm",
+            "name" : "R8Snorm",
+            "rawValue" : "r8snorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "R8Uint",
+            "rawValue" : "r8uint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "R8Sint",
+            "rawValue" : "r8sint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "R16Unorm",
+            "rawValue" : "r16unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "R16Snorm",
+            "rawValue" : "r16snorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "R16Uint",
+            "rawValue" : "r16uint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "R16Sint",
+            "rawValue" : "r16sint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "R16Float",
+            "rawValue" : "r16float"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG8Unorm",
+            "rawValue" : "rg8unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG8Snorm",
+            "rawValue" : "rg8snorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG8Uint",
+            "rawValue" : "rg8uint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG8Sint",
+            "rawValue" : "rg8sint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "R32Float",
+            "rawValue" : "r32float"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "R32Uint",
+            "rawValue" : "r32uint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "R32Sint",
+            "rawValue" : "r32sint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG16Unorm",
+            "rawValue" : "rg16unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG16Snorm",
+            "rawValue" : "rg16snorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG16Uint",
+            "rawValue" : "rg16uint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG16Sint",
+            "rawValue" : "rg16sint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG16Float",
+            "rawValue" : "rg16float"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA8Unorm",
             "rawValue" : "rgba8unorm"
           },
           {
             "associatedValues" : [
 
             ],
-            "name" : "rgba8unormSrgb",
+            "name" : "RGBA8UnormSrgb",
             "rawValue" : "rgba8unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA8Snorm",
+            "rawValue" : "rgba8snorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA8Uint",
+            "rawValue" : "rgba8uint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA8Sint",
+            "rawValue" : "rgba8sint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BGRA8Unorm",
+            "rawValue" : "bgra8unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BGRA8UnormSrgb",
+            "rawValue" : "bgra8unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGB10A2Uint",
+            "rawValue" : "rgb10a2uint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGB10A2Unorm",
+            "rawValue" : "rgb10a2unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG11B10Ufloat",
+            "rawValue" : "rg11b10ufloat"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGB9E5Ufloat",
+            "rawValue" : "rgb9e5ufloat"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG32Float",
+            "rawValue" : "rg32float"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG32Uint",
+            "rawValue" : "rg32uint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RG32Sint",
+            "rawValue" : "rg32sint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA16Unorm",
+            "rawValue" : "rgba16unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA16Snorm",
+            "rawValue" : "rgba16snorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA16Uint",
+            "rawValue" : "rgba16uint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA16Sint",
+            "rawValue" : "rgba16sint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA16Float",
+            "rawValue" : "rgba16float"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA32Float",
+            "rawValue" : "rgba32float"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA32Uint",
+            "rawValue" : "rgba32uint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "RGBA32Sint",
+            "rawValue" : "rgba32sint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "Stencil8",
+            "rawValue" : "stencil8"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "Depth16Unorm",
+            "rawValue" : "depth16unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "Depth24Plus",
+            "rawValue" : "depth24plus"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "Depth24PlusStencil8",
+            "rawValue" : "depth24plus-stencil8"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "Depth32Float",
+            "rawValue" : "depth32float"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "Depth32FloatStencil8",
+            "rawValue" : "depth32float-stencil8"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC1RGBAUnorm",
+            "rawValue" : "bc1-rgba-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC1RGBAUnormSrgb",
+            "rawValue" : "bc1-rgba-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC2RGBAUnorm",
+            "rawValue" : "bc2-rgba-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC2RGBAUnormSrgb",
+            "rawValue" : "bc2-rgba-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC3RGBAUnorm",
+            "rawValue" : "bc3-rgba-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC3RGBAUnormSrgb",
+            "rawValue" : "bc3-rgba-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC4RUnorm",
+            "rawValue" : "bc4-r-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC4RSnorm",
+            "rawValue" : "bc4-r-snorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC5RGUnorm",
+            "rawValue" : "bc5-rg-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC5RGSnorm",
+            "rawValue" : "bc5-rg-snorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC6HRGBUfloat",
+            "rawValue" : "bc6h-rgb-ufloat"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC6HRGBFloat",
+            "rawValue" : "bc6h-rgb-float"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC7RGBAUnorm",
+            "rawValue" : "bc7-rgba-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "BC7RGBAUnormSrgb",
+            "rawValue" : "bc7-rgba-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ETC2RGB8Unorm",
+            "rawValue" : "etc2-rgb8unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ETC2RGB8UnormSrgb",
+            "rawValue" : "etc2-rgb8unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ETC2RGB8A1Unorm",
+            "rawValue" : "etc2-rgb8a1unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ETC2RGB8A1UnormSrgb",
+            "rawValue" : "etc2-rgb8a1unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ETC2RGBA8Unorm",
+            "rawValue" : "etc2-rgba8unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ETC2RGBA8UnormSrgb",
+            "rawValue" : "etc2-rgba8unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "EACR11Unorm",
+            "rawValue" : "eac-r11unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "EACR11Snorm",
+            "rawValue" : "eac-r11snorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "EACRG11Unorm",
+            "rawValue" : "eac-rg11unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "EACRG11Snorm",
+            "rawValue" : "eac-rg11snorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC4x4Unorm",
+            "rawValue" : "astc-4x4-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC4x4UnormSrgb",
+            "rawValue" : "astc-4x4-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC5x4Unorm",
+            "rawValue" : "astc-5x4-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC5x4UnormSrgb",
+            "rawValue" : "astc-5x4-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC5x5Unorm",
+            "rawValue" : "astc-5x5-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC5x5UnormSrgb",
+            "rawValue" : "astc-5x5-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC6x5Unorm",
+            "rawValue" : "astc-6x5-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC6x5UnormSrgb",
+            "rawValue" : "astc-6x5-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC6x6Unorm",
+            "rawValue" : "astc-6x6-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC6x6UnormSrgb",
+            "rawValue" : "astc-6x6-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC8x5Unorm",
+            "rawValue" : "astc-8x5-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC8x5UnormSrgb",
+            "rawValue" : "astc-8x5-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC8x6Unorm",
+            "rawValue" : "astc-8x6-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC8x6UnormSrgb",
+            "rawValue" : "astc-8x6-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC8x8Unorm",
+            "rawValue" : "astc-8x8-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC8x8UnormSrgb",
+            "rawValue" : "astc-8x8-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC10x5Unorm",
+            "rawValue" : "astc-10x5-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC10x5UnormSrgb",
+            "rawValue" : "astc-10x5-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC10x6Unorm",
+            "rawValue" : "astc-10x6-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC10x6UnormSrgb",
+            "rawValue" : "astc-10x6-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC10x8Unorm",
+            "rawValue" : "astc-10x8-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC10x8UnormSrgb",
+            "rawValue" : "astc-10x8-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC10x10Unorm",
+            "rawValue" : "astc-10x10-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC10x10UnormSrgb",
+            "rawValue" : "astc-10x10-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC12x10Unorm",
+            "rawValue" : "astc-12x10-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC12x10UnormSrgb",
+            "rawValue" : "astc-12x10-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC12x12Unorm",
+            "rawValue" : "astc-12x12-unorm"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "ASTC12x12UnormSrgb",
+            "rawValue" : "astc-12x12-unorm-srgb"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "Force32",
+            "rawValue" : "force32"
           }
         ],
         "emitStyle" : "const",
@@ -506,6 +1199,720 @@
         ],
         "swiftCallName" : "GPUBufferBindingType",
         "tsFullPath" : "GPUBufferBindingType"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "_1D",
+            "rawValue" : "1d"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "_2D",
+            "rawValue" : "2d"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "_2DArray",
+            "rawValue" : "2d-array"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "cube",
+            "rawValue" : "cube"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "cubeArray",
+            "rawValue" : "cube-array"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "_3D",
+            "rawValue" : "3d"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUTextureViewDimension",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUTextureViewDimension",
+        "tsFullPath" : "GPUTextureViewDimension"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "float",
+            "rawValue" : "float"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "unfilterableFloat",
+            "rawValue" : "unfilterable-float"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "depth",
+            "rawValue" : "depth"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "sint",
+            "rawValue" : "sint"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "uint",
+            "rawValue" : "uint"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUTextureSampleType",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUTextureSampleType",
+        "tsFullPath" : "GPUTextureSampleType"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "writeOnly",
+            "rawValue" : "write-only"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "readOnly",
+            "rawValue" : "read-only"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "readWrite",
+            "rawValue" : "read-write"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUStorageTextureAccess",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUStorageTextureAccess",
+        "tsFullPath" : "GPUStorageTextureAccess"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "filtering",
+            "rawValue" : "filtering"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "nonFiltering",
+            "rawValue" : "non-filtering"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "comparison",
+            "rawValue" : "comparison"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUSamplerBindingType",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUSamplerBindingType",
+        "tsFullPath" : "GPUSamplerBindingType"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "occlusion",
+            "rawValue" : "occlusion"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "timestamp",
+            "rawValue" : "timestamp"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUQueryType",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUQueryType",
+        "tsFullPath" : "GPUQueryType"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "clampToEdge",
+            "rawValue" : "clamp-to-edge"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "repeatMode",
+            "rawValue" : "repeat"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "mirrorRepeat",
+            "rawValue" : "mirror-repeat"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUAddressMode",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUAddressMode",
+        "tsFullPath" : "GPUAddressMode"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "nearest",
+            "rawValue" : "nearest"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "linear",
+            "rawValue" : "linear"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUFilterMode",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUFilterMode",
+        "tsFullPath" : "GPUFilterMode"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "nearest",
+            "rawValue" : "nearest"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "linear",
+            "rawValue" : "linear"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUMipmapFilterMode",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUMipmapFilterMode",
+        "tsFullPath" : "GPUMipmapFilterMode"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "never",
+            "rawValue" : "never"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "less",
+            "rawValue" : "less"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "equal",
+            "rawValue" : "equal"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "lessEqual",
+            "rawValue" : "less-equal"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "greater",
+            "rawValue" : "greater"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "notEqual",
+            "rawValue" : "not-equal"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "greaterEqual",
+            "rawValue" : "greater-equal"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "always",
+            "rawValue" : "always"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUCompareFunction",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUCompareFunction",
+        "tsFullPath" : "GPUCompareFunction"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "zero",
+            "rawValue" : "zero"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "one",
+            "rawValue" : "one"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "src",
+            "rawValue" : "src"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "oneMinusSrc",
+            "rawValue" : "one-minus-src"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "srcAlpha",
+            "rawValue" : "src-alpha"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "oneMinusSrcAlpha",
+            "rawValue" : "one-minus-src-alpha"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "dst",
+            "rawValue" : "dst"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "oneMinusDst",
+            "rawValue" : "one-minus-dst"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "dstAlpha",
+            "rawValue" : "dst-alpha"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "oneMinusDstAlpha",
+            "rawValue" : "one-minus-dst-alpha"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "srcAlphaSaturated",
+            "rawValue" : "src-alpha-saturated"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "constant",
+            "rawValue" : "constant"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "oneMinusConstant",
+            "rawValue" : "one-minus-constant"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "src1",
+            "rawValue" : "src1"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "oneMinusSrc1",
+            "rawValue" : "one-minus-src1"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "src1Alpha",
+            "rawValue" : "src1-alpha"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "oneMinusSrc1Alpha",
+            "rawValue" : "one-minus-src1-alpha"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUBlendFactor",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUBlendFactor",
+        "tsFullPath" : "GPUBlendFactor"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "add",
+            "rawValue" : "add"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "subtract",
+            "rawValue" : "subtract"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "reverseSubtract",
+            "rawValue" : "reverse-subtract"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "min",
+            "rawValue" : "min"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "max",
+            "rawValue" : "max"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUBlendOperation",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUBlendOperation",
+        "tsFullPath" : "GPUBlendOperation"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "all",
+            "rawValue" : "all"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "stencilOnly",
+            "rawValue" : "stencil-only"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "depthOnly",
+            "rawValue" : "depth-only"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUTextureAspect",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUTextureAspect",
+        "tsFullPath" : "GPUTextureAspect"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "_1D",
+            "rawValue" : "1d"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "_2D",
+            "rawValue" : "2d"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "_3D",
+            "rawValue" : "3d"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUTextureDimension",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUTextureDimension",
+        "tsFullPath" : "GPUTextureDimension"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "keep",
+            "rawValue" : "keep"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "zero",
+            "rawValue" : "zero"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "replace",
+            "rawValue" : "replace"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "invert",
+            "rawValue" : "invert"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "incrementClamp",
+            "rawValue" : "increment-clamp"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "decrementClamp",
+            "rawValue" : "decrement-clamp"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "incrementWrap",
+            "rawValue" : "increment-wrap"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "decrementWrap",
+            "rawValue" : "decrement-wrap"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUStencilOperation",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUStencilOperation",
+        "tsFullPath" : "GPUStencilOperation"
       }
     ],
     "exposeToGlobal" : false,
@@ -713,6 +2120,17 @@
           {
             "isReadonly" : true,
             "isStatic" : false,
+            "name" : "stripIndexFormat",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUIndexFormat",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
             "name" : "frontFace",
             "type" : {
               "rawValueEnum" : {
@@ -740,6 +2158,79 @@
         "methods" : [
 
         ],
+        "name" : "GPUBlendComponent",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "operation",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUBlendOperation",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "srcFactor",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUBlendFactor",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "dstFactor",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUBlendFactor",
+                "_1" : "String"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBlendComponent"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUBlendState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "color",
+            "type" : {
+              "swiftStruct" : {
+                "_0" : "GPUBlendComponent"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "alpha",
+            "type" : {
+              "swiftStruct" : {
+                "_0" : "GPUBlendComponent"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBlendState"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
         "name" : "GPUColorTargetState",
         "properties" : [
           {
@@ -750,6 +2241,21 @@
               "rawValueEnum" : {
                 "_0" : "GPUTextureFormat",
                 "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "blend",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUBlendState"
+                  }
+                },
+                "_1" : "null"
               }
             }
           },
@@ -865,6 +2371,1484 @@
           }
         ],
         "swiftCallName" : "GPUCommandBufferDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPURenderPassColorAttachment",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "view",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUTextureView"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "loadOp",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPULoadOp",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "storeOp",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUStoreOp",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "clearValue",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUColor"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPURenderPassColorAttachment"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPURenderPassDepthStencilAttachment",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "view",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUTextureView"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthLoadOp",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "rawValueEnum" : {
+                    "_0" : "GPULoadOp",
+                    "_1" : "String"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthStoreOp",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "rawValueEnum" : {
+                    "_0" : "GPUStoreOp",
+                    "_1" : "String"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthClearValue",
+            "type" : {
+              "double" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthReadOnly",
+            "type" : {
+              "bool" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "stencilLoadOp",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "rawValueEnum" : {
+                    "_0" : "GPULoadOp",
+                    "_1" : "String"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "stencilStoreOp",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "rawValueEnum" : {
+                    "_0" : "GPUStoreOp",
+                    "_1" : "String"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "stencilClearValue",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "stencilReadOnly",
+            "type" : {
+              "bool" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPURenderPassDepthStencilAttachment"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPURenderPassDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "colorAttachments",
+            "type" : {
+              "array" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPURenderPassColorAttachment"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthStencilAttachment",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPURenderPassDepthStencilAttachment"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "timestampWrites",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUPassTimestampWrites"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPURenderPassDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUComputePassDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "timestampWrites",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUPassTimestampWrites"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUComputePassDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUStencilFaceState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "compare",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUCompareFunction",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "failOp",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUStencilOperation",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthFailOp",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUStencilOperation",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "passOp",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUStencilOperation",
+                "_1" : "String"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUStencilFaceState"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUDepthStencilState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "format",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUTextureFormat",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthWriteEnabled",
+            "type" : {
+              "bool" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthCompare",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUCompareFunction",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "stencilFront",
+            "type" : {
+              "swiftStruct" : {
+                "_0" : "GPUStencilFaceState"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "stencilBack",
+            "type" : {
+              "swiftStruct" : {
+                "_0" : "GPUStencilFaceState"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "stencilReadMask",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "stencilWriteMask",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthBias",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthBiasSlopeScale",
+            "type" : {
+              "double" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthBiasClamp",
+            "type" : {
+              "double" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUDepthStencilState"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUExtent3D",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "width",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "height",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthOrArrayLayers",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUExtent3D"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUOrigin3D",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "x",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "y",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "z",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUOrigin3D"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUTextureDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "size",
+            "type" : {
+              "swiftStruct" : {
+                "_0" : "GPUExtent3D"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "mipLevelCount",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "sampleCount",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "dimension",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUTextureDimension",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "format",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUTextureFormat",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "usage",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUTextureDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUTextureViewDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "format",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "rawValueEnum" : {
+                    "_0" : "GPUTextureFormat",
+                    "_1" : "String"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "dimension",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "rawValueEnum" : {
+                    "_0" : "GPUTextureViewDimension",
+                    "_1" : "String"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "aspect",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUTextureAspect",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "baseMipLevel",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "mipLevelCount",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "int" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "baseArrayLayer",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "arrayLayerCount",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "int" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUTextureViewDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUSamplerDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "addressModeU",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUAddressMode",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "addressModeV",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUAddressMode",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "addressModeW",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUAddressMode",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "magFilter",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUFilterMode",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "minFilter",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUFilterMode",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "mipmapFilter",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUMipmapFilterMode",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "lodMinClamp",
+            "type" : {
+              "double" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "lodMaxClamp",
+            "type" : {
+              "double" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "compare",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "rawValueEnum" : {
+                    "_0" : "GPUCompareFunction",
+                    "_1" : "String"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "maxAnisotropy",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUSamplerDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUQuerySetDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "type",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUQueryType",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "count",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUQuerySetDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUPassTimestampWrites",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "querySet",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUQuerySet"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "beginningOfPassWriteIndex",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "endOfPassWriteIndex",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUPassTimestampWrites"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUBufferBindingLayout",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "type",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUBufferBindingType",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "hasDynamicOffset",
+            "type" : {
+              "bool" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "minBindingSize",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBufferBindingLayout"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUSamplerBindingLayout",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "type",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUSamplerBindingType",
+                "_1" : "String"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUSamplerBindingLayout"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUTextureBindingLayout",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "sampleType",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUTextureSampleType",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "viewDimension",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUTextureViewDimension",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "multisampled",
+            "type" : {
+              "bool" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUTextureBindingLayout"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUStorageTextureBindingLayout",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "access",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUStorageTextureAccess",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "format",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUTextureFormat",
+                "_1" : "String"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "viewDimension",
+            "type" : {
+              "rawValueEnum" : {
+                "_0" : "GPUTextureViewDimension",
+                "_1" : "String"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUStorageTextureBindingLayout"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUBindGroupLayoutEntry",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "binding",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "visibility",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "buffer",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUBufferBindingLayout"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "sampler",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUSamplerBindingLayout"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "texture",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUTextureBindingLayout"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "storageTexture",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUStorageTextureBindingLayout"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBindGroupLayoutEntry"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUBindGroupLayoutDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "entries",
+            "type" : {
+              "array" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUBindGroupLayoutEntry"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUBindGroupLayoutDescriptor"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUMultisampleState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "count",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "mask",
+            "type" : {
+              "int" : {
+
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "alphaToCoverageEnabled",
+            "type" : {
+              "bool" : {
+
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUMultisampleState"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUVertexState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "module",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUShaderModule"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "entryPoint",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "buffers",
+            "type" : {
+              "array" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUVertexBufferLayout"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUVertexState"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPUFragmentState",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "module",
+            "type" : {
+              "jsObject" : {
+                "_0" : "GPUShaderModule"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "entryPoint",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "targets",
+            "type" : {
+              "array" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUColorTargetState"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPUFragmentState"
+      },
+      {
+        "explicitAccessControl" : "public",
+        "methods" : [
+
+        ],
+        "name" : "GPURenderPipelineDescriptor",
+        "properties" : [
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "label",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
+
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "layout",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "jsObject" : {
+                    "_0" : "GPUPipelineLayout"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "vertex",
+            "type" : {
+              "swiftStruct" : {
+                "_0" : "GPUVertexState"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "primitive",
+            "type" : {
+              "swiftStruct" : {
+                "_0" : "GPUPrimitiveState"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "depthStencil",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUDepthStencilState"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "multisample",
+            "type" : {
+              "swiftStruct" : {
+                "_0" : "GPUMultisampleState"
+              }
+            }
+          },
+          {
+            "isReadonly" : true,
+            "isStatic" : false,
+            "name" : "fragment",
+            "type" : {
+              "nullable" : {
+                "_0" : {
+                  "swiftStruct" : {
+                    "_0" : "GPUFragmentState"
+                  }
+                },
+                "_1" : "null"
+              }
+            }
+          }
+        ],
+        "swiftCallName" : "GPURenderPipelineDescriptor"
       },
       {
         "explicitAccessControl" : "public",
@@ -1000,111 +3984,6 @@
         "methods" : [
 
         ],
-        "name" : "GPUBufferBindingLayout",
-        "properties" : [
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "type",
-            "type" : {
-              "rawValueEnum" : {
-                "_0" : "GPUBufferBindingType",
-                "_1" : "String"
-              }
-            }
-          }
-        ],
-        "swiftCallName" : "GPUBufferBindingLayout"
-      },
-      {
-        "explicitAccessControl" : "public",
-        "methods" : [
-
-        ],
-        "name" : "GPUBindGroupLayoutEntry",
-        "properties" : [
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "binding",
-            "type" : {
-              "int" : {
-
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "visibility",
-            "type" : {
-              "int" : {
-
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "buffer",
-            "type" : {
-              "nullable" : {
-                "_0" : {
-                  "swiftStruct" : {
-                    "_0" : "GPUBufferBindingLayout"
-                  }
-                },
-                "_1" : "null"
-              }
-            }
-          }
-        ],
-        "swiftCallName" : "GPUBindGroupLayoutEntry"
-      },
-      {
-        "explicitAccessControl" : "public",
-        "methods" : [
-
-        ],
-        "name" : "GPUBindGroupLayoutDescriptor",
-        "properties" : [
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "label",
-            "type" : {
-              "nullable" : {
-                "_0" : {
-                  "string" : {
-
-                  }
-                },
-                "_1" : "null"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "entries",
-            "type" : {
-              "array" : {
-                "_0" : {
-                  "swiftStruct" : {
-                    "_0" : "GPUBindGroupLayoutEntry"
-                  }
-                }
-              }
-            }
-          }
-        ],
-        "swiftCallName" : "GPUBindGroupLayoutDescriptor"
-      },
-      {
-        "explicitAccessControl" : "public",
-        "methods" : [
-
-        ],
         "name" : "GPUCanvasConfiguration",
         "properties" : [
           {
@@ -1140,127 +4019,6 @@
           }
         ],
         "swiftCallName" : "GPUCanvasConfiguration"
-      },
-      {
-        "explicitAccessControl" : "public",
-        "methods" : [
-
-        ],
-        "name" : "GPURenderPassColorAttachment",
-        "properties" : [
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "view",
-            "type" : {
-              "jsObject" : {
-                "_0" : "GPUTextureView"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "loadOp",
-            "type" : {
-              "rawValueEnum" : {
-                "_0" : "GPULoadOp",
-                "_1" : "String"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "storeOp",
-            "type" : {
-              "rawValueEnum" : {
-                "_0" : "GPUStoreOp",
-                "_1" : "String"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "clearValue",
-            "type" : {
-              "nullable" : {
-                "_0" : {
-                  "swiftStruct" : {
-                    "_0" : "GPUColor"
-                  }
-                },
-                "_1" : "null"
-              }
-            }
-          }
-        ],
-        "swiftCallName" : "GPURenderPassColorAttachment"
-      },
-      {
-        "explicitAccessControl" : "public",
-        "methods" : [
-
-        ],
-        "name" : "GPURenderPassDescriptor",
-        "properties" : [
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "label",
-            "type" : {
-              "nullable" : {
-                "_0" : {
-                  "string" : {
-
-                  }
-                },
-                "_1" : "null"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "colorAttachments",
-            "type" : {
-              "array" : {
-                "_0" : {
-                  "swiftStruct" : {
-                    "_0" : "GPURenderPassColorAttachment"
-                  }
-                }
-              }
-            }
-          }
-        ],
-        "swiftCallName" : "GPURenderPassDescriptor"
-      },
-      {
-        "explicitAccessControl" : "public",
-        "methods" : [
-
-        ],
-        "name" : "GPUComputePassDescriptor",
-        "properties" : [
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "label",
-            "type" : {
-              "nullable" : {
-                "_0" : {
-                  "string" : {
-
-                  }
-                },
-                "_1" : "null"
-              }
-            }
-          }
-        ],
-        "swiftCallName" : "GPUComputePassDescriptor"
       },
       {
         "explicitAccessControl" : "public",
@@ -1342,224 +4100,6 @@
         "methods" : [
 
         ],
-        "name" : "GPUVertexState",
-        "properties" : [
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "module",
-            "type" : {
-              "jsObject" : {
-                "_0" : "GPUShaderModule"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "entryPoint",
-            "type" : {
-              "string" : {
-
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "buffers",
-            "type" : {
-              "array" : {
-                "_0" : {
-                  "swiftStruct" : {
-                    "_0" : "GPUVertexBufferLayout"
-                  }
-                }
-              }
-            }
-          }
-        ],
-        "swiftCallName" : "GPUVertexState"
-      },
-      {
-        "explicitAccessControl" : "public",
-        "methods" : [
-
-        ],
-        "name" : "GPUFragmentState",
-        "properties" : [
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "module",
-            "type" : {
-              "jsObject" : {
-                "_0" : "GPUShaderModule"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "entryPoint",
-            "type" : {
-              "string" : {
-
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "targets",
-            "type" : {
-              "array" : {
-                "_0" : {
-                  "swiftStruct" : {
-                    "_0" : "GPUColorTargetState"
-                  }
-                }
-              }
-            }
-          }
-        ],
-        "swiftCallName" : "GPUFragmentState"
-      },
-      {
-        "explicitAccessControl" : "public",
-        "methods" : [
-
-        ],
-        "name" : "GPURenderPipelineDescriptor",
-        "properties" : [
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "label",
-            "type" : {
-              "nullable" : {
-                "_0" : {
-                  "string" : {
-
-                  }
-                },
-                "_1" : "null"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "layout",
-            "type" : {
-              "jsObject" : {
-                "_0" : "GPUPipelineLayout"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "vertex",
-            "type" : {
-              "swiftStruct" : {
-                "_0" : "GPUVertexState"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "primitive",
-            "type" : {
-              "nullable" : {
-                "_0" : {
-                  "swiftStruct" : {
-                    "_0" : "GPUPrimitiveState"
-                  }
-                },
-                "_1" : "null"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "multisample",
-            "type" : {
-              "nullable" : {
-                "_0" : {
-                  "swiftStruct" : {
-                    "_0" : "GPUMultisampleState"
-                  }
-                },
-                "_1" : "null"
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "fragment",
-            "type" : {
-              "nullable" : {
-                "_0" : {
-                  "swiftStruct" : {
-                    "_0" : "GPUFragmentState"
-                  }
-                },
-                "_1" : "null"
-              }
-            }
-          }
-        ],
-        "swiftCallName" : "GPURenderPipelineDescriptor"
-      },
-      {
-        "explicitAccessControl" : "public",
-        "methods" : [
-
-        ],
-        "name" : "GPUMultisampleState",
-        "properties" : [
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "count",
-            "type" : {
-              "uint" : {
-
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "mask",
-            "type" : {
-              "uint" : {
-
-              }
-            }
-          },
-          {
-            "isReadonly" : true,
-            "isStatic" : false,
-            "name" : "alphaToCoverageEnabled",
-            "type" : {
-              "bool" : {
-
-              }
-            }
-          }
-        ],
-        "swiftCallName" : "GPUMultisampleState"
-      },
-      {
-        "explicitAccessControl" : "public",
-        "methods" : [
-
-        ],
         "name" : "GPUPipelineLayoutDescriptor",
         "properties" : [
           {
@@ -1598,6 +4138,60 @@
   },
   "imported" : {
     "children" : [
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+
+            ],
+            "methods" : [
+              {
+                "jsName" : "hasFeature",
+                "name" : "_hasFeature",
+                "parameters" : [
+                  {
+                    "name" : "feature",
+                    "type" : {
+                      "string" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "bool" : {
+
+                  }
+                }
+              }
+            ],
+            "name" : "GPUAdapter",
+            "setters" : [
+              {
+                "functionName" : "label__set",
+                "jsName" : "label",
+                "name" : "label_",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
       {
         "functions" : [
 
@@ -1653,13 +4247,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -1694,12 +4283,95 @@
 
                   }
                 }
+              },
+              {
+                "jsName" : "mapState",
+                "name" : "_mapState",
+                "type" : {
+                  "string" : {
+
+                  }
+                }
               }
             ],
             "methods" : [
               {
                 "jsName" : "destroy",
                 "name" : "_destroy",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "mapAsync",
+                "name" : "_mapAsync",
+                "parameters" : [
+                  {
+                    "name" : "mode",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "offset",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "size",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "getMappedRange",
+                "name" : "_getMappedRange",
+                "parameters" : [
+                  {
+                    "name" : "offset",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "size",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "unmap",
+                "name" : "_unmap",
                 "parameters" : [
 
                 ],
@@ -1888,6 +4560,267 @@
                     "_0" : "GPUCommandBuffer"
                   }
                 }
+              },
+              {
+                "jsName" : "copyBufferToBuffer",
+                "name" : "_copyBufferToBuffer",
+                "parameters" : [
+                  {
+                    "name" : "source",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBuffer"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "sourceOffset",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "destination",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBuffer"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "destinationOffset",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "size",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "copyBufferToTexture",
+                "name" : "_copyBufferToTexture",
+                "parameters" : [
+                  {
+                    "name" : "source",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "destination",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "copySize",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "copyTextureToBuffer",
+                "name" : "_copyTextureToBuffer",
+                "parameters" : [
+                  {
+                    "name" : "source",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "destination",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "copySize",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "resolveQuerySet",
+                "name" : "_resolveQuerySet",
+                "parameters" : [
+                  {
+                    "name" : "querySet",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUQuerySet"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "firstQuery",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "queryCount",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "destination",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBuffer"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "destinationOffset",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "clearBuffer",
+                "name" : "_clearBuffer",
+                "parameters" : [
+                  {
+                    "name" : "buffer",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBuffer"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "offset",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "clearBuffer",
+                "name" : "_clearBufferWithSize",
+                "parameters" : [
+                  {
+                    "name" : "buffer",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBuffer"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "offset",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "size",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "writeTimestamp",
+                "name" : "_writeTimestamp",
+                "parameters" : [
+                  {
+                    "name" : "querySet",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUQuerySet"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "queryIndex",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
               }
             ],
             "name" : "GPUCommandEncoder",
@@ -1971,6 +4904,41 @@
                 }
               },
               {
+                "jsName" : "setBindGroup",
+                "name" : "_setBindGroupWithOffsets",
+                "parameters" : [
+                  {
+                    "name" : "groupIndex",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "group",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBindGroup"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "dynamicOffsets",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
                 "jsName" : "dispatchWorkgroups",
                 "name" : "_dispatchWorkgroups",
                 "parameters" : [
@@ -1992,6 +4960,60 @@
                   },
                   {
                     "name" : "workgroupCountZ",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "dispatchWorkgroupsIndirect",
+                "name" : "_dispatchWorkgroupsIndirect",
+                "parameters" : [
+                  {
+                    "name" : "indirectBuffer",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBuffer"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "indirectOffset",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "writeTimestamp",
+                "name" : "_writeTimestamp",
+                "parameters" : [
+                  {
+                    "name" : "querySet",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUQuerySet"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "queryIndex",
                     "type" : {
                       "int" : {
 
@@ -2116,6 +5138,63 @@
                 }
               },
               {
+                "jsName" : "createTexture",
+                "name" : "_createTexture",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUTextureDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUTexture"
+                  }
+                }
+              },
+              {
+                "jsName" : "createSampler",
+                "name" : "_createSampler",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUSamplerDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUSampler"
+                  }
+                }
+              },
+              {
+                "jsName" : "createQuerySet",
+                "name" : "_createQuerySet",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUQuerySetDescriptor"
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUQuerySet"
+                  }
+                }
+              },
+              {
                 "jsName" : "createShaderModule",
                 "name" : "_createShaderModule",
                 "parameters" : [
@@ -2211,6 +5290,25 @@
                 }
               },
               {
+                "jsName" : "createBindGroup",
+                "name" : "_createBindGroupRaw",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUBindGroup"
+                  }
+                }
+              },
+              {
                 "jsName" : "createPipelineLayout",
                 "name" : "_createPipelineLayout",
                 "parameters" : [
@@ -2245,6 +5343,37 @@
                 "returnType" : {
                   "jsObject" : {
                     "_0" : "GPUComputePipeline"
+                  }
+                }
+              },
+              {
+                "jsName" : "pushErrorScope",
+                "name" : "_pushErrorScope",
+                "parameters" : [
+                  {
+                    "name" : "filter",
+                    "type" : {
+                      "string" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "popErrorScope",
+                "name" : "_popErrorScope",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "jsObject" : {
+
                   }
                 }
               }
@@ -2286,6 +5415,70 @@
 
             ],
             "name" : "GPUPipelineLayout",
+            "setters" : [
+              {
+                "functionName" : "label__set",
+                "jsName" : "label",
+                "name" : "label_",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+              {
+                "jsName" : "type",
+                "name" : "_type",
+                "type" : {
+                  "string" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "count",
+                "name" : "_count",
+                "type" : {
+                  "int" : {
+
+                  }
+                }
+              }
+            ],
+            "methods" : [
+              {
+                "jsName" : "destroy",
+                "name" : "_destroy",
+                "parameters" : [
+
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              }
+            ],
+            "name" : "GPUQuerySet",
             "setters" : [
               {
                 "functionName" : "label__set",
@@ -2372,6 +5565,49 @@
 
                   }
                 }
+              },
+              {
+                "jsName" : "writeTexture",
+                "name" : "_writeTexture",
+                "parameters" : [
+                  {
+                    "name" : "destination",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "data",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "dataLayout",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "size",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
               }
             ],
             "name" : "GPUQueue",
@@ -2446,6 +5682,65 @@
                         "_0" : "GPUBuffer"
                       }
                     }
+                  },
+                  {
+                    "name" : "offset",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "size",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "setIndexBuffer",
+                "name" : "_setIndexBuffer",
+                "parameters" : [
+                  {
+                    "name" : "buffer",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUBuffer"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "indexFormat",
+                    "type" : {
+                      "string" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "offset",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "size",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
                   }
                 ],
                 "returnType" : {
@@ -2498,6 +5793,57 @@
                 }
               },
               {
+                "jsName" : "drawIndexed",
+                "name" : "_drawIndexed",
+                "parameters" : [
+                  {
+                    "name" : "indexCount",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "instanceCount",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "firstIndex",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "baseVertex",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "firstInstance",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
                 "jsName" : "setBindGroup",
                 "name" : "_setBindGroup",
                 "parameters" : [
@@ -2514,6 +5860,84 @@
                     "type" : {
                       "jsObject" : {
                         "_0" : "GPUBindGroup"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "dynamicOffsets",
+                    "type" : {
+                      "jsObject" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "setScissorRect",
+                "name" : "_setScissorRect",
+                "parameters" : [
+                  {
+                    "name" : "x",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "y",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "width",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  },
+                  {
+                    "name" : "height",
+                    "type" : {
+                      "int" : {
+
+                      }
+                    }
+                  }
+                ],
+                "returnType" : {
+                  "void" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "writeTimestamp",
+                "name" : "_writeTimestamp",
+                "parameters" : [
+                  {
+                    "name" : "querySet",
+                    "type" : {
+                      "jsObject" : {
+                        "_0" : "GPUQuerySet"
+                      }
+                    }
+                  },
+                  {
+                    "name" : "queryIndex",
+                    "type" : {
+                      "int" : {
+
                       }
                     }
                   }
@@ -2627,6 +6051,42 @@
             "methods" : [
 
             ],
+            "name" : "GPUSampler",
+            "setters" : [
+              {
+                "functionName" : "label__set",
+                "jsName" : "label",
+                "name" : "label_",
+                "type" : {
+                  "nullable" : {
+                    "_0" : {
+                      "string" : {
+
+                      }
+                    },
+                    "_1" : "null"
+                  }
+                }
+              }
+            ],
+            "staticMethods" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "functions" : [
+
+        ],
+        "types" : [
+          {
+            "getters" : [
+
+            ],
+            "methods" : [
+
+            ],
             "name" : "GPUShaderModule",
             "setters" : [
               {
@@ -2666,6 +6126,33 @@
 
                   }
                 }
+              },
+              {
+                "jsName" : "width",
+                "name" : "_width",
+                "type" : {
+                  "int" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "height",
+                "name" : "_height",
+                "type" : {
+                  "int" : {
+
+                  }
+                }
+              },
+              {
+                "jsName" : "depthOrArrayLayers",
+                "name" : "_depthOrArrayLayers",
+                "type" : {
+                  "int" : {
+
+                  }
+                }
               }
             ],
             "methods" : [
@@ -2674,6 +6161,25 @@
                 "name" : "_createView",
                 "parameters" : [
 
+                ],
+                "returnType" : {
+                  "jsObject" : {
+                    "_0" : "GPUTextureView"
+                  }
+                }
+              },
+              {
+                "jsName" : "createView",
+                "name" : "_createViewWithDescriptor",
+                "parameters" : [
+                  {
+                    "name" : "descriptor",
+                    "type" : {
+                      "swiftStruct" : {
+                        "_0" : "GPUTextureViewDescriptor"
+                      }
+                    }
+                  }
                 ],
                 "returnType" : {
                   "jsObject" : {
