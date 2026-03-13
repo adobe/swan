@@ -347,6 +347,12 @@ public enum GPUErrorType: Sendable {
 	case unknown
 }
 
+public enum GPUBufferMapState: String, Sendable {
+	case unmapped = "unmapped"
+	case pending = "pending"
+	case mapped = "mapped"
+}
+
 public enum GPUMapAsyncStatus: Sendable {
 	case success
 	case callbackCancelled
