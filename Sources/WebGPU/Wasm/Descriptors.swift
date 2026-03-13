@@ -251,6 +251,16 @@ import JavaScriptKit
 	}
 }
 
+@JS public struct GPUComputePassDescriptor {
+	public var label: String?
+	public var timestampWrites: GPUPassTimestampWrites?
+
+	public init(label: String? = nil, timestampWrites: GPUPassTimestampWrites? = nil) {
+		self.label = label
+		self.timestampWrites = timestampWrites
+	}
+}
+
 @JS public struct GPUStencilFaceState {
 	public var compare: GPUCompareFunction
 	public var failOp: GPUStencilOperation
