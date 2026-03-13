@@ -32,19 +32,16 @@ BUILD_CONFIG  := $(if $(filter false,$(DEBUG)),release,debug)
 SWIFT_TC_USE  := $(if $(SWIFT_TC),swiftly use $(SWIFT_TC) &&)
 SWIFT_SDK_USE := $(if $(strip $(SWIFT_SDK)),--swift-sdk $(SWIFT_SDK))
 
-.PHONY: swift-setup serve build test clean resolve format generate-apinotes \
-        demo-gameoflife demo-bitonic \
-        wasm-build-bridgejs wasm-build wasm-all wasm-demo-bitonic \
-        help
-
+.PHONY: help
 help: ## Show this help
+	@echo "Current Swift toolchain: '$(SWIFT_TC_CURRENT)'"
 	@grep -E '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*## "}; {printf "  \033[36m%-25s\033[0m %s\n", $$1, $$2}'
 	@echo ""
 	@echo "Environment variables:"
-	@echo "  SWIFT_TC    Toolchain (from .swift-version)                Default: $$(cat .swift-version)"
+	@echo "  SWIFT_TC    Toolchain (from .swift-version)               Default: $$(cat .swift-version)"
 	@echo "  SWIFT_MODE  full | wasm | embedded                        Default: full"
-	@echo "              (wasm targets default to embedded if not set)"
+	@echo "              (wasm-* targets default to wasm when SWIFT_MODE is not set)"
 	@echo "  SWIFT_SDK   Override derived SDK (optional)"
 	@echo "  DEBUG       true = debug, false = release                 Default: true"
 	@echo ""
@@ -56,50 +53,65 @@ help: ## Show this help
 	@echo "  *             + full     -> (none, native build)"
 	@echo ""
 	@echo "Examples:"
-	@echo "  make build                                    # native debug build"
-	@echo "  make build DEBUG=false                        # native release build"
-	@echo "  make wasm-build                               # embedded WASM build (default)"
-	@echo "  make wasm-build SWIFT_MODE=wasm               # full WASM build"
-	@echo "  make wasm-build SWIFT_TC=main-snapshot         # embedded WASM (main toolchain)"
-	@echo "  make wasm-all SWIFT_MODE=wasm DEBUG=false      # clean + release WASM build"
+	@echo "  make build                                     # native debug build"
+	@echo "  make build DEBUG=false                         # native release build"
+	@echo "  make wasm-build                                # WASM build (default mode: wasm)"
+	@echo "  make wasm-build SWIFT_MODE=embedded            # embedded WASM build"
+	@echo "  make wasm-build SWIFT_TC=6.3-snapshot          # WASM build (6.3 toolchain)"
+	@echo "  make wasm-all DEBUG=false                      # clean + release WASM build"
+	@echo "  make wasm-all SWIFT_MODE=embedded DEBUG=false  # clean + release embedded build"
 
+.PHONY: swift-setup
 swift-setup: ## Install and activate Swift toolchain (SWIFT_TC)
 	swiftly install $(SWIFT_TC) && swiftly use $(SWIFT_TC)
 
+.PHONY: serve
 serve: ## Start local dev server
 	pnpx serve .
 
+.PHONY: build
 build: ## Native Swift build (SWIFT_TC, DEBUG)
 	$(SWIFT_TC_USE) swift build $(SWIFT_SDK_USE) -c $(BUILD_CONFIG)
 
+.PHONY: test
 test: ## Run Swift tests
 	swift test
 
+.PHONY: clean
 clean: ## Clean build artifacts
 	swift package clean
 
+.PHONY: resolve
 resolve: ## Resolve Swift package dependencies
 	swift package resolve
 
+.PHONY: format
 format: ## Format Swift source code
 	swift format --in-place --recursive Sources Tests Demos
 
+.PHONY: generate-apinotes
 generate-apinotes: ## Generate Dawn API notes
 	swift package --allow-writing-to-package-directory generate-dawn-apinotes
 
+.PHONY: demo-gameoflife
 demo-gameoflife: ## Run GameOfLife demo
 	swift run GameOfLife
 
+.PHONY: demo-bitonic
 demo-bitonic: ## Run BitonicSort demo
 	swift run BitonicSort
 
+.PHONY: wasm-build-bridgejs
 wasm-build-bridgejs: ## Generate BridgeJS bindings (SWIFT_MODE, SWIFT_TC)
 	$(SWIFT_TC_USE) SWAN_WASM=1 swift package --swift-sdk $(_WASM_SDK) plugin --allow-writing-to-package-directory bridge-js
 
+.PHONY: wasm-build
 wasm-build: wasm-build-bridgejs ## WASM build, depends on bridgejs (SWIFT_MODE, SWIFT_TC, DEBUG)
 	$(SWIFT_TC_USE) SWAN_WASM=1 swift build --swift-sdk $(_WASM_SDK) --target WebGPU -c $(BUILD_CONFIG)
 
+.PHONY: wasm-all
 wasm-all: clean wasm-build ## Clean + full WASM build
 
-wasm-demo-bitonic: ## Build and serve BitonicSort WASM demo (SWIFT_MODE, SWIFT_TC)
+.PHONY: wasm-demo-bitonic
+wasm-demo-bitonic: wasm-build ## Build and serve BitonicSort WASM demo (SWIFT_MODE, SWIFT_TC)
 	$(SWIFT_TC_USE) SWAN_WASM=1 swift package --swift-sdk $(_WASM_SDK) js --product BitonicSort -c $(BUILD_CONFIG) && pnpx serve .
