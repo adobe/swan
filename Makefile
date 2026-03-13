@@ -27,6 +27,8 @@ help: ## Show this help
 	@echo "Current toolchain: $(_SWIFT_TC)"
 	@echo "Derived SDK:       $(SWIFT_SDK)"
 	@echo ""
+	@echo "WASM SDK versions can be downloaded from: https://github.com/swiftwasm/swift/releases"
+	@echo ""
 	@echo "Examples:"
 	@echo "  make build                                     # native debug build"
 	@echo "  make build DEBUG=0                             # native release build"
@@ -49,9 +51,26 @@ debug: ## Echo all Make variables
 swift-setup: ## Install and activate Swift toolchain
 	swiftly install && swiftly use
 
-.PHONY: serve
-serve: ## Start local dev server
-	pnpx serve .
+.PHONY: sdk-download
+sdk-download: ## Open the download page for the current SWIFT_SDK
+	@sdk="$(SWIFT_SDK)"; \
+	tag="swift-wasm-$${sdk%-wasm32-*}"; \
+	url="https://github.com/swiftwasm/swift/releases/tag/$${tag}"; \
+	echo "$$url"; \
+	if command -v open >/dev/null 2>&1; then \
+		open "$$url"; \
+	elif command -v xdg-open >/dev/null 2>&1; then \
+		xdg-open "$$url"; \
+	fi
+
+.PHONY: sdk-install
+sdk-install: ## Download and install the current SWIFT_SDK
+	@sdk="$(SWIFT_SDK)"; \
+	tag="swift-wasm-$${sdk%-wasm32-*}"; \
+	url="https://github.com/swiftwasm/swift/releases/download/$${tag}/swift-wasm-$${sdk}.artifactbundle.zip"; \
+	checksum=$$(curl -sL "$${url}.sha256" | awk '{ print $$1 }'); \
+	echo "Installing: swift-wasm-$${sdk}"; \
+	swift sdk install "$${url}" --checksum "$${checksum}"
 
 .PHONY: build
 build: ## Native Swift build (DEBUG)
@@ -77,12 +96,12 @@ format: ## Format Swift source code
 generate-apinotes: ## Generate Dawn API notes
 	swift package --allow-writing-to-package-directory generate-dawn-apinotes
 
-.PHONY: demo-gameoflife
-demo-gameoflife: ## Run GameOfLife demo
+.PHONY: run-gameoflife
+run-gameoflife: ## Run GameOfLife demo
 	swift run GameOfLife
 
-.PHONY: demo-bitonic
-demo-bitonic: ## Run BitonicSort demo
+.PHONY: run-bitonic
+run-bitonic: ## Run BitonicSort demo
 	swift run BitonicSort
 
 .PHONY: wasm-build-bridgejs
@@ -96,6 +115,10 @@ wasm-build: wasm-build-bridgejs ## WASM build, depends on bridgejs (SWIFT_MODE, 
 .PHONY: wasm-all
 wasm-all: clean wasm-build ## Clean + full WASM build
 
+.PHONY: wasm-build-bitonic
+wasm-build-bitonic: wasm-build-bridgejs ## WASM build BitonicSort, depends on bridgejs (SWIFT_MODE, DEBUG)
+	SWAN_WASM=1 swift build --swift-sdk $(SWIFT_SDK) --target BitonicSort -c $(BUILD_CONFIG)
+
 .PHONY: wasm-demo-bitonic
-wasm-demo-bitonic: wasm-build ## Build and serve BitonicSort WASM demo (SWIFT_MODE)
+wasm-run-bitonic: wasm-build-bitonic ## Build and serve BitonicSort WASM demo (SWIFT_MODE)
 	SWAN_WASM=1 swift package --swift-sdk $(SWIFT_SDK) js --product BitonicSort -c $(BUILD_CONFIG) && pnpx serve .
