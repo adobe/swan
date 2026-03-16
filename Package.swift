@@ -15,6 +15,8 @@ let wasmPlatforms: [Platform] = [.wasi]
 
 let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"] != nil
 let isWasmBuild: Bool = ProcessInfo.processInfo.environment["SWAN_WASM"] != nil
+// When set, lowers the macOS deployment target to 14 for compatibility with PS CI machines.
+let buildMacOS14: Bool = ProcessInfo.processInfo.environment["BUILD_MACOS14"] == "1"
 
 #if os(Windows)
 let useAddressSanitizer: Bool = false
@@ -24,11 +26,19 @@ let useAddressSanitizer: Bool = ProcessInfo.processInfo.environment["USE_ADDRESS
 let usePDBDebugInfo: Bool = false
 #endif
 
+let dawnArtifactURL: String? = ProcessInfo.processInfo.environment["DAWN_ARTIFACT_URL"]
+
 let dawnTarget: Target = {
 	if swanLocalDawn {
 		return .binaryTarget(
 			name: "DawnLib",
 			path: "Dawn/dist/dawn_webgpu.artifactbundle"
+		)
+	} else if let dawnArtifactURL {
+		return .binaryTarget(
+			name: "DawnLib",
+			url: dawnArtifactURL,
+			checksum: ProcessInfo.processInfo.environment["DAWN_ARTIFACT_CHECKSUM"] ?? ""
 		)
 	} else {
 		return .binaryTarget(
@@ -67,8 +77,8 @@ let asanLinkerSettings: [LinkerSetting] =
 let package = Package(
 	name: "Swan",
 	platforms: [
-		.macOS(.v15),  // macOS 15
-		.iOS(.v18),  // iOS 18 (or adjust the version as needed)
+		.macOS(buildMacOS14 ? .v14 : .v15),
+		.iOS(.v18),
 	],
 	products: [
 		.library(
@@ -87,14 +97,15 @@ let package = Package(
 	]),
 	dependencies: [
 		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.47.1"),
+		.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.7.0"),
+		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
+		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
+	] + (buildMacOS14 ? [] : [
 		.package(
 			url: "https://github.com/swiftlang/swift-testing.git",
 			from: "6.2.4"
 		),
-		.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.7.0"),
-		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
-		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-	],
+	]),
 	targets: isWasmBuild ? [
 		.target(
 			name: "EmbeddedStubs",
@@ -292,6 +303,9 @@ let package = Package(
 				.linkedLibrary("c++", .when(platforms: [.macOS])),
 			]
 		),
+	] + (buildMacOS14 ? [] : [
+		// swift-testing uses unsafe build flags which SPM rejects when targeting macOS 14.
+		// Test targets are excluded under BUILD_MACOS14 to avoid this.
 		.testTarget(
 			name: "CodeGenerationTests",
 			dependencies: [
@@ -318,5 +332,5 @@ let package = Package(
 				.linkedLibrary("dxguid", .when(platforms: [.windows])),
 			]
 		),
-	]
+	])
 )
