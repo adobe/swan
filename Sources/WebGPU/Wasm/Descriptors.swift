@@ -984,12 +984,13 @@ public struct GPUCreateComputePipelineAsyncCallbackInfo {
 		alphaToCoverageEnabled: Bool = false
 	) {
 		self.count = Int(count)
-		self.mask = Int(mask)
+		// Use bitPattern to avoid overflow on 32-bit WASM where Int is 32-bit
+		self.mask = Int(bitPattern: UInt(mask))
 		self.alphaToCoverageEnabled = alphaToCoverageEnabled
 	}
 
 	// Overload for BridgeJS compatibility — generated code passes Int for count and mask
-	public init(count: Int, mask: Int, alphaToCoverageEnabled: Bool = false) {
+	internal init(count: Int, mask: Int, alphaToCoverageEnabled: Bool = false) {
 		self.count = count
 		self.mask = mask
 		self.alphaToCoverageEnabled = alphaToCoverageEnabled
