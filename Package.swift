@@ -86,7 +86,7 @@ let package = Package(
 		),
 	]),
 	dependencies: [
-		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.47.0"),
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.47.1"),
 		.package(
 			url: "https://github.com/swiftlang/swift-testing.git",
 			from: "6.2.4"
