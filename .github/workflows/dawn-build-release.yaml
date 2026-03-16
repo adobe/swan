@@ -12,7 +12,7 @@ on:
       channel:
         description: "Chromium channel for Dawn"
         required: false
-        default: "canary"
+        default: "stable"
         type: choice
         options:
           - stable
