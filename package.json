@@ -3,6 +3,24 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.30.3+sha512.c961d1e0a2d8e354ecaa5166b822516668b7f44cb5bd95122d590dd81922f606f5473b6d23ec4a5be05e7fcd18e8488d47d978bbe981872f1145d06e9a740017",
+  "config": {
+    "swift_sdk_wasm": "swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-14-a_wasm"
+  },
+  "scripts": {
+    "swift-setup": "swiftly install && swiftly use",
+    "build": "swift build",
+    "build:release": "swift build -c release",
+    "wasm:build": "BUILD_WASM=1 swift build --target WebGPU --swift-sdk $npm_package_config_swift_sdk_wasm",
+    "wasm:build:bridgejs": "BUILD_WASM=1 swift package plugin --allow-writing-to-package-directory bridge-js",
+    "wasm:demo:bitonic": "BUILD_WASM=1 swift package --swift-sdk $npm_package_config_swift_sdk_wasm js --product BitonicSort && pnpx serve .",
+    "test": "swift test",
+    "generate:apinotes": "swift package --allow-writing-to-package-directory generate-dawn-apinotes",
+    "demo:gameoflife": "swift run GameOfLife",
+    "demo:bitonic": "swift run BitonicSort",
+    "format": "swift format --in-place --recursive Sources Tests Demos",
+    "clean": "swift package clean",
+    "resolve": "swift package resolve"
+  },
   "dependencies": {
     "typescript": "5.9.3"
   }

@@ -54,7 +54,7 @@ swift build
 #### WASM builds
 The WASM SDK version is defined in `.wasm-sdk-version`. WASM builds need to set the swift-sdk and specify the WebGPU target in the build command:
 ```bash
-SWAN_WASM=1 swift build --target WebGPU --swift-sdk $(cat .wasm-sdk-version)
+BUILD_WASM=1 swift build --target WebGPU --swift-sdk $(cat .wasm-sdk-version)
 ```
 
 ### Testing
