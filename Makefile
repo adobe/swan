@@ -8,7 +8,8 @@ include .wasm-sdk-versions
 # e.g. 6.3-snapshot-2026-03-05 -> 6.3-snapshot
 _SWIFT_TC := $(shell cat .swift-version)
 _SDK_KEY  := $(firstword $(subst snapshot,snapshot ,$(_SWIFT_TC)))
-_SDK_BASE := $($(_SDK_KEY))
+# if CI is set to "true", _SDK_BASE should be the read from CI-SDK-VERSION from .wasm-sdk-versions
+_SDK_BASE := $(if $(filter true,$(CI)),$(CI-SDK-VERSION),$($(_SDK_KEY)))
 
 SWIFT_SDK ?= $(if $(_SDK_BASE),$(_SDK_BASE)$(if $(filter embedded,$(SWIFT_MODE)),-embedded))
 
@@ -39,6 +40,7 @@ help: ## Show this help
 
 .PHONY: debug
 debug: ## Echo all Make variables
+	@echo "CI: $(CI)"
 	@echo "DEBUG: $(DEBUG)"
 	@echo "BUILD_CONFIG: $(BUILD_CONFIG)"
 	@echo "SWIFT_MODE: $(SWIFT_MODE)"

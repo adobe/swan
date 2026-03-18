@@ -18,20 +18,16 @@ jobs:
         with:
           node-version: 24
 
-      - name: Read Swift version
-        id: swift-version
-        run: echo "version=$(cat .swift-version)" >> "$GITHUB_OUTPUT"
-
       - uses: swift-actions/setup-swift@v3
         with:
-          swift-version: "${{ steps.swift-version.outputs.version }}"
+          swift-version: "main-snapshot"
           skip-verify-signature: true
 
       - name: Install Swift WASM SDK
         run: make sdk-install
 
-      - name: Build WebGPU
-        run: make wasm-build
+      - name: Build WebGPU (Embedded)
+        run: make wasm-build SWIFT_MODE=embedded
 
-      - name: Build BitonicSort
-        run: make wasm-build-bitonic
+      - name: Build BitonicSort (Embedded)
+        run: make wasm-build-bitonic SWIFT_MODE=embedded
