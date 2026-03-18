@@ -1,6 +1,6 @@
 # Build Swift for WASM to verify the WebGPU WASM backend compiles.
 
-name: Build (WASM)
+name: Build (WASM - Embedded)
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build (WASM)
+    name: Build (WASM - Embedded)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
