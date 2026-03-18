@@ -35,3 +35,9 @@ jobs:
 
       - name: Build BitonicSort
         run: make wasm-build-bitonic
+
+      - name: Build WebGPU (Embedded)
+        run: make wasm-build SWIFT_MODE=embedded
+
+      - name: Build BitonicSort (Embedded)
+        run: make wasm-build-bitonic SWIFT_MODE=embedded
