@@ -2,14 +2,14 @@ SWIFT_MODE ?=
 DEBUG      ?= 1
 
 # Load SDK versions as Make variables (6.3-snapshot=..., main-snapshot=...)
-include .wasm-sdk-versions
+include .swan-config
 
 # Strip everything after "snapshot" to get SDK key
 # e.g. 6.3-snapshot-2026-03-05 -> 6.3-snapshot
 _SWIFT_TC := $(shell cat .swift-version)
 _SDK_KEY  := $(firstword $(subst snapshot,snapshot ,$(_SWIFT_TC)))
-# if CI is set to "true", _SDK_BASE should be the read from CI-SDK-VERSION from .wasm-sdk-versions
-_SDK_BASE := $(if $(filter true,$(CI)),$(CI-SDK-VERSION),$($(_SDK_KEY)))
+# if CI is set to "true", _SDK_BASE should be read from CI_SDK_VERSION in .swan-config
+_SDK_BASE := $(if $(filter true,$(CI)),$(CI_SDK_VERSION),$($(_SDK_KEY)))
 
 SWIFT_SDK ?= $(if $(_SDK_BASE),$(_SDK_BASE)$(if $(filter embedded,$(SWIFT_MODE)),-embedded))
 
