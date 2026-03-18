@@ -179,7 +179,15 @@ let package = Package(
 		),
 		.plugin(
 			name: "GenerateDawnBindingsPlugin",
-			capability: .buildTool(),
+			capability: .command(
+				intent: .custom(
+					verb: "generate-dawn-bindings-swift",
+					description: "Generate Swift Dawn bindings from dawn.json"
+				),
+				permissions: [
+					.writeToPackageDirectory(reason: "Generate Swift binding files into Sources/Dawn/Generated/")
+				]
+			),
 			dependencies: [
 				"GenerateDawnBindings"
 			]
@@ -223,7 +231,6 @@ let package = Package(
 			dependencies: [
 				"CDawn",
 				"DawnLib",
-				"GenerateDawnBindingsPlugin",
 			],
 			swiftSettings: swiftSettings,
 			linkerSettings: asanLinkerSettings
