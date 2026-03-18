@@ -27,13 +27,8 @@ jobs:
           swift-version: "${{ steps.swift-version.outputs.version }}"
           skip-verify-signature: true
 
-      - name: Read WASM SDK version
-        id: wasm-sdk-version
-        run: echo "tag=$(grep '^CI=' .wasm-sdk-versions | cut -d'=' -f2 | sed 's/_wasm$//')" >> "$GITHUB_OUTPUT"
-
-      - uses: swiftwasm/setup-swiftwasm@v2
-        with:
-          tag: "${{ steps.wasm-sdk-version.outputs.tag }}"
+      - name: Install Swift WASM SDK
+        run: make sdk-install
 
       - name: Build WebGPU
         run: make wasm-build

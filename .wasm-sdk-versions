@@ -1,3 +1,3 @@
-CI=swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a_wasm
+CI=6.3-SNAPSHOT-2026-02-27-a-wasm32-unknown-wasip1
 6.3-snapshot=swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a_wasm
 main-snapshot=swift-DEVELOPMENT-SNAPSHOT-2026-03-09-a_wasm
