@@ -29,14 +29,26 @@ jobs:
           swift-version: "${{ steps.swift-version.outputs.version }}"
           skip-verify-signature: true
 
+      - name: Check Swift version
+        run: swift --version
+
       - name: Install main-snapshot Swift Toolchain
         run: swiftly install --use main-snapshot --assume-yes
+
+      - name: Check Swift version again
+        run: swift --version
 
       - name: Install Swift WASM SDK
         run: make sdk-install
 
       - name: Build WebGPU (Embedded)
-        run: make wasm-build SWIFT_MODE=embedded
+        run: |
+          swiftly install --use main-snapshot --assume-yes
+          swift --version
+          make wasm-build SWIFT_MODE=embedded
 
       - name: Build BitonicSort (Embedded)
-        run: make wasm-build-bitonic SWIFT_MODE=embedded
+        run: |
+          swiftly install --use main-snapshot --assume-yes
+          swift --version
+          make wasm-build-bitonic SWIFT_MODE=embedded
