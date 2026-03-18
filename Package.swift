@@ -13,7 +13,7 @@ import PackageDescription
 let supportedNativePlatforms: [Platform] = [.macOS, .windows]
 let wasmPlatforms: [Platform] = [.wasi]
 
-let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"] != nil
+let swanLocalDawnPath: String? = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"].flatMap { $0.isEmpty ? nil : $0 }
 let isWasmBuild: Bool = ProcessInfo.processInfo.environment["SWAN_WASM"] != nil
 // When set, lowers the macOS deployment target to 14 for compatibility with PS CI machines.
 let buildMacOS14: Bool = ProcessInfo.processInfo.environment["BUILD_MACOS14"] == "1"
@@ -29,10 +29,10 @@ let usePDBDebugInfo: Bool = false
 let dawnArtifactURL: String? = ProcessInfo.processInfo.environment["DAWN_ARTIFACT_URL"]
 
 let dawnTarget: Target = {
-	if swanLocalDawn {
+	if let path = swanLocalDawnPath {
 		return .binaryTarget(
 			name: "DawnLib",
-			path: "Dawn/dist/dawn_webgpu.artifactbundle"
+			path: path
 		)
 	} else if let dawnArtifactURL {
 		return .binaryTarget(
