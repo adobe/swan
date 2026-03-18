@@ -18,10 +18,19 @@ jobs:
         with:
           node-version: 24
 
+      - name: Read Swift version
+        id: swift-version
+        run: echo "version=$(cat .swift-version)" >> "$GITHUB_OUTPUT"
+
+# setup-swift can install "main-snapshot" but fails in the version comparison check, cause it compares "main-snapshot" to "6.4"
+# therefore we install the main-snapshot manually with swiftly below
       - uses: swift-actions/setup-swift@v3
         with:
-          swift-version: "main-snapshot"
+          swift-version: "${{ steps.swift-version.outputs.version }}"
           skip-verify-signature: true
+
+      - name: Install main-snapshot Swift Toolchain
+        run: swiftly install --use main-snapshot --assume-yes
 
       - name: Install Swift WASM SDK
         run: make sdk-install
