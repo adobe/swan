@@ -84,253 +84,259 @@ let package = Package(
 		.library(
 			name: "WebGPU",
 			targets: ["WebGPU"]
-		),
-	] + (isWasmBuild ? [] : [
-		.plugin(
-			name: "GenerateDawnBindingsPlugin",
-			targets: ["GenerateDawnBindingsPlugin"]
-		),
-		.plugin(
-			name: "GenerateDawnAPINotesPlugin",
-			targets: ["GenerateDawnAPINotesPlugin"]
-		),
-	]),
+		)
+	]
+		+ (isWasmBuild
+			? []
+			: [
+				.plugin(
+					name: "GenerateDawnBindingsPlugin",
+					targets: ["GenerateDawnBindingsPlugin"]
+				),
+				.plugin(
+					name: "GenerateDawnAPINotesPlugin",
+					targets: ["GenerateDawnAPINotesPlugin"]
+				),
+			]),
 	dependencies: [
 		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.47.1"),
 		.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-	] + (buildMacOS14 ? [] : [
-		.package(
-			url: "https://github.com/swiftlang/swift-testing.git",
-			from: "6.2.4"
-		),
-	]),
-	targets: isWasmBuild ? [
-		.target(
-			name: "EmbeddedStubs",
-			path: "Sources/EmbeddedStubs"
-		),
-		.target(
-			name: "WebGPUWasm",
-			dependencies: [
-				.product(name: "JavaScriptKit", package: "JavaScriptKit")
-			],
-			path: "Sources/WebGPU/Wasm",
-			exclude: [
-				"Generated/README.md",
-				"Generated/JavaScript",
-				"bridge-js.config.json",
-			],
-			swiftSettings: swiftSettings + [
-				.enableExperimentalFeature("Extern"),
-				.treatWarning("EmbeddedRestrictions", as: .warning),
-			],
-			linkerSettings: asanLinkerSettings
-		),
-		.target(
-			name: "WebGPU",
-			dependencies: [
-				.target(name: "WebGPUWasm", condition: .when(platforms: wasmPlatforms)),
-			],
-			exclude: [
-				"Dawn",
-				"Wasm",
-			],
-			swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
-			linkerSettings: asanLinkerSettings
-		),
-		.executableTarget(
-			name: "BitonicSort",
-			dependencies: [
-				.target(name: "WebGPU"),
-				.target(name: "WebGPUWasm"),
-				.target(name: "EmbeddedStubs"),
-			],
-			path: "Demos/BitonicSort",
-			exclude: ["index.html"],
-			swiftSettings: swiftSettings + [.enableExperimentalFeature("Extern")],
-			plugins: [.plugin(name: "BridgeJS", package: "JavaScriptKit")]
-		),
-	] : [
-		dawnTarget,
-		.executableTarget(
-			name: "GenerateDawnBindings",
-			dependencies: [
-				.product(name: "ArgumentParser", package: "swift-argument-parser"),
-				.product(name: "SwiftSyntax", package: "swift-syntax"),
-				.product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
-				.product(name: "SwiftBasicFormat", package: "swift-syntax"),
-				.product(name: "SwiftFormat", package: "swift-format"),
-				"DawnData",
-			],
-			exclude: [
-				"README.md"
-			],
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings
-		),
-		.executableTarget(
-			name: "GenerateDawnAPINotes",
-			dependencies: [
-				"DawnData",
-			],
-			exclude: [
-				"README.md"
-			],
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings
-		),
-		.plugin(
-			name: "GenerateDawnBindingsPlugin",
-			capability: .buildTool(),
-			dependencies: [
-				"GenerateDawnBindings"
-			]
-		),
-		.plugin(
-			name: "GenerateDawnAPINotesPlugin",
-			capability: .command(
-				intent: .custom(
-					verb: "generate-dawn-apinotes",
-					description: "Generate Dawn APINotes from dawn.json"
-				),
-				permissions: [
-					.writeToPackageDirectory(reason: "Generate APINotes file")
+	]
+		+ (buildMacOS14
+			? []
+			: [
+				.package(
+					url: "https://github.com/swiftlang/swift-testing.git",
+					from: "6.2.4"
+				)
+			]),
+	targets: isWasmBuild
+		? [
+			.target(
+				name: "WebGPUWasm",
+				dependencies: [
+					.product(name: "JavaScriptKit", package: "JavaScriptKit")
+				],
+				path: "Sources/WebGPU/Wasm",
+				exclude: [
+					"Generated/README.md",
+					"Generated/JavaScript",
+					"bridge-js.config.json",
+				],
+				swiftSettings: swiftSettings + [
+					.enableExperimentalFeature("Extern"),
+					.treatWarning("EmbeddedRestrictions", as: .warning),
+				],
+				linkerSettings: asanLinkerSettings
+			),
+			.target(
+				name: "WebGPU",
+				dependencies: [
+					.target(name: "WebGPUWasm", condition: .when(platforms: wasmPlatforms))
+				],
+				exclude: [
+					"Dawn",
+					"Wasm",
+				],
+				swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
+				linkerSettings: asanLinkerSettings + [.linkedLibrary("swiftUnicodeDataTables")],
+			),
+			.executableTarget(
+				name: "BitonicSort",
+				dependencies: [
+					.target(name: "WebGPU"),
+					.target(name: "WebGPUWasm"),
+				],
+				path: "Demos/BitonicSort",
+				exclude: ["index.html"],
+				swiftSettings: swiftSettings + [.enableExperimentalFeature("Extern")],
+				plugins: [.plugin(name: "BridgeJS", package: "JavaScriptKit")]
+			),
+		]
+		: [
+			dawnTarget,
+			.executableTarget(
+				name: "GenerateDawnBindings",
+				dependencies: [
+					.product(name: "ArgumentParser", package: "swift-argument-parser"),
+					.product(name: "SwiftSyntax", package: "swift-syntax"),
+					.product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+					.product(name: "SwiftBasicFormat", package: "swift-syntax"),
+					.product(name: "SwiftFormat", package: "swift-format"),
+					"DawnData",
+				],
+				exclude: [
+					"README.md"
+				],
+				swiftSettings: swiftSettings,
+				linkerSettings: asanLinkerSettings
+			),
+			.executableTarget(
+				name: "GenerateDawnAPINotes",
+				dependencies: [
+					"DawnData"
+				],
+				exclude: [
+					"README.md"
+				],
+				swiftSettings: swiftSettings,
+				linkerSettings: asanLinkerSettings
+			),
+			.plugin(
+				name: "GenerateDawnBindingsPlugin",
+				capability: .buildTool(),
+				dependencies: [
+					"GenerateDawnBindings"
 				]
 			),
-			dependencies: [
-				"GenerateDawnAPINotes"
-			]
-		),
-		.target(
-			name: "CDawn",
-			dependencies: [
-				"DawnLib"
-			],
-			cxxSettings: [
-				.unsafeFlags(["-std=c++23"])
-			],
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings
-		),
-		.target(
-			name: "DawnData",
-			dependencies: [
-				"DawnLib",
-			],
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings
-		),
-		.target(
-			name: "Dawn",
-			dependencies: [
-				"CDawn",
-				"DawnLib",
-				"GenerateDawnBindingsPlugin",
-			],
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings
-		),
-		.target(
-			name: "WebGPUDawn",
-			dependencies: [
-				// WebGPUCore or similar core library for shared protocols and types ?
-				"Dawn"
-			],
-			path: "Sources/WebGPU/Dawn",
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings
-		),
-		.target(
-			name: "WebGPU",
-			dependencies: [
-				.target(name: "WebGPUDawn", condition: .when(platforms: supportedNativePlatforms)),
-			],
-			exclude: [
-				"Dawn",
-				"Wasm",
-			],
-			swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
-			linkerSettings: asanLinkerSettings
-		),
-		.target(
-			name: "RGFW",
-			path: "Demos/RGFW",
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings
-		),
-		.target(
-			name: "DemoUtils",
-			dependencies: [
-				"RGFW",
-				"WebGPU",
-			],
-			path: "Demos/DemoUtils",
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings + [
-				.linkedLibrary("dxgi", .when(platforms: [.windows])),
-				.linkedLibrary("d3d12", .when(platforms: [.windows])),
-				.linkedLibrary("dxguid", .when(platforms: [.windows])),
-			]
-		),
-		.executableTarget(
-			name: "GameOfLife",
-			dependencies: [
-				"DemoUtils"
-			],
-			path: "Demos/GameOfLife",
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings + [
-				.linkedFramework("Cocoa", .when(platforms: [.macOS])),
-				.linkedFramework("IOKit", .when(platforms: [.macOS])),
-				.linkedFramework("Metal", .when(platforms: [.macOS])),
-				.linkedLibrary("c++", .when(platforms: [.macOS])),
-			]
-		),
-		.executableTarget(
-			name: "BitonicSort",
-			dependencies: [
-				.target(name: "DemoUtils")
-			],
-			path: "Demos/BitonicSort",
-			exclude: ["index.html"],
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings + [
-				.linkedFramework("Cocoa", .when(platforms: [.macOS])),
-				.linkedFramework("IOKit", .when(platforms: [.macOS])),
-				.linkedFramework("Metal", .when(platforms: [.macOS])),
-				.linkedLibrary("c++", .when(platforms: [.macOS])),
-			]
-		),
-	] + (buildMacOS14 ? [] : [
-		// swift-testing uses unsafe build flags which SPM rejects when targeting macOS 14.
-		// Test targets are excluded under BUILD_MACOS14 to avoid this.
-		.testTarget(
-			name: "CodeGenerationTests",
-			dependencies: [
-				"GenerateDawnBindings",
-				"GenerateDawnAPINotes",
-				.product(name: "Testing", package: "swift-testing"),
-			],
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings
-		),
-		.testTarget(
-			name: "DawnTests",
-			dependencies: [
-				"WebGPU",
-				.product(name: "Testing", package: "swift-testing"),
-			],
-			swiftSettings: swiftSettings,
-			linkerSettings: asanLinkerSettings + [
-				.linkedFramework("IOSurface", .when(platforms: [.macOS])),
-				.linkedFramework("Metal", .when(platforms: [.macOS])),
-				.linkedFramework("QuartzCore", .when(platforms: [.macOS])),
-				.linkedLibrary("dxgi", .when(platforms: [.windows])),
-				.linkedLibrary("d3d12", .when(platforms: [.windows])),
-				.linkedLibrary("dxguid", .when(platforms: [.windows])),
-			]
-		),
-	])
+			.plugin(
+				name: "GenerateDawnAPINotesPlugin",
+				capability: .command(
+					intent: .custom(
+						verb: "generate-dawn-apinotes",
+						description: "Generate Dawn APINotes from dawn.json"
+					),
+					permissions: [
+						.writeToPackageDirectory(reason: "Generate APINotes file")
+					]
+				),
+				dependencies: [
+					"GenerateDawnAPINotes"
+				]
+			),
+			.target(
+				name: "CDawn",
+				dependencies: [
+					"DawnLib"
+				],
+				cxxSettings: [
+					.unsafeFlags(["-std=c++23"])
+				],
+				swiftSettings: swiftSettings,
+				linkerSettings: asanLinkerSettings
+			),
+			.target(
+				name: "DawnData",
+				dependencies: [
+					"DawnLib"
+				],
+				swiftSettings: swiftSettings,
+				linkerSettings: asanLinkerSettings
+			),
+			.target(
+				name: "Dawn",
+				dependencies: [
+					"CDawn",
+					"DawnLib",
+					"GenerateDawnBindingsPlugin",
+				],
+				swiftSettings: swiftSettings,
+				linkerSettings: asanLinkerSettings
+			),
+			.target(
+				name: "WebGPUDawn",
+				dependencies: [
+					// WebGPUCore or similar core library for shared protocols and types ?
+					"Dawn"
+				],
+				path: "Sources/WebGPU/Dawn",
+				swiftSettings: swiftSettings,
+				linkerSettings: asanLinkerSettings
+			),
+			.target(
+				name: "WebGPU",
+				dependencies: [
+					.target(name: "WebGPUDawn", condition: .when(platforms: supportedNativePlatforms))
+				],
+				exclude: [
+					"Dawn",
+					"Wasm",
+				],
+				swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
+				linkerSettings: asanLinkerSettings
+			),
+			.target(
+				name: "RGFW",
+				path: "Demos/RGFW",
+				swiftSettings: swiftSettings,
+				linkerSettings: asanLinkerSettings
+			),
+			.target(
+				name: "DemoUtils",
+				dependencies: [
+					"RGFW",
+					"WebGPU",
+				],
+				path: "Demos/DemoUtils",
+				swiftSettings: swiftSettings,
+				linkerSettings: asanLinkerSettings + [
+					.linkedLibrary("dxgi", .when(platforms: [.windows])),
+					.linkedLibrary("d3d12", .when(platforms: [.windows])),
+					.linkedLibrary("dxguid", .when(platforms: [.windows])),
+				]
+			),
+			.executableTarget(
+				name: "GameOfLife",
+				dependencies: [
+					"DemoUtils"
+				],
+				path: "Demos/GameOfLife",
+				swiftSettings: swiftSettings,
+				linkerSettings: asanLinkerSettings + [
+					.linkedFramework("Cocoa", .when(platforms: [.macOS])),
+					.linkedFramework("IOKit", .when(platforms: [.macOS])),
+					.linkedFramework("Metal", .when(platforms: [.macOS])),
+					.linkedLibrary("c++", .when(platforms: [.macOS])),
+				]
+			),
+			.executableTarget(
+				name: "BitonicSort",
+				dependencies: [
+					.target(name: "DemoUtils")
+				],
+				path: "Demos/BitonicSort",
+				exclude: ["index.html"],
+				swiftSettings: swiftSettings,
+				linkerSettings: asanLinkerSettings + [
+					.linkedFramework("Cocoa", .when(platforms: [.macOS])),
+					.linkedFramework("IOKit", .when(platforms: [.macOS])),
+					.linkedFramework("Metal", .when(platforms: [.macOS])),
+					.linkedLibrary("c++", .when(platforms: [.macOS])),
+				]
+			),
+		]
+			+ (buildMacOS14
+				? []
+				: [
+					// swift-testing uses unsafe build flags which SPM rejects when targeting macOS 14.
+					// Test targets are excluded under BUILD_MACOS14 to avoid this.
+					.testTarget(
+						name: "CodeGenerationTests",
+						dependencies: [
+							"GenerateDawnBindings",
+							"GenerateDawnAPINotes",
+							.product(name: "Testing", package: "swift-testing"),
+						],
+						swiftSettings: swiftSettings,
+						linkerSettings: asanLinkerSettings
+					),
+					.testTarget(
+						name: "DawnTests",
+						dependencies: [
+							"WebGPU",
+							.product(name: "Testing", package: "swift-testing"),
+						],
+						swiftSettings: swiftSettings,
+						linkerSettings: asanLinkerSettings + [
+							.linkedFramework("IOSurface", .when(platforms: [.macOS])),
+							.linkedFramework("Metal", .when(platforms: [.macOS])),
+							.linkedFramework("QuartzCore", .when(platforms: [.macOS])),
+							.linkedLibrary("dxgi", .when(platforms: [.windows])),
+							.linkedLibrary("d3d12", .when(platforms: [.windows])),
+							.linkedLibrary("dxguid", .when(platforms: [.windows])),
+						]
+					),
+				])
 )
