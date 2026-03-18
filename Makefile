@@ -8,8 +8,8 @@ include .swan-config
 # e.g. 6.3-snapshot-2026-03-05 -> 6.3-snapshot
 _SWIFT_TC := $(shell cat .swift-version)
 _SDK_KEY  := $(firstword $(subst snapshot,snapshot ,$(_SWIFT_TC)))
-# if CI is set to "true", _SDK_BASE should be read from CI_SDK_VERSION in .swan-config
-_SDK_BASE := $(if $(filter true,$(CI)),$(CI_SDK_VERSION),$($(_SDK_KEY)))
+# if CI is set to "true" and SWIFT_MODE is "embedded", _SDK_BASE should be read from CI_SDK_VERSION_EMBEDDED in .swan-config
+_SDK_BASE := $(if $(and $(filter true,$(CI)),$(filter embedded,$(SWIFT_MODE))),$(CI_SDK_VERSION_EMBEDDED),$($(_SDK_KEY)))
 
 SWIFT_SDK ?= $(if $(_SDK_BASE),$(_SDK_BASE)$(if $(filter embedded,$(SWIFT_MODE)),-embedded))
 

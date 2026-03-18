@@ -24,7 +24,7 @@ jobs:
 
       - name: Read CI versions
         id: ci-versions
-        run: echo "tc=$(grep '^CI_TC_VERSION=' .swan-config | cut -d= -f2)" >> "$GITHUB_OUTPUT"
+        run: echo "tc=$(grep '^CI_TC_VERSION_EMBEDDED=' .swan-config | cut -d= -f2)" >> "$GITHUB_OUTPUT"
 
       - uses: swift-actions/setup-swift@v3
         with:
