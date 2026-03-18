@@ -51,26 +51,9 @@ debug: ## Echo all Make variables
 swift-setup: ## Install and activate Swift toolchain
 	swiftly install && swiftly use
 
-.PHONY: sdk-download
-sdk-download: ## Open the download page for the current SWIFT_SDK
-	@sdk="$(SWIFT_SDK)"; \
-	tag="swift-wasm-$${sdk%-wasm32-*}"; \
-	url="https://github.com/swiftwasm/swift/releases/tag/$${tag}"; \
-	echo "$$url"; \
-	if command -v open >/dev/null 2>&1; then \
-		open "$$url"; \
-	elif command -v xdg-open >/dev/null 2>&1; then \
-		xdg-open "$$url"; \
-	fi
-
 .PHONY: sdk-install
 sdk-install: ## Download and install the current SWIFT_SDK
-	@sdk="$(SWIFT_SDK)"; \
-	tag="swift-wasm-$${sdk%-wasm32-*}"; \
-	url="https://github.com/swiftwasm/swift/releases/download/$${tag}/swift-wasm-$${sdk}.artifactbundle.zip"; \
-	checksum=$$(curl -sL "$${url}.sha256" | awk '{ print $$1 }'); \
-	echo "Installing: swift-wasm-$${sdk}"; \
-	swift sdk install "$${url}" --checksum "$${checksum}"
+	node Scripts/sdk-install.mjs "$(_SDK_BASE)"
 
 .PHONY: build
 build: ## Native Swift build (DEBUG)
