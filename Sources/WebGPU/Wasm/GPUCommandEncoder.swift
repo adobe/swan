@@ -16,12 +16,6 @@ public struct GPUCommandEncoder {
 		try! setLabel_(value)
 	}
 
-	@JSFunction(jsName: "beginRenderPass")
-	func _beginRenderPass(_ descriptor: GPURenderPassDescriptor) throws(JSException) -> GPURenderPassEncoder
-
-	@JSFunction(jsName: "beginComputePass")
-	func _beginComputePass(_ descriptor: GPUComputePassDescriptor) throws(JSException) -> GPUComputePassEncoder
-
 	@JSFunction(jsName: "finish")
 	func _finish(_ descriptor: GPUCommandBufferDescriptor) throws(JSException) -> GPUCommandBuffer
 
@@ -46,16 +40,82 @@ public struct GPUCommandEncoder {
 	@JSFunction(jsName: "writeTimestamp")
 	func _writeTimestamp(_ querySet: GPUQuerySet, _ queryIndex: Int) throws(JSException)
 
+	/// Manual beginRenderPass — BridgeJS serializes nil optional fields
+	/// (depthStencilAttachment, timestampWrites, clearValue, depthLoadOp, etc.)
+	/// as null, which WebGPU rejects.
 	public func beginRenderPass(descriptor: GPURenderPassDescriptor) -> GPURenderPassEncoder {
-		try! _beginRenderPass(descriptor)
+		let obj = JSObject.global.Object.function!.new()
+		if let l = descriptor.label { obj.label = .string(l) }
+
+		// colorAttachments
+		let colors = JSObject.global.Array.function!.new()
+		for (i, ca) in descriptor.colorAttachments.enumerated() {
+			let c = JSObject.global.Object.function!.new()
+			c.view = ca.view.jsObject.jsValue
+			c.loadOp = .string(ca.loadOp.rawValue)
+			c.storeOp = .string(ca.storeOp.rawValue)
+			if let cv = ca.clearValue {
+				let color = JSObject.global.Object.function!.new()
+				color.r = .number(cv.r)
+				color.g = .number(cv.g)
+				color.b = .number(cv.b)
+				color.a = .number(cv.a)
+				c.clearValue = color.jsValue
+			}
+			colors[i] = c.jsValue
+		}
+		obj.colorAttachments = colors.jsValue
+
+		// depthStencilAttachment (optional)
+		if let dsa = descriptor.depthStencilAttachment {
+			let d = JSObject.global.Object.function!.new()
+			d.view = dsa.view.jsObject.jsValue
+			if let op = dsa.depthLoadOp { d.depthLoadOp = .string(op.rawValue) }
+			if let op = dsa.depthStoreOp { d.depthStoreOp = .string(op.rawValue) }
+			d.depthClearValue = .number(dsa.depthClearValue)
+			d.depthReadOnly = .boolean(dsa.depthReadOnly)
+			if let op = dsa.stencilLoadOp { d.stencilLoadOp = .string(op.rawValue) }
+			if let op = dsa.stencilStoreOp { d.stencilStoreOp = .string(op.rawValue) }
+			d.stencilClearValue = .number(Double(dsa.stencilClearValue))
+			d.stencilReadOnly = .boolean(dsa.stencilReadOnly)
+			obj.depthStencilAttachment = d.jsValue
+		}
+
+		// timestampWrites (optional)
+		if let tw = descriptor.timestampWrites {
+			let t = JSObject.global.Object.function!.new()
+			t.querySet = tw.querySet.jsObject.jsValue
+			t.beginningOfPassWriteIndex = .number(Double(tw.beginningOfPassWriteIndex))
+			t.endOfPassWriteIndex = .number(Double(tw.endOfPassWriteIndex))
+			obj.timestampWrites = t.jsValue
+		}
+
+		let result = self.jsObject.beginRenderPass!(obj)
+		return GPURenderPassEncoder(unsafelyWrapping: result.object!)
 	}
 
+	/// Manual beginComputePass — BridgeJS serializes nil `timestampWrites` as null,
+	/// which WebGPU rejects ("not of type GPUComputePassTimestampWrites").
 	public func beginComputePass(descriptor: GPUComputePassDescriptor) -> GPUComputePassEncoder {
-		try! _beginComputePass(descriptor)
+		let obj = JSObject.global.Object.function!.new()
+		if let l = descriptor.label { obj.label = .string(l) }
+		if let tw = descriptor.timestampWrites {
+			let t = JSObject.global.Object.function!.new()
+			t.querySet = tw.querySet.jsObject.jsValue
+			t.beginningOfPassWriteIndex = .number(Double(tw.beginningOfPassWriteIndex))
+			t.endOfPassWriteIndex = .number(Double(tw.endOfPassWriteIndex))
+			obj.timestampWrites = t.jsValue
+		}
+		let result = self.jsObject.beginComputePass!(obj)
+		return GPUComputePassEncoder(unsafelyWrapping: result.object!)
 	}
 
 	public func beginComputePass(descriptor: GPUComputePassDescriptor?) -> GPUComputePassEncoder {
-		try! _beginComputePass(descriptor ?? GPUComputePassDescriptor())
+		if let d = descriptor {
+			return beginComputePass(descriptor: d)
+		}
+		let result = self.jsObject.beginComputePass!()
+		return GPUComputePassEncoder(unsafelyWrapping: result.object!)
 	}
 
 	public func finish(descriptor: GPUCommandBufferDescriptor) -> GPUCommandBuffer {
@@ -117,6 +177,9 @@ public struct GPUCommandEncoder {
 		sizeObj.depthOrArrayLayers = .number(Double(copySize.depthOrArrayLayers))
 		try! _copyBufferToTexture(srcObj, dstObj, sizeObj)
 	}
+
+	// copyTextureToTexture: not yet implemented — add when needed by client code.
+	// Follows the same manual JSObject construction pattern as copyTextureToBuffer.
 
 	public func resolveQuerySet(querySet: GPUQuerySet, firstQuery: UInt32, queryCount: UInt32, destination: GPUBuffer, destinationOffset: UInt64) {
 		try! _resolveQuerySet(querySet, Int(firstQuery), Int(queryCount), destination, Int(destinationOffset))
