@@ -7,6 +7,11 @@
 
 import JavaScriptKit
 
+@JS public enum GPUCanvasAlphaMode: String, Sendable {
+	case opaque = "opaque"
+	case premultiplied = "premultiplied"
+}
+
 @JS public enum GPUPrimitiveTopology: String, Sendable {
 	case pointList = "point-list"
 	case lineList = "line-list"
