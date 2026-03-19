@@ -13,7 +13,7 @@ import PackageDescription
 let supportedNativePlatforms: [Platform] = [.macOS, .windows]
 let wasmPlatforms: [Platform] = [.wasi]
 
-let swanLocalDawn: Bool = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"] != nil
+let swanLocalDawnPath: String? = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"].flatMap { $0.isEmpty ? nil : $0 }
 let isWasmBuild: Bool = ProcessInfo.processInfo.environment["SWAN_WASM"] != nil
 // When set, lowers the macOS deployment target to 14 for compatibility with PS CI machines.
 let buildMacOS14: Bool = ProcessInfo.processInfo.environment["BUILD_MACOS14"] == "1"
@@ -29,10 +29,10 @@ let usePDBDebugInfo: Bool = false
 let dawnArtifactURL: String? = ProcessInfo.processInfo.environment["DAWN_ARTIFACT_URL"]
 
 let dawnTarget: Target = {
-	if swanLocalDawn {
+	if let path = swanLocalDawnPath {
 		return .binaryTarget(
 			name: "DawnLib",
-			path: "Dawn/dist/dawn_webgpu.artifactbundle"
+			path: path
 		)
 	} else if let dawnArtifactURL {
 		return .binaryTarget(
@@ -44,8 +44,8 @@ let dawnTarget: Target = {
 		return .binaryTarget(
 			name: "DawnLib",
 			url:
-				"https://github.com/adobe/swan/releases/download/dawn-chromium-canary-147.0.7712.0/dawn-chromium-canary-147.0.7712.0-release.artifactbundleindex",
-			checksum: "ec22871c1022f5fa526cfa4a1872caf2dfda3fad705207903154330878e46430"
+				"https://github.com/adobe/swan/releases/download/dawn-chromium-stable-146.0.7680.80/dawn-chromium-stable-146.0.7680.80-release.artifactbundleindex",
+			checksum: "b73132650ff8bc1473eab58139d5294e731d1b45cb3681c034e16e653f666fbd"
 		)
 	}
 }()
@@ -186,7 +186,17 @@ let package = Package(
 			),
 			.plugin(
 				name: "GenerateDawnBindingsPlugin",
-				capability: .buildTool(),
+				capability: .command(
+					intent: .custom(
+						verb: "generate-dawn-bindings-swift",
+						description: "Generate Swift Dawn bindings from dawn.json"
+					),
+					permissions: [
+						.writeToPackageDirectory(
+							reason: "Generate Swift binding files into Sources/Dawn/Generated/"
+						)
+					]
+				),
 				dependencies: [
 					"GenerateDawnBindings"
 				]
@@ -230,7 +240,6 @@ let package = Package(
 				dependencies: [
 					"CDawn",
 					"DawnLib",
-					"GenerateDawnBindingsPlugin",
 				],
 				swiftSettings: swiftSettings,
 				linkerSettings: asanLinkerSettings

@@ -227,8 +227,6 @@ Enumerators:
   SwiftName: adapterPropertiesVk
 - Name: WGPUFeatureName_AdapterPropertiesWGPU
   SwiftName: adapterPropertiesWGPU
-- Name: WGPUFeatureName_AtomicVec2uMinMax
-  SwiftName: atomicVec2uMinMax
 - Name: WGPUFeatureName_BGRA8UnormStorage
   SwiftName: BGRA8UnormStorage
 - Name: WGPUFeatureName_BufferMapExtendedUsages
@@ -305,8 +303,6 @@ Enumerators:
   SwiftName: multiPlanarFormatP410
 - Name: WGPUFeatureName_MultiPlanarRenderTargets
   SwiftName: multiPlanarRenderTargets
-- Name: WGPUFeatureName_OpaqueYCbCrAndroidForExternalTexture
-  SwiftName: opaqueYCbCrAndroidForExternalTexture
 - Name: WGPUFeatureName_PixelLocalStorageCoherent
   SwiftName: pixelLocalStorageCoherent
 - Name: WGPUFeatureName_PixelLocalStorageNonCoherent
@@ -379,8 +375,6 @@ Enumerators:
   SwiftName: timestampQuery
 - Name: WGPUFeatureName_TransientAttachments
   SwiftName: transientAttachments
-- Name: WGPUFeatureName_Unorm16FormatsForExternalTexture
-  SwiftName: unorm16FormatsForExternalTexture
 - Name: WGPUFeatureName_Unorm16TextureFormats
   SwiftName: unorm16TextureFormats
 - Name: WGPUFeatureName_YCbCrVulkanSamplers
@@ -553,6 +547,8 @@ Enumerators:
   SwiftName: dawnInjectedInvalidSType
 - Name: WGPUSType_DawnInstanceDescriptor
   SwiftName: dawnInstanceDescriptor
+- Name: WGPUSType_DawnRenderPassColorAttachmentRenderToSingleSampled
+  SwiftName: dawnRenderPassColorAttachmentRenderToSingleSampled
 - Name: WGPUSType_DawnRenderPassSampleCount
   SwiftName: dawnRenderPassSampleCount
 - Name: WGPUSType_DawnShaderModuleSPIRVOptionsDescriptor
@@ -597,6 +593,8 @@ Enumerators:
   SwiftName: requestAdapterWebGPUBackendOptions
 - Name: WGPUSType_RequestAdapterWebXROptions
   SwiftName: requestAdapterWebXROptions
+- Name: WGPUSType_ResourceTableLimits
+  SwiftName: resourceTableLimits
 - Name: WGPUSType_ShaderModuleCompilationOptions
   SwiftName: shaderModuleCompilationOptions
 - Name: WGPUSType_ShaderSourceSPIRV
@@ -929,8 +927,8 @@ Enumerators:
   SwiftName: ETC2RGBA8Unorm
 - Name: WGPUTextureFormat_ETC2RGBA8UnormSrgb
   SwiftName: ETC2RGBA8UnormSrgb
-- Name: WGPUTextureFormat_OpaqueYCbCrAndroid
-  SwiftName: opaqueYCbCrAndroid
+- Name: WGPUTextureFormat_External
+  SwiftName: External
 - Name: WGPUTextureFormat_R10X6BG10X6Biplanar420Unorm
   SwiftName: R10X6BG10X6Biplanar420Unorm
 - Name: WGPUTextureFormat_R10X6BG10X6Biplanar422Unorm
@@ -1171,8 +1169,6 @@ Enumerators:
   SwiftName: fragmentDepth
 - Name: WGPUWGSLLanguageFeatureName_ImmediateAddressSpace
   SwiftName: immediateAddressSpace
-- Name: WGPUWGSLLanguageFeatureName_LinearIndexing
-  SwiftName: linearIndexing
 - Name: WGPUWGSLLanguageFeatureName_Packed4x8IntegerDotProduct
   SwiftName: packed4x8IntegerDotProduct
 - Name: WGPUWGSLLanguageFeatureName_PointerCompositeAccess
@@ -1191,8 +1187,6 @@ Enumerators:
   SwiftName: texelBuffers
 - Name: WGPUWGSLLanguageFeatureName_TextureAndSamplerLet
   SwiftName: textureAndSamplerLet
-- Name: WGPUWGSLLanguageFeatureName_TextureFormatsTier1
-  SwiftName: textureFormatsTier1
 - Name: WGPUWGSLLanguageFeatureName_UniformBufferStandardLayout
   SwiftName: uniformBufferStandardLayout
 - Name: WGPUWGSLLanguageFeatureName_UnrestrictedPointerParameters
@@ -1307,6 +1301,8 @@ Functions:
   SwiftName: WGPUCommandEncoderImpl.resolveQuerySet(self:querySet:firstQuery:queryCount:destination:destinationOffset:)
 - Name: wgpuCommandEncoderSetLabel
   SwiftName: WGPUCommandEncoderImpl.setLabel(self:label:)
+- Name: wgpuCommandEncoderSetResourceTable
+  SwiftName: WGPUCommandEncoderImpl.setResourceTable(self:table:)
 - Name: wgpuCommandEncoderWriteBuffer
   SwiftName: WGPUCommandEncoderImpl.writeBuffer(self:buffer:bufferOffset:data:size:)
 - Name: wgpuCommandEncoderWriteTimestamp
@@ -1335,8 +1331,6 @@ Functions:
   SwiftName: WGPUComputePassEncoderImpl.setLabel(self:label:)
 - Name: wgpuComputePassEncoderSetPipeline
   SwiftName: WGPUComputePassEncoderImpl.setPipeline(self:pipeline:)
-- Name: wgpuComputePassEncoderSetResourceTable
-  SwiftName: WGPUComputePassEncoderImpl.setResourceTable(self:table:)
 - Name: wgpuComputePassEncoderWriteTimestamp
   SwiftName: WGPUComputePassEncoderImpl.writeTimestamp(self:querySet:queryIndex:)
 - Name: wgpuComputePipelineAddRef
@@ -1554,8 +1548,6 @@ Functions:
   SwiftName: WGPURenderBundleEncoderImpl.setLabel(self:label:)
 - Name: wgpuRenderBundleEncoderSetPipeline
   SwiftName: WGPURenderBundleEncoderImpl.setPipeline(self:pipeline:)
-- Name: wgpuRenderBundleEncoderSetResourceTable
-  SwiftName: WGPURenderBundleEncoderImpl.setResourceTable(self:table:)
 - Name: wgpuRenderBundleEncoderSetVertexBuffer
   SwiftName: WGPURenderBundleEncoderImpl.setVertexBuffer(self:slot:buffer:offset:size:)
 - Name: wgpuRenderBundleRelease
@@ -1606,8 +1598,6 @@ Functions:
   SwiftName: WGPURenderPassEncoderImpl.setLabel(self:label:)
 - Name: wgpuRenderPassEncoderSetPipeline
   SwiftName: WGPURenderPassEncoderImpl.setPipeline(self:pipeline:)
-- Name: wgpuRenderPassEncoderSetResourceTable
-  SwiftName: WGPURenderPassEncoderImpl.setResourceTable(self:table:)
 - Name: wgpuRenderPassEncoderSetScissorRect
   SwiftName: WGPURenderPassEncoderImpl.setScissorRect(self:x:y:width:height:)
 - Name: wgpuRenderPassEncoderSetStencilReference

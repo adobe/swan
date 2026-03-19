@@ -15,4 +15,4 @@ jobs:
   build-dawn-if-needed:
     uses: ./.github/workflows/dawn-check.yaml
     with:
-      channel: canary
+      channel: stable

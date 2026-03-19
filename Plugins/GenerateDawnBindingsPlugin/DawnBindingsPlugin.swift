@@ -6,60 +6,47 @@
 // it.
 //
 
+import Foundation
 import PackagePlugin
 
 @main
-struct DawnBindingsPlugin: BuildToolPlugin {
+struct DawnBindingsPlugin: CommandPlugin {
 
-	func createBuildCommands(
+	func performCommand(
 		context: PluginContext,
-		target: Target
-	) throws -> [Command] {
-		let dependencies: [TargetDependency] = target.dependencies
-
-		let dawnLib = dependencies.first(where: {
-			if case let .target(target) = $0 { return target.name == "DawnLib" } else { return false }
-		})
-		guard case let .target(target) = dawnLib else {
-			fatalError("\(target.name) does not depend on DawnLib")
+		arguments: [String]
+	) throws {
+		let package = context.package
+		guard let dawnLibTarget = package.targets.first(where: { $0.name == "DawnLib" }) else {
+			print("Error: Could not find DawnLib target.")
+			return
 		}
 
-		print("DawnLib: \(target.name)")
+		let dawnJsonURL = dawnLibTarget.directoryURL.appending(path: "dawn.json")
+		let outputDirectoryURL = package.directoryURL.appending(path: "Sources/Dawn/Generated")
+		let swiftFormatConfigURL = package.directoryURL.appending(path: ".swift-format")
 
-		let directoryURL = target.directoryURL
-		let dawnJsonURL = directoryURL.appending(path: "dawn.json")
-		print("Dawn JSON path: \(dawnJsonURL)")
-
-		let workingDirectoryURL = context.pluginWorkDirectoryURL
-		let targetDirectoryURL = context.package.directoryURL
-
-		print("Project directory: \(targetDirectoryURL)")
+		print("Dawn JSON path: \(dawnJsonURL.path)")
+		print("Output directory: \(outputDirectoryURL.path)")
 
 		let generatorTool = try context.tool(named: "GenerateDawnBindings")
 
-		let outputs = [
-			workingDirectoryURL.appending(path: "Bitmasks.swift"),
-			workingDirectoryURL.appending(path: "CallbackFunctions.swift"),
-			workingDirectoryURL.appending(path: "CallbackInfo.swift"),
-			workingDirectoryURL.appending(path: "Enums.swift"),
-			workingDirectoryURL.appending(path: "FunctionPointers.swift"),
-			workingDirectoryURL.appending(path: "Objects.swift"),
-			workingDirectoryURL.appending(path: "Structures.swift"),
+		let process = Process()
+		process.executableURL = generatorTool.url
+		process.arguments = [
+			"--dawn-json", dawnJsonURL.path,
+			"--output-directory", outputDirectoryURL.path,
+			"--swift-format-config", swiftFormatConfigURL.path,
 		]
 
-		return [
-			.buildCommand(
-				displayName: "Generate Dawn Bindings",
-				executable: generatorTool.url,
-				arguments: [
-					"--dawn-json", dawnJsonURL.path,
-					"--output-directory", workingDirectoryURL.path,
-					"--swift-format-config", targetDirectoryURL.appending(path: ".swift-format").path,
-				],
-				environment: [:],
-				inputFiles: [dawnJsonURL],
-				outputFiles: outputs
-			)
-		]
+		try process.run()
+		process.waitUntilExit()
+
+		if process.terminationStatus != 0 {
+			print("Error: Generator failed with exit code \(process.terminationStatus)")
+			return
+		}
+
+		print("Dawn bindings generation completed successfully!")
 	}
 }

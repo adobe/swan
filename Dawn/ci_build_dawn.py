@@ -86,7 +86,7 @@ def parse_args() -> argparse.Namespace:
     get_parser.add_argument(
         "--channel",
         choices=["stable", "beta", "canary"],
-        default="canary",
+        default="stable",
         help="Chromium channel to use for Dawn",
     )
 
