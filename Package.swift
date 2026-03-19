@@ -15,6 +15,7 @@ let wasmPlatforms: [Platform] = [.wasi]
 
 let swanLocalDawnPath: String? = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"].flatMap { $0.isEmpty ? nil : $0 }
 let isWasmBuild: Bool = ProcessInfo.processInfo.environment["SWAN_WASM"] != nil
+let isWasmEmbeddedBuild: Bool = ProcessInfo.processInfo.environment["SWIFT_MODE"] == "embedded"
 // When set, lowers the macOS deployment target to 14 for compatibility with PS CI machines.
 let buildMacOS14: Bool = ProcessInfo.processInfo.environment["BUILD_MACOS14"] == "1"
 
@@ -98,23 +99,20 @@ let package = Package(
 					targets: ["GenerateDawnAPINotesPlugin"]
 				),
 			]),
-	dependencies: isWasmBuild
-		? [
-			.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", branch: "cf7a4f31f1f191f4eea84bb79c6aeffbccb7140e")
-		]
-		: [
-			.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.7.0"),
-			.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
-			.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-		]
-			+ (buildMacOS14
-				? []
-				: [
-					.package(
-						url: "https://github.com/swiftlang/swift-testing.git",
-						from: "6.2.4"
-					)
-				]),
+	dependencies: [
+		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.47.1"),
+		.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.7.0"),
+		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
+		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
+	]
+		+ (buildMacOS14
+			? []
+			: [
+				.package(
+					url: "https://github.com/swiftlang/swift-testing.git",
+					from: "6.2.4"
+				)
+			]),
 	targets: isWasmBuild
 		? [
 			.target(
@@ -144,7 +142,8 @@ let package = Package(
 					"Wasm",
 				],
 				swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
-				linkerSettings: asanLinkerSettings
+				// Explicitly link swiftUnicodeDataTables for WASM embedded build
+				linkerSettings: asanLinkerSettings + (isWasmEmbeddedBuild ? [.linkedLibrary("swiftUnicodeDataTables")] : [])
 			),
 			.executableTarget(
 				name: "BitonicSort",

@@ -1,6 +1,6 @@
 # Build Swift for WASM to verify the WebGPU WASM backend compiles.
 
-name: Build (WASM)
+name: Build (WASM - Embedded)
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build (WASM)
+    name: Build (WASM - Embedded)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -22,16 +22,20 @@ jobs:
         id: swift-version
         run: echo "version=$(cat .swift-version)" >> "$GITHUB_OUTPUT"
 
+      - name: Read CI versions
+        id: ci-versions
+        run: echo "tc=$(grep '^CI_TC_VERSION_EMBEDDED=' .swan-config | cut -d= -f2)" >> "$GITHUB_OUTPUT"
+
       - uses: swift-actions/setup-swift@v3
         with:
-          swift-version: "${{ steps.swift-version.outputs.version }}"
+          swift-version: "${{ steps.ci-versions.outputs.tc }}"
           skip-verify-signature: true
 
       - name: Install Swift WASM SDK
         run: make sdk-install
 
-      - name: Build WebGPU
-        run: make wasm-build
+      - name: Build WebGPU (Embedded)
+        run: make wasm-build SWIFT_MODE=embedded
 
-      - name: Build BitonicSort
-        run: make wasm-build-bitonic
+      - name: Build BitonicSort (Embedded)
+        run: make wasm-build-bitonic SWIFT_MODE=embedded

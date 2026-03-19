@@ -1,0 +1,6 @@
+CI_TC_VERSION_EMBEDDED=main-snapshot-2026-03-09
+CI_SDK_VERSION_EMBEDDED=swift-DEVELOPMENT-SNAPSHOT-2026-03-09-a_wasm
+
+# Versions matching a toolchain from Makefile
+6.3-snapshot=swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a_wasm
+main-snapshot=swift-DEVELOPMENT-SNAPSHOT-2026-03-09-a_wasm
