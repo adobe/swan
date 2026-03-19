@@ -53,8 +53,7 @@ public struct GPUBuffer {
 
 	@discardableResult
 	public func mapAsync(mode: GPUMapMode, offset: Int, size: Int, callbackInfo: GPUBufferMapCallbackInfo) -> GPUFuture {
-		let modeVal = mode == .read ? 1 : 2
-		let promise = JSPromise(unsafelyWrapping: try! _mapAsync(modeVal, offset, size))
+		let promise = JSPromise(unsafelyWrapping: try! _mapAsync(Int(mode.rawValue), offset, size))
 		promise.then(
 			success: { _ in
 				callbackInfo.callback(.success, nil)
@@ -71,10 +70,22 @@ public struct GPUBuffer {
 	@JSFunction(jsName: "getMappedRange")
 	func _getMappedRange(_ offset: Int, _ size: Int) throws(JSException) -> JSObject
 
-	// Reading from a mapped GPUBuffer is not yet implemented on WASM.
-	// TODO: Implement read-back (e.g. allocate WASM heap, copy ArrayBuffer bytes, free on unmap).
+	// Raw-pointer mapped-range accessors are not supported on WASM (no stable WASM heap address).
 	public func getMappedRange(offset: Int, size: Int) -> UnsafeMutableRawPointer? { return nil }
 	public func getConstMappedRange(offset: Int, size: Int) -> UnsafeRawPointer? { return nil }
+
+	@discardableResult
+	public func readMappedRange(offset: Int, data: UnsafeMutableRawPointer, size: Int) -> GPUStatus {
+		guard let arrayBuffer = try? _getMappedRange(offset, size) else { return .error }
+		let uint8Array = JSObject.global.Uint8Array.function!.new(arrayBuffer)
+		let dest = data.assumingMemoryBound(to: UInt8.self)
+		for i in 0..<size {
+			if let val = uint8Array[i].number {
+				dest[i] = UInt8(val)
+			}
+		}
+		return .success
+	}
 
 	@discardableResult
 	public func writeMappedRange(offset: Int, data: UnsafeRawBufferPointer) -> GPUStatus {
