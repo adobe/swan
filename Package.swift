@@ -15,6 +15,7 @@ let wasmPlatforms: [Platform] = [.wasi]
 
 let swanLocalDawnPath: String? = ProcessInfo.processInfo.environment["SWAN_LOCAL_DAWN"].flatMap { $0.isEmpty ? nil : $0 }
 let isWasmBuild: Bool = ProcessInfo.processInfo.environment["SWAN_WASM"] != nil
+let isWasmEmbeddedBuild: Bool = ProcessInfo.processInfo.environment["SWIFT_MODE"] == "embedded"
 // When set, lowers the macOS deployment target to 14 for compatibility with PS CI machines.
 let buildMacOS14: Bool = ProcessInfo.processInfo.environment["BUILD_MACOS14"] == "1"
 
@@ -141,7 +142,8 @@ let package = Package(
 					"Wasm",
 				],
 				swiftSettings: swiftSettings + [.treatWarning("EmbeddedRestrictions", as: .warning)],
-				linkerSettings: asanLinkerSettings + [.linkedLibrary("swiftUnicodeDataTables")],
+				// Explicitly link swiftUnicodeDataTables for WASM embedded build
+				linkerSettings: asanLinkerSettings + (isWasmEmbeddedBuild ? [.linkedLibrary("swiftUnicodeDataTables")] : [])
 			),
 			.executableTarget(
 				name: "BitonicSort",
