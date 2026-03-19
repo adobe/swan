@@ -33,8 +33,8 @@ import JavaScriptKit
 		self.mappedAtCreation = mappedAtCreation
 	}
 
-	// Overload for BridgeJS compatibility — generated code passes Int for usage and size
-	public init(label: String? = nil, usage: Int, size: Int, mappedAtCreation: Bool = false) {
+	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
+	internal init(label: String? = nil, usage: Int, size: Int, mappedAtCreation: Bool = false) {
 		self.label = label
 		self.usage = usage
 		self.size = size
@@ -57,7 +57,14 @@ import JavaScriptKit
 	public var offset: Int
 	public var shaderLocation: Int
 
-	public init(format: GPUVertexFormat, offset: Int, shaderLocation: Int) {
+	public init(format: GPUVertexFormat, offset: UInt64, shaderLocation: UInt32) {
+		self.format = format
+		self.offset = Int(offset)
+		self.shaderLocation = Int(shaderLocation)
+	}
+
+	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
+	internal init(format: GPUVertexFormat, offset: Int, shaderLocation: Int) {
 		self.format = format
 		self.offset = offset
 		self.shaderLocation = shaderLocation
@@ -70,6 +77,17 @@ import JavaScriptKit
 	public var attributes: [GPUVertexAttribute]
 
 	public init(
+		stepMode: GPUVertexStepMode = .vertex,
+		arrayStride: UInt64,
+		attributes: [GPUVertexAttribute]
+	) {
+		self.arrayStride = Int(arrayStride)
+		self.stepMode = stepMode
+		self.attributes = attributes
+	}
+
+	// Required by BridgeJS: generated bridge code calls this init with Int-typed values in this parameter order.
+	internal init(
 		arrayStride: Int,
 		stepMode: GPUVertexStepMode = .vertex,
 		attributes: [GPUVertexAttribute]
@@ -136,8 +154,8 @@ import JavaScriptKit
 		self.writeMask = Int(writeMask.rawValue)
 	}
 
-	// Overload for BridgeJS compatibility — generated code passes Int for writeMask
-	public init(format: GPUTextureFormat, blend: GPUBlendState? = nil, writeMask: Int) {
+	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
+	internal init(format: GPUTextureFormat, blend: GPUBlendState? = nil, writeMask: Int) {
 		self.format = format
 		self.blend = blend
 		self.writeMask = writeMask
@@ -205,8 +223,30 @@ import JavaScriptKit
 	public var stencilClearValue: Int   // UInt32 stored as Int for BridgeJS
 	public var stencilReadOnly: Bool
 
-	// Primary init — uses stored types (Double/Int) for BridgeJS compatibility
 	public init(
+		view: GPUTextureView,
+		depthLoadOp: GPULoadOp? = nil,
+		depthStoreOp: GPUStoreOp? = nil,
+		depthClearValue: Float = 1.0,
+		depthReadOnly: Bool = false,
+		stencilLoadOp: GPULoadOp? = nil,
+		stencilStoreOp: GPUStoreOp? = nil,
+		stencilClearValue: UInt32 = 0,
+		stencilReadOnly: Bool = false
+	) {
+		self.view = view
+		self.depthLoadOp = depthLoadOp
+		self.depthStoreOp = depthStoreOp
+		self.depthClearValue = Double(depthClearValue)
+		self.depthReadOnly = depthReadOnly
+		self.stencilLoadOp = stencilLoadOp
+		self.stencilStoreOp = stencilStoreOp
+		self.stencilClearValue = Int(stencilClearValue)
+		self.stencilReadOnly = stencilReadOnly
+	}
+
+	// Required by BridgeJS: generated bridge code calls this init with Int/Double-typed values.
+	internal init(
 		view: GPUTextureView,
 		depthLoadOp: GPULoadOp? = nil,
 		depthStoreOp: GPUStoreOp? = nil,
@@ -226,24 +266,6 @@ import JavaScriptKit
 		self.stencilStoreOp = stencilStoreOp
 		self.stencilClearValue = stencilClearValue
 		self.stencilReadOnly = stencilReadOnly
-	}
-
-	// Convenience init — Float/UInt32 for Dawn API compatibility
-	public init(
-		view: GPUTextureView,
-		depthLoadOp: GPULoadOp? = nil,
-		depthStoreOp: GPUStoreOp? = nil,
-		depthClearValue: Float,
-		depthReadOnly: Bool = false,
-		stencilLoadOp: GPULoadOp? = nil,
-		stencilStoreOp: GPUStoreOp? = nil,
-		stencilClearValue: UInt32 = 0,
-		stencilReadOnly: Bool = false
-	) {
-		self.init(view: view, depthLoadOp: depthLoadOp, depthStoreOp: depthStoreOp,
-			depthClearValue: Double(depthClearValue), depthReadOnly: depthReadOnly,
-			stencilLoadOp: stencilLoadOp, stencilStoreOp: stencilStoreOp,
-			stencilClearValue: Int(stencilClearValue), stencilReadOnly: stencilReadOnly)
 	}
 }
 
@@ -307,7 +329,6 @@ import JavaScriptKit
 	public var depthBiasSlopeScale: Double  // Float stored as Double for BridgeJS
 	public var depthBiasClamp: Double       // Float stored as Double for BridgeJS
 
-	// Primary init — uses stored types (Int/Double) for BridgeJS compatibility
 	public init(
 		format: GPUTextureFormat,
 		depthWriteEnabled: Bool = false,
@@ -334,8 +355,7 @@ import JavaScriptKit
 
 }
 
-// 3D geometry types (@JS — passed to WebGPU JS methods; fields use Int for
-// BridgeJS compatibility; UInt32 convenience inits are provided for callers)
+// 3D geometry types (@JS — passed to WebGPU JS methods; fields use Int for BridgeJS compatibility)
 @JS public struct GPUExtent3D {
 	public var width: Int
 	public var height: Int
@@ -347,8 +367,8 @@ import JavaScriptKit
 		self.depthOrArrayLayers = Int(depthOrArrayLayers)
 	}
 
-	// Overload for BridgeJS compatibility — generated code passes Int for all fields
-	public init(width: Int, height: Int, depthOrArrayLayers: Int = 1) {
+	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
+	internal init(width: Int, height: Int, depthOrArrayLayers: Int = 1) {
 		self.width = width
 		self.height = height
 		self.depthOrArrayLayers = depthOrArrayLayers
@@ -395,8 +415,8 @@ import JavaScriptKit
 		self.usage = Int(usage.rawValue)
 	}
 
-	// Overload for BridgeJS compatibility — generated code uses this parameter order and passes Int for usage, mipLevelCount, and sampleCount
-	public init(
+	// Required by BridgeJS: generated bridge code calls this init with Int-typed values in this parameter order.
+	internal init(
 		label: String? = nil,
 		size: GPUExtent3D,
 		mipLevelCount: Int,
@@ -496,7 +516,14 @@ import JavaScriptKit
 	public var type: GPUQueryType
 	public var count: Int
 
-	public init(label: String? = nil, type: GPUQueryType, count: Int) {
+	public init(label: String? = nil, type: GPUQueryType, count: UInt32) {
+		self.label = label
+		self.type = type
+		self.count = Int(count)
+	}
+
+	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
+	internal init(label: String? = nil, type: GPUQueryType, count: Int) {
 		self.label = label
 		self.type = type
 		self.count = count
@@ -510,7 +537,14 @@ import JavaScriptKit
 	public var beginningOfPassWriteIndex: Int  // UInt32 stored as Int for BridgeJS
 	public var endOfPassWriteIndex: Int        // UInt32 stored as Int for BridgeJS
 
-	public init(querySet: GPUQuerySet, beginningOfPassWriteIndex: Int = 0, endOfPassWriteIndex: Int = 0) {
+	public init(querySet: GPUQuerySet, beginningOfPassWriteIndex: UInt32, endOfPassWriteIndex: UInt32) {
+		self.querySet = querySet
+		self.beginningOfPassWriteIndex = Int(beginningOfPassWriteIndex)
+		self.endOfPassWriteIndex = Int(endOfPassWriteIndex)
+	}
+
+	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
+	internal init(querySet: GPUQuerySet, beginningOfPassWriteIndex: Int = 0, endOfPassWriteIndex: Int = 0) {
 		self.querySet = querySet
 		self.beginningOfPassWriteIndex = beginningOfPassWriteIndex
 		self.endOfPassWriteIndex = endOfPassWriteIndex
@@ -575,8 +609,8 @@ public struct GPUTexelCopyTextureInfo {
 		self.minBindingSize = Int(minBindingSize)
 	}
 
-	// Overload for BridgeJS compatibility — generated code passes Int for minBindingSize
-	public init(type: GPUBufferBindingType, hasDynamicOffset: Bool, minBindingSize: Int) {
+	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
+	internal init(type: GPUBufferBindingType, hasDynamicOffset: Bool, minBindingSize: Int) {
 		self.type = type
 		self.hasDynamicOffset = hasDynamicOffset
 		self.minBindingSize = minBindingSize
@@ -631,7 +665,8 @@ public struct GPUTexelCopyTextureInfo {
 	public var texture: GPUTextureBindingLayout?
 	public var storageTexture: GPUStorageTextureBindingLayout?
 
-	public init(
+	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
+	internal init(
 		binding: Int,
 		visibility: Int,
 		buffer: GPUBufferBindingLayout? = nil,
@@ -989,8 +1024,8 @@ public struct GPUCreateComputePipelineAsyncCallbackInfo {
 		self.alphaToCoverageEnabled = alphaToCoverageEnabled
 	}
 
-	// Overload for BridgeJS compatibility — generated code passes Int for count and mask
-	internal init(count: Int, mask: Int, alphaToCoverageEnabled: Bool = false) {
+	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
+	@usableFromInline internal init(count: Int, mask: Int, alphaToCoverageEnabled: Bool = false) {
 		self.count = count
 		self.mask = mask
 		self.alphaToCoverageEnabled = alphaToCoverageEnabled
