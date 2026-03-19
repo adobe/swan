@@ -13,7 +13,7 @@ import subprocess
 import sys
 from typing import Dict, Any, Tuple
 
-DAWN_GIT_URL = "https://github.com/google/dawn.git"
+DAWN_GIT_URL = "https://dawn.googlesource.com/dawn"
 
 # URL endpoint for latest release info from the Chromium version history page.
 # We arbitrarily select the Windows platform for fetching the information to reduce the payload size.
@@ -31,7 +31,7 @@ class DawnSourceToolsDirectoryNotFoundError(DawnSourceDirectoryConfigurationErro
 # fmt: on
 
 
-def get_matching_dawn_for_chromium(channel: str = "canary") -> None:
+def get_matching_dawn_for_chromium(channel: str = "stable") -> None:
     """
     Get the Dawn version that matches the latest Chromium release for the given channel
     and write the version data to the dawn_version.json file.
@@ -71,7 +71,7 @@ def get_version() -> Dict[str, Any]:
         return json.load(f)
 
 
-def get_latest_chromium_version(channel: str = "canary") -> Tuple[str, str, str]:
+def get_latest_chromium_version(channel: str = "stable") -> Tuple[str, str, str]:
     """
     Get the version number of the most recently released version of Chromium.
 
