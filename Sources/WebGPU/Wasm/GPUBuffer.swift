@@ -7,8 +7,19 @@
 
 import JavaScriptKit
 
+// Holds WASM-allocated buffers from getConstMappedRange.
+// The browser exposes mapped buffer data as a JS ArrayBuffer, which is a separate
+// allocation from WASM linear memory. To return a valid raw pointer, we copy the
+// data into WASM linear memory here and free it in unmap().
+// A class (reference type) so that copies of the GPUBuffer struct share the same
+// storage and unmap() on any copy frees the right allocations.
+private final class MappedRangeStorage {
+	var allocations: [UnsafeMutablePointer<UInt8>] = []
+}
+
 @JSClass
 public struct GPUBuffer {
+	private var _mappedRanges: MappedRangeStorage = .init()
 	@JSGetter(jsName: "size") var _size: Int
 
 	public var size: Int {
@@ -70,9 +81,22 @@ public struct GPUBuffer {
 	@JSFunction(jsName: "getMappedRange")
 	func _getMappedRange(_ offset: Int, _ size: Int) throws(JSException) -> JSObject
 
-	// Raw-pointer mapped-range accessors are not supported on WASM (no stable WASM heap address).
+	public func getConstMappedRange(offset: Int, size: Int) -> UnsafeRawPointer? {
+		guard let arrayBuffer = try? _getMappedRange(offset, size) else { return nil }
+		let uint8Array = JSObject.global.Uint8Array.function!.new(arrayBuffer)
+		let ptr = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+		for i in 0..<size {
+			if let val = uint8Array[i].number {
+				ptr[i] = UInt8(val)
+			}
+		}
+		_mappedRanges.allocations.append(ptr)
+		return UnsafeRawPointer(ptr)
+	}
+
+	// On WASM, there is no stable pointer into JS ArrayBuffer memory, so a mutable raw pointer
+	// cannot be returned. Use writeMappedRange to write data into a mapped buffer instead.
 	public func getMappedRange(offset: Int, size: Int) -> UnsafeMutableRawPointer? { return nil }
-	public func getConstMappedRange(offset: Int, size: Int) -> UnsafeRawPointer? { return nil }
 
 	@discardableResult
 	public func readMappedRange(offset: Int, data: UnsafeMutableRawPointer, size: Int) -> GPUStatus {
@@ -102,6 +126,8 @@ public struct GPUBuffer {
 	func _unmap() throws(JSException)
 
 	public func unmap() {
+		for ptr in _mappedRanges.allocations { ptr.deallocate() }
+		_mappedRanges.allocations.removeAll()
 		try! _unmap()
 	}
 }
