@@ -67,6 +67,7 @@ swift run BitonicSort
 More docs to come...
 
 ```sh
+swift package plugin --allow-writing-to-package-directory generate-dawn-bindings-swift
 swift package plugin --allow-writing-to-package-directory generate-dawn-apinotes
 ```
 

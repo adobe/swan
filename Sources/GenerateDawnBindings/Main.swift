@@ -56,8 +56,10 @@ struct Main: ParsableCommand {
 		}
 
 		do {
+			let outputURL = URL(fileURLWithPath: outputDirectory)
+			try FileManager.default.createDirectory(at: outputURL, withIntermediateDirectories: true)
 			for (key, value) in wrappers {
-				let url = URL(fileURLWithPath: outputDirectory).appendingPathComponent("\(key).swift")
+				let url = outputURL.appendingPathComponent("\(key).swift")
 				try value.write(to: url, atomically: true, encoding: .utf8)
 			}
 		} catch {

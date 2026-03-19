@@ -5,4 +5,4 @@ use of unsafe pointers. In order to make a safer and more Swift-like API for Daw
 generate wrappers for some of the Dawn types, such as most of the structs and string
 views.
 
-This plugin handles the generation of wrapper code at build time.
+This command plugin handles the generation of wrapper code.
