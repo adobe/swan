@@ -11,6 +11,8 @@
 // holds `var instance: GPUInstance`, compiles on WASM. It must not be
 // instantiated or used at runtime on WASM.
 public struct GPUInstance {
+	public init() {}
+
 	// processEvents is a no-op on WASM — event processing is handled by the
 	// JavaScript event loop, not by Swift polling.
 	public func processEvents() {}
