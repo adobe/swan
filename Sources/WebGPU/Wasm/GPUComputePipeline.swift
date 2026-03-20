@@ -9,11 +9,11 @@ import JavaScriptKit
 
 @JS public struct GPUComputeState {
 	public var module: GPUShaderModule
-	public var entryPoint: String
+	public var entryPoint: String?
 
 	public init(
 		module: GPUShaderModule,
-		entryPoint: String
+		entryPoint: String? = nil
 	) {
 		self.module = module
 		self.entryPoint = entryPoint
@@ -22,12 +22,12 @@ import JavaScriptKit
 
 @JS public struct GPUComputePipelineDescriptor {
 	public var label: String?
-	public var layout: GPUPipelineLayout
+	public var layout: GPUPipelineLayout?
 	public var compute: GPUComputeState
 
 	public init(
 		label: String? = nil,
-		layout: GPUPipelineLayout,
+		layout: GPUPipelineLayout? = nil,
 		compute: GPUComputeState
 	) {
 		self.label = label

@@ -13,7 +13,7 @@ import JavaScriptKit
 
 	public init(
 		label: String? = nil,
-		bindGroupLayouts: [GPUBindGroupLayout]
+		bindGroupLayouts: [GPUBindGroupLayout] = []
 	) {
 		self.label = label
 		self.bindGroupLayouts = bindGroupLayouts
