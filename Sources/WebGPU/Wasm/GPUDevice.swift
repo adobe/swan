@@ -127,6 +127,9 @@ import JavaScriptKit
 		// primitive state
 		let prim = JSObject.global.Object.function!.new()
 		prim.topology = .string(descriptor.primitive.topology.rawValue)
+		if descriptor.primitive.stripIndexFormat != .undefined {
+			prim.stripIndexFormat = .string(descriptor.primitive.stripIndexFormat.rawValue)
+		}
 		prim.frontFace = .string(descriptor.primitive.frontFace.rawValue)
 		prim.cullMode = .string(descriptor.primitive.cullMode.rawValue)
 		obj.primitive = prim.jsValue
