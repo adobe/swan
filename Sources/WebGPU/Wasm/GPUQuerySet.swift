@@ -9,10 +9,10 @@ import JavaScriptKit
 
 @JSClass public struct GPUQuerySet {
 	// @JSSetter macro requires `set` prefix
-	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
+	@JSSetter(jsName: "label") func setLabel_(_ value: String) throws(JSException)
 
-	public func setLabel(_ value: String?) {
-		try! setLabel_(value)
+	public func setLabel(label: String) {
+		try! setLabel_(label)
 	}
 
 	@JSGetter(jsName: "type") var _type: String

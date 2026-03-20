@@ -9,9 +9,9 @@ import JavaScriptKit
 
 @JSClass public struct GPURenderPassEncoder {
 	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
-	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
+	@JSSetter(jsName: "label") func setLabel_(_ value: String) throws(JSException)
 
-	public func setLabel(label: String?) {
+	public func setLabel(label: String) {
 		try! setLabel_(label)
 	}
 
