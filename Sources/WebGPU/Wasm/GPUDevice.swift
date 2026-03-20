@@ -29,27 +29,14 @@ import JavaScriptKit
 	@JSFunction(jsName: "createTexture")
 	func _createTexture(_ descriptor: GPUTextureDescriptor) throws(JSException) -> GPUTexture
 
-	@JSFunction(jsName: "createSampler")
-	func _createSampler(_ descriptor: GPUSamplerDescriptor) throws(JSException) -> GPUSampler
-
 	@JSFunction(jsName: "createQuerySet")
 	func _createQuerySet(_ descriptor: GPUQuerySetDescriptor) throws(JSException) -> GPUQuerySet
 
 	@JSFunction(jsName: "createShaderModule")
 	func _createShaderModule(_ descriptor: GPUShaderModuleDescriptor) throws(JSException) -> GPUShaderModule
 
-	@JSFunction(jsName: "createRenderPipeline")
-	func _createRenderPipeline(_ descriptor: GPURenderPipelineDescriptor) throws(JSException) -> GPURenderPipeline
-
 	@JSFunction(jsName: "createCommandEncoder")
 	func _createCommandEncoder(_ descriptor: GPUCommandEncoderDescriptor) throws(JSException) -> GPUCommandEncoder
-
-	@JSFunction(jsName: "createBindGroupLayout")
-	func _createBindGroupLayout(_ descriptor: GPUBindGroupLayoutDescriptor) throws(JSException) -> GPUBindGroupLayout
-
-
-	@JSFunction(jsName: "createBindGroup")
-	func _createBindGroup(_ descriptor: GPUBindGroupDescriptor) throws(JSException) -> GPUBindGroup
 
 	@JSFunction(jsName: "createBindGroup")
 	func _createBindGroupRaw(_ descriptor: JSObject) throws(JSException) -> GPUBindGroup
