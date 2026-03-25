@@ -164,8 +164,14 @@ class TargetConfig:
         """
         vendor = "apple" if self.os.is_apple() else "unknown"
         os = self.os.value
+        if self.runtime:
+            suffix = f"-{self.runtime}"
+        elif self.os == OS.LINUX:
+            suffix = "-gnu"
+        else:
+            suffix = ""
         return [
-            f"{arch.value}-{vendor}-{os}{'-' + self.runtime if self.runtime else ''}"
+            f"{arch.value}-{vendor}-{os}{suffix}"
             for arch in self.arch
         ]
 
