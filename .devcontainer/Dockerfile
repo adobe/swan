@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     gnupg2 \
     libcurl4-openssl-dev \
     libpython3-dev \
+    libncurses-dev \
     libssl-dev \
     libx11-xcb-dev \
     libxcursor-dev \
