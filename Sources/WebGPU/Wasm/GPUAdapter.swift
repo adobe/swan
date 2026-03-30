@@ -39,8 +39,8 @@ import JavaScriptKit
 	// getLimits and getInfo cannot be fully implemented on WASM today.
 	// The JS API exposes these as `adapter.limits` and `adapter.info`, which are
 	// JS objects with many individual properties (35+ fields for GPULimits).
-	// BridgeJS only bridges scalar types; there is no mechanism to map a JS
-	// object with many properties into a Swift struct in one call. A proper
+	// BridgeJS has no mechanism to automatically map a JS object's properties
+	// into a Swift struct; each property requires its own @JSGetter. A proper
 	// implementation would require either: (a) a GPUSupportedLimits @JSClass
 	// with a @JSGetter per field and a manual transfer loop, or (b) a custom JS
 	// helper that serializes the data into a bridgeable form. Neither is in scope
