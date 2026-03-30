@@ -101,13 +101,13 @@ import JavaScriptKit
 @JS public struct GPUPrimitiveState {
 	public var topology: GPUPrimitiveTopology = .triangleList
 	public var stripIndexFormat: GPUIndexFormat = .undefined
-	public var frontFace: GPUFrontFace = .ccw
+	public var frontFace: GPUFrontFace = .CCW
 	public var cullMode: GPUCullMode = .none
 
 	public init(
 		topology: GPUPrimitiveTopology = .triangleList,
 		stripIndexFormat: GPUIndexFormat = .undefined,
-		frontFace: GPUFrontFace = .ccw,
+		frontFace: GPUFrontFace = .CCW,
 		cullMode: GPUCullMode = .none
 	) {
 		self.topology = topology

@@ -177,8 +177,8 @@ import JavaScriptKit
 }
 
 @JS public enum GPUFrontFace: String, Sendable {
-	case ccw = "ccw"
-	case cw = "cw"
+	case CCW = "ccw"
+	case CW = "cw"
 }
 
 @JS public enum GPUCullMode: String, Sendable {
@@ -395,10 +395,6 @@ public enum GPUDeviceLostReason: Sendable {
 	case failedCreation
 }
 
-public enum GPUMapMode: Sendable {
-	case read
-	case write
-}
 
 public enum GPUCallbackMode: Sendable {
 	case waitAnyOnly

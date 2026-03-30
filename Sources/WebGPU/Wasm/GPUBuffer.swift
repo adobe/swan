@@ -68,11 +68,11 @@ public struct GPUBuffer {
 		promise.then(
 			success: { _ in
 				callbackInfo.callback(.success, nil)
-				return .undefined
+				return JSValue.undefined
 			},
 			failure: { _ in
 				callbackInfo.callback(.error, "mapAsync failed")
-				return .undefined
+				return JSValue.undefined
 			}
 		)
 		return GPUFuture()

@@ -51,3 +51,11 @@ public struct GPUColorWriteMask: OptionSet, Sendable {
 	public static let alpha = GPUColorWriteMask(rawValue: 0x8)
 	public static let all = GPUColorWriteMask(rawValue: 0xF)
 }
+
+public struct GPUMapMode: OptionSet, Sendable {
+	public let rawValue: UInt32
+	public init(rawValue: UInt32) { self.rawValue = rawValue }
+
+	public static let read = GPUMapMode(rawValue: 0x0001)
+	public static let write = GPUMapMode(rawValue: 0x0002)
+}
