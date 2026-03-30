@@ -34,7 +34,7 @@ import JavaScriptKit
 	}
 
 	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
-	internal init(label: String? = nil, usage: Int, size: Int, mappedAtCreation: Bool = false) {
+	@usableFromInline internal init(label: String? = nil, usage: Int, size: Int, mappedAtCreation: Bool = false) {
 		self.label = label
 		self.usage = usage
 		self.size = size
@@ -64,7 +64,7 @@ import JavaScriptKit
 	}
 
 	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
-	internal init(format: GPUVertexFormat, offset: Int, shaderLocation: Int) {
+	@usableFromInline internal init(format: GPUVertexFormat, offset: Int, shaderLocation: Int) {
 		self.format = format
 		self.offset = offset
 		self.shaderLocation = shaderLocation
@@ -87,7 +87,7 @@ import JavaScriptKit
 	}
 
 	// Required by BridgeJS: generated bridge code calls this init with Int-typed values in this parameter order.
-	internal init(
+	@usableFromInline internal init(
 		arrayStride: Int,
 		stepMode: GPUVertexStepMode = .vertex,
 		attributes: [GPUVertexAttribute]
@@ -155,7 +155,7 @@ import JavaScriptKit
 	}
 
 	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
-	internal init(format: GPUTextureFormat, blend: GPUBlendState? = nil, writeMask: Int) {
+	@usableFromInline internal init(format: GPUTextureFormat, blend: GPUBlendState? = nil, writeMask: Int) {
 		self.format = format
 		self.blend = blend
 		self.writeMask = writeMask
@@ -246,7 +246,7 @@ import JavaScriptKit
 	}
 
 	// Required by BridgeJS: generated bridge code calls this init with Int/Double-typed values.
-	internal init(
+	@usableFromInline internal init(
 		view: GPUTextureView,
 		depthLoadOp: GPULoadOp? = nil,
 		depthStoreOp: GPUStoreOp? = nil,
@@ -368,7 +368,7 @@ import JavaScriptKit
 	}
 
 	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
-	internal init(width: Int, height: Int, depthOrArrayLayers: Int = 1) {
+	@usableFromInline internal init(width: Int, height: Int, depthOrArrayLayers: Int = 1) {
 		self.width = width
 		self.height = height
 		self.depthOrArrayLayers = depthOrArrayLayers
@@ -416,7 +416,7 @@ import JavaScriptKit
 	}
 
 	// Required by BridgeJS: generated bridge code calls this init with Int-typed values in this parameter order.
-	internal init(
+	@usableFromInline internal init(
 		label: String? = nil,
 		size: GPUExtent3D,
 		mipLevelCount: Int,
@@ -523,7 +523,7 @@ import JavaScriptKit
 	}
 
 	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
-	internal init(label: String? = nil, type: GPUQueryType, count: Int) {
+	@usableFromInline internal init(label: String? = nil, type: GPUQueryType, count: Int) {
 		self.label = label
 		self.type = type
 		self.count = count
@@ -544,7 +544,7 @@ import JavaScriptKit
 	}
 
 	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
-	internal init(querySet: GPUQuerySet, beginningOfPassWriteIndex: Int = 0, endOfPassWriteIndex: Int = 0) {
+	@usableFromInline internal init(querySet: GPUQuerySet, beginningOfPassWriteIndex: Int = 0, endOfPassWriteIndex: Int = 0) {
 		self.querySet = querySet
 		self.beginningOfPassWriteIndex = beginningOfPassWriteIndex
 		self.endOfPassWriteIndex = endOfPassWriteIndex
@@ -610,7 +610,7 @@ public struct GPUTexelCopyTextureInfo {
 	}
 
 	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
-	internal init(type: GPUBufferBindingType, hasDynamicOffset: Bool, minBindingSize: Int) {
+	@usableFromInline internal init(type: GPUBufferBindingType, hasDynamicOffset: Bool, minBindingSize: Int) {
 		self.type = type
 		self.hasDynamicOffset = hasDynamicOffset
 		self.minBindingSize = minBindingSize
@@ -666,7 +666,7 @@ public struct GPUTexelCopyTextureInfo {
 	public var storageTexture: GPUStorageTextureBindingLayout?
 
 	// Required by BridgeJS: generated bridge code calls this init with Int-typed values.
-	internal init(
+	@usableFromInline internal init(
 		binding: Int,
 		visibility: Int,
 		buffer: GPUBufferBindingLayout? = nil,

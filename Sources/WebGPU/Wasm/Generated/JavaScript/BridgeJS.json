@@ -10,6 +10,36 @@
             "associatedValues" : [
 
             ],
+            "name" : "opaque",
+            "rawValue" : "opaque"
+          },
+          {
+            "associatedValues" : [
+
+            ],
+            "name" : "premultiplied",
+            "rawValue" : "premultiplied"
+          }
+        ],
+        "emitStyle" : "const",
+        "explicitAccessControl" : "public",
+        "name" : "GPUCanvasAlphaMode",
+        "rawType" : "String",
+        "staticMethods" : [
+
+        ],
+        "staticProperties" : [
+
+        ],
+        "swiftCallName" : "GPUCanvasAlphaMode",
+        "tsFullPath" : "GPUCanvasAlphaMode"
+      },
+      {
+        "cases" : [
+          {
+            "associatedValues" : [
+
+            ],
             "name" : "pointList",
             "rawValue" : "point-list"
           },
@@ -4012,8 +4042,9 @@
             "isStatic" : false,
             "name" : "alphaMode",
             "type" : {
-              "string" : {
-
+              "rawValueEnum" : {
+                "_0" : "GPUCanvasAlphaMode",
+                "_1" : "String"
               }
             }
           }
@@ -4042,8 +4073,13 @@
             "isStatic" : false,
             "name" : "entryPoint",
             "type" : {
-              "string" : {
+              "nullable" : {
+                "_0" : {
+                  "string" : {
 
+                  }
+                },
+                "_1" : "null"
               }
             }
           }
@@ -4077,8 +4113,13 @@
             "isStatic" : false,
             "name" : "layout",
             "type" : {
-              "jsObject" : {
-                "_0" : "GPUPipelineLayout"
+              "nullable" : {
+                "_0" : {
+                  "jsObject" : {
+                    "_0" : "GPUPipelineLayout"
+                  }
+                },
+                "_1" : "null"
               }
             }
           },
@@ -4175,13 +4216,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -4211,13 +4247,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -4389,13 +4420,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -4477,13 +4503,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -4504,44 +4525,6 @@
 
             ],
             "methods" : [
-              {
-                "jsName" : "beginRenderPass",
-                "name" : "_beginRenderPass",
-                "parameters" : [
-                  {
-                    "name" : "descriptor",
-                    "type" : {
-                      "swiftStruct" : {
-                        "_0" : "GPURenderPassDescriptor"
-                      }
-                    }
-                  }
-                ],
-                "returnType" : {
-                  "jsObject" : {
-                    "_0" : "GPURenderPassEncoder"
-                  }
-                }
-              },
-              {
-                "jsName" : "beginComputePass",
-                "name" : "_beginComputePass",
-                "parameters" : [
-                  {
-                    "name" : "descriptor",
-                    "type" : {
-                      "swiftStruct" : {
-                        "_0" : "GPUComputePassDescriptor"
-                      }
-                    }
-                  }
-                ],
-                "returnType" : {
-                  "jsObject" : {
-                    "_0" : "GPUComputePassEncoder"
-                  }
-                }
-              },
               {
                 "jsName" : "finish",
                 "name" : "_finish",
@@ -4830,13 +4813,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -5047,13 +5025,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -5083,13 +5056,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -5157,25 +5125,6 @@
                 }
               },
               {
-                "jsName" : "createSampler",
-                "name" : "_createSampler",
-                "parameters" : [
-                  {
-                    "name" : "descriptor",
-                    "type" : {
-                      "swiftStruct" : {
-                        "_0" : "GPUSamplerDescriptor"
-                      }
-                    }
-                  }
-                ],
-                "returnType" : {
-                  "jsObject" : {
-                    "_0" : "GPUSampler"
-                  }
-                }
-              },
-              {
                 "jsName" : "createQuerySet",
                 "name" : "_createQuerySet",
                 "parameters" : [
@@ -5214,25 +5163,6 @@
                 }
               },
               {
-                "jsName" : "createRenderPipeline",
-                "name" : "_createRenderPipeline",
-                "parameters" : [
-                  {
-                    "name" : "descriptor",
-                    "type" : {
-                      "swiftStruct" : {
-                        "_0" : "GPURenderPipelineDescriptor"
-                      }
-                    }
-                  }
-                ],
-                "returnType" : {
-                  "jsObject" : {
-                    "_0" : "GPURenderPipeline"
-                  }
-                }
-              },
-              {
                 "jsName" : "createCommandEncoder",
                 "name" : "_createCommandEncoder",
                 "parameters" : [
@@ -5248,44 +5178,6 @@
                 "returnType" : {
                   "jsObject" : {
                     "_0" : "GPUCommandEncoder"
-                  }
-                }
-              },
-              {
-                "jsName" : "createBindGroupLayout",
-                "name" : "_createBindGroupLayout",
-                "parameters" : [
-                  {
-                    "name" : "descriptor",
-                    "type" : {
-                      "swiftStruct" : {
-                        "_0" : "GPUBindGroupLayoutDescriptor"
-                      }
-                    }
-                  }
-                ],
-                "returnType" : {
-                  "jsObject" : {
-                    "_0" : "GPUBindGroupLayout"
-                  }
-                }
-              },
-              {
-                "jsName" : "createBindGroup",
-                "name" : "_createBindGroup",
-                "parameters" : [
-                  {
-                    "name" : "descriptor",
-                    "type" : {
-                      "swiftStruct" : {
-                        "_0" : "GPUBindGroupDescriptor"
-                      }
-                    }
-                  }
-                ],
-                "returnType" : {
-                  "jsObject" : {
-                    "_0" : "GPUBindGroup"
                   }
                 }
               },
@@ -5385,13 +5277,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -5421,13 +5308,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -5485,13 +5367,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -5617,13 +5494,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -5968,13 +5840,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -6022,13 +5889,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -6058,13 +5920,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -6094,13 +5951,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -6207,13 +6059,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
@@ -6243,13 +6090,8 @@
                 "jsName" : "label",
                 "name" : "label_",
                 "type" : {
-                  "nullable" : {
-                    "_0" : {
-                      "string" : {
+                  "string" : {
 
-                      }
-                    },
-                    "_1" : "null"
                   }
                 }
               }
