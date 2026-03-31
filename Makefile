@@ -1,17 +1,10 @@
 SWIFT_MODE ?=
 DEBUG      ?= 1
 
-# Load SDK versions as Make variables (6.3-snapshot=..., main-snapshot=...)
+# Load WASM SDK configuration (WASM_SDK, WASM_SDK_EMBEDDED, WASM_SDK_URL)
 include .swan-config
 
-# Strip everything after "snapshot" to get SDK key
-# e.g. 6.3-snapshot-2026-03-05 -> 6.3-snapshot
-_SWIFT_TC := $(shell cat .swift-version)
-_SDK_KEY  := $(firstword $(subst snapshot,snapshot ,$(_SWIFT_TC)))
-# if CI is set to "true" and SWIFT_MODE is "embedded", _SDK_BASE should be read from CI_SDK_VERSION_EMBEDDED in .swan-config
-_SDK_BASE := $(if $(and $(filter true,$(CI)),$(filter embedded,$(SWIFT_MODE))),$(CI_SDK_VERSION_EMBEDDED),$($(_SDK_KEY)))
-
-SWIFT_SDK ?= $(if $(_SDK_BASE),$(_SDK_BASE)$(if $(filter embedded,$(SWIFT_MODE)),-embedded))
+SWIFT_SDK ?= $(if $(filter embedded,$(SWIFT_MODE)),$(WASM_SDK_EMBEDDED),$(WASM_SDK))
 
 BUILD_CONFIG := $(if $(filter 0 false,$(DEBUG)),release,debug)
 
@@ -21,14 +14,11 @@ help: ## Show this help
 		awk 'BEGIN {FS = ":.*## "}; {printf "  \033[36m%-25s\033[0m %s\n", $$1, $$2}'
 	@echo ""
 	@echo "Environment variables:"
-	@echo "  SWIFT_MODE  embedded (append -embedded to SDK)              Default: (none)"
-	@echo "  SWIFT_SDK   Override derived SDK                            Default: $(_SDK_BASE)"
-	@echo "  DEBUG       1 or true = debug, 0 or false = release         Default: 1"
+	@echo "  SWIFT_MODE  embedded (use embedded SDK)                      Default: (none)"
+	@echo "  SWIFT_SDK   Override derived SDK                             Default: $(SWIFT_SDK)"
+	@echo "  DEBUG       1 or true = debug, 0 or false = release          Default: 1"
 	@echo ""
-	@echo "Current toolchain: $(_SWIFT_TC)"
 	@echo "Derived SDK:       $(SWIFT_SDK)"
-	@echo ""
-	@echo "WASM SDK versions can be downloaded from: https://github.com/swiftwasm/swift/releases"
 	@echo ""
 	@echo "Examples:"
 	@echo "  make build                                     # native debug build"
@@ -45,17 +35,14 @@ debug: ## Echo all Make variables
 	@echo "BUILD_CONFIG: $(BUILD_CONFIG)"
 	@echo "SWIFT_MODE: $(SWIFT_MODE)"
 	@echo "SWIFT_SDK: $(SWIFT_SDK)"
-	@echo "_SWIFT_TC: $(_SWIFT_TC)"
-	@echo "_SDK_KEY: $(_SDK_KEY)"
-	@echo "_SDK_BASE: $(_SDK_BASE)"
 
 .PHONY: swift-setup
 swift-setup: ## Install and activate Swift toolchain
 	swiftly install && swiftly use
 
 .PHONY: sdk-install
-sdk-install: ## Download and install the current SWIFT_SDK
-	node Scripts/sdk-install.mjs "$(_SDK_BASE)"
+sdk-install: ## Download and install the WASM SDK
+	node Scripts/sdk-install.mjs "$(WASM_SDK_URL)" "$(WASM_SDK_CHECKSUM)"
 
 .PHONY: build
 build: ## Native Swift build (DEBUG)
