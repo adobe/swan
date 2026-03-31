@@ -1,6 +1,5 @@
-CI_TC_VERSION_EMBEDDED=main-snapshot-2026-03-09
-CI_SDK_VERSION_EMBEDDED=swift-DEVELOPMENT-SNAPSHOT-2026-03-09-a_wasm
-
-# Versions matching a toolchain from Makefile
-6.3-snapshot=swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a_wasm
-main-snapshot=swift-DEVELOPMENT-SNAPSHOT-2026-03-09-a_wasm
+# Swift WASM SDK configuration for 6.3 release
+WASM_SDK=swift-6.3-RELEASE_wasm
+WASM_SDK_EMBEDDED=swift-6.3-RELEASE_wasm-embedded
+WASM_SDK_URL=https://download.swift.org/swift-6.3-release/wasm-sdk/swift-6.3-RELEASE/swift-6.3-RELEASE_wasm.artifactbundle.tar.gz
+WASM_SDK_CHECKSUM=9fa4016ee632c7e9e906608ec3b55cf13dfc4dff44e47574c5af58064dc33fd9
