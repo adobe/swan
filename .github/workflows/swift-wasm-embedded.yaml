@@ -22,13 +22,9 @@ jobs:
         id: swift-version
         run: echo "version=$(cat .swift-version)" >> "$GITHUB_OUTPUT"
 
-      - name: Read CI versions
-        id: ci-versions
-        run: echo "tc=$(grep '^CI_TC_VERSION_EMBEDDED=' .swan-config | cut -d= -f2)" >> "$GITHUB_OUTPUT"
-
       - uses: swift-actions/setup-swift@v3
         with:
-          swift-version: "${{ steps.ci-versions.outputs.tc }}"
+          swift-version: "${{ steps.swift-version.outputs.version }}"
           skip-verify-signature: true
 
       - name: Install Swift WASM SDK
