@@ -32,16 +32,10 @@ jobs:
         shell: pwsh
         run: |
           $raw = (Get-Content .swift-version -Raw).Trim()
-          if ($raw -match '^\d+\.\d+\.\d+$') {
-            # Release version, e.g. "6.3.0"
-            $minor = ($raw -split '\.')[0..1] -join '.'
-            $tag = "swift-${minor}-RELEASE"
-            $branch = "swift-${minor}-release"
-          } else {
-            # Snapshot version, e.g. "6.3-snapshot-2026-02-27"
-            $tag = $raw -replace '(\d+\.\d+)-snapshot-(.+)', 'swift-$1-DEVELOPMENT-SNAPSHOT-$2-a'
-            $branch = $tag -replace 'swift-(\d+\.\d+)-.*', 'swift-$1-branch'
-          }
+          # .swift-version contains a release version, e.g. "6.3.0"
+          $minor = ($raw -split '\.')[0..1] -join '.'
+          $tag = "swift-${minor}-RELEASE"
+          $branch = "swift-${minor}-release"
           echo "tag=$tag" >> $env:GITHUB_OUTPUT
           echo "branch=$branch" >> $env:GITHUB_OUTPUT
           Write-Host "Swift download tag: $tag (branch: $branch)"

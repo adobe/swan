@@ -18,17 +18,17 @@ jobs:
         with:
           node-version: 24
 
-      - name: Read Swift version
-        id: swift-version
-        run: echo "version=$(cat .swift-version)" >> "$GITHUB_OUTPUT"
+      - name: Read CI versions
+        id: ci-versions
+        run: echo "tc=$(grep '^CI_TC_VERSION_EMBEDDED=' .swan-config | cut -d= -f2)" >> "$GITHUB_OUTPUT"
 
       - uses: swift-actions/setup-swift@v3
         with:
-          swift-version: "${{ steps.swift-version.outputs.version }}"
+          swift-version: "${{ steps.ci-versions.outputs.tc }}"
           skip-verify-signature: true
 
-      - name: Install Swift WASM SDK
-        run: make sdk-install
+      - name: Install Swift WASM SDK (main-snapshot for embedded)
+        run: make sdk-install-embedded
 
       - name: Build WebGPU (Embedded)
         run: make wasm-build SWIFT_MODE=embedded

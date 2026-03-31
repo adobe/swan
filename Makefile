@@ -44,6 +44,10 @@ swift-setup: ## Install and activate Swift toolchain
 sdk-install: ## Download and install the WASM SDK
 	node Scripts/sdk-install.mjs "$(WASM_SDK_URL)" "$(WASM_SDK_CHECKSUM)"
 
+.PHONY: sdk-install-embedded
+sdk-install-embedded: ## Download and install the embedded WASM SDK (main-snapshot)
+	node Scripts/sdk-install.mjs "$(WASM_SDK_URL_EMBEDDED)" "$(WASM_SDK_CHECKSUM_EMBEDDED)"
+
 .PHONY: build
 build: ## Native Swift build (DEBUG)
 	swift build -c $(BUILD_CONFIG)
