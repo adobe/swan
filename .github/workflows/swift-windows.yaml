@@ -32,17 +32,19 @@ jobs:
         shell: pwsh
         run: |
           $raw = (Get-Content .swift-version -Raw).Trim()
-          # .swift-version contains e.g. "6.3-snapshot-2026-02-27"
-          # Convert to Swift download tag: "swift-6.3-DEVELOPMENT-SNAPSHOT-2026-02-27-a"
-          $tag = $raw -replace '(\d+\.\d+)-snapshot-(.+)', 'swift-$1-DEVELOPMENT-SNAPSHOT-$2-a'
+          # .swift-version contains a release version, e.g. "6.3.0"
+          $minor = ($raw -split '\.')[0..1] -join '.'
+          $tag = "swift-${minor}-RELEASE"
+          $branch = "swift-${minor}-release"
           echo "tag=$tag" >> $env:GITHUB_OUTPUT
-          Write-Host "Swift download tag: $tag"
+          echo "branch=$branch" >> $env:GITHUB_OUTPUT
+          Write-Host "Swift download tag: $tag (branch: $branch)"
 
       - name: Download Swift installer
         shell: pwsh
         run: |
           $tag = "${{ steps.swift-version.outputs.tag }}"
-          $branch = $tag -replace 'swift-(\d+\.\d+)-.*', 'swift-$1-branch'
+          $branch = "${{ steps.swift-version.outputs.branch }}"
           $platform = "${{ matrix.platform }}"
           $url = "https://download.swift.org/$branch/$platform/$tag/$tag-$platform.exe"
           $out = Join-Path $env:TEMP "swift-installer.exe"
