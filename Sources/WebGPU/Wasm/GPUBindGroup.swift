@@ -23,6 +23,14 @@ import JavaScriptKit
 	}
 }
 
+// GPUBindingResource is a union of buffer binding, texture view, and sampler.
+// On WASM, we represent this as an enum to support all three resource types.
+public enum GPUBindingResource {
+	case buffer(GPUBufferBinding)
+	case textureView(GPUTextureView)
+	case sampler(GPUSampler)
+}
+
 @JS public struct GPUBindGroupEntry {
 	public var binding: Int
 	public var resource: GPUBufferBinding
@@ -35,11 +43,46 @@ import JavaScriptKit
 		self.resource = resource
 	}
 
-	public init(binding: UInt32, buffer: GPUBuffer, offset: UInt64, size: UInt64) {
-		self.init(
-			binding: Int(binding),
-			resource: GPUBufferBinding(buffer: buffer, offset: Int(offset), size: Int(size))
-		)
+	// Convenience initializers matching Dawn API for buffer bindings
+	public init(binding: UInt32, buffer: GPUBuffer, offset: UInt64 = 0, size: UInt64) {
+		let sizeVal = size == UInt64.max ? nil : Int(size)
+		self.init(binding: Int(binding), resource: GPUBufferBinding(buffer: buffer, offset: Int(offset), size: sizeVal))
+	}
+
+	public init(binding: Int, buffer: GPUBuffer, offset: UInt64 = 0, size: UInt64) {
+		let sizeVal = size == UInt64.max ? nil : Int(size)
+		self.init(binding: binding, resource: GPUBufferBinding(buffer: buffer, offset: Int(offset), size: sizeVal))
+	}
+
+	// Whole-buffer convenience inits (no offset/size)
+	public init(binding: UInt32, buffer: GPUBuffer) {
+		self.init(binding: Int(binding), resource: GPUBufferBinding(buffer: buffer))
+	}
+
+	public init(binding: Int, buffer: GPUBuffer) {
+		self.init(binding: binding, resource: GPUBufferBinding(buffer: buffer))
+	}
+}
+
+// Extended entry type supporting texture views and samplers.
+public struct GPUBindGroupEntryEx {
+	public var binding: Int
+	public var resource: GPUBindingResource
+
+	public init(binding: Int, buffer: GPUBuffer, offset: UInt64 = 0, size: UInt64) {
+		let sizeVal = size == UInt64.max ? nil : Int(size)
+		self.binding = binding
+		self.resource = .buffer(GPUBufferBinding(buffer: buffer, offset: Int(offset), size: sizeVal))
+	}
+
+	public init(binding: Int, textureView: GPUTextureView) {
+		self.binding = binding
+		self.resource = .textureView(textureView)
+	}
+
+	public init(binding: Int, sampler: GPUSampler) {
+		self.binding = binding
+		self.resource = .sampler(sampler)
 	}
 }
 
@@ -61,9 +104,9 @@ import JavaScriptKit
 
 @JSClass public struct GPUBindGroup {
 	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
-	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
+	@JSSetter(jsName: "label") func setLabel_(_ value: String) throws(JSException)
 
-	public func setLabel(_ value: String?) {
-		try! setLabel_(value)
+	public func setLabel(label: String) {
+		try! setLabel_(label)
 	}
 }

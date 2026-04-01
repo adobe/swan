@@ -13,7 +13,7 @@ import JavaScriptKit
 
 	public init(
 		label: String? = nil,
-		bindGroupLayouts: [GPUBindGroupLayout]
+		bindGroupLayouts: [GPUBindGroupLayout] = []
 	) {
 		self.label = label
 		self.bindGroupLayouts = bindGroupLayouts
@@ -22,9 +22,9 @@ import JavaScriptKit
 
 @JSClass public struct GPUPipelineLayout {
 	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
-	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
+	@JSSetter(jsName: "label") func setLabel_(_ value: String) throws(JSException)
 
-	public func setLabel(_ value: String?) {
-		try! setLabel_(value)
+	public func setLabel(label: String) {
+		try! setLabel_(label)
 	}
 }

@@ -18,7 +18,7 @@ nonisolated(unsafe) var demo: BitonicSortDemo!
 ) {
 	let device = GPUDevice(unsafelyWrapping: deviceJS)
 	let context = GPUCanvasContext(unsafelyWrapping: contextJS)
-	let format = GPUTextureFormat(rawValue: formatString) ?? .bgra8unorm
+	let format = GPUTextureFormat(rawValue: formatString) ?? .BGRA8Unorm
 
 	demo = BitonicSortDemo(device: device, context: context, format: format)
 }

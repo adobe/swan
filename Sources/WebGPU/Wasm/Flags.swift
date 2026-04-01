@@ -41,13 +41,21 @@ public struct GPUTextureUsage: OptionSet, Sendable {
 	public static let renderAttachment = GPUTextureUsage(rawValue: 0x10)
 }
 
-public struct GPUColorWrite: OptionSet, Sendable {
+public struct GPUColorWriteMask: OptionSet, Sendable {
 	public let rawValue: UInt32
 	public init(rawValue: UInt32) { self.rawValue = rawValue }
 
-	public static let red = GPUColorWrite(rawValue: 0x1)
-	public static let green = GPUColorWrite(rawValue: 0x2)
-	public static let blue = GPUColorWrite(rawValue: 0x4)
-	public static let alpha = GPUColorWrite(rawValue: 0x8)
-	public static let all = GPUColorWrite(rawValue: 0xF)
+	public static let red = GPUColorWriteMask(rawValue: 0x1)
+	public static let green = GPUColorWriteMask(rawValue: 0x2)
+	public static let blue = GPUColorWriteMask(rawValue: 0x4)
+	public static let alpha = GPUColorWriteMask(rawValue: 0x8)
+	public static let all = GPUColorWriteMask(rawValue: 0xF)
+}
+
+public struct GPUMapMode: OptionSet, Sendable {
+	public let rawValue: UInt32
+	public init(rawValue: UInt32) { self.rawValue = rawValue }
+
+	public static let read = GPUMapMode(rawValue: 0x0001)
+	public static let write = GPUMapMode(rawValue: 0x0002)
 }

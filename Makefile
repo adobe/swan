@@ -91,19 +91,19 @@ run-bitonic: ## Run BitonicSort demo
 
 .PHONY: wasm-build-bridgejs
 wasm-build-bridgejs: ## Generate BridgeJS bindings (SWIFT_MODE)
-	SWAN_WASM=1 swift package --swift-sdk $(SWIFT_SDK) plugin --allow-writing-to-package-directory bridge-js
+	BUILD_WASM=1 swift package --swift-sdk $(SWIFT_SDK) plugin --allow-writing-to-package-directory bridge-js
 
 .PHONY: wasm-build
 wasm-build: wasm-build-bridgejs ## WASM build, depends on bridgejs (SWIFT_MODE, DEBUG)
-	SWAN_WASM=1 swift build --swift-sdk $(SWIFT_SDK) --target WebGPU -c $(BUILD_CONFIG)
+	BUILD_WASM=1 swift build --swift-sdk $(SWIFT_SDK) --target WebGPU -c $(BUILD_CONFIG)
 
 .PHONY: wasm-all
 wasm-all: clean wasm-build ## Clean + full WASM build
 
 .PHONY: wasm-build-bitonic
 wasm-build-bitonic: wasm-build-bridgejs ## WASM build BitonicSort, depends on bridgejs (SWIFT_MODE, DEBUG)
-	SWAN_WASM=1 swift build --swift-sdk $(SWIFT_SDK) --target BitonicSort -c $(BUILD_CONFIG)
+	BUILD_WASM=1 swift build --swift-sdk $(SWIFT_SDK) --target BitonicSort -c $(BUILD_CONFIG)
 
 .PHONY: wasm-run-bitonic
 wasm-run-bitonic: wasm-build-bitonic ## Build and serve BitonicSort WASM demo (SWIFT_MODE)
-	SWAN_WASM=1 swift package --swift-sdk $(SWIFT_SDK) js --product BitonicSort -c $(BUILD_CONFIG) && pnpx serve .
+	BUILD_WASM=1 swift package --swift-sdk $(SWIFT_SDK) js --product BitonicSort -c $(BUILD_CONFIG) && pnpx serve .

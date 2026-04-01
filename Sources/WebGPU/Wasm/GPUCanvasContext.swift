@@ -10,9 +10,9 @@ import JavaScriptKit
 @JS public struct GPUCanvasConfiguration {
 	public var device: GPUDevice
 	public var format: GPUTextureFormat
-	public var alphaMode: String = "premultiplied"
+	public var alphaMode: GPUCanvasAlphaMode = .premultiplied
 
-	public init(device: GPUDevice, format: GPUTextureFormat, alphaMode: String = "premultiplied") {
+	public init(device: GPUDevice, format: GPUTextureFormat, alphaMode: GPUCanvasAlphaMode = .premultiplied) {
 		self.device = device
 		self.format = format
 		self.alphaMode = alphaMode

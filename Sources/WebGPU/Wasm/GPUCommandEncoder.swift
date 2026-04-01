@@ -7,66 +7,198 @@
 
 import JavaScriptKit
 
-@JS public struct GPURenderPassColorAttachment {
-	public var view: GPUTextureView
-	public var loadOp: GPULoadOp
-	public var storeOp: GPUStoreOp
-	public var clearValue: GPUColor?
-
-	public init(
-		view: GPUTextureView,
-		loadOp: GPULoadOp,
-		storeOp: GPUStoreOp,
-		clearValue: GPUColor? = nil
-	) {
-		self.view = view
-		self.loadOp = loadOp
-		self.storeOp = storeOp
-		self.clearValue = clearValue
-	}
-}
-
-@JS public struct GPURenderPassDescriptor {
-	public var label: String?
-	public var colorAttachments: [GPURenderPassColorAttachment]
-
-	public init(
-		label: String? = nil,
-		colorAttachments: [GPURenderPassColorAttachment]
-	) {
-		self.label = label
-		self.colorAttachments = colorAttachments
-	}
-}
-
 @JSClass
 public struct GPUCommandEncoder {
 	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
-	@JSSetter(jsName: "label") func setLabel_(_ value: String?) throws(JSException)
+	@JSSetter(jsName: "label") func setLabel_(_ value: String) throws(JSException)
 
-	public func setLabel(_ value: String?) {
-		try! setLabel_(value)
+	public func setLabel(label: String) {
+		try! setLabel_(label)
 	}
-
-	@JSFunction(jsName: "beginRenderPass")
-	func _beginRenderPass(_ descriptor: GPURenderPassDescriptor) throws(JSException) -> GPURenderPassEncoder
-
-	@JSFunction(jsName: "beginComputePass")
-	func _beginComputePass(_ descriptor: GPUComputePassDescriptor) throws(JSException) -> GPUComputePassEncoder
 
 	@JSFunction(jsName: "finish")
 	func _finish(_ descriptor: GPUCommandBufferDescriptor) throws(JSException) -> GPUCommandBuffer
 
+	@JSFunction(jsName: "copyBufferToBuffer")
+	func _copyBufferToBuffer(_ source: GPUBuffer, _ sourceOffset: Int, _ destination: GPUBuffer, _ destinationOffset: Int, _ size: Int) throws(JSException)
+
+	@JSFunction(jsName: "copyBufferToTexture")
+	func _copyBufferToTexture(_ source: JSObject, _ destination: JSObject, _ copySize: JSObject) throws(JSException)
+
+	@JSFunction(jsName: "copyTextureToBuffer")
+	func _copyTextureToBuffer(_ source: JSObject, _ destination: JSObject, _ copySize: JSObject) throws(JSException)
+
+	@JSFunction(jsName: "resolveQuerySet")
+	func _resolveQuerySet(_ querySet: GPUQuerySet, _ firstQuery: Int, _ queryCount: Int, _ destination: GPUBuffer, _ destinationOffset: Int) throws(JSException)
+
+	@JSFunction(jsName: "clearBuffer")
+	func _clearBuffer(_ buffer: GPUBuffer, _ offset: Int) throws(JSException)
+
+	@JSFunction(jsName: "clearBuffer")
+	func _clearBufferWithSize(_ buffer: GPUBuffer, _ offset: Int, _ size: Int) throws(JSException)
+
+	@JSFunction(jsName: "writeTimestamp")
+	func _writeTimestamp(_ querySet: GPUQuerySet, _ queryIndex: Int) throws(JSException)
+
+	/// Manual beginRenderPass — BridgeJS serializes nil optional fields
+	/// (depthStencilAttachment, timestampWrites, clearValue, depthLoadOp, etc.)
+	/// as null, which WebGPU rejects.
 	public func beginRenderPass(descriptor: GPURenderPassDescriptor) -> GPURenderPassEncoder {
-		try! _beginRenderPass(descriptor)
+		let obj = JSObject.global.Object.function!.new()
+		if let l = descriptor.label { obj.label = .string(l) }
+
+		// colorAttachments
+		let colors = JSObject.global.Array.function!.new()
+		for (i, ca) in descriptor.colorAttachments.enumerated() {
+			let c = JSObject.global.Object.function!.new()
+			c.view = ca.view.jsObject.jsValue
+			c.loadOp = .string(ca.loadOp.rawValue)
+			c.storeOp = .string(ca.storeOp.rawValue)
+			if let cv = ca.clearValue {
+				let color = JSObject.global.Object.function!.new()
+				color.r = .number(cv.r)
+				color.g = .number(cv.g)
+				color.b = .number(cv.b)
+				color.a = .number(cv.a)
+				c.clearValue = color.jsValue
+			}
+			colors[i] = c.jsValue
+		}
+		obj.colorAttachments = colors.jsValue
+
+		// depthStencilAttachment (optional)
+		if let dsa = descriptor.depthStencilAttachment {
+			let d = JSObject.global.Object.function!.new()
+			d.view = dsa.view.jsObject.jsValue
+			if let op = dsa.depthLoadOp { d.depthLoadOp = .string(op.rawValue) }
+			if let op = dsa.depthStoreOp { d.depthStoreOp = .string(op.rawValue) }
+			d.depthClearValue = .number(dsa.depthClearValue)
+			d.depthReadOnly = .boolean(dsa.depthReadOnly)
+			if let op = dsa.stencilLoadOp { d.stencilLoadOp = .string(op.rawValue) }
+			if let op = dsa.stencilStoreOp { d.stencilStoreOp = .string(op.rawValue) }
+			d.stencilClearValue = .number(Double(dsa.stencilClearValue))
+			d.stencilReadOnly = .boolean(dsa.stencilReadOnly)
+			obj.depthStencilAttachment = d.jsValue
+		}
+
+		// timestampWrites (optional)
+		if let tw = descriptor.timestampWrites {
+			let t = JSObject.global.Object.function!.new()
+			t.querySet = tw.querySet.jsObject.jsValue
+			t.beginningOfPassWriteIndex = .number(Double(tw.beginningOfPassWriteIndex))
+			t.endOfPassWriteIndex = .number(Double(tw.endOfPassWriteIndex))
+			obj.timestampWrites = t.jsValue
+		}
+
+		let result = self.jsObject.beginRenderPass!(obj)
+		return GPURenderPassEncoder(unsafelyWrapping: result.object!)
 	}
 
+	/// Manual beginComputePass — BridgeJS serializes nil `timestampWrites` as null,
+	/// which WebGPU rejects ("not of type GPUComputePassTimestampWrites").
 	public func beginComputePass(descriptor: GPUComputePassDescriptor) -> GPUComputePassEncoder {
-		try! _beginComputePass(descriptor)
+		let obj = JSObject.global.Object.function!.new()
+		if let l = descriptor.label { obj.label = .string(l) }
+		if let tw = descriptor.timestampWrites {
+			let t = JSObject.global.Object.function!.new()
+			t.querySet = tw.querySet.jsObject.jsValue
+			t.beginningOfPassWriteIndex = .number(Double(tw.beginningOfPassWriteIndex))
+			t.endOfPassWriteIndex = .number(Double(tw.endOfPassWriteIndex))
+			obj.timestampWrites = t.jsValue
+		}
+		let result = self.jsObject.beginComputePass!(obj)
+		return GPUComputePassEncoder(unsafelyWrapping: result.object!)
 	}
 
-	// TODO: dawn API has optional descriptor parameter
+	public func beginComputePass(descriptor: GPUComputePassDescriptor?) -> GPUComputePassEncoder {
+		if let d = descriptor {
+			return beginComputePass(descriptor: d)
+		}
+		let result = self.jsObject.beginComputePass!()
+		return GPUComputePassEncoder(unsafelyWrapping: result.object!)
+	}
+
 	public func finish(descriptor: GPUCommandBufferDescriptor) -> GPUCommandBuffer {
 		try! _finish(descriptor)
+	}
+
+	public func finish(descriptor: GPUCommandBufferDescriptor?) -> GPUCommandBuffer {
+		try! _finish(descriptor ?? GPUCommandBufferDescriptor())
+	}
+
+	public func finish() -> GPUCommandBuffer {
+		try! _finish(GPUCommandBufferDescriptor())
+	}
+
+	public func copyBufferToBuffer(source: GPUBuffer, sourceOffset: UInt64, destination: GPUBuffer, destinationOffset: UInt64, size: UInt64) {
+		try! _copyBufferToBuffer(source, Int(sourceOffset), destination, Int(destinationOffset), Int(size))
+	}
+
+	public func copyTextureToBuffer(source: GPUTexelCopyTextureInfo, destination: GPUTexelCopyBufferInfo, copySize: GPUExtent3D) {
+		let srcObj = JSObject.global.Object.function!.new()
+		srcObj.texture = source.texture.jsObject.jsValue
+		srcObj.mipLevel = .number(Double(source.mipLevel))
+		let originObj = JSObject.global.Object.function!.new()
+		originObj.x = .number(Double(source.origin.x))
+		originObj.y = .number(Double(source.origin.y))
+		originObj.z = .number(Double(source.origin.z))
+		srcObj.origin = .object(originObj)
+		srcObj.aspect = .string(source.aspect.rawValue)
+		let dstObj = JSObject.global.Object.function!.new()
+		dstObj.buffer = destination.buffer.jsObject.jsValue
+		dstObj.offset = .number(Double(destination.layout.offset))
+		if let bpr = destination.layout.bytesPerRow { dstObj.bytesPerRow = .number(Double(bpr)) }
+		if let rpi = destination.layout.rowsPerImage { dstObj.rowsPerImage = .number(Double(rpi)) }
+		let sizeObj = JSObject.global.Object.function!.new()
+		sizeObj.width = .number(Double(copySize.width))
+		sizeObj.height = .number(Double(copySize.height))
+		sizeObj.depthOrArrayLayers = .number(Double(copySize.depthOrArrayLayers))
+		try! _copyTextureToBuffer(srcObj, dstObj, sizeObj)
+	}
+
+	public func copyBufferToTexture(source: GPUTexelCopyBufferInfo, destination: GPUTexelCopyTextureInfo, copySize: GPUExtent3D) {
+		let srcObj = JSObject.global.Object.function!.new()
+		srcObj.buffer = source.buffer.jsObject.jsValue
+		srcObj.offset = .number(Double(source.layout.offset))
+		if let bpr = source.layout.bytesPerRow { srcObj.bytesPerRow = .number(Double(bpr)) }
+		if let rpi = source.layout.rowsPerImage { srcObj.rowsPerImage = .number(Double(rpi)) }
+		let dstObj = JSObject.global.Object.function!.new()
+		dstObj.texture = destination.texture.jsObject.jsValue
+		dstObj.mipLevel = .number(Double(destination.mipLevel))
+		let originObj = JSObject.global.Object.function!.new()
+		originObj.x = .number(Double(destination.origin.x))
+		originObj.y = .number(Double(destination.origin.y))
+		originObj.z = .number(Double(destination.origin.z))
+		dstObj.origin = .object(originObj)
+		dstObj.aspect = .string(destination.aspect.rawValue)
+		let sizeObj = JSObject.global.Object.function!.new()
+		sizeObj.width = .number(Double(copySize.width))
+		sizeObj.height = .number(Double(copySize.height))
+		sizeObj.depthOrArrayLayers = .number(Double(copySize.depthOrArrayLayers))
+		try! _copyBufferToTexture(srcObj, dstObj, sizeObj)
+	}
+
+	// copyTextureToTexture: not yet implemented — add when needed by client code.
+	// Follows the same manual JSObject construction pattern as copyTextureToBuffer.
+
+	public func resolveQuerySet(querySet: GPUQuerySet, firstQuery: UInt32, queryCount: UInt32, destination: GPUBuffer, destinationOffset: UInt64) {
+		try! _resolveQuerySet(querySet, Int(firstQuery), Int(queryCount), destination, Int(destinationOffset))
+	}
+
+	public func clearBuffer(buffer: GPUBuffer, offset: UInt64 = 0, size: UInt64 = UInt64.max) {
+		if size == UInt64.max {
+			try! _clearBuffer(buffer, Int(offset))
+		} else {
+			try! _clearBufferWithSize(buffer, Int(offset), Int(size))
+		}
+	}
+
+	public func clearBuffer(buffer: GPUBuffer?, offset: UInt64 = 0, size: UInt64 = UInt64.max) {
+		guard let buffer = buffer else { return }
+		clearBuffer(buffer: buffer, offset: offset, size: size)
+	}
+
+	public func writeTimestamp(querySet: GPUQuerySet, queryIndex: UInt32) {
+		try! _writeTimestamp(querySet, Int(queryIndex))
 	}
 }

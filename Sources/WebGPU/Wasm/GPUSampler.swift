@@ -7,8 +7,8 @@
 
 import JavaScriptKit
 
-@JSClass public struct GPUBindGroupLayout {
-	// @JSSetter macro requires `set` prefix, so we use `setLabel_` instead of `_setLabel`
+@JSClass public struct GPUSampler {
+	// @JSSetter macro requires `set` prefix
 	@JSSetter(jsName: "label") func setLabel_(_ value: String) throws(JSException)
 
 	public func setLabel(label: String) {
