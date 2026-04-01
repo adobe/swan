@@ -57,7 +57,7 @@ def ci_target(target: str, archs: list[str], config: str = "release") -> TargetC
                 os=OS.MACOS,
                 arch=arch_enums,
                 sdk="macosx15.5",
-                deployment_target="15.0",
+                deployment_target="14.0",
                 config=config,
             )
         case "iphoneos":
