@@ -1826,44 +1826,6 @@ public struct DawnInjectedInvalidSType: GPUChainedStruct {
 	}
 }
 
-extension WGPUDawnRenderPassColorAttachmentRenderToSingleSampled: ChainedStruct {
-}
-
-public struct DawnRenderPassColorAttachmentRenderToSingleSampled: GPUChainedStruct {
-	public typealias WGPUType = WGPUDawnRenderPassColorAttachmentRenderToSingleSampled
-	public let sType: GPUSType = .dawnRenderPassColorAttachmentRenderToSingleSampled
-	public var implicitSampleCount: UInt32
-
-	public var nextInChain: (any GPUChainedStruct)? = nil
-
-	public init(implicitSampleCount: UInt32 = 1, nextInChain: (any GPUChainedStruct)? = nil) {
-		self.implicitSampleCount = implicitSampleCount
-		self.nextInChain = nextInChain
-	}
-
-	public func withWGPUStruct<R>(
-		_ lambda: (inout WGPUDawnRenderPassColorAttachmentRenderToSingleSampled) -> R
-	) -> R {
-		return {
-			if nextInChain == nil {
-				var wgpuStruct = WGPUDawnRenderPassColorAttachmentRenderToSingleSampled(
-					chain: WGPUChainedStruct(next: nil, sType: sType),
-					implicitSampleCount: implicitSampleCount
-				)
-				return lambda(&wgpuStruct)
-			} else {
-				return nextInChain!.withNextInChain() { pointer in
-					var wgpuStruct = WGPUDawnRenderPassColorAttachmentRenderToSingleSampled(
-						chain: WGPUChainedStruct(next: pointer, sType: sType),
-						implicitSampleCount: implicitSampleCount
-					)
-					return lambda(&wgpuStruct)
-				}
-			}
-		}()
-	}
-}
-
 extension WGPUDawnRenderPassSampleCount: ChainedStruct {
 }
 
@@ -3867,44 +3829,6 @@ public struct GPUResourceTableDescriptor: GPURootStruct {
 	}
 }
 
-extension WGPUResourceTableLimits: ChainedStruct {
-}
-
-public struct GPUResourceTableLimits: GPUChainedStruct {
-	public typealias WGPUType = WGPUResourceTableLimits
-	public let sType: GPUSType = .resourceTableLimits
-	public var maxResourceTableSize: UInt32
-
-	public var nextInChain: (any GPUChainedStruct)? = nil
-
-	public init(maxResourceTableSize: UInt32 = UInt32.max, nextInChain: (any GPUChainedStruct)? = nil) {
-		self.maxResourceTableSize = maxResourceTableSize
-		self.nextInChain = nextInChain
-	}
-
-	public func withWGPUStruct<R>(
-		_ lambda: (inout WGPUResourceTableLimits) -> R
-	) -> R {
-		return {
-			if nextInChain == nil {
-				var wgpuStruct = WGPUResourceTableLimits(
-					chain: WGPUChainedStruct(next: nil, sType: sType),
-					maxResourceTableSize: maxResourceTableSize
-				)
-				return lambda(&wgpuStruct)
-			} else {
-				return nextInChain!.withNextInChain() { pointer in
-					var wgpuStruct = WGPUResourceTableLimits(
-						chain: WGPUChainedStruct(next: pointer, sType: sType),
-						maxResourceTableSize: maxResourceTableSize
-					)
-					return lambda(&wgpuStruct)
-				}
-			}
-		}()
-	}
-}
-
 extension WGPUSamplerBindingLayout: RootStruct {
 }
 
@@ -5041,13 +4965,11 @@ public struct GPUSharedTextureMemoryAHardwareBufferDescriptor: GPUChainedStruct 
 	public typealias WGPUType = WGPUSharedTextureMemoryAHardwareBufferDescriptor
 	public let sType: GPUSType = .sharedTextureMemoryAHardwareBufferDescriptor
 	public var handle: UnsafeMutableRawPointer?
-	public var useExternalFormat: Bool
 
 	public var nextInChain: (any GPUChainedStruct)? = nil
 
-	public init(handle: UnsafeMutableRawPointer?, useExternalFormat: Bool = false, nextInChain: (any GPUChainedStruct)? = nil) {
+	public init(handle: UnsafeMutableRawPointer?, nextInChain: (any GPUChainedStruct)? = nil) {
 		self.handle = handle
-		self.useExternalFormat = useExternalFormat
 		self.nextInChain = nextInChain
 	}
 
@@ -5055,26 +4977,21 @@ public struct GPUSharedTextureMemoryAHardwareBufferDescriptor: GPUChainedStruct 
 		_ lambda: (inout WGPUSharedTextureMemoryAHardwareBufferDescriptor) -> R
 	) -> R {
 		return {
-			let useExternalFormat: WGPUBool = useExternalFormat ? 1 : 0
-			return {
-				if nextInChain == nil {
+			if nextInChain == nil {
+				var wgpuStruct = WGPUSharedTextureMemoryAHardwareBufferDescriptor(
+					chain: WGPUChainedStruct(next: nil, sType: sType),
+					handle: handle
+				)
+				return lambda(&wgpuStruct)
+			} else {
+				return nextInChain!.withNextInChain() { pointer in
 					var wgpuStruct = WGPUSharedTextureMemoryAHardwareBufferDescriptor(
-						chain: WGPUChainedStruct(next: nil, sType: sType),
-						handle: handle,
-						useExternalFormat: useExternalFormat
+						chain: WGPUChainedStruct(next: pointer, sType: sType),
+						handle: handle
 					)
 					return lambda(&wgpuStruct)
-				} else {
-					return nextInChain!.withNextInChain() { pointer in
-						var wgpuStruct = WGPUSharedTextureMemoryAHardwareBufferDescriptor(
-							chain: WGPUChainedStruct(next: pointer, sType: sType),
-							handle: handle,
-							useExternalFormat: useExternalFormat
-						)
-						return lambda(&wgpuStruct)
-					}
 				}
-			}()
+			}
 		}()
 	}
 }
@@ -6762,7 +6679,7 @@ public struct GPUTextureViewDescriptor: GPURootStruct {
 		baseArrayLayer: UInt32 = 0,
 		arrayLayerCount: UInt32 = UInt32.max,
 		aspect: GPUTextureAspect = .all,
-		usage: GPUTextureUsage = GPUTextureUsage(),
+		usage: GPUTextureUsage = [.none],
 		nextInChain: (any GPUChainedStruct)? = nil
 	) {
 		self.label = label

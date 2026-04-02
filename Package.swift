@@ -45,8 +45,8 @@ let dawnTarget: Target = {
 		return .binaryTarget(
 			name: "DawnLib",
 			url:
-				"https://github.com/adobe/swan/releases/download/dawn-chromium-stable-146.0.7680.80/dawn-chromium-stable-146.0.7680.80-release.artifactbundleindex",
-			checksum: "b73132650ff8bc1473eab58139d5294e731d1b45cb3681c034e16e653f666fbd"
+				"https://github.com/adobe/swan/releases/download/dawn-chromium-stable-147.0.7727.50/dawn-chromium-stable-147.0.7727.50-release.artifactbundleindex",
+			checksum: "3b8e2880e663c7d0619e225ca7210ef737773719dc77179f87ac66c7b7e9f739"
 		)
 	}
 }()
@@ -92,7 +92,7 @@ let package = Package(
 				.library(
 					name: "WebGPUWasm",
 					targets: ["WebGPUWasm"]
-				),
+				)
 			]
 			: [
 				.plugin(
