@@ -109,15 +109,7 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.7.0"),
 		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
 		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-	]
-		+ (buildMacOS14
-			? []
-			: [
-				.package(
-					url: "https://github.com/swiftlang/swift-testing.git",
-					from: "6.2.4"
-				)
-			]),
+	],
 	targets: isWasmBuild
 		? [
 			.target(
@@ -333,7 +325,6 @@ let package = Package(
 						dependencies: [
 							"GenerateDawnBindings",
 							"GenerateDawnAPINotes",
-							.product(name: "Testing", package: "swift-testing"),
 						],
 						swiftSettings: swiftSettings,
 						linkerSettings: asanLinkerSettings
@@ -342,7 +333,6 @@ let package = Package(
 						name: "DawnTests",
 						dependencies: [
 							"WebGPU",
-							.product(name: "Testing", package: "swift-testing"),
 						],
 						swiftSettings: swiftSettings,
 						linkerSettings: asanLinkerSettings + [
