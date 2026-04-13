@@ -51,10 +51,12 @@ jobs:
             target: windows
             arch: x86_64
             python-version: "3.11"
+            vs-version: "17.12.6"
           - platform: windows-11-arm
             target: windows
             arch: arm64
             python-version: "3.11"
+            vs-version: "17.12.6"
           - platform: macos-latest
             target: iphoneos
             arch: arm64
@@ -75,6 +77,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential clang cmake curl git gnupg2 libcurl4-openssl-dev libpython3-dev libssl-dev libx11-xcb-dev libxcursor-dev libxi-dev libxinerama-dev libxml2-dev libxrandr-dev libz-dev libz3-dev mesa-common-dev ninja-build pkg-config python3 python3-pip python3-venv tzdata unzip wget
+
+      - name: Setup MSBuild
+        if: startsWith(matrix.platform, 'windows')
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: ${{ matrix.vs-version }}
 
       - name: Set up Python
         uses: actions/setup-python@v6
