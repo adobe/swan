@@ -80,7 +80,7 @@ jobs:
 
       - name: Setup MSBuild
         if: startsWith(matrix.platform, 'windows')
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
         with:
           vs-version: ${{ matrix.vs-version }}
 
