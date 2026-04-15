@@ -103,13 +103,8 @@ jobs:
           Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_enterprise.exe" -OutFile $bootstrapper
 
           # Update VS to the LTSC channel for the target minor version
-          $installArgs = @(
-            "update"
-            "--installPath", "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
-            "--channelUri", $channelUrl
-            "--quiet", "--wait", "--norestart"
-          )
-          Write-Host "Running: $bootstrapper $($installArgs -join ' ')"
+          $installArgs = "update --installPath `"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`" --channelUri $channelUrl --quiet --wait --norestart"
+          Write-Host "Running: $bootstrapper $installArgs"
           $proc = Start-Process -FilePath $bootstrapper -ArgumentList $installArgs -Wait -NoNewWindow -PassThru
           Write-Host "Installer exit code: $($proc.ExitCode)"
 
