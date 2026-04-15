@@ -87,20 +87,31 @@ jobs:
         if: startsWith(matrix.platform, 'windows')
         shell: pwsh
         run: |
-          $installerPath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
-          $version = "${{ matrix.vs-version }}"
-          # Update the installer first
-          Start-Process -FilePath $installerPath -ArgumentList "update", "--quiet" -Wait
-          # Install/update VS to the specified version
-          & $installerPath modify `
-            --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" `
-            --channelUri "https://aka.ms/vs/17/release/channel" `
-            --installCatalogUri "https://aka.ms/vs/17/release/$version/catalog.json" `
-            --add Microsoft.VisualStudio.Workload.VCTools `
-            --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
-            --add Microsoft.VisualStudio.Component.VC.Tools.ARM64 `
-            --add Microsoft.VisualStudio.Component.Windows11SDK.26100 `
-            --quiet --wait --norestart
+          # Download the VS 2022 Enterprise bootstrapper
+          $bootstrapper = "$env:TEMP\vs_enterprise.exe"
+          Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vs_enterprise.exe" -OutFile $bootstrapper
+
+          # Update the installer to latest so it knows about older VS versions
+          Start-Process -FilePath $bootstrapper -ArgumentList "--update", "--quiet", "--wait" -Wait -NoNewWindow
+
+          # Modify the existing installation to pin to the requested version
+          $args = @(
+            "modify"
+            "--installPath", "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+            "--channelUri", "https://aka.ms/vs/17/release/channel"
+            "--productId", "Microsoft.VisualStudio.Product.Enterprise"
+            "--add", "Microsoft.VisualStudio.Workload.VCTools"
+            "--add", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
+            "--add", "Microsoft.VisualStudio.Component.VC.Tools.ARM64"
+            "--add", "Microsoft.VisualStudio.Component.Windows11SDK.26100"
+            "--quiet", "--wait", "--norestart"
+          )
+          $proc = Start-Process -FilePath $bootstrapper -ArgumentList $args -Wait -NoNewWindow -PassThru
+          Write-Host "Installer exit code: $($proc.ExitCode)"
+          if ($proc.ExitCode -notin 0, 3010) {
+            throw "VS install failed with exit code $($proc.ExitCode)"
+          }
+
           # Verify installed version
           & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" `
             -all -format json | ConvertFrom-Json | Select-Object displayName, installationVersion
