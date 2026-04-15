@@ -83,18 +83,33 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential clang cmake curl git gnupg2 libcurl4-openssl-dev libpython3-dev libssl-dev libx11-xcb-dev libxcursor-dev libxi-dev libxinerama-dev libxml2-dev libxrandr-dev libz-dev libz3-dev mesa-common-dev ninja-build pkg-config python3 python3-pip python3-venv tzdata unzip wget
 
-      - name: Check installed VS versions
+      - name: Install Visual Studio ${{ matrix.vs-version }}
         if: startsWith(matrix.platform, 'windows')
         shell: pwsh
         run: |
+          $installerPath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
+          $version = "${{ matrix.vs-version }}"
+          # Update the installer first
+          Start-Process -FilePath $installerPath -ArgumentList "update", "--quiet" -Wait
+          # Install/update VS to the specified version
+          & $installerPath modify `
+            --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" `
+            --channelUri "https://aka.ms/vs/17/release/channel" `
+            --installCatalogUri "https://aka.ms/vs/17/release/$version/catalog.json" `
+            --add Microsoft.VisualStudio.Workload.VCTools `
+            --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+            --add Microsoft.VisualStudio.Component.VC.Tools.ARM64 `
+            --add Microsoft.VisualStudio.Component.Windows11SDK.26100 `
+            --quiet --wait --norestart
+          # Verify installed version
           & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" `
             -all -format json | ConvertFrom-Json | Select-Object displayName, installationVersion
 
       - name: Setup MSBuild
         if: startsWith(matrix.platform, 'windows')
-        uses: microsoft/setup-msbuild@v3
+        uses: microsoft/setup-msbuild@v2
         with:
-          vs-version: ${{ matrix.vs-version }}
+          vs-version: "[${{ matrix.vs-version }},${{ matrix.vs-version }}]"
 
       - name: Set up Python
         uses: actions/setup-python@v6
