@@ -23,6 +23,11 @@ on:
         required: false
         default: ""
         type: string
+      vs_bootstrapper_url:
+        description: "URL to a Visual Studio bootstrapper exe to install a specific VS version (leave empty to use the runner default)"
+        required: false
+        default: ""
+        type: string
 
   workflow_call:
     inputs:
@@ -32,6 +37,11 @@ on:
         type: string
       suffix:
         description: "Optional suffix to append to archive names"
+        required: false
+        default: ""
+        type: string
+      vs_bootstrapper_url:
+        description: "URL to a Visual Studio bootstrapper exe to install a specific VS version (leave empty to use the runner default)"
         required: false
         default: ""
         type: string
@@ -60,6 +70,7 @@ jobs:
       bundle_name: ${{ needs.get-dawn-info.outputs.tag }}-release
       chromium_version: ${{ needs.get-dawn-info.outputs.chromium_dawn_version }}
       suffix: ${{ inputs.suffix }}
+      vs_bootstrapper_url: ${{ inputs.vs_bootstrapper_url }}
 
   create-release:
     needs: [build-dawn-release, get-dawn-info]
