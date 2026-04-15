@@ -25,6 +25,11 @@ on:
         description: "Name of the archive bundle"
         required: true
         type: string
+      suffix:
+        description: "Optional suffix to append to archive names"
+        required: false
+        default: ""
+        type: string
     outputs:
       artifact_id:
         description: "Artifact ID of the archive bundle"
@@ -160,7 +165,7 @@ jobs:
       - name: Create artifact bundle
         run: |
           cd Dawn
-          python ci_build_dawn.py bundle --chromium-version ${{ inputs.chromium_version }} --dawn-hash ${{ inputs.dawn_hash }} --bundle-name ${{ inputs.bundle_name }}
+          python ci_build_dawn.py bundle --chromium-version ${{ inputs.chromium_version }} --dawn-hash ${{ inputs.dawn_hash }} --bundle-name ${{ inputs.bundle_name }}${{ inputs.suffix && format(' --suffix {0}', inputs.suffix) || '' }}
 
       - name: Store artifact bundle
         id: store-artifact-bundle

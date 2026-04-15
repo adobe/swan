@@ -18,12 +18,22 @@ on:
           - stable
           - beta
           - canary
+      suffix:
+        description: "Optional suffix to append to archive names"
+        required: false
+        default: ""
+        type: string
 
   workflow_call:
     inputs:
       channel:
         description: "Chromium channel for Dawn"
         required: true
+        type: string
+      suffix:
+        description: "Optional suffix to append to archive names"
+        required: false
+        default: ""
         type: string
 
 jobs:
@@ -49,6 +59,7 @@ jobs:
       dawn_hash: ${{ needs.get-dawn-info.outputs.chromium_dawn_hash }}
       bundle_name: ${{ needs.get-dawn-info.outputs.tag }}-release
       chromium_version: ${{ needs.get-dawn-info.outputs.chromium_dawn_version }}
+      suffix: ${{ inputs.suffix }}
 
   create-release:
     needs: [build-dawn-release, get-dawn-info]

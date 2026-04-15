@@ -31,10 +31,12 @@ def build_target(target: str, archs: list[str], config: str = "release") -> None
     archive_builder.build_bundle_target(target_config)
 
 
-def bundle(chromium_version: str, dawn_hash: str, bundle_name: str) -> None:
+def bundle(chromium_version: str, dawn_hash: str, bundle_name: str, suffix: str = "") -> None:
     """
     Create per-platform artifact bundles and a bundle index from the current Dawn build.
     """
+    if suffix:
+        bundle_name = f"{bundle_name}-{suffix}"
     index_zip = archive_builder.create_artifact_bundles(
         chromium_version,
         dawn_hash,
@@ -133,6 +135,11 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="Name of the bundle",
     )
+    bundle_parser.add_argument(
+        "--suffix",
+        default="",
+        help="Optional suffix to append to the archive names",
+    )
 
     subparsers.add_parser("clean", help="Clean the build environment")
 
@@ -179,7 +186,7 @@ def main() -> int:
         
         build_target(args.target, archs, args.config)
     elif args.command == "bundle":
-        bundle(args.chromium_version, args.dawn_hash, args.bundle_name)
+        bundle(args.chromium_version, args.dawn_hash, args.bundle_name, args.suffix)
     elif args.command == "upload":
         upload(args.debug)
     elif args.command == "clean":
