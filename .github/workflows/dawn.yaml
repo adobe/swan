@@ -98,8 +98,8 @@ jobs:
           Write-Host "Downloading bootstrapper from ${{ inputs.vs_bootstrapper_url }}"
           Invoke-WebRequest -Uri "${{ inputs.vs_bootstrapper_url }}" -OutFile $bootstrapper
 
-          $installArgs = @("update", "--quiet", "--wait", "--norestart", "--installPath", "C:\Program Files\Microsoft Visual Studio\2022\Enterprise", "--add", "Microsoft.VisualStudio.Workload.VCTools")
-          Write-Host "Running: $bootstrapper $($installArgs -join ' ')"
+          $installArgs = "update --quiet --wait --norestart --installPath `"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`" --add Microsoft.VisualStudio.Workload.VCTools"
+          Write-Host "Running: $bootstrapper $installArgs"
           $proc = Start-Process -FilePath $bootstrapper -ArgumentList $installArgs -Wait -NoNewWindow -PassThru
 
           Write-Host "Installer exit code: $($proc.ExitCode)"
