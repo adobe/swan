@@ -119,6 +119,8 @@ jobs:
       - name: Setup MSBuild
         if: startsWith(matrix.platform, 'windows')
         uses: microsoft/setup-msbuild@v2
+        with:
+          vs-path: ${{ inputs.vs_bootstrapper_url != '' && 'C:\VS' || '' }}
 
       - name: Set up Python
         uses: actions/setup-python@v6
