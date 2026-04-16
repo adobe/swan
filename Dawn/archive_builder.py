@@ -29,6 +29,7 @@ EXTRA_APPLE_SDK_TRIPLES: Dict[OS, List[str]] = {
         "arm64-apple-iphoneos26.3",
         "arm64-apple-iphonesimulator26.2",
         "arm64-apple-iphonesimulator26.3",
+        "arm64-apple-iphonesimulator26.4",
     ],
 }
 
