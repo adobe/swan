@@ -100,7 +100,7 @@ jobs:
           Invoke-WebRequest -Uri "${{ inputs.vs_bootstrapper_url }}" -OutFile $bootstrapper
 
           $installPath = "C:\VS"
-          $installArgs = "--quiet --wait --norestart --installPath `"$installPath`" --add Microsoft.VisualStudio.Workload.VCTools"
+          $installArgs = "--quiet --wait --norestart --includeRecommended --installPath `"$installPath`" --add Microsoft.VisualStudio.Workload.VCTools"
           Write-Host "Running: $bootstrapper $installArgs"
           $proc = Start-Process -FilePath $bootstrapper -ArgumentList $installArgs -Wait -NoNewWindow -PassThru
 
@@ -120,6 +120,39 @@ jobs:
           Write-Host "Installed:"
           & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" `
             -all -format json | ConvertFrom-Json | Select-Object displayName, installationVersion, installationPath
+
+      - name: Debug vswhere output
+        if: startsWith(matrix.platform, 'windows')
+        shell: pwsh
+        run: |
+          $vswhere = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+          if (Test-Path $vswhere) {
+            Write-Host "=== vswhere -all -products * ==="
+            & $vswhere -all -products * -format json | ConvertFrom-Json | ForEach-Object {
+              Write-Host "  displayName: $($_.displayName)"
+              Write-Host "  installationVersion: $($_.installationVersion)"
+              Write-Host "  installationPath: $($_.installationPath)"
+              Write-Host "  productId: $($_.productId)"
+              Write-Host "---"
+            }
+            Write-Host ""
+            Write-Host "=== vswhere -all -products * -requires Microsoft.Component.MSBuild ==="
+            & $vswhere -all -products * -requires Microsoft.Component.MSBuild -format json | ConvertFrom-Json | ForEach-Object {
+              Write-Host "  displayName: $($_.displayName)"
+              Write-Host "  installationVersion: $($_.installationVersion)"
+              Write-Host "  installationPath: $($_.installationPath)"
+              Write-Host "---"
+            }
+          } else {
+            Write-Host "vswhere not found at $vswhere"
+            Write-Host "Checking Chocolatey path:"
+            & C:\ProgramData\Chocolatey\bin\vswhere.exe -all -products * -format json | ConvertFrom-Json | ForEach-Object {
+              Write-Host "  displayName: $($_.displayName)"
+              Write-Host "  installationVersion: $($_.installationVersion)"
+              Write-Host "  installationPath: $($_.installationPath)"
+              Write-Host "---"
+            }
+          }
 
       - name: Setup MSBuild
         if: startsWith(matrix.platform, 'windows')
