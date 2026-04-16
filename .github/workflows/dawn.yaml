@@ -93,30 +93,20 @@ jobs:
           Write-Host "Downloading bootstrapper from ${{ matrix.vs_bootstrapper_url }}"
           Invoke-WebRequest -Uri "${{ matrix.vs_bootstrapper_url }}" -OutFile $bootstrapper
 
-      - name: Switch VS installer channel
-        if: matrix.vs_channel_uri
+      - name: Update Visual Studio from bootstrapper
+        if: matrix.vs_bootstrapper_url
         shell: pwsh
         run: |
           Write-Host "Currently installed:"
           & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" `
             -all -format json | ConvertFrom-Json | Select-Object displayName, installationVersion
 
-          Write-Host "Switching installer channel to ${{ matrix.vs_channel_uri }}..."
           $bootstrapper = "$env:TEMP\vs_enterprise.exe"
-          $proc = Start-Process -FilePath $bootstrapper `
-            -ArgumentList "modify --installPath `"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`" --channelUri ${{ matrix.vs_channel_uri }} --newChannelUri ${{ matrix.vs_channel_uri }} --quiet --norestart --wait" `
-            -Wait -NoNewWindow -PassThru
-          Write-Host "Channel switch exit code: $($proc.ExitCode)"
-          if ($proc.ExitCode -notin 0, 3010) {
-            throw "VS channel switch failed with exit code $($proc.ExitCode)"
+          $channelArgs = ""
+          if ("${{ matrix.vs_channel_uri }}") {
+            $channelArgs = "--channelUri ${{ matrix.vs_channel_uri }} --newChannelUri ${{ matrix.vs_channel_uri }}"
           }
-
-      - name: Update Visual Studio from bootstrapper
-        if: matrix.vs_bootstrapper_url
-        shell: pwsh
-        run: |
-          $bootstrapper = "$env:TEMP\vs_enterprise.exe"
-          $installArgs = "update --quiet --wait --norestart --installPath `"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`" --add Microsoft.VisualStudio.Workload.VCTools"
+          $installArgs = "update --quiet --wait --norestart --installPath `"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`" --add Microsoft.VisualStudio.Workload.VCTools $channelArgs"
           Write-Host "Running: $bootstrapper $installArgs"
           $proc = Start-Process -FilePath $bootstrapper -ArgumentList $installArgs -Wait -NoNewWindow -PassThru
 
