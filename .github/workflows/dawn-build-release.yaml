@@ -28,6 +28,11 @@ on:
         required: false
         default: ""
         type: string
+      vs_version:
+        description: "Visual Studio version range for setup-msbuild (e.g. '[17.13,17.14)'), used with vs_bootstrapper_url"
+        required: false
+        default: ""
+        type: string
 
   workflow_call:
     inputs:
@@ -42,6 +47,11 @@ on:
         type: string
       vs_bootstrapper_url:
         description: "URL to a Visual Studio bootstrapper exe to install a specific VS version (leave empty to use the runner default)"
+        required: false
+        default: ""
+        type: string
+      vs_version:
+        description: "Visual Studio version range for setup-msbuild (e.g. '[17.13,17.14)'), used with vs_bootstrapper_url"
         required: false
         default: ""
         type: string
@@ -71,6 +81,7 @@ jobs:
       chromium_version: ${{ needs.get-dawn-info.outputs.chromium_dawn_version }}
       suffix: ${{ inputs.suffix }}
       vs_bootstrapper_url: ${{ inputs.vs_bootstrapper_url }}
+      vs_version: ${{ inputs.vs_version }}
 
   create-release:
     needs: [build-dawn-release, get-dawn-info]
