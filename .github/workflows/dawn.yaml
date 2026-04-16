@@ -30,11 +30,6 @@ on:
         required: false
         default: ""
         type: string
-      vs_bootstrapper_url:
-        description: "URL to a Visual Studio bootstrapper exe to install a specific VS version (leave empty to use the runner default)"
-        required: false
-        default: ""
-        type: string
     outputs:
       artifact_id:
         description: "Artifact ID of the archive bundle"
@@ -61,10 +56,14 @@ jobs:
             target: windows
             arch: x86_64
             python-version: "3.11"
+            vs_bootstrapper_url: "https://download.visualstudio.microsoft.com/download/pr/7c611a5a-a51d-429f-83d5-4ff522b14367/7c336ed99cbc734fe35c63bfaf29cb91bd6d61d79831bb9bebcc751501b5aefe/vs_Enterprise.exe"
+            vs_channel_uri: "https://aka.ms/vs/17/release.ltsc.17.12/channel"
           - platform: windows-11-arm
             target: windows
             arch: arm64
             python-version: "3.11"
+            vs_bootstrapper_url: "https://download.visualstudio.microsoft.com/download/pr/7c611a5a-a51d-429f-83d5-4ff522b14367/7c336ed99cbc734fe35c63bfaf29cb91bd6d61d79831bb9bebcc751501b5aefe/vs_Enterprise.exe"
+            vs_channel_uri: "https://aka.ms/vs/17/release.ltsc.17.12/channel"
           - platform: macos-latest
             target: iphoneos
             arch: arm64
@@ -86,8 +85,21 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential clang cmake curl git gnupg2 libcurl4-openssl-dev libpython3-dev libssl-dev libx11-xcb-dev libxcursor-dev libxi-dev libxinerama-dev libxml2-dev libxrandr-dev libz-dev libz3-dev mesa-common-dev ninja-build pkg-config python3 python3-pip python3-venv tzdata unzip wget
 
+      - name: Switch VS installer channel
+        if: matrix.vs_channel_uri
+        shell: pwsh
+        run: |
+          Write-Host "Switching installer channel to ${{ matrix.vs_channel_uri }}..."
+          $proc = Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" `
+            -ArgumentList "modify --installPath `"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`" --channelUri ${{ matrix.vs_channel_uri }} --newChannelUri ${{ matrix.vs_channel_uri }} --quiet --norestart --wait" `
+            -Wait -NoNewWindow -PassThru
+          Write-Host "Channel switch exit code: $($proc.ExitCode)"
+          if ($proc.ExitCode -notin 0, 3010) {
+            throw "VS channel switch failed with exit code $($proc.ExitCode)"
+          }
+
       - name: Install Visual Studio from bootstrapper
-        if: startsWith(matrix.platform, 'windows') && inputs.vs_bootstrapper_url != ''
+        if: matrix.vs_bootstrapper_url
         shell: pwsh
         run: |
           Write-Host "Currently installed:"
@@ -95,8 +107,8 @@ jobs:
             -all -format json | ConvertFrom-Json | Select-Object displayName, installationVersion
 
           $bootstrapper = "$env:TEMP\vs_enterprise.exe"
-          Write-Host "Downloading bootstrapper from ${{ inputs.vs_bootstrapper_url }}"
-          Invoke-WebRequest -Uri "${{ inputs.vs_bootstrapper_url }}" -OutFile $bootstrapper
+          Write-Host "Downloading bootstrapper from ${{ matrix.vs_bootstrapper_url }}"
+          Invoke-WebRequest -Uri "${{ matrix.vs_bootstrapper_url }}" -OutFile $bootstrapper
 
           $installArgs = "update --quiet --wait --norestart --installPath `"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`" --add Microsoft.VisualStudio.Workload.VCTools"
           Write-Host "Running: $bootstrapper $installArgs"
@@ -116,13 +128,6 @@ jobs:
           }
 
           Write-Host "After update:"
-          & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" `
-            -all -format json | ConvertFrom-Json | Select-Object displayName, installationVersion
-
-      - name: Check installed VS versions
-        if: startsWith(matrix.platform, 'windows') && inputs.vs_bootstrapper_url == ''
-        shell: pwsh
-        run: |
           & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" `
             -all -format json | ConvertFrom-Json | Select-Object displayName, installationVersion
 
