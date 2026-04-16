@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftwasm/JavaScriptKit.git",
       "state" : {
-        "revision" : "1f54ba6b17f4d0f378f671210f7121a29996159e",
-        "version" : "0.47.1"
+        "revision" : "df32a66879cd5e1bbd12308d2fc248cf84fef5d3",
+        "version" : "0.50.0"
       }
     },
     {
