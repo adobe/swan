@@ -87,7 +87,6 @@ jobs:
           sudo apt-get install -y build-essential clang cmake curl git gnupg2 libcurl4-openssl-dev libpython3-dev libssl-dev libx11-xcb-dev libxcursor-dev libxi-dev libxinerama-dev libxml2-dev libxrandr-dev libz-dev libz3-dev mesa-common-dev ninja-build pkg-config python3 python3-pip python3-venv tzdata unzip wget
 
       - name: Install Visual Studio from bootstrapper
-        id: vs-install
         if: startsWith(matrix.platform, 'windows') && inputs.vs_bootstrapper_url != ''
         shell: pwsh
         run: |
@@ -113,8 +112,12 @@ jobs:
             throw "VS install failed with exit code $($proc.ExitCode)"
           }
 
-          Write-Host "VS installed at $installPath"
-          echo "vs_install_path=$installPath" >> $env:GITHUB_OUTPUT
+          # Query the installed version via vswhere and set CMAKE_GENERATOR_INSTANCE
+          $vswhere = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vsInfo = & $vswhere -path $installPath -format json | ConvertFrom-Json
+          $vsVersion = $vsInfo[0].installationVersion
+          Write-Host "VS $vsVersion installed at $installPath"
+          echo "CMAKE_GENERATOR_INSTANCE=$installPath,version=$vsVersion" >> $env:GITHUB_ENV
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -135,7 +138,7 @@ jobs:
       - name: Build Dawn for ${{ matrix.target }} (${{ matrix.arch }})
         run: |
           cd Dawn
-          python ci_build_dawn.py build-target --target ${{ matrix.target }} --arch ${{ matrix.arch }} --config ${{ inputs.config }}${{ steps.vs-install.outputs.vs_install_path && format(' --vs-install-path "{0}"', steps.vs-install.outputs.vs_install_path) || '' }}
+          python ci_build_dawn.py build-target --target ${{ matrix.target }} --arch ${{ matrix.arch }} --config ${{ inputs.config }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v7
