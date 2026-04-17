@@ -113,13 +113,8 @@ jobs:
             throw "VS install failed with exit code $($proc.ExitCode)"
           }
 
-          # Detect the installed VS version via vswhere
-          $vswhere = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
-          $vsInfo = & $vswhere -path $installPath -format json | ConvertFrom-Json
-          $vsVersion = $vsInfo[0].installationVersion
-          Write-Host "Installed VS version: $vsVersion at $installPath"
+          Write-Host "VS installed at $installPath"
           echo "vs_install_path=$installPath" >> $env:GITHUB_OUTPUT
-          echo "vs_version=$vsVersion" >> $env:GITHUB_OUTPUT
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -140,7 +135,7 @@ jobs:
       - name: Build Dawn for ${{ matrix.target }} (${{ matrix.arch }})
         run: |
           cd Dawn
-          python ci_build_dawn.py build-target --target ${{ matrix.target }} --arch ${{ matrix.arch }} --config ${{ inputs.config }}${{ steps.vs-install.outputs.vs_install_path && format(' --vs-install-path "{0}" --vs-version "{1}"', steps.vs-install.outputs.vs_install_path, steps.vs-install.outputs.vs_version) || '' }}
+          python ci_build_dawn.py build-target --target ${{ matrix.target }} --arch ${{ matrix.arch }} --config ${{ inputs.config }}${{ steps.vs-install.outputs.vs_install_path && format(' --vs-install-path "{0}"', steps.vs-install.outputs.vs_install_path) || '' }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v7

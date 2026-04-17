@@ -31,6 +31,35 @@ class UploadArchiverError(BuildDawnError): pass
 # fmt: on
 
 
+def _activate_vs_environment(vs_install_path: str) -> None:
+    """
+    Activate a Visual Studio developer environment by running VsDevCmd.bat
+    and importing the resulting environment variables into the current process.
+
+    Args:
+        vs_install_path: Path to the Visual Studio installation root
+    """
+    vsdevcmd = pathlib.Path(vs_install_path) / "Common7" / "Tools" / "VsDevCmd.bat"
+    if not vsdevcmd.exists():
+        raise SDKPathNotFoundError(f"VsDevCmd.bat not found at {vsdevcmd}")
+
+    # Run VsDevCmd.bat and dump the resulting environment
+    result = subprocess.run(
+        f'cmd /c ""{vsdevcmd}" && set"',
+        capture_output=True,
+        text=True,
+        shell=True,
+        check=True,
+    )
+
+    for line in result.stdout.splitlines():
+        if "=" in line:
+            key, _, value = line.partition("=")
+            os.environ[key] = value
+
+    print(f"Activated VS environment from {vs_install_path}")
+
+
 def _subprocess_exception_message(exc: subprocess.CalledProcessError) -> None:
     """
     Print subprocess exception details.
@@ -140,7 +169,6 @@ class TargetConfig:
     config: str = "release"
     build_tool: str = "Ninja"
     vs_install_path: Optional[str] = None
-    vs_version: Optional[str] = None
 
     def __str__(self) -> str:
         """
@@ -202,11 +230,6 @@ def cmake_flags(target_config: TargetConfig) -> List[str]:
             flags.append("-DDAWN_USE_GLFW=OFF")
             flags.append("-DCMAKE_SYSTEM_NAME=iOS")
 
-    if target_config.vs_install_path:
-        instance = target_config.vs_install_path
-        if target_config.vs_version:
-            instance = f"{instance},version={target_config.vs_version}"
-        flags.append(f"-DCMAKE_GENERATOR_INSTANCE={instance}")
 
     if target_config.config == "debug":
         flags.append("-DCMAKE_BUILD_TYPE=Debug")
@@ -296,6 +319,10 @@ def build_dawn(
         CMakeError: If CMake or build commands fail
     """
     print(f"Building Dawn for {target_config}")
+
+    # Activate the VS developer environment if a custom install path is specified
+    if target_config.vs_install_path:
+        _activate_vs_environment(target_config.vs_install_path)
 
     # Create builds directory if it doesn't exist
     builds_dir = pathlib.Path("builds")
