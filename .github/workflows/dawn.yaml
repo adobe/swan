@@ -35,11 +35,6 @@ on:
         required: false
         default: ""
         type: string
-      vs_install_path:
-        description: "Path to a Visual Studio installation to use for the build (leave empty to use the runner default)"
-        required: false
-        default: ""
-        type: string
     outputs:
       artifact_id:
         description: "Artifact ID of the archive bundle"
@@ -173,7 +168,7 @@ jobs:
       - name: Build Dawn for ${{ matrix.target }} (${{ matrix.arch }})
         run: |
           cd Dawn
-          python ci_build_dawn.py build-target --target ${{ matrix.target }} --arch ${{ matrix.arch }} --config ${{ inputs.config }}${{ inputs.vs_install_path && format(' --vs-install-path "{0}"', inputs.vs_install_path) || '' }}
+          python ci_build_dawn.py build-target --target ${{ matrix.target }} --arch ${{ matrix.arch }} --config ${{ inputs.config }}${{ inputs.vs_bootstrapper_url && ' --vs-install-path "C:\VS"' || '' }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v7
