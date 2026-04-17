@@ -117,6 +117,7 @@ jobs:
           $vsInfo = & $vswhere -path $installPath -format json | ConvertFrom-Json
           $vsVersion = $vsInfo[0].installationVersion
           Write-Host "VS $vsVersion installed at $installPath"
+          echo "CMAKE_GENERATOR=Visual Studio 17 2022" >> $env:GITHUB_ENV
           echo "CMAKE_GENERATOR_INSTANCE=$installPath,version=$vsVersion" >> $env:GITHUB_ENV
 
       - name: Set up Python
