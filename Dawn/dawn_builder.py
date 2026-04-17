@@ -140,6 +140,7 @@ class TargetConfig:
     config: str = "release"
     build_tool: str = "Ninja"
     vs_install_path: Optional[str] = None
+    vs_version: Optional[str] = None
 
     def __str__(self) -> str:
         """
@@ -202,7 +203,10 @@ def cmake_flags(target_config: TargetConfig) -> List[str]:
             flags.append("-DCMAKE_SYSTEM_NAME=iOS")
 
     if target_config.vs_install_path:
-        flags.append(f"-DCMAKE_GENERATOR_INSTANCE={target_config.vs_install_path}")
+        instance = target_config.vs_install_path
+        if target_config.vs_version:
+            instance = f"{instance},version={target_config.vs_version}"
+        flags.append(f"-DCMAKE_GENERATOR_INSTANCE={instance}")
 
     if target_config.config == "debug":
         flags.append("-DCMAKE_BUILD_TYPE=Debug")
