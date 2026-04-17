@@ -26,7 +26,7 @@ def get_current_arch() -> Arch:
         return Arch.X86_64
 
 
-def ci_target(target: str, archs: list[str], config: str = "release") -> TargetConfig:
+def ci_target(target: str, archs: list[str], config: str = "release", vs_install_path: str | None = None) -> TargetConfig:
     """
     Create a TargetConfig for the specified target OS, architectures, and configuration.
 
@@ -93,6 +93,7 @@ def ci_target(target: str, archs: list[str], config: str = "release") -> TargetC
                 runtime="msvc",
                 config=config,
                 build_tool="Visual Studio 17 2022",
+                vs_install_path=vs_install_path,
             )
         case _:
             raise ValueError(f"Invalid target name: {target}")

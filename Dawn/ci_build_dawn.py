@@ -18,7 +18,7 @@ _EXIT_FAILURE = 1
 _EXIT_SUCCESS = 0
 
 
-def build_target(target: str, archs: list[str], config: str = "release") -> None:
+def build_target(target: str, archs: list[str], config: str = "release", vs_install_path: str | None = None) -> None:
     """
     Build a target using the specified configuration.
 
@@ -26,8 +26,9 @@ def build_target(target: str, archs: list[str], config: str = "release") -> None
         target: The target OS to build for
         archs: List of architectures to build for
         config: The configuration to build for
+        vs_install_path: Path to a Visual Studio installation (Windows only)
     """
-    target_config = ci_target(target, archs, config)
+    target_config = ci_target(target, archs, config, vs_install_path)
     archive_builder.build_bundle_target(target_config)
 
 
@@ -118,6 +119,11 @@ def parse_args() -> argparse.Namespace:
         default="release",
         help="Configuration to build for",
     )
+    build_parser.add_argument(
+        "--vs-install-path",
+        default=None,
+        help="Path to a Visual Studio installation to use for the build (Windows only, sets CMAKE_GENERATOR_INSTANCE)",
+    )
 
     bundle_parser = subparsers.add_parser("bundle", help="Bundle a target")
     bundle_parser.add_argument(
@@ -184,7 +190,7 @@ def main() -> int:
                     # Default to x86_64 if unknown
                     archs = ["x86_64"]
         
-        build_target(args.target, archs, args.config)
+        build_target(args.target, archs, args.config, args.vs_install_path)
     elif args.command == "bundle":
         bundle(args.chromium_version, args.dawn_hash, args.bundle_name, args.suffix)
     elif args.command == "upload":
