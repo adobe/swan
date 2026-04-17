@@ -116,6 +116,10 @@ jobs:
           & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" `
             -all -format json | ConvertFrom-Json | Select-Object displayName, installationVersion, installationPath
 
+          Dir $installPath | ForEach-Object {
+            Write-Host "  $($_.Name)"
+          }
+
       - name: Debug vswhere output
         if: startsWith(matrix.platform, 'windows')
         shell: pwsh
