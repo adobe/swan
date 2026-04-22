@@ -306,11 +306,25 @@ def build_dawn(
 
     # Use the CMakeLists.txt wrapper in the parent directory of dawn_source
     cmake_wrapper_path = dawn_path.parent
-    
+
+    # Respect CMAKE_GENERATOR / CMAKE_GENERATOR_INSTANCE from the environment if set;
+    # otherwise fall back to the target config. When -G is on the command line, cmake
+    # does not pick up CMAKE_GENERATOR_INSTANCE from the env, so pass it via -D.
+    cmake_cmd = [cmake_exec]
+    env_generator = os.environ.get("CMAKE_GENERATOR")
+    if env_generator:
+        cmake_cmd.append(f"-G{env_generator}")
+        env_instance = os.environ.get("CMAKE_GENERATOR_INSTANCE")
+        if env_instance:
+            cmake_cmd.append(f"-DCMAKE_GENERATOR_INSTANCE={env_instance}")
+    else:
+        cmake_cmd.append(f"-G{target_config.build_tool}")
+    cmake_cmd.extend([*flags, str(cmake_wrapper_path)])
+
     # Run cmake command to create the build files
     try:
         subprocess.run(
-            [cmake_exec, f"-G{target_config.build_tool}", *flags, str(cmake_wrapper_path)],
+            cmake_cmd,
             env=os.environ,
             cwd=build_dir,
             capture_output=True,
