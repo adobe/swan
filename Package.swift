@@ -152,7 +152,7 @@ let package = Package(
 				exclude: ["index.html"],
 				swiftSettings: swiftSettings + [.enableExperimentalFeature("Extern")],
 				plugins: [.plugin(name: "BridgeJS", package: "JavaScriptKit")]
-			),
+			)
 		]
 		: [
 			dawnTarget,
@@ -311,6 +311,23 @@ let package = Package(
 					.linkedFramework("Cocoa", .when(platforms: [.macOS])),
 					.linkedFramework("IOKit", .when(platforms: [.macOS])),
 					.linkedFramework("Metal", .when(platforms: [.macOS])),
+					.linkedLibrary("c++", .when(platforms: [.macOS])),
+				]
+			),
+			.executableTarget(
+				name: "Leaks",
+				dependencies: [
+					.target(name: "WebGPU")
+				],
+				path: "Demos/Leaks",
+				swiftSettings: swiftSettings,
+				linkerSettings: asanLinkerSettings + [
+					.linkedFramework("Cocoa", .when(platforms: [.macOS])),
+					.linkedFramework("IOKit", .when(platforms: [.macOS])),
+					.linkedFramework("Metal", .when(platforms: [.macOS])),
+					.linkedFramework("IOSurface", .when(platforms: [.macOS])),
+					.linkedFramework("Metal", .when(platforms: [.macOS])),
+					.linkedFramework("QuartzCore", .when(platforms: [.macOS])),
 					.linkedLibrary("c++", .when(platforms: [.macOS])),
 				]
 			),
