@@ -1,4 +1,0 @@
-module CDawn [system] {
-    header "Dawn.h"
-    export *
-}

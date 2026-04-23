@@ -63,12 +63,11 @@ swift test
 ```
 
 ### Code Generation Plugins
-```bash
-# Generate Dawn API notes
-swift package generate-dawn-apinotes
+Both code-generation plugins run automatically during `swift build`:
+- `GenerateDawnBindingsPlugin` generates the Swift wrapper sources compiled into the `Dawn` target.
+- `GenerateDawnAPINotesPlugin` generates `CDawn.apinotes` and a matching `module.modulemap` used when building the `CDawn` target.
 
-# Bindings are generated automatically during build via GenerateDawnBindingsPlugin
-```
+Both plugins derive their inputs from `DawnLib/dawn.json`, so rebuilding Dawn's artifact bundle is enough to refresh the generated output.
 
 ### Code Formatting
 The project uses swift-format with configuration in `.swift-format`:

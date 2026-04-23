@@ -94,16 +94,7 @@ let package = Package(
 					targets: ["WebGPUWasm"]
 				)
 			]
-			: [
-				.plugin(
-					name: "GenerateDawnBindingsPlugin",
-					targets: ["GenerateDawnBindingsPlugin"]
-				),
-				.plugin(
-					name: "GenerateDawnAPINotesPlugin",
-					targets: ["GenerateDawnAPINotesPlugin"]
-				),
-			]),
+			: []),
 	dependencies: [
 		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.47.1"),
 		.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.7.0"),
@@ -185,32 +176,14 @@ let package = Package(
 			),
 			.plugin(
 				name: "GenerateDawnBindingsPlugin",
-				capability: .command(
-					intent: .custom(
-						verb: "generate-dawn-bindings-swift",
-						description: "Generate Swift Dawn bindings from dawn.json"
-					),
-					permissions: [
-						.writeToPackageDirectory(
-							reason: "Generate Swift binding files into Sources/Dawn/Generated/"
-						)
-					]
-				),
+				capability: .buildTool(),
 				dependencies: [
 					"GenerateDawnBindings"
 				]
 			),
 			.plugin(
 				name: "GenerateDawnAPINotesPlugin",
-				capability: .command(
-					intent: .custom(
-						verb: "generate-dawn-apinotes",
-						description: "Generate Dawn APINotes from dawn.json"
-					),
-					permissions: [
-						.writeToPackageDirectory(reason: "Generate APINotes file")
-					]
-				),
+				capability: .buildTool(),
 				dependencies: [
 					"GenerateDawnAPINotes"
 				]
@@ -224,7 +197,10 @@ let package = Package(
 					.unsafeFlags(["-std=c++23"])
 				],
 				swiftSettings: swiftSettings,
-				linkerSettings: asanLinkerSettings
+				linkerSettings: asanLinkerSettings,
+				plugins: [
+					.plugin(name: "GenerateDawnAPINotesPlugin")
+				]
 			),
 			.target(
 				name: "DawnData",
@@ -241,7 +217,10 @@ let package = Package(
 					"DawnLib",
 				],
 				swiftSettings: swiftSettings,
-				linkerSettings: asanLinkerSettings
+				linkerSettings: asanLinkerSettings,
+				plugins: [
+					.plugin(name: "GenerateDawnBindingsPlugin")
+				]
 			),
 			.target(
 				name: "WebGPUDawn",
