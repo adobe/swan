@@ -120,24 +120,39 @@ jobs:
         if: startsWith(matrix.platform, 'windows') && inputs.vs_bootstrapper_url != ''
         shell: pwsh
         run: |
-          # Map matrix.arch -> VsDevShell -Arch value
+          # Map matrix.arch -> vcvarsall.bat argument. vcvarsall accepts "arm64" for
+          # native arm64 (host=target=arm64), so we use that on the windows-11-arm
+          # runner; Launch-VsDevShell.ps1 can't drive an arm64 host.
           $arch = '${{ matrix.arch }}'
-          $devShellArch = switch ($arch) {
+          $vcvarsArg = switch ($arch) {
             'x86_64' { 'amd64' }
             'arm64'  { 'arm64' }
-            default  { throw "Unsupported arch for VS Dev Shell: $arch" }
+            default  { throw "Unsupported arch for vcvarsall: $arch" }
           }
 
-          # Snapshot env, launch the VS dev shell, then export anything that changed
-          # to $GITHUB_ENV so subsequent steps inherit cl.exe, link.exe, INCLUDE, LIB, etc.
+          $vcvars = "C:\VS\VC\Auxiliary\Build\vcvarsall.bat"
+          if (-not (Test-Path $vcvars)) {
+            throw "vcvarsall.bat not found at $vcvars"
+          }
+
+          # Snapshot env, run vcvarsall in a cmd subshell to print the resulting env,
+          # then export anything that changed to $GITHUB_ENV so subsequent steps inherit
+          # cl.exe, link.exe, INCLUDE, LIB, etc.
           $before = @{}
           Get-ChildItem Env: | ForEach-Object { $before[$_.Name] = $_.Value }
 
-          & "C:\VS\Common7\Tools\Launch-VsDevShell.ps1" -Arch $devShellArch -HostArch $devShellArch -SkipAutomaticLocation
+          $captured = & cmd /c "`"$vcvars`" $vcvarsArg && set"
+          if ($LASTEXITCODE -ne 0) {
+            throw "vcvarsall.bat $vcvarsArg failed with exit code $LASTEXITCODE"
+          }
 
-          Get-ChildItem Env: | ForEach-Object {
-            if (-not $before.ContainsKey($_.Name) -or $before[$_.Name] -ne $_.Value) {
-              "$($_.Name)=$($_.Value)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          foreach ($line in $captured) {
+            if ($line -match '^([^=]+)=(.*)$') {
+              $name = $matches[1]
+              $value = $matches[2]
+              if (-not $before.ContainsKey($name) -or $before[$name] -ne $value) {
+                "$name=$value" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+              }
             }
           }
 
