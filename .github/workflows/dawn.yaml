@@ -95,7 +95,9 @@ jobs:
           Invoke-WebRequest -Uri "${{ inputs.vs_bootstrapper_url }}" -OutFile $bootstrapper
 
           $installPath = "C:\VS"
-          $installArgs = "--quiet --wait --norestart --includeRecommended --installPath `"$installPath`" --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.Component.MSBuild"
+          # VCTools workload only pulls in x86/x64 compilers; add the ARM64 component
+          # explicitly so the arm64 runner ends up with vcvarsall.bat + arm64 cl.exe.
+          $installArgs = "--quiet --wait --norestart --includeRecommended --installPath `"$installPath`" --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.Tools.ARM64 --add Microsoft.Component.MSBuild"
           Write-Host "Running: $bootstrapper $installArgs"
           $proc = Start-Process -FilePath $bootstrapper -ArgumentList $installArgs -Wait -NoNewWindow -PassThru
 
@@ -115,6 +117,15 @@ jobs:
           $vswhere = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
           $vsInfo = & $vswhere -path $installPath -format json | ConvertFrom-Json
           Write-Host "VS $($vsInfo[0].installationVersion) installed at $installPath"
+
+          # Diagnostic: surface what actually landed so a missing vcvarsall is obvious.
+          $auxBuild = Join-Path $installPath "VC\Auxiliary\Build"
+          if (Test-Path $auxBuild) {
+            Write-Host "Contents of $auxBuild :"
+            Get-ChildItem $auxBuild | ForEach-Object { Write-Host "  $($_.Name)" }
+          } else {
+            Write-Host "WARNING: $auxBuild does not exist — MSVC build tools were not installed."
+          }
 
       - name: Activate Visual Studio Dev Shell
         if: startsWith(matrix.platform, 'windows') && inputs.vs_bootstrapper_url != ''
