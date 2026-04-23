@@ -92,7 +92,6 @@ def ci_target(target: str, archs: list[str], config: str = "release") -> TargetC
                 arch=arch_enums,
                 runtime="msvc",
                 config=config,
-                build_tool="Visual Studio 17 2022",
             )
         case _:
             raise ValueError(f"Invalid target name: {target}")

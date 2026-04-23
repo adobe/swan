@@ -112,15 +112,34 @@ jobs:
             throw "VS install failed with exit code $($proc.ExitCode)"
           }
 
-          # Verify the install via vswhere and set CMAKE_GENERATOR_INSTANCE to the path.
-          # The ",version=<version>" form is only needed when multiple VS installs share
-          # the same path; for a single side-by-side install the path alone is correct.
           $vswhere = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
           $vsInfo = & $vswhere -path $installPath -format json | ConvertFrom-Json
-          $vsVersion = $vsInfo[0].installationVersion
-          Write-Host "VS $vsVersion installed at $installPath"
-          echo "CMAKE_GENERATOR=Visual Studio 17 2022" >> $env:GITHUB_ENV
-          echo "CMAKE_GENERATOR_INSTANCE=$installPath" >> $env:GITHUB_ENV
+          Write-Host "VS $($vsInfo[0].installationVersion) installed at $installPath"
+
+      - name: Activate Visual Studio Dev Shell
+        if: startsWith(matrix.platform, 'windows') && inputs.vs_bootstrapper_url != ''
+        shell: pwsh
+        run: |
+          # Map matrix.arch -> VsDevShell -Arch value
+          $arch = '${{ matrix.arch }}'
+          $devShellArch = switch ($arch) {
+            'x86_64' { 'amd64' }
+            'arm64'  { 'arm64' }
+            default  { throw "Unsupported arch for VS Dev Shell: $arch" }
+          }
+
+          # Snapshot env, launch the VS dev shell, then export anything that changed
+          # to $GITHUB_ENV so subsequent steps inherit cl.exe, link.exe, INCLUDE, LIB, etc.
+          $before = @{}
+          Get-ChildItem Env: | ForEach-Object { $before[$_.Name] = $_.Value }
+
+          & "C:\VS\Common7\Tools\Launch-VsDevShell.ps1" -Arch $devShellArch -HostArch $devShellArch -SkipAutomaticLocation
+
+          Get-ChildItem Env: | ForEach-Object {
+            if (-not $before.ContainsKey($_.Name) -or $before[$_.Name] -ne $_.Value) {
+              "$($_.Name)=$($_.Value)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+            }
+          }
 
       - name: Set up Python
         uses: actions/setup-python@v6
