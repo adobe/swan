@@ -117,6 +117,7 @@ public struct GPUCreateComputePipelineAsyncCallbackInfo: GPUStruct {
 				let unmanagedCallback = Unmanaged<AnyObject>.fromOpaque(userdata1!)
 				let callback = unmanagedCallback.takeUnretainedValue() as! GPUCreateComputePipelineAsyncCallback
 				callback(status, pipeline, message)
+				pipeline?.release()
 
 			}
 			var wgpuStruct = WGPUCreateComputePipelineAsyncCallbackInfo(
@@ -162,6 +163,7 @@ public struct GPUCreateRenderPipelineAsyncCallbackInfo: GPUStruct {
 				let unmanagedCallback = Unmanaged<AnyObject>.fromOpaque(userdata1!)
 				let callback = unmanagedCallback.takeUnretainedValue() as! GPUCreateRenderPipelineAsyncCallback
 				callback(status, pipeline, message)
+				pipeline?.release()
 
 			}
 			var wgpuStruct = WGPUCreateRenderPipelineAsyncCallbackInfo(
@@ -384,6 +386,7 @@ public struct GPURequestAdapterCallbackInfo: GPUStruct {
 				let unmanagedCallback = Unmanaged<AnyObject>.fromOpaque(userdata1!)
 				let callback = unmanagedCallback.takeUnretainedValue() as! GPURequestAdapterCallback
 				callback(status, adapter, message)
+				adapter?.release()
 
 			}
 			var wgpuStruct = WGPURequestAdapterCallbackInfo(
@@ -429,6 +432,7 @@ public struct GPURequestDeviceCallbackInfo: GPUStruct {
 				let unmanagedCallback = Unmanaged<AnyObject>.fromOpaque(userdata1!)
 				let callback = unmanagedCallback.takeUnretainedValue() as! GPURequestDeviceCallback
 				callback(status, device, message)
+				device?.release()
 
 			}
 			var wgpuStruct = WGPURequestDeviceCallbackInfo(
@@ -474,6 +478,7 @@ public struct GPUUncapturedErrorCallbackInfo: GPUStruct {
 				let unmanagedCallback = Unmanaged<AnyObject>.fromOpaque(userdata1!)
 				let callback = unmanagedCallback.takeUnretainedValue() as! GPUUncapturedErrorCallback
 				callback(device, type, message)
+
 				unmanagedCallback.release()
 			}
 			var wgpuStruct = WGPUUncapturedErrorCallbackInfo(
