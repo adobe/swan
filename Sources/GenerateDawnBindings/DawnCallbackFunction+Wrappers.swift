@@ -53,6 +53,11 @@ extension DawnCallbackFunction {
 			"_ userdata1: UnsafeMutableRawPointer?"
 			"_ userdata2: UnsafeMutableRawPointer?"
 		}
+		let objectReleaseStatements = args.compactMap { arg -> String? in
+			guard arg.optional && arg.annotation == nil else { return nil }
+			guard let entity = data.data[arg.type], case .object = entity else { return nil }
+			return "\(arg.name.camelCase)?.release()"
+		}.joined(separator: "\n\t\t\t\t")
 		return """
 			{ (\(argumentSignature)) in
 					\(raw: wrapArgs(args, data: data).map { $0.formatted().description }.joined(separator: "\n"))
@@ -60,6 +65,7 @@ extension DawnCallbackFunction {
 					let unmanagedCallback = Unmanaged<AnyObject>.fromOpaque(userdata1!)
 					let callback = unmanagedCallback.takeUnretainedValue() as! GPU\(raw: type.CamelCase)
 					callback(\(raw: args.map { "\($0.name.camelCase)" }.joined(separator: ", ")))
+					\(raw: objectReleaseStatements)
 					\(raw: multipleUseCallbacks.contains(type) ? "unmanagedCallback.release()" : "")
 			}
 			"""
