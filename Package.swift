@@ -45,8 +45,8 @@ let dawnTarget: Target = {
 		return .binaryTarget(
 			name: "DawnLib",
 			url:
-				"https://github.com/adobe/swan/releases/download/dawn-chromium-stable-147.0.7727.50/dawn-chromium-stable-147.0.7727.50-release.artifactbundleindex",
-			checksum: "3b8e2880e663c7d0619e225ca7210ef737773719dc77179f87ac66c7b7e9f739"
+				"https://github.com/adobe/swan/releases/download/dawn-chromium-stable-148.0.7778.97/dawn-chromium-stable-148.0.7778.97-release.artifactbundleindex",
+			checksum: "9d7dccfad5d6a0656adaa1b11f54a9b0b367688923820927ce696ef489b364dc"
 		)
 	}
 }()
@@ -152,7 +152,7 @@ let package = Package(
 				exclude: ["index.html"],
 				swiftSettings: swiftSettings + [.enableExperimentalFeature("Extern")],
 				plugins: [.plugin(name: "BridgeJS", package: "JavaScriptKit")]
-			)
+			),
 		]
 		: [
 			dawnTarget,
@@ -349,7 +349,7 @@ let package = Package(
 					.testTarget(
 						name: "DawnTests",
 						dependencies: [
-							"WebGPU",
+							"WebGPU"
 						],
 						swiftSettings: swiftSettings,
 						linkerSettings: asanLinkerSettings + [

@@ -12,3 +12,6 @@ __pycache__
 BindingsDebug
 .venv/
 node_modules
+
+.cursor
+.claude
