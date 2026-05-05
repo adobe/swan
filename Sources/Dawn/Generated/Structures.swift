@@ -190,6 +190,78 @@ public struct GPUAdapterPropertiesWGPU: GPUChainedStruct {
 	}
 }
 
+extension WGPUAdapterPropertiesDrm: ChainedStruct {
+}
+
+public struct GPUAdapterPropertiesDrm: GPUChainedStruct {
+	public typealias WGPUType = WGPUAdapterPropertiesDrm
+	public let sType: GPUSType = .adapterPropertiesDrm
+	public var hasPrimary: Bool
+	public var hasRender: Bool
+	public var primaryMajor: UInt64
+	public var primaryMinor: UInt64
+	public var renderMajor: UInt64
+	public var renderMinor: UInt64
+
+	public var nextInChain: (any GPUChainedStruct)? = nil
+
+	public init(
+		hasPrimary: Bool = false,
+		hasRender: Bool = false,
+		primaryMajor: UInt64 = 0,
+		primaryMinor: UInt64 = 0,
+		renderMajor: UInt64 = 0,
+		renderMinor: UInt64 = 0,
+		nextInChain: (any GPUChainedStruct)? = nil
+	) {
+		self.hasPrimary = hasPrimary
+		self.hasRender = hasRender
+		self.primaryMajor = primaryMajor
+		self.primaryMinor = primaryMinor
+		self.renderMajor = renderMajor
+		self.renderMinor = renderMinor
+		self.nextInChain = nextInChain
+	}
+
+	public func withWGPUStruct<R>(
+		_ lambda: (inout WGPUAdapterPropertiesDrm) -> R
+	) -> R {
+		return {
+			let hasPrimary: WGPUBool = hasPrimary ? 1 : 0
+			return {
+				let hasRender: WGPUBool = hasRender ? 1 : 0
+				return {
+					if nextInChain == nil {
+						var wgpuStruct = WGPUAdapterPropertiesDrm(
+							chain: WGPUChainedStruct(next: nil, sType: sType),
+							hasPrimary: hasPrimary,
+							hasRender: hasRender,
+							primaryMajor: primaryMajor,
+							primaryMinor: primaryMinor,
+							renderMajor: renderMajor,
+							renderMinor: renderMinor
+						)
+						return lambda(&wgpuStruct)
+					} else {
+						return nextInChain!.withNextInChain() { pointer in
+							var wgpuStruct = WGPUAdapterPropertiesDrm(
+								chain: WGPUChainedStruct(next: pointer, sType: sType),
+								hasPrimary: hasPrimary,
+								hasRender: hasRender,
+								primaryMajor: primaryMajor,
+								primaryMinor: primaryMinor,
+								renderMajor: renderMajor,
+								renderMinor: renderMinor
+							)
+							return lambda(&wgpuStruct)
+						}
+					}
+				}()
+			}()
+		}()
+	}
+}
+
 extension WGPUAdapterPropertiesExplicitComputeSubgroupSizeConfigs: ChainedStruct {
 }
 
@@ -765,6 +837,49 @@ public typealias GPUColor = WGPUColor
 
 extension GPUColor: GPUSimpleStruct {
 	public typealias WGPUType = Self
+}
+
+extension WGPUColorSpaceDawn: RootStruct {
+}
+
+public struct GPUColorSpaceDawn: GPURootStruct {
+	public typealias WGPUType = WGPUColorSpaceDawn
+
+	public var primaries: GPUColorSpacePrimariesDawn
+	public var transfer: GPUColorSpaceTransferDawn
+	public var yCbCrRange: GPUColorSpaceYCbCrRangeDawn
+	public var yCbCrMatrix: GPUColorSpaceYCbCrMatrixDawn
+
+	public var nextInChain: (any GPUChainedStruct)? = nil
+
+	public init(
+		primaries: GPUColorSpacePrimariesDawn = .sRGB,
+		transfer: GPUColorSpaceTransferDawn = .identity,
+		yCbCrRange: GPUColorSpaceYCbCrRangeDawn = .identity,
+		yCbCrMatrix: GPUColorSpaceYCbCrMatrixDawn = .identity,
+		nextInChain: (any GPUChainedStruct)? = nil
+	) {
+		self.primaries = primaries
+		self.transfer = transfer
+		self.yCbCrRange = yCbCrRange
+		self.yCbCrMatrix = yCbCrMatrix
+		self.nextInChain = nextInChain
+	}
+
+	public func withWGPUStruct<R>(
+		_ lambda: (inout WGPUColorSpaceDawn) -> R
+	) -> R {
+		return withWGPUStructChain { pointer in
+			var wgpuStruct = WGPUColorSpaceDawn(
+				nextInChain: pointer,
+				primaries: primaries,
+				transfer: transfer,
+				yCbCrRange: yCbCrRange,
+				yCbCrMatrix: yCbCrMatrix
+			)
+			return lambda(&wgpuStruct)
+		}
+	}
 }
 
 extension WGPUColorTargetState: RootStruct {
@@ -2237,6 +2352,76 @@ extension GPUExtent3D: GPUSimpleStruct {
 	public typealias WGPUType = Self
 }
 
+extension WGPUExternalTextureBindingEntry: ChainedStruct {
+}
+
+public struct GPUExternalTextureBindingEntry: GPUChainedStruct {
+	public typealias WGPUType = WGPUExternalTextureBindingEntry
+	public let sType: GPUSType = .externalTextureBindingEntry
+	public var externalTexture: GPUExternalTexture
+
+	public var nextInChain: (any GPUChainedStruct)? = nil
+
+	public init(externalTexture: GPUExternalTexture, nextInChain: (any GPUChainedStruct)? = nil) {
+		self.externalTexture = externalTexture
+		self.nextInChain = nextInChain
+	}
+
+	public func withWGPUStruct<R>(
+		_ lambda: (inout WGPUExternalTextureBindingEntry) -> R
+	) -> R {
+		return {
+			if nextInChain == nil {
+				var wgpuStruct = WGPUExternalTextureBindingEntry(
+					chain: WGPUChainedStruct(next: nil, sType: sType),
+					externalTexture: externalTexture
+				)
+				return lambda(&wgpuStruct)
+			} else {
+				return nextInChain!.withNextInChain() { pointer in
+					var wgpuStruct = WGPUExternalTextureBindingEntry(
+						chain: WGPUChainedStruct(next: pointer, sType: sType),
+						externalTexture: externalTexture
+					)
+					return lambda(&wgpuStruct)
+				}
+			}
+		}()
+	}
+}
+
+extension WGPUExternalTextureBindingLayout: ChainedStruct {
+}
+
+public struct GPUExternalTextureBindingLayout: GPUChainedStruct {
+	public typealias WGPUType = WGPUExternalTextureBindingLayout
+	public let sType: GPUSType = .externalTextureBindingLayout
+
+	public var nextInChain: (any GPUChainedStruct)? = nil
+
+	public init(nextInChain: (any GPUChainedStruct)? = nil) {
+		self.nextInChain = nextInChain
+	}
+
+	public func withWGPUStruct<R>(
+		_ lambda: (inout WGPUExternalTextureBindingLayout) -> R
+	) -> R {
+		return {
+			if nextInChain == nil {
+				var wgpuStruct = WGPUExternalTextureBindingLayout(chain: WGPUChainedStruct(next: nil, sType: sType), )
+				return lambda(&wgpuStruct)
+			} else {
+				return nextInChain!.withNextInChain() { pointer in
+					var wgpuStruct = WGPUExternalTextureBindingLayout(
+						chain: WGPUChainedStruct(next: pointer, sType: sType),
+					)
+					return lambda(&wgpuStruct)
+				}
+			}
+		}()
+	}
+}
+
 extension WGPUExternalTextureDescriptor: RootStruct {
 }
 
@@ -3358,56 +3543,6 @@ public struct GPURenderPassDescriptor: GPURootStruct {
 	}
 }
 
-extension WGPURenderPassDescriptorExpandResolveRect: ChainedStruct {
-}
-
-public struct GPURenderPassDescriptorExpandResolveRect: GPUChainedStruct {
-	public typealias WGPUType = WGPURenderPassDescriptorExpandResolveRect
-	public let sType: GPUSType = .renderPassDescriptorExpandResolveRect
-	public var x: UInt32
-	public var y: UInt32
-	public var width: UInt32
-	public var height: UInt32
-
-	public var nextInChain: (any GPUChainedStruct)? = nil
-
-	public init(x: UInt32 = 0, y: UInt32 = 0, width: UInt32 = 0, height: UInt32 = 0, nextInChain: (any GPUChainedStruct)? = nil) {
-		self.x = x
-		self.y = y
-		self.width = width
-		self.height = height
-		self.nextInChain = nextInChain
-	}
-
-	public func withWGPUStruct<R>(
-		_ lambda: (inout WGPURenderPassDescriptorExpandResolveRect) -> R
-	) -> R {
-		return {
-			if nextInChain == nil {
-				var wgpuStruct = WGPURenderPassDescriptorExpandResolveRect(
-					chain: WGPUChainedStruct(next: nil, sType: sType),
-					x: x,
-					y: y,
-					width: width,
-					height: height
-				)
-				return lambda(&wgpuStruct)
-			} else {
-				return nextInChain!.withNextInChain() { pointer in
-					var wgpuStruct = WGPURenderPassDescriptorExpandResolveRect(
-						chain: WGPUChainedStruct(next: pointer, sType: sType),
-						x: x,
-						y: y,
-						width: width,
-						height: height
-					)
-					return lambda(&wgpuStruct)
-				}
-			}
-		}()
-	}
-}
-
 extension WGPURenderPassDescriptorResolveRect: ChainedStruct {
 }
 
@@ -3560,6 +3695,48 @@ public struct GPURenderPassPixelLocalStorage: GPUChainedStruct {
 				}
 			}()
 		}
+	}
+}
+
+extension WGPURenderPassRenderAreaRect: ChainedStruct {
+}
+
+public struct GPURenderPassRenderAreaRect: GPUChainedStruct {
+	public typealias WGPUType = WGPURenderPassRenderAreaRect
+	public let sType: GPUSType = .renderPassRenderAreaRect
+	public var origin: GPUOrigin2D
+	public var size: GPUExtent2D
+
+	public var nextInChain: (any GPUChainedStruct)? = nil
+
+	public init(origin: GPUOrigin2D, size: GPUExtent2D, nextInChain: (any GPUChainedStruct)? = nil) {
+		self.origin = origin
+		self.size = size
+		self.nextInChain = nextInChain
+	}
+
+	public func withWGPUStruct<R>(
+		_ lambda: (inout WGPURenderPassRenderAreaRect) -> R
+	) -> R {
+		return {
+			if nextInChain == nil {
+				var wgpuStruct = WGPURenderPassRenderAreaRect(
+					chain: WGPUChainedStruct(next: nil, sType: sType),
+					origin: origin,
+					size: size
+				)
+				return lambda(&wgpuStruct)
+			} else {
+				return nextInChain!.withNextInChain() { pointer in
+					var wgpuStruct = WGPURenderPassRenderAreaRect(
+						chain: WGPUChainedStruct(next: pointer, sType: sType),
+						origin: origin,
+						size: size
+					)
+					return lambda(&wgpuStruct)
+				}
+			}
+		}()
 	}
 }
 
@@ -4072,6 +4249,48 @@ public struct GPUShaderSourceWGSL: GPUChainedStruct {
 				}
 			}()
 		}
+	}
+}
+
+extension WGPUSharedBufferMemoryD3D12SharedMemoryFileMappingHandleDescriptor: ChainedStruct {
+}
+
+public struct GPUSharedBufferMemoryD3D12SharedMemoryFileMappingHandleDescriptor: GPUChainedStruct {
+	public typealias WGPUType = WGPUSharedBufferMemoryD3D12SharedMemoryFileMappingHandleDescriptor
+	public let sType: GPUSType = .sharedBufferMemoryD3D12SharedMemoryFileMappingHandleDescriptor
+	public var handle: UnsafeMutableRawPointer?
+	public var size: UInt64
+
+	public var nextInChain: (any GPUChainedStruct)? = nil
+
+	public init(handle: UnsafeMutableRawPointer?, size: UInt64 = 0, nextInChain: (any GPUChainedStruct)? = nil) {
+		self.handle = handle
+		self.size = size
+		self.nextInChain = nextInChain
+	}
+
+	public func withWGPUStruct<R>(
+		_ lambda: (inout WGPUSharedBufferMemoryD3D12SharedMemoryFileMappingHandleDescriptor) -> R
+	) -> R {
+		return {
+			if nextInChain == nil {
+				var wgpuStruct = WGPUSharedBufferMemoryD3D12SharedMemoryFileMappingHandleDescriptor(
+					chain: WGPUChainedStruct(next: nil, sType: sType),
+					handle: handle,
+					size: size
+				)
+				return lambda(&wgpuStruct)
+			} else {
+				return nextInChain!.withNextInChain() { pointer in
+					var wgpuStruct = WGPUSharedBufferMemoryD3D12SharedMemoryFileMappingHandleDescriptor(
+						chain: WGPUChainedStruct(next: pointer, sType: sType),
+						handle: handle,
+						size: size
+					)
+					return lambda(&wgpuStruct)
+				}
+			}
+		}()
 	}
 }
 
@@ -6505,12 +6724,12 @@ public struct GPUTextureBindingLayout: GPURootStruct {
 	}
 }
 
-extension WGPUTextureBindingViewDimensionDescriptor: ChainedStruct {
+extension WGPUTextureBindingViewDimension: ChainedStruct {
 }
 
-public struct GPUTextureBindingViewDimensionDescriptor: GPUChainedStruct {
-	public typealias WGPUType = WGPUTextureBindingViewDimensionDescriptor
-	public let sType: GPUSType = .textureBindingViewDimensionDescriptor
+public struct GPUTextureBindingViewDimension: GPUChainedStruct {
+	public typealias WGPUType = WGPUTextureBindingViewDimension
+	public let sType: GPUSType = .textureBindingViewDimension
 	public var textureBindingViewDimension: GPUTextureViewDimension
 
 	public var nextInChain: (any GPUChainedStruct)? = nil
@@ -6521,18 +6740,18 @@ public struct GPUTextureBindingViewDimensionDescriptor: GPUChainedStruct {
 	}
 
 	public func withWGPUStruct<R>(
-		_ lambda: (inout WGPUTextureBindingViewDimensionDescriptor) -> R
+		_ lambda: (inout WGPUTextureBindingViewDimension) -> R
 	) -> R {
 		return {
 			if nextInChain == nil {
-				var wgpuStruct = WGPUTextureBindingViewDimensionDescriptor(
+				var wgpuStruct = WGPUTextureBindingViewDimension(
 					chain: WGPUChainedStruct(next: nil, sType: sType),
 					textureBindingViewDimension: textureBindingViewDimension
 				)
 				return lambda(&wgpuStruct)
 			} else {
 				return nextInChain!.withNextInChain() { pointer in
-					var wgpuStruct = WGPUTextureBindingViewDimensionDescriptor(
+					var wgpuStruct = WGPUTextureBindingViewDimension(
 						chain: WGPUChainedStruct(next: pointer, sType: sType),
 						textureBindingViewDimension: textureBindingViewDimension
 					)

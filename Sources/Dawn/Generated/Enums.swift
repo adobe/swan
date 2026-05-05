@@ -48,6 +48,26 @@ public typealias GPUCallbackMode = WGPUCallbackMode
 extension WGPUCallbackMode: @retroactive RawRepresentable {
 }
 
+public typealias GPUColorSpacePrimariesDawn = WGPUColorSpacePrimariesDawn
+
+extension WGPUColorSpacePrimariesDawn: @retroactive RawRepresentable {
+}
+
+public typealias GPUColorSpaceTransferDawn = WGPUColorSpaceTransferDawn
+
+extension WGPUColorSpaceTransferDawn: @retroactive RawRepresentable {
+}
+
+public typealias GPUColorSpaceYCbCrMatrixDawn = WGPUColorSpaceYCbCrMatrixDawn
+
+extension WGPUColorSpaceYCbCrMatrixDawn: @retroactive RawRepresentable {
+}
+
+public typealias GPUColorSpaceYCbCrRangeDawn = WGPUColorSpaceYCbCrRangeDawn
+
+extension WGPUColorSpaceYCbCrRangeDawn: @retroactive RawRepresentable {
+}
+
 public typealias GPUCompareFunction = WGPUCompareFunction
 
 extension WGPUCompareFunction: @retroactive RawRepresentable {
