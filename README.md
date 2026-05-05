@@ -8,7 +8,7 @@
 > **This project is not ready for use.** It is currently under development and intended only for feedback and experimentation.
 
 > [!IMPORTANT]
-> **Swift Requirement:** You must use a recent mainline build of Swift. This project may not work with released versions of Swift.
+> **Status:** The bindings to Dawn are complete and a subset of them have been well tested. The Wasm bindings are still in early development
 
 ---
 

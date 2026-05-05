@@ -111,6 +111,42 @@ Enumerators:
   SwiftName: allowSpontaneous
 - Name: WGPUCallbackMode_WaitAnyOnly
   SwiftName: waitAnyOnly
+- Name: WGPUColorSpacePrimariesDawn_DisplayP3
+  SwiftName: displayP3
+- Name: WGPUColorSpacePrimariesDawn_Rec2020
+  SwiftName: rec2020
+- Name: WGPUColorSpacePrimariesDawn_Rec601
+  SwiftName: rec601
+- Name: WGPUColorSpacePrimariesDawn_Rec709
+  SwiftName: rec709
+- Name: WGPUColorSpacePrimariesDawn_SRGB
+  SwiftName: sRGB
+- Name: WGPUColorSpaceTransferDawn_DisplayP3
+  SwiftName: displayP3
+- Name: WGPUColorSpaceTransferDawn_HLG
+  SwiftName: HLG
+- Name: WGPUColorSpaceTransferDawn_Identity
+  SwiftName: identity
+- Name: WGPUColorSpaceTransferDawn_PQ
+  SwiftName: PQ
+- Name: WGPUColorSpaceTransferDawn_SMPTE_170M
+  SwiftName: SMPTE_170M
+- Name: WGPUColorSpaceTransferDawn_SRGB
+  SwiftName: sRGB
+- Name: WGPUColorSpaceYCbCrMatrixDawn_Identity
+  SwiftName: identity
+- Name: WGPUColorSpaceYCbCrMatrixDawn_Rec2020
+  SwiftName: rec2020
+- Name: WGPUColorSpaceYCbCrMatrixDawn_Rec601
+  SwiftName: rec601
+- Name: WGPUColorSpaceYCbCrMatrixDawn_Rec709
+  SwiftName: rec709
+- Name: WGPUColorSpaceYCbCrRangeDawn_Full
+  SwiftName: full
+- Name: WGPUColorSpaceYCbCrRangeDawn_Identity
+  SwiftName: identity
+- Name: WGPUColorSpaceYCbCrRangeDawn_Narrow
+  SwiftName: narrow
 - Name: WGPUCompareFunction_Always
   SwiftName: always
 - Name: WGPUCompareFunction_Equal
@@ -221,6 +257,8 @@ Enumerators:
   SwiftName: ANGLETextureSharing
 - Name: WGPUFeatureName_AdapterPropertiesD3D
   SwiftName: adapterPropertiesD3D
+- Name: WGPUFeatureName_AdapterPropertiesDrm
+  SwiftName: adapterPropertiesDrm
 - Name: WGPUFeatureName_AdapterPropertiesMemoryHeaps
   SwiftName: adapterPropertiesMemoryHeaps
 - Name: WGPUFeatureName_AdapterPropertiesVk
@@ -261,6 +299,8 @@ Enumerators:
   SwiftName: dawnMultiPlanarFormats
 - Name: WGPUFeatureName_DawnNative
   SwiftName: dawnNative
+- Name: WGPUFeatureName_DawnNativeSpontaneousQueueEvents
+  SwiftName: dawnNativeSpontaneousQueueEvents
 - Name: WGPUFeatureName_DawnPartialLoadResolveTexture
   SwiftName: dawnPartialLoadResolveTexture
 - Name: WGPUFeatureName_DawnTexelCopyBufferRowAlignment
@@ -315,6 +355,8 @@ Enumerators:
   SwiftName: primitiveIndex
 - Name: WGPUFeatureName_RG11B10UfloatRenderable
   SwiftName: RG11B10UfloatRenderable
+- Name: WGPUFeatureName_RenderPassRenderArea
+  SwiftName: renderPassRenderArea
 - Name: WGPUFeatureName_ShaderF16
   SwiftName: shaderF16
 - Name: WGPUFeatureName_ShaderModuleCompilationOptions
@@ -461,8 +503,12 @@ Enumerators:
   SwiftName: undefined
 - Name: WGPUPredefinedColorSpace_DisplayP3
   SwiftName: displayP3
+- Name: WGPUPredefinedColorSpace_DisplayP3Linear
+  SwiftName: displayP3Linear
 - Name: WGPUPredefinedColorSpace_SRGB
   SwiftName: sRGB
+- Name: WGPUPredefinedColorSpace_SRGBLinear
+  SwiftName: sRGBLinear
 - Name: WGPUPresentMode_Fifo
   SwiftName: fifo
 - Name: WGPUPresentMode_FifoRelaxed
@@ -513,6 +559,8 @@ Enumerators:
   SwiftName: aHardwareBufferProperties
 - Name: WGPUSType_AdapterPropertiesD3D
   SwiftName: adapterPropertiesD3D
+- Name: WGPUSType_AdapterPropertiesDrm
+  SwiftName: adapterPropertiesDrm
 - Name: WGPUSType_AdapterPropertiesExplicitComputeSubgroupSizeConfigs
   SwiftName: adapterPropertiesExplicitComputeSubgroupSizeConfigs
 - Name: WGPUSType_AdapterPropertiesMemoryHeaps
@@ -579,14 +627,14 @@ Enumerators:
   SwiftName: pipelineLayoutPixelLocalStorage
 - Name: WGPUSType_PipelineLayoutResourceTable
   SwiftName: pipelineLayoutResourceTable
-- Name: WGPUSType_RenderPassDescriptorExpandResolveRect
-  SwiftName: renderPassDescriptorExpandResolveRect
 - Name: WGPUSType_RenderPassDescriptorResolveRect
   SwiftName: renderPassDescriptorResolveRect
 - Name: WGPUSType_RenderPassMaxDrawCount
   SwiftName: renderPassMaxDrawCount
 - Name: WGPUSType_RenderPassPixelLocalStorage
   SwiftName: renderPassPixelLocalStorage
+- Name: WGPUSType_RenderPassRenderAreaRect
+  SwiftName: renderPassRenderAreaRect
 - Name: WGPUSType_RequestAdapterOptionsAngleVirtualizationGroup
   SwiftName: requestAdapterOptionsAngleVirtualizationGroup
 - Name: WGPUSType_RequestAdapterOptionsD3D11Device
@@ -695,8 +743,8 @@ Enumerators:
   SwiftName: texelBufferBindingEntry
 - Name: WGPUSType_TexelBufferBindingLayout
   SwiftName: texelBufferBindingLayout
-- Name: WGPUSType_TextureBindingViewDimensionDescriptor
-  SwiftName: textureBindingViewDimensionDescriptor
+- Name: WGPUSType_TextureBindingViewDimension
+  SwiftName: textureBindingViewDimension
 - Name: WGPUSType_TextureComponentSwizzleDescriptor
   SwiftName: textureComponentSwizzleDescriptor
 - Name: WGPUSType_YCbCrVkDescriptor
@@ -1680,6 +1728,8 @@ Functions:
   SwiftName: WGPUSharedFenceImpl.exportInfo(self:info:)
 - Name: wgpuSharedFenceRelease
   SwiftName: WGPUSharedFenceImpl.release(self:)
+- Name: wgpuSharedFenceSetLabel
+  SwiftName: WGPUSharedFenceImpl.setLabel(self:label:)
 - Name: wgpuSharedTextureMemoryAddRef
   SwiftName: WGPUSharedTextureMemoryImpl.addRef(self:)
 - Name: wgpuSharedTextureMemoryBeginAccess
@@ -1876,6 +1926,14 @@ Tags:
 - Name: WGPUBufferMapState
   EnumExtensibility: closed
 - Name: WGPUCallbackMode
+  EnumExtensibility: closed
+- Name: WGPUColorSpacePrimariesDawn
+  EnumExtensibility: closed
+- Name: WGPUColorSpaceTransferDawn
+  EnumExtensibility: closed
+- Name: WGPUColorSpaceYCbCrMatrixDawn
+  EnumExtensibility: closed
+- Name: WGPUColorSpaceYCbCrRangeDawn
   EnumExtensibility: closed
 - Name: WGPUCommandBufferImpl
   SwiftImportAs: reference

@@ -845,6 +845,12 @@ extension GPUSharedBufferMemory {
 public typealias GPUSharedFence = WGPUSharedFence
 
 extension GPUSharedFence {
+	public func setLabel(label: String) -> Void {
+		label.withWGPUStruct { label in
+			setLabel(label: label)
+		}
+	}
+
 	public func exportInfo(info: inout GPUSharedFenceExportInfo) -> Void {
 		info.withWGPUMutablePointer { info in
 			exportInfo(info: info)
