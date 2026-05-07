@@ -3,6 +3,7 @@
 .vscode/settings.json
 .vs/
 webgpu_dawn.xcframework
+dawn_local
 Dawn/builds
 Dawn/dist
 Dawn/dawn_source
