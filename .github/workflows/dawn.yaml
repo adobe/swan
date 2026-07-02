@@ -70,7 +70,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install prerequisites on Linux
         if: startsWith(matrix.platform, 'ubuntu')
@@ -131,7 +131,7 @@ jobs:
       artifact_id: ${{ steps.store-artifact-bundle.outputs.artifact-id }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v6

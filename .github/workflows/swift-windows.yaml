@@ -25,7 +25,7 @@ jobs:
             platform: windows10-arm64
     runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Read Swift version
         id: swift-version
