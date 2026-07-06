@@ -56,7 +56,7 @@ def ci_target(target: str, archs: list[str], config: str = "release") -> TargetC
             return TargetConfig(
                 os=OS.MACOS,
                 arch=arch_enums,
-                sdk="macosx15.5",
+                sdk="macosx26.5",
                 deployment_target="14.0",
                 config=config,
             )
@@ -64,7 +64,7 @@ def ci_target(target: str, archs: list[str], config: str = "release") -> TargetC
             return TargetConfig(
                 os=OS.IPHONE,
                 arch=arch_enums,
-                sdk="iphoneos18.5",
+                sdk="iphoneos26.5",
                 deployment_target="18.0",
                 config=config,
             )
@@ -72,7 +72,7 @@ def ci_target(target: str, archs: list[str], config: str = "release") -> TargetC
             return TargetConfig(
                 os=OS.IPHONE,
                 arch=arch_enums,
-                sdk="iphonesimulator18.5",
+                sdk="iphonesimulator26.5",
                 deployment_target="18.0",
                 config=config,
             )
