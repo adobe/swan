@@ -5,6 +5,16 @@ from dawn_builder import Arch, OS, TargetConfig, cmake_flags
 
 
 class CMakeFlagsTests(unittest.TestCase):
+    def test_linux_build_disables_dawn_cpp_modules(self) -> None:
+        target_config = TargetConfig(
+            os=OS.LINUX,
+            arch=[Arch.X86_64],
+        )
+
+        flags = cmake_flags(target_config)
+
+        self.assertIn("-DDAWN_SUPPORTS_CXX_MODULES=OFF", flags)
+
     def test_ios_build_passes_host_protoc_to_cmake(self) -> None:
         target_config = TargetConfig(
             os=OS.IPHONE,

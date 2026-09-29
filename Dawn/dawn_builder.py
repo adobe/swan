@@ -188,6 +188,10 @@ def cmake_flags(target_config: TargetConfig) -> List[str]:
     """
     flags = []
 
+    if target_config.os == OS.LINUX:
+        # CMake cannot scan module dependencies with the Linux GCC toolchain.
+        flags.append("-DDAWN_SUPPORTS_CXX_MODULES=OFF")
+
     if target_config.os.is_apple():
         flags.append(
             f"-DCMAKE_OSX_ARCHITECTURES={';'.join([arch.value for arch in target_config.arch])}"
