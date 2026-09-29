@@ -98,6 +98,17 @@ jobs:
               }
             }
           }
+
+      - name: Set short SwiftPM temp directory
+        shell: pwsh
+        run: |
+          $temp = Join-Path $env:RUNNER_TEMP "swiftpm"
+          New-Item -ItemType Directory -Path $temp -Force | Out-Null
+          "TEMP=$temp" >> $env:GITHUB_ENV
+          "TMP=$temp" >> $env:GITHUB_ENV
+          "TMPDIR=$temp" >> $env:GITHUB_ENV
+          Write-Host "SwiftPM temp directory: $temp"
+
       - name: Verify Swift
         shell: pwsh
         run: |
