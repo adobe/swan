@@ -75,6 +75,20 @@ let asanLinkerSettings: [LinkerSetting] =
 		.unsafeFlags(["-sanitize=address"])
 	] : []
 
+var packageDependencies: [Package.Dependency] = [
+	.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.8.2"),
+	.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "603.0.2"),
+	.package(url: "https://github.com/swiftlang/swift-format.git", from: "603.0.0"),
+]
+
+#if !os(Windows)
+// JavaScriptKit is WASM-only, and its command plugin currently does not compile on Windows.
+packageDependencies.insert(
+	.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.59.0"),
+	at: 0
+)
+#endif
+
 let package = Package(
 	name: "Swan",
 	platforms: [
@@ -104,12 +118,7 @@ let package = Package(
 					targets: ["GenerateDawnAPINotesPlugin"]
 				),
 			]),
-	dependencies: [
-		.package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.47.1"),
-		.package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.8.2"),
-		.package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0"),
-		.package(url: "https://github.com/swiftlang/swift-format.git", from: "602.0.0"),
-	],
+	dependencies: packageDependencies,
 	targets: isWasmBuild
 		? [
 			.target(
@@ -149,9 +158,8 @@ let package = Package(
 					.target(name: "WebGPUWasm"),
 				],
 				path: "Demos/BitonicSort",
-				exclude: ["index.html"],
-				swiftSettings: swiftSettings + [.enableExperimentalFeature("Extern")],
-				plugins: [.plugin(name: "BridgeJS", package: "JavaScriptKit")]
+				exclude: ["index.html", "bridge-js.config.json", "Generated/JavaScript"],
+				swiftSettings: swiftSettings + [.enableExperimentalFeature("Extern")]
 			),
 		]
 		: [
@@ -305,7 +313,7 @@ let package = Package(
 					.target(name: "DemoUtils")
 				],
 				path: "Demos/BitonicSort",
-				exclude: ["index.html"],
+				exclude: ["index.html", "bridge-js.config.json", "Generated/BridgeJS.swift", "Generated/JavaScript"],
 				swiftSettings: swiftSettings,
 				linkerSettings: asanLinkerSettings + [
 					.linkedFramework("Cocoa", .when(platforms: [.macOS])),
