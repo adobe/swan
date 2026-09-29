@@ -76,7 +76,7 @@ jobs:
         if: startsWith(matrix.platform, 'ubuntu')
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential clang cmake curl git gnupg2 libcurl4-openssl-dev libpython3-dev libssl-dev libx11-xcb-dev libxcursor-dev libxi-dev libxinerama-dev libxml2-dev libxrandr-dev libz-dev libz3-dev mesa-common-dev ninja-build pkg-config python3 python3-pip python3-venv tzdata unzip wget
+          sudo apt-get install -y build-essential clang cmake curl git gnupg2 libcurl4-openssl-dev libpython3-dev libssl-dev libwayland-dev libx11-xcb-dev libxcursor-dev libxi-dev libxinerama-dev libxml2-dev libxrandr-dev libz-dev libz3-dev mesa-common-dev ninja-build pkg-config python3 python3-pip python3-venv tzdata unzip wget
 
       - name: Setup MSBuild
         if: startsWith(matrix.platform, 'windows')
@@ -99,6 +99,10 @@ jobs:
         run: |
           cd Dawn
           python ci_build_dawn.py get-source --hash ${{ inputs.dawn_hash }}
+
+      - name: Install host protobuf compiler for iOS
+        if: matrix.target == 'iphoneos' || matrix.target == 'iphonesimulator'
+        run: brew install protobuf
 
       - name: Build Dawn for ${{ matrix.target }} (${{ matrix.arch }})
         run: |

@@ -199,6 +199,12 @@ def cmake_flags(target_config: TargetConfig) -> List[str]:
         if target_config.os != OS.MACOS:
             flags.append("-DDAWN_USE_GLFW=OFF")
             flags.append("-DCMAKE_SYSTEM_NAME=iOS")
+            protoc_executable = shutil.which("protoc")
+            if not protoc_executable:
+                raise FileNotFoundError(
+                    "Host protoc executable not found; install protobuf before building Dawn for iOS"
+                )
+            flags.append(f"-DPROTOC_EXECUTABLE={protoc_executable}")
 
     if target_config.config == "debug":
         flags.append("-DCMAKE_BUILD_TYPE=Debug")
