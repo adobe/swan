@@ -51,12 +51,12 @@ jobs:
             target: windows
             arch: x86_64
             python-version: "3.11"
-            vs-version: "17.12.6"
+            vs-version: "[18.0,19.0)"
           - platform: windows-11-arm
             target: windows
             arch: arm64
             python-version: "3.11"
-            vs-version: "17.12.6"
+            vs-version: "[18.0,19.0)"
           - platform: macos-latest
             target: iphoneos
             arch: arm64
