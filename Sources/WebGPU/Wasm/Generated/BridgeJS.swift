@@ -1,4 +1,5 @@
 // bridge-js: skip
+// swift-format-ignore-file
 // NOTICE: This is auto-generated code by BridgeJS from JavaScriptKit,
 // DO NOT EDIT.
 //
@@ -2192,6 +2193,270 @@ fileprivate func _bjs_struct_lift_GPUPipelineLayoutDescriptor_extern() -> Int32 
     return _bjs_struct_lift_GPUPipelineLayoutDescriptor_extern()
 }
 
+extension GPUBufferDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBufferDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUShaderModuleDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUShaderModuleDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUVertexAttribute: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUVertexAttribute.bridgeJSMakeTypeHandle()
+}
+
+extension GPUVertexBufferLayout: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUVertexBufferLayout.bridgeJSMakeTypeHandle()
+}
+
+extension GPUPrimitiveState: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUPrimitiveState.bridgeJSMakeTypeHandle()
+}
+
+extension GPUBlendComponent: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBlendComponent.bridgeJSMakeTypeHandle()
+}
+
+extension GPUBlendState: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBlendState.bridgeJSMakeTypeHandle()
+}
+
+extension GPUColorTargetState: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUColorTargetState.bridgeJSMakeTypeHandle()
+}
+
+extension GPUColor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUColor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUCommandEncoderDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUCommandEncoderDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUCommandBufferDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUCommandBufferDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPURenderPassColorAttachment: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPURenderPassColorAttachment.bridgeJSMakeTypeHandle()
+}
+
+extension GPURenderPassDepthStencilAttachment: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPURenderPassDepthStencilAttachment.bridgeJSMakeTypeHandle()
+}
+
+extension GPURenderPassDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPURenderPassDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUComputePassDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUComputePassDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUStencilFaceState: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUStencilFaceState.bridgeJSMakeTypeHandle()
+}
+
+extension GPUDepthStencilState: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUDepthStencilState.bridgeJSMakeTypeHandle()
+}
+
+extension GPUExtent3D: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUExtent3D.bridgeJSMakeTypeHandle()
+}
+
+extension GPUOrigin3D: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUOrigin3D.bridgeJSMakeTypeHandle()
+}
+
+extension GPUTextureDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUTextureDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUTextureViewDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUTextureViewDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUSamplerDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUSamplerDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUQuerySetDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUQuerySetDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUPassTimestampWrites: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUPassTimestampWrites.bridgeJSMakeTypeHandle()
+}
+
+extension GPUBufferBindingLayout: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBufferBindingLayout.bridgeJSMakeTypeHandle()
+}
+
+extension GPUSamplerBindingLayout: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUSamplerBindingLayout.bridgeJSMakeTypeHandle()
+}
+
+extension GPUTextureBindingLayout: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUTextureBindingLayout.bridgeJSMakeTypeHandle()
+}
+
+extension GPUStorageTextureBindingLayout: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUStorageTextureBindingLayout.bridgeJSMakeTypeHandle()
+}
+
+extension GPUBindGroupLayoutEntry: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBindGroupLayoutEntry.bridgeJSMakeTypeHandle()
+}
+
+extension GPUBindGroupLayoutDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBindGroupLayoutDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUMultisampleState: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUMultisampleState.bridgeJSMakeTypeHandle()
+}
+
+extension GPUVertexState: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUVertexState.bridgeJSMakeTypeHandle()
+}
+
+extension GPUFragmentState: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUFragmentState.bridgeJSMakeTypeHandle()
+}
+
+extension GPURenderPipelineDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPURenderPipelineDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUBufferBinding: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBufferBinding.bridgeJSMakeTypeHandle()
+}
+
+extension GPUBindGroupEntry: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBindGroupEntry.bridgeJSMakeTypeHandle()
+}
+
+extension GPUBindGroupDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBindGroupDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUCanvasConfiguration: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUCanvasConfiguration.bridgeJSMakeTypeHandle()
+}
+
+extension GPUComputeState: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUComputeState.bridgeJSMakeTypeHandle()
+}
+
+extension GPUComputePipelineDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUComputePipelineDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUPipelineLayoutDescriptor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUPipelineLayoutDescriptor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUCanvasAlphaMode: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUCanvasAlphaMode.bridgeJSMakeTypeHandle()
+}
+
+extension GPUPrimitiveTopology: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUPrimitiveTopology.bridgeJSMakeTypeHandle()
+}
+
+extension GPUVertexFormat: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUVertexFormat.bridgeJSMakeTypeHandle()
+}
+
+extension GPUVertexStepMode: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUVertexStepMode.bridgeJSMakeTypeHandle()
+}
+
+extension GPUTextureFormat: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUTextureFormat.bridgeJSMakeTypeHandle()
+}
+
+extension GPULoadOp: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPULoadOp.bridgeJSMakeTypeHandle()
+}
+
+extension GPUStoreOp: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUStoreOp.bridgeJSMakeTypeHandle()
+}
+
+extension GPUFrontFace: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUFrontFace.bridgeJSMakeTypeHandle()
+}
+
+extension GPUCullMode: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUCullMode.bridgeJSMakeTypeHandle()
+}
+
+extension GPUIndexFormat: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUIndexFormat.bridgeJSMakeTypeHandle()
+}
+
+extension GPUBufferBindingType: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBufferBindingType.bridgeJSMakeTypeHandle()
+}
+
+extension GPUTextureViewDimension: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUTextureViewDimension.bridgeJSMakeTypeHandle()
+}
+
+extension GPUTextureSampleType: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUTextureSampleType.bridgeJSMakeTypeHandle()
+}
+
+extension GPUStorageTextureAccess: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUStorageTextureAccess.bridgeJSMakeTypeHandle()
+}
+
+extension GPUSamplerBindingType: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUSamplerBindingType.bridgeJSMakeTypeHandle()
+}
+
+extension GPUQueryType: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUQueryType.bridgeJSMakeTypeHandle()
+}
+
+extension GPUAddressMode: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUAddressMode.bridgeJSMakeTypeHandle()
+}
+
+extension GPUFilterMode: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUFilterMode.bridgeJSMakeTypeHandle()
+}
+
+extension GPUMipmapFilterMode: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUMipmapFilterMode.bridgeJSMakeTypeHandle()
+}
+
+extension GPUCompareFunction: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUCompareFunction.bridgeJSMakeTypeHandle()
+}
+
+extension GPUBlendFactor: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBlendFactor.bridgeJSMakeTypeHandle()
+}
+
+extension GPUBlendOperation: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUBlendOperation.bridgeJSMakeTypeHandle()
+}
+
+extension GPUTextureAspect: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUTextureAspect.bridgeJSMakeTypeHandle()
+}
+
+extension GPUTextureDimension: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUTextureDimension.bridgeJSMakeTypeHandle()
+}
+
+extension GPUStencilOperation: BridgedSwiftGenericBridgeable {
+    @_spi(BridgeJS) public static let bridgeJSTypeHandle = GPUStencilOperation.bridgeJSMakeTypeHandle()
+}
+
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUAdapter_label__set")
 fileprivate func bjs_GPUAdapter_label__set_extern(_ self: Int32, _ newValueBytes: Int32, _ newValueLength: Int32) -> Void
@@ -2217,8 +2482,8 @@ fileprivate func bjs_GPUAdapter__hasFeature_extern(_ self: Int32, _ featureBytes
 }
 
 func _$GPUAdapter_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUAdapter_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -2227,8 +2492,8 @@ func _$GPUAdapter_label__set(_ self: JSObject, _ newValue: String) throws(JSExce
 }
 
 func _$GPUAdapter__hasFeature(_ self: JSObject, _ feature: String) throws(JSException) -> Bool {
-    let selfValue = self.bridgeJSLowerParameter()
     let ret0 = feature.bridgeJSWithLoweredParameter { (featureBytes, featureLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         let ret = bjs_GPUAdapter__hasFeature(selfValue, featureBytes, featureLength)
         return ret
     }
@@ -2252,8 +2517,8 @@ fileprivate func bjs_GPUBindGroup_label__set_extern(_ self: Int32, _ newValueByt
 }
 
 func _$GPUBindGroup_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUBindGroup_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -2274,8 +2539,8 @@ fileprivate func bjs_GPUBindGroupLayout_label__set_extern(_ self: Int32, _ newVa
 }
 
 func _$GPUBindGroupLayout_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUBindGroupLayout_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -2407,8 +2672,8 @@ func _$GPUBuffer__mapState_get(_ self: JSObject) throws(JSException) -> String {
 }
 
 func _$GPUBuffer_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUBuffer_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -2425,10 +2690,10 @@ func _$GPUBuffer__destroy(_ self: JSObject) throws(JSException) -> Void {
 }
 
 func _$GPUBuffer__mapAsync(_ self: JSObject, _ mode: Int, _ offset: Int, _ size: Int) throws(JSException) -> JSObject {
-    let selfValue = self.bridgeJSLowerParameter()
-    let modeValue = mode.bridgeJSLowerParameter()
-    let offsetValue = offset.bridgeJSLowerParameter()
     let sizeValue = size.bridgeJSLowerParameter()
+    let offsetValue = offset.bridgeJSLowerParameter()
+    let modeValue = mode.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     let ret = bjs_GPUBuffer__mapAsync(selfValue, modeValue, offsetValue, sizeValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2437,9 +2702,9 @@ func _$GPUBuffer__mapAsync(_ self: JSObject, _ mode: Int, _ offset: Int, _ size:
 }
 
 func _$GPUBuffer__getMappedRange(_ self: JSObject, _ offset: Int, _ size: Int) throws(JSException) -> JSObject {
-    let selfValue = self.bridgeJSLowerParameter()
-    let offsetValue = offset.bridgeJSLowerParameter()
     let sizeValue = size.bridgeJSLowerParameter()
+    let offsetValue = offset.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     let ret = bjs_GPUBuffer__getMappedRange(selfValue, offsetValue, sizeValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2457,14 +2722,14 @@ func _$GPUBuffer__unmap(_ self: JSObject) throws(JSException) -> Void {
 
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUCanvasContext__configure")
-fileprivate func bjs_GPUCanvasContext__configure_extern(_ self: Int32, _ configuration: Int32) -> Void
+fileprivate func bjs_GPUCanvasContext__configure_extern(_ self: Int32) -> Void
 #else
-fileprivate func bjs_GPUCanvasContext__configure_extern(_ self: Int32, _ configuration: Int32) -> Void {
+fileprivate func bjs_GPUCanvasContext__configure_extern(_ self: Int32) -> Void {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUCanvasContext__configure(_ self: Int32, _ configuration: Int32) -> Void {
-    return bjs_GPUCanvasContext__configure_extern(self, configuration)
+@inline(never) fileprivate func bjs_GPUCanvasContext__configure(_ self: Int32) -> Void {
+    return bjs_GPUCanvasContext__configure_extern(self)
 }
 
 #if arch(wasm32)
@@ -2480,9 +2745,9 @@ fileprivate func bjs_GPUCanvasContext__getCurrentTexture_extern(_ self: Int32) -
 }
 
 func _$GPUCanvasContext__configure(_ self: JSObject, _ configuration: GPUCanvasConfiguration) throws(JSException) -> Void {
+    let _ = configuration.bridgeJSLowerParameter()
     let selfValue = self.bridgeJSLowerParameter()
-    let configurationObjectId = configuration.bridgeJSLowerParameter()
-    bjs_GPUCanvasContext__configure(selfValue, configurationObjectId)
+    bjs_GPUCanvasContext__configure(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
@@ -2510,8 +2775,8 @@ fileprivate func bjs_GPUCommandBuffer_label__set_extern(_ self: Int32, _ newValu
 }
 
 func _$GPUCommandBuffer_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUCommandBuffer_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -2533,14 +2798,14 @@ fileprivate func bjs_GPUCommandEncoder_label__set_extern(_ self: Int32, _ newVal
 
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUCommandEncoder__finish")
-fileprivate func bjs_GPUCommandEncoder__finish_extern(_ self: Int32, _ descriptor: Int32) -> Int32
+fileprivate func bjs_GPUCommandEncoder__finish_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUCommandEncoder__finish_extern(_ self: Int32, _ descriptor: Int32) -> Int32 {
+fileprivate func bjs_GPUCommandEncoder__finish_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUCommandEncoder__finish(_ self: Int32, _ descriptor: Int32) -> Int32 {
-    return bjs_GPUCommandEncoder__finish_extern(self, descriptor)
+@inline(never) fileprivate func bjs_GPUCommandEncoder__finish(_ self: Int32) -> Int32 {
+    return bjs_GPUCommandEncoder__finish_extern(self)
 }
 
 #if arch(wasm32)
@@ -2628,8 +2893,8 @@ fileprivate func bjs_GPUCommandEncoder__writeTimestamp_extern(_ self: Int32, _ q
 }
 
 func _$GPUCommandEncoder_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUCommandEncoder_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -2638,9 +2903,9 @@ func _$GPUCommandEncoder_label__set(_ self: JSObject, _ newValue: String) throws
 }
 
 func _$GPUCommandEncoder__finish(_ self: JSObject, _ descriptor: GPUCommandBufferDescriptor) throws(JSException) -> GPUCommandBuffer {
+    let _ = descriptor.bridgeJSLowerParameter()
     let selfValue = self.bridgeJSLowerParameter()
-    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
-    let ret = bjs_GPUCommandEncoder__finish(selfValue, descriptorObjectId)
+    let ret = bjs_GPUCommandEncoder__finish(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
@@ -2648,12 +2913,12 @@ func _$GPUCommandEncoder__finish(_ self: JSObject, _ descriptor: GPUCommandBuffe
 }
 
 func _$GPUCommandEncoder__copyBufferToBuffer(_ self: JSObject, _ source: GPUBuffer, _ sourceOffset: Int, _ destination: GPUBuffer, _ destinationOffset: Int, _ size: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let sourceValue = source.bridgeJSLowerParameter()
-    let sourceOffsetValue = sourceOffset.bridgeJSLowerParameter()
-    let destinationValue = destination.bridgeJSLowerParameter()
-    let destinationOffsetValue = destinationOffset.bridgeJSLowerParameter()
     let sizeValue = size.bridgeJSLowerParameter()
+    let destinationOffsetValue = destinationOffset.bridgeJSLowerParameter()
+    let destinationValue = destination.bridgeJSLowerParameter()
+    let sourceOffsetValue = sourceOffset.bridgeJSLowerParameter()
+    let sourceValue = source.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUCommandEncoder__copyBufferToBuffer(selfValue, sourceValue, sourceOffsetValue, destinationValue, destinationOffsetValue, sizeValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2661,10 +2926,10 @@ func _$GPUCommandEncoder__copyBufferToBuffer(_ self: JSObject, _ source: GPUBuff
 }
 
 func _$GPUCommandEncoder__copyBufferToTexture(_ self: JSObject, _ source: JSObject, _ destination: JSObject, _ copySize: JSObject) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let sourceValue = source.bridgeJSLowerParameter()
-    let destinationValue = destination.bridgeJSLowerParameter()
     let copySizeValue = copySize.bridgeJSLowerParameter()
+    let destinationValue = destination.bridgeJSLowerParameter()
+    let sourceValue = source.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUCommandEncoder__copyBufferToTexture(selfValue, sourceValue, destinationValue, copySizeValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2672,10 +2937,10 @@ func _$GPUCommandEncoder__copyBufferToTexture(_ self: JSObject, _ source: JSObje
 }
 
 func _$GPUCommandEncoder__copyTextureToBuffer(_ self: JSObject, _ source: JSObject, _ destination: JSObject, _ copySize: JSObject) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let sourceValue = source.bridgeJSLowerParameter()
-    let destinationValue = destination.bridgeJSLowerParameter()
     let copySizeValue = copySize.bridgeJSLowerParameter()
+    let destinationValue = destination.bridgeJSLowerParameter()
+    let sourceValue = source.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUCommandEncoder__copyTextureToBuffer(selfValue, sourceValue, destinationValue, copySizeValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2683,12 +2948,12 @@ func _$GPUCommandEncoder__copyTextureToBuffer(_ self: JSObject, _ source: JSObje
 }
 
 func _$GPUCommandEncoder__resolveQuerySet(_ self: JSObject, _ querySet: GPUQuerySet, _ firstQuery: Int, _ queryCount: Int, _ destination: GPUBuffer, _ destinationOffset: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let querySetValue = querySet.bridgeJSLowerParameter()
-    let firstQueryValue = firstQuery.bridgeJSLowerParameter()
-    let queryCountValue = queryCount.bridgeJSLowerParameter()
-    let destinationValue = destination.bridgeJSLowerParameter()
     let destinationOffsetValue = destinationOffset.bridgeJSLowerParameter()
+    let destinationValue = destination.bridgeJSLowerParameter()
+    let queryCountValue = queryCount.bridgeJSLowerParameter()
+    let firstQueryValue = firstQuery.bridgeJSLowerParameter()
+    let querySetValue = querySet.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUCommandEncoder__resolveQuerySet(selfValue, querySetValue, firstQueryValue, queryCountValue, destinationValue, destinationOffsetValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2696,9 +2961,9 @@ func _$GPUCommandEncoder__resolveQuerySet(_ self: JSObject, _ querySet: GPUQuery
 }
 
 func _$GPUCommandEncoder__clearBuffer(_ self: JSObject, _ buffer: GPUBuffer, _ offset: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let bufferValue = buffer.bridgeJSLowerParameter()
     let offsetValue = offset.bridgeJSLowerParameter()
+    let bufferValue = buffer.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUCommandEncoder__clearBuffer(selfValue, bufferValue, offsetValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2706,10 +2971,10 @@ func _$GPUCommandEncoder__clearBuffer(_ self: JSObject, _ buffer: GPUBuffer, _ o
 }
 
 func _$GPUCommandEncoder__clearBufferWithSize(_ self: JSObject, _ buffer: GPUBuffer, _ offset: Int, _ size: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let bufferValue = buffer.bridgeJSLowerParameter()
-    let offsetValue = offset.bridgeJSLowerParameter()
     let sizeValue = size.bridgeJSLowerParameter()
+    let offsetValue = offset.bridgeJSLowerParameter()
+    let bufferValue = buffer.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUCommandEncoder__clearBufferWithSize(selfValue, bufferValue, offsetValue, sizeValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2717,9 +2982,9 @@ func _$GPUCommandEncoder__clearBufferWithSize(_ self: JSObject, _ buffer: GPUBuf
 }
 
 func _$GPUCommandEncoder__writeTimestamp(_ self: JSObject, _ querySet: GPUQuerySet, _ queryIndex: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let querySetValue = querySet.bridgeJSLowerParameter()
     let queryIndexValue = queryIndex.bridgeJSLowerParameter()
+    let querySetValue = querySet.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUCommandEncoder__writeTimestamp(selfValue, querySetValue, queryIndexValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2823,8 +3088,8 @@ fileprivate func bjs_GPUComputePassEncoder__end_extern(_ self: Int32) -> Void {
 }
 
 func _$GPUComputePassEncoder_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUComputePassEncoder_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -2833,8 +3098,8 @@ func _$GPUComputePassEncoder_label__set(_ self: JSObject, _ newValue: String) th
 }
 
 func _$GPUComputePassEncoder__setPipeline(_ self: JSObject, _ pipeline: GPUComputePipeline) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     let pipelineValue = pipeline.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUComputePassEncoder__setPipeline(selfValue, pipelineValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2842,9 +3107,9 @@ func _$GPUComputePassEncoder__setPipeline(_ self: JSObject, _ pipeline: GPUCompu
 }
 
 func _$GPUComputePassEncoder__setBindGroup(_ self: JSObject, _ groupIndex: Int, _ group: GPUBindGroup) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let groupIndexValue = groupIndex.bridgeJSLowerParameter()
     let groupValue = group.bridgeJSLowerParameter()
+    let groupIndexValue = groupIndex.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUComputePassEncoder__setBindGroup(selfValue, groupIndexValue, groupValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2852,10 +3117,10 @@ func _$GPUComputePassEncoder__setBindGroup(_ self: JSObject, _ groupIndex: Int, 
 }
 
 func _$GPUComputePassEncoder__setBindGroupWithOffsets(_ self: JSObject, _ groupIndex: Int, _ group: GPUBindGroup, _ dynamicOffsets: JSObject) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let groupIndexValue = groupIndex.bridgeJSLowerParameter()
-    let groupValue = group.bridgeJSLowerParameter()
     let dynamicOffsetsValue = dynamicOffsets.bridgeJSLowerParameter()
+    let groupValue = group.bridgeJSLowerParameter()
+    let groupIndexValue = groupIndex.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUComputePassEncoder__setBindGroupWithOffsets(selfValue, groupIndexValue, groupValue, dynamicOffsetsValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2863,10 +3128,10 @@ func _$GPUComputePassEncoder__setBindGroupWithOffsets(_ self: JSObject, _ groupI
 }
 
 func _$GPUComputePassEncoder__dispatchWorkgroups(_ self: JSObject, _ workgroupCountX: Int, _ workgroupCountY: Int, _ workgroupCountZ: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let workgroupCountXValue = workgroupCountX.bridgeJSLowerParameter()
-    let workgroupCountYValue = workgroupCountY.bridgeJSLowerParameter()
     let workgroupCountZValue = workgroupCountZ.bridgeJSLowerParameter()
+    let workgroupCountYValue = workgroupCountY.bridgeJSLowerParameter()
+    let workgroupCountXValue = workgroupCountX.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUComputePassEncoder__dispatchWorkgroups(selfValue, workgroupCountXValue, workgroupCountYValue, workgroupCountZValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2874,9 +3139,9 @@ func _$GPUComputePassEncoder__dispatchWorkgroups(_ self: JSObject, _ workgroupCo
 }
 
 func _$GPUComputePassEncoder__dispatchWorkgroupsIndirect(_ self: JSObject, _ indirectBuffer: GPUBuffer, _ indirectOffset: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let indirectBufferValue = indirectBuffer.bridgeJSLowerParameter()
     let indirectOffsetValue = indirectOffset.bridgeJSLowerParameter()
+    let indirectBufferValue = indirectBuffer.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUComputePassEncoder__dispatchWorkgroupsIndirect(selfValue, indirectBufferValue, indirectOffsetValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2884,9 +3149,9 @@ func _$GPUComputePassEncoder__dispatchWorkgroupsIndirect(_ self: JSObject, _ ind
 }
 
 func _$GPUComputePassEncoder__writeTimestamp(_ self: JSObject, _ querySet: GPUQuerySet, _ queryIndex: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let querySetValue = querySet.bridgeJSLowerParameter()
     let queryIndexValue = queryIndex.bridgeJSLowerParameter()
+    let querySetValue = querySet.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUComputePassEncoder__writeTimestamp(selfValue, querySetValue, queryIndexValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -2914,8 +3179,8 @@ fileprivate func bjs_GPUComputePipeline_label__set_extern(_ self: Int32, _ newVa
 }
 
 func _$GPUComputePipeline_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUComputePipeline_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -2949,62 +3214,62 @@ fileprivate func bjs_GPUDevice_label__set_extern(_ self: Int32, _ newValueBytes:
 
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice__createBuffer")
-fileprivate func bjs_GPUDevice__createBuffer_extern(_ self: Int32, _ descriptor: Int32) -> Int32
+fileprivate func bjs_GPUDevice__createBuffer_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUDevice__createBuffer_extern(_ self: Int32, _ descriptor: Int32) -> Int32 {
+fileprivate func bjs_GPUDevice__createBuffer_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUDevice__createBuffer(_ self: Int32, _ descriptor: Int32) -> Int32 {
-    return bjs_GPUDevice__createBuffer_extern(self, descriptor)
+@inline(never) fileprivate func bjs_GPUDevice__createBuffer(_ self: Int32) -> Int32 {
+    return bjs_GPUDevice__createBuffer_extern(self)
 }
 
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice__createTexture")
-fileprivate func bjs_GPUDevice__createTexture_extern(_ self: Int32, _ descriptor: Int32) -> Int32
+fileprivate func bjs_GPUDevice__createTexture_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUDevice__createTexture_extern(_ self: Int32, _ descriptor: Int32) -> Int32 {
+fileprivate func bjs_GPUDevice__createTexture_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUDevice__createTexture(_ self: Int32, _ descriptor: Int32) -> Int32 {
-    return bjs_GPUDevice__createTexture_extern(self, descriptor)
+@inline(never) fileprivate func bjs_GPUDevice__createTexture(_ self: Int32) -> Int32 {
+    return bjs_GPUDevice__createTexture_extern(self)
 }
 
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice__createQuerySet")
-fileprivate func bjs_GPUDevice__createQuerySet_extern(_ self: Int32, _ descriptor: Int32) -> Int32
+fileprivate func bjs_GPUDevice__createQuerySet_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUDevice__createQuerySet_extern(_ self: Int32, _ descriptor: Int32) -> Int32 {
+fileprivate func bjs_GPUDevice__createQuerySet_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUDevice__createQuerySet(_ self: Int32, _ descriptor: Int32) -> Int32 {
-    return bjs_GPUDevice__createQuerySet_extern(self, descriptor)
+@inline(never) fileprivate func bjs_GPUDevice__createQuerySet(_ self: Int32) -> Int32 {
+    return bjs_GPUDevice__createQuerySet_extern(self)
 }
 
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice__createShaderModule")
-fileprivate func bjs_GPUDevice__createShaderModule_extern(_ self: Int32, _ descriptor: Int32) -> Int32
+fileprivate func bjs_GPUDevice__createShaderModule_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUDevice__createShaderModule_extern(_ self: Int32, _ descriptor: Int32) -> Int32 {
+fileprivate func bjs_GPUDevice__createShaderModule_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUDevice__createShaderModule(_ self: Int32, _ descriptor: Int32) -> Int32 {
-    return bjs_GPUDevice__createShaderModule_extern(self, descriptor)
+@inline(never) fileprivate func bjs_GPUDevice__createShaderModule(_ self: Int32) -> Int32 {
+    return bjs_GPUDevice__createShaderModule_extern(self)
 }
 
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice__createCommandEncoder")
-fileprivate func bjs_GPUDevice__createCommandEncoder_extern(_ self: Int32, _ descriptor: Int32) -> Int32
+fileprivate func bjs_GPUDevice__createCommandEncoder_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUDevice__createCommandEncoder_extern(_ self: Int32, _ descriptor: Int32) -> Int32 {
+fileprivate func bjs_GPUDevice__createCommandEncoder_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUDevice__createCommandEncoder(_ self: Int32, _ descriptor: Int32) -> Int32 {
-    return bjs_GPUDevice__createCommandEncoder_extern(self, descriptor)
+@inline(never) fileprivate func bjs_GPUDevice__createCommandEncoder(_ self: Int32) -> Int32 {
+    return bjs_GPUDevice__createCommandEncoder_extern(self)
 }
 
 #if arch(wasm32)
@@ -3021,26 +3286,26 @@ fileprivate func bjs_GPUDevice__createBindGroupRaw_extern(_ self: Int32, _ descr
 
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice__createPipelineLayout")
-fileprivate func bjs_GPUDevice__createPipelineLayout_extern(_ self: Int32, _ descriptor: Int32) -> Int32
+fileprivate func bjs_GPUDevice__createPipelineLayout_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUDevice__createPipelineLayout_extern(_ self: Int32, _ descriptor: Int32) -> Int32 {
+fileprivate func bjs_GPUDevice__createPipelineLayout_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUDevice__createPipelineLayout(_ self: Int32, _ descriptor: Int32) -> Int32 {
-    return bjs_GPUDevice__createPipelineLayout_extern(self, descriptor)
+@inline(never) fileprivate func bjs_GPUDevice__createPipelineLayout(_ self: Int32) -> Int32 {
+    return bjs_GPUDevice__createPipelineLayout_extern(self)
 }
 
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUDevice__createComputePipeline")
-fileprivate func bjs_GPUDevice__createComputePipeline_extern(_ self: Int32, _ descriptor: Int32) -> Int32
+fileprivate func bjs_GPUDevice__createComputePipeline_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUDevice__createComputePipeline_extern(_ self: Int32, _ descriptor: Int32) -> Int32 {
+fileprivate func bjs_GPUDevice__createComputePipeline_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUDevice__createComputePipeline(_ self: Int32, _ descriptor: Int32) -> Int32 {
-    return bjs_GPUDevice__createComputePipeline_extern(self, descriptor)
+@inline(never) fileprivate func bjs_GPUDevice__createComputePipeline(_ self: Int32) -> Int32 {
+    return bjs_GPUDevice__createComputePipeline_extern(self)
 }
 
 #if arch(wasm32)
@@ -3077,8 +3342,8 @@ func _$GPUDevice__queue_get(_ self: JSObject) throws(JSException) -> GPUQueue {
 }
 
 func _$GPUDevice_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUDevice_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -3087,9 +3352,9 @@ func _$GPUDevice_label__set(_ self: JSObject, _ newValue: String) throws(JSExcep
 }
 
 func _$GPUDevice__createBuffer(_ self: JSObject, _ descriptor: GPUBufferDescriptor) throws(JSException) -> GPUBuffer {
+    let _ = descriptor.bridgeJSLowerParameter()
     let selfValue = self.bridgeJSLowerParameter()
-    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
-    let ret = bjs_GPUDevice__createBuffer(selfValue, descriptorObjectId)
+    let ret = bjs_GPUDevice__createBuffer(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
@@ -3097,9 +3362,9 @@ func _$GPUDevice__createBuffer(_ self: JSObject, _ descriptor: GPUBufferDescript
 }
 
 func _$GPUDevice__createTexture(_ self: JSObject, _ descriptor: GPUTextureDescriptor) throws(JSException) -> GPUTexture {
+    let _ = descriptor.bridgeJSLowerParameter()
     let selfValue = self.bridgeJSLowerParameter()
-    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
-    let ret = bjs_GPUDevice__createTexture(selfValue, descriptorObjectId)
+    let ret = bjs_GPUDevice__createTexture(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
@@ -3107,9 +3372,9 @@ func _$GPUDevice__createTexture(_ self: JSObject, _ descriptor: GPUTextureDescri
 }
 
 func _$GPUDevice__createQuerySet(_ self: JSObject, _ descriptor: GPUQuerySetDescriptor) throws(JSException) -> GPUQuerySet {
+    let _ = descriptor.bridgeJSLowerParameter()
     let selfValue = self.bridgeJSLowerParameter()
-    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
-    let ret = bjs_GPUDevice__createQuerySet(selfValue, descriptorObjectId)
+    let ret = bjs_GPUDevice__createQuerySet(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
@@ -3117,9 +3382,9 @@ func _$GPUDevice__createQuerySet(_ self: JSObject, _ descriptor: GPUQuerySetDesc
 }
 
 func _$GPUDevice__createShaderModule(_ self: JSObject, _ descriptor: GPUShaderModuleDescriptor) throws(JSException) -> GPUShaderModule {
+    let _ = descriptor.bridgeJSLowerParameter()
     let selfValue = self.bridgeJSLowerParameter()
-    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
-    let ret = bjs_GPUDevice__createShaderModule(selfValue, descriptorObjectId)
+    let ret = bjs_GPUDevice__createShaderModule(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
@@ -3127,9 +3392,9 @@ func _$GPUDevice__createShaderModule(_ self: JSObject, _ descriptor: GPUShaderMo
 }
 
 func _$GPUDevice__createCommandEncoder(_ self: JSObject, _ descriptor: GPUCommandEncoderDescriptor) throws(JSException) -> GPUCommandEncoder {
+    let _ = descriptor.bridgeJSLowerParameter()
     let selfValue = self.bridgeJSLowerParameter()
-    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
-    let ret = bjs_GPUDevice__createCommandEncoder(selfValue, descriptorObjectId)
+    let ret = bjs_GPUDevice__createCommandEncoder(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
@@ -3137,8 +3402,8 @@ func _$GPUDevice__createCommandEncoder(_ self: JSObject, _ descriptor: GPUComman
 }
 
 func _$GPUDevice__createBindGroupRaw(_ self: JSObject, _ descriptor: JSObject) throws(JSException) -> GPUBindGroup {
-    let selfValue = self.bridgeJSLowerParameter()
     let descriptorValue = descriptor.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     let ret = bjs_GPUDevice__createBindGroupRaw(selfValue, descriptorValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3147,9 +3412,9 @@ func _$GPUDevice__createBindGroupRaw(_ self: JSObject, _ descriptor: JSObject) t
 }
 
 func _$GPUDevice__createPipelineLayout(_ self: JSObject, _ descriptor: GPUPipelineLayoutDescriptor) throws(JSException) -> GPUPipelineLayout {
+    let _ = descriptor.bridgeJSLowerParameter()
     let selfValue = self.bridgeJSLowerParameter()
-    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
-    let ret = bjs_GPUDevice__createPipelineLayout(selfValue, descriptorObjectId)
+    let ret = bjs_GPUDevice__createPipelineLayout(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
@@ -3157,9 +3422,9 @@ func _$GPUDevice__createPipelineLayout(_ self: JSObject, _ descriptor: GPUPipeli
 }
 
 func _$GPUDevice__createComputePipeline(_ self: JSObject, _ descriptor: GPUComputePipelineDescriptor) throws(JSException) -> GPUComputePipeline {
+    let _ = descriptor.bridgeJSLowerParameter()
     let selfValue = self.bridgeJSLowerParameter()
-    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
-    let ret = bjs_GPUDevice__createComputePipeline(selfValue, descriptorObjectId)
+    let ret = bjs_GPUDevice__createComputePipeline(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
@@ -3167,8 +3432,8 @@ func _$GPUDevice__createComputePipeline(_ self: JSObject, _ descriptor: GPUCompu
 }
 
 func _$GPUDevice__pushErrorScope(_ self: JSObject, _ filter: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     filter.bridgeJSWithLoweredParameter { (filterBytes, filterLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUDevice__pushErrorScope(selfValue, filterBytes, filterLength)
     }
     if let error = _swift_js_take_exception() {
@@ -3198,8 +3463,8 @@ fileprivate func bjs_GPUPipelineLayout_label__set_extern(_ self: Int32, _ newVal
 }
 
 func _$GPUPipelineLayout_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUPipelineLayout_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -3274,8 +3539,8 @@ func _$GPUQuerySet__count_get(_ self: JSObject) throws(JSException) -> Int {
 }
 
 func _$GPUQuerySet_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUQuerySet_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -3340,8 +3605,8 @@ fileprivate func bjs_GPUQueue__writeTexture_extern(_ self: Int32, _ destination:
 }
 
 func _$GPUQueue_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUQueue_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -3350,8 +3615,8 @@ func _$GPUQueue_label__set(_ self: JSObject, _ newValue: String) throws(JSExcept
 }
 
 func _$GPUQueue__submit(_ self: JSObject, _ commandBuffers: JSObject) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     let commandBuffersValue = commandBuffers.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUQueue__submit(selfValue, commandBuffersValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3359,10 +3624,10 @@ func _$GPUQueue__submit(_ self: JSObject, _ commandBuffers: JSObject) throws(JSE
 }
 
 func _$GPUQueue__writeBuffer(_ self: JSObject, _ buffer: GPUBuffer, _ bufferOffset: Int, _ data: JSObject) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let bufferValue = buffer.bridgeJSLowerParameter()
-    let bufferOffsetValue = bufferOffset.bridgeJSLowerParameter()
     let dataValue = data.bridgeJSLowerParameter()
+    let bufferOffsetValue = bufferOffset.bridgeJSLowerParameter()
+    let bufferValue = buffer.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUQueue__writeBuffer(selfValue, bufferValue, bufferOffsetValue, dataValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3370,11 +3635,11 @@ func _$GPUQueue__writeBuffer(_ self: JSObject, _ buffer: GPUBuffer, _ bufferOffs
 }
 
 func _$GPUQueue__writeTexture(_ self: JSObject, _ destination: JSObject, _ data: JSObject, _ dataLayout: JSObject, _ size: JSObject) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let destinationValue = destination.bridgeJSLowerParameter()
-    let dataValue = data.bridgeJSLowerParameter()
-    let dataLayoutValue = dataLayout.bridgeJSLowerParameter()
     let sizeValue = size.bridgeJSLowerParameter()
+    let dataLayoutValue = dataLayout.bridgeJSLowerParameter()
+    let dataValue = data.bridgeJSLowerParameter()
+    let destinationValue = destination.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPUQueue__writeTexture(selfValue, destinationValue, dataValue, dataLayoutValue, sizeValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3502,8 +3767,8 @@ fileprivate func bjs_GPURenderPassEncoder__end_extern(_ self: Int32) -> Void {
 }
 
 func _$GPURenderPassEncoder_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPURenderPassEncoder_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -3512,8 +3777,8 @@ func _$GPURenderPassEncoder_label__set(_ self: JSObject, _ newValue: String) thr
 }
 
 func _$GPURenderPassEncoder__setPipeline(_ self: JSObject, _ pipeline: GPURenderPipeline) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     let pipelineValue = pipeline.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPURenderPassEncoder__setPipeline(selfValue, pipelineValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3521,11 +3786,11 @@ func _$GPURenderPassEncoder__setPipeline(_ self: JSObject, _ pipeline: GPURender
 }
 
 func _$GPURenderPassEncoder__setVertexBuffer(_ self: JSObject, _ slot: Int, _ buffer: GPUBuffer, _ offset: Int, _ size: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let slotValue = slot.bridgeJSLowerParameter()
-    let bufferValue = buffer.bridgeJSLowerParameter()
-    let offsetValue = offset.bridgeJSLowerParameter()
     let sizeValue = size.bridgeJSLowerParameter()
+    let offsetValue = offset.bridgeJSLowerParameter()
+    let bufferValue = buffer.bridgeJSLowerParameter()
+    let slotValue = slot.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPURenderPassEncoder__setVertexBuffer(selfValue, slotValue, bufferValue, offsetValue, sizeValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3533,11 +3798,11 @@ func _$GPURenderPassEncoder__setVertexBuffer(_ self: JSObject, _ slot: Int, _ bu
 }
 
 func _$GPURenderPassEncoder__setIndexBuffer(_ self: JSObject, _ buffer: GPUBuffer, _ indexFormat: String, _ offset: Int, _ size: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let bufferValue = buffer.bridgeJSLowerParameter()
     indexFormat.bridgeJSWithLoweredParameter { (indexFormatBytes, indexFormatLength) in
-        let offsetValue = offset.bridgeJSLowerParameter()
         let sizeValue = size.bridgeJSLowerParameter()
+        let offsetValue = offset.bridgeJSLowerParameter()
+        let bufferValue = buffer.bridgeJSLowerParameter()
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPURenderPassEncoder__setIndexBuffer(selfValue, bufferValue, indexFormatBytes, indexFormatLength, offsetValue, sizeValue)
     }
     if let error = _swift_js_take_exception() {
@@ -3546,11 +3811,11 @@ func _$GPURenderPassEncoder__setIndexBuffer(_ self: JSObject, _ buffer: GPUBuffe
 }
 
 func _$GPURenderPassEncoder__draw(_ self: JSObject, _ vertexCount: Int, _ instanceCount: Int, _ firstVertex: Int, _ firstInstance: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let vertexCountValue = vertexCount.bridgeJSLowerParameter()
-    let instanceCountValue = instanceCount.bridgeJSLowerParameter()
-    let firstVertexValue = firstVertex.bridgeJSLowerParameter()
     let firstInstanceValue = firstInstance.bridgeJSLowerParameter()
+    let firstVertexValue = firstVertex.bridgeJSLowerParameter()
+    let instanceCountValue = instanceCount.bridgeJSLowerParameter()
+    let vertexCountValue = vertexCount.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPURenderPassEncoder__draw(selfValue, vertexCountValue, instanceCountValue, firstVertexValue, firstInstanceValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3558,12 +3823,12 @@ func _$GPURenderPassEncoder__draw(_ self: JSObject, _ vertexCount: Int, _ instan
 }
 
 func _$GPURenderPassEncoder__drawIndexed(_ self: JSObject, _ indexCount: Int, _ instanceCount: Int, _ firstIndex: Int, _ baseVertex: Int, _ firstInstance: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let indexCountValue = indexCount.bridgeJSLowerParameter()
-    let instanceCountValue = instanceCount.bridgeJSLowerParameter()
-    let firstIndexValue = firstIndex.bridgeJSLowerParameter()
-    let baseVertexValue = baseVertex.bridgeJSLowerParameter()
     let firstInstanceValue = firstInstance.bridgeJSLowerParameter()
+    let baseVertexValue = baseVertex.bridgeJSLowerParameter()
+    let firstIndexValue = firstIndex.bridgeJSLowerParameter()
+    let instanceCountValue = instanceCount.bridgeJSLowerParameter()
+    let indexCountValue = indexCount.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPURenderPassEncoder__drawIndexed(selfValue, indexCountValue, instanceCountValue, firstIndexValue, baseVertexValue, firstInstanceValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3571,10 +3836,10 @@ func _$GPURenderPassEncoder__drawIndexed(_ self: JSObject, _ indexCount: Int, _ 
 }
 
 func _$GPURenderPassEncoder__setBindGroup(_ self: JSObject, _ groupIndex: Int, _ group: GPUBindGroup, _ dynamicOffsets: JSObject) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let groupIndexValue = groupIndex.bridgeJSLowerParameter()
-    let groupValue = group.bridgeJSLowerParameter()
     let dynamicOffsetsValue = dynamicOffsets.bridgeJSLowerParameter()
+    let groupValue = group.bridgeJSLowerParameter()
+    let groupIndexValue = groupIndex.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPURenderPassEncoder__setBindGroup(selfValue, groupIndexValue, groupValue, dynamicOffsetsValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3582,11 +3847,11 @@ func _$GPURenderPassEncoder__setBindGroup(_ self: JSObject, _ groupIndex: Int, _
 }
 
 func _$GPURenderPassEncoder__setScissorRect(_ self: JSObject, _ x: Int, _ y: Int, _ width: Int, _ height: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let xValue = x.bridgeJSLowerParameter()
-    let yValue = y.bridgeJSLowerParameter()
-    let widthValue = width.bridgeJSLowerParameter()
     let heightValue = height.bridgeJSLowerParameter()
+    let widthValue = width.bridgeJSLowerParameter()
+    let yValue = y.bridgeJSLowerParameter()
+    let xValue = x.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPURenderPassEncoder__setScissorRect(selfValue, xValue, yValue, widthValue, heightValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3594,9 +3859,9 @@ func _$GPURenderPassEncoder__setScissorRect(_ self: JSObject, _ x: Int, _ y: Int
 }
 
 func _$GPURenderPassEncoder__writeTimestamp(_ self: JSObject, _ querySet: GPUQuerySet, _ queryIndex: Int) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
-    let querySetValue = querySet.bridgeJSLowerParameter()
     let queryIndexValue = queryIndex.bridgeJSLowerParameter()
+    let querySetValue = querySet.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     bjs_GPURenderPassEncoder__writeTimestamp(selfValue, querySetValue, queryIndexValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3636,8 +3901,8 @@ fileprivate func bjs_GPURenderPipeline__getBindGroupLayout_extern(_ self: Int32,
 }
 
 func _$GPURenderPipeline_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPURenderPipeline_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -3646,8 +3911,8 @@ func _$GPURenderPipeline_label__set(_ self: JSObject, _ newValue: String) throws
 }
 
 func _$GPURenderPipeline__getBindGroupLayout(_ self: JSObject, _ index: Int) throws(JSException) -> GPUBindGroupLayout {
-    let selfValue = self.bridgeJSLowerParameter()
     let indexValue = index.bridgeJSLowerParameter()
+    let selfValue = self.bridgeJSLowerParameter()
     let ret = bjs_GPURenderPipeline__getBindGroupLayout(selfValue, indexValue)
     if let error = _swift_js_take_exception() {
         throw error
@@ -3668,8 +3933,8 @@ fileprivate func bjs_GPUSampler_label__set_extern(_ self: Int32, _ newValueBytes
 }
 
 func _$GPUSampler_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUSampler_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -3690,8 +3955,8 @@ fileprivate func bjs_GPUShaderModule_label__set_extern(_ self: Int32, _ newValue
 }
 
 func _$GPUShaderModule_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUShaderModule_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -3773,14 +4038,14 @@ fileprivate func bjs_GPUTexture__createView_extern(_ self: Int32) -> Int32 {
 
 #if arch(wasm32)
 @_extern(wasm, module: "WebGPUWasm", name: "bjs_GPUTexture__createViewWithDescriptor")
-fileprivate func bjs_GPUTexture__createViewWithDescriptor_extern(_ self: Int32, _ descriptor: Int32) -> Int32
+fileprivate func bjs_GPUTexture__createViewWithDescriptor_extern(_ self: Int32) -> Int32
 #else
-fileprivate func bjs_GPUTexture__createViewWithDescriptor_extern(_ self: Int32, _ descriptor: Int32) -> Int32 {
+fileprivate func bjs_GPUTexture__createViewWithDescriptor_extern(_ self: Int32) -> Int32 {
     fatalError("Only available on WebAssembly")
 }
 #endif
-@inline(never) fileprivate func bjs_GPUTexture__createViewWithDescriptor(_ self: Int32, _ descriptor: Int32) -> Int32 {
-    return bjs_GPUTexture__createViewWithDescriptor_extern(self, descriptor)
+@inline(never) fileprivate func bjs_GPUTexture__createViewWithDescriptor(_ self: Int32) -> Int32 {
+    return bjs_GPUTexture__createViewWithDescriptor_extern(self)
 }
 
 #if arch(wasm32)
@@ -3832,8 +4097,8 @@ func _$GPUTexture__depthOrArrayLayers_get(_ self: JSObject) throws(JSException) 
 }
 
 func _$GPUTexture_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUTexture_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
@@ -3851,9 +4116,9 @@ func _$GPUTexture__createView(_ self: JSObject) throws(JSException) -> GPUTextur
 }
 
 func _$GPUTexture__createViewWithDescriptor(_ self: JSObject, _ descriptor: GPUTextureViewDescriptor) throws(JSException) -> GPUTextureView {
+    let _ = descriptor.bridgeJSLowerParameter()
     let selfValue = self.bridgeJSLowerParameter()
-    let descriptorObjectId = descriptor.bridgeJSLowerParameter()
-    let ret = bjs_GPUTexture__createViewWithDescriptor(selfValue, descriptorObjectId)
+    let ret = bjs_GPUTexture__createViewWithDescriptor(selfValue)
     if let error = _swift_js_take_exception() {
         throw error
     }
@@ -3881,11 +4146,91 @@ fileprivate func bjs_GPUTextureView_label__set_extern(_ self: Int32, _ newValueB
 }
 
 func _$GPUTextureView_label__set(_ self: JSObject, _ newValue: String) throws(JSException) -> Void {
-    let selfValue = self.bridgeJSLowerParameter()
     newValue.bridgeJSWithLoweredParameter { (newValueBytes, newValueLength) in
+        let selfValue = self.bridgeJSLowerParameter()
         bjs_GPUTextureView_label__set(selfValue, newValueBytes, newValueLength)
     }
     if let error = _swift_js_take_exception() {
         throw error
     }
 }
+
+#if arch(wasm32)
+@_extern(wasm, module: "bjs", name: "bjs_WebGPUWasm_register_type_handles")
+fileprivate func _bjs_WebGPUWasm_register_type_handles_extern(_ base: UnsafePointer<Int32>?, _ count: Int32)
+
+@_expose(wasm, "bjs_WebGPUWasm_register_type_handles")
+public func _bjs_WebGPUWasm_register_type_handles() {
+    let typeIds: [Int32] = [
+        GPUBufferDescriptor.bridgeJSTypeID,
+        GPUShaderModuleDescriptor.bridgeJSTypeID,
+        GPUVertexAttribute.bridgeJSTypeID,
+        GPUVertexBufferLayout.bridgeJSTypeID,
+        GPUPrimitiveState.bridgeJSTypeID,
+        GPUBlendComponent.bridgeJSTypeID,
+        GPUBlendState.bridgeJSTypeID,
+        GPUColorTargetState.bridgeJSTypeID,
+        GPUColor.bridgeJSTypeID,
+        GPUCommandEncoderDescriptor.bridgeJSTypeID,
+        GPUCommandBufferDescriptor.bridgeJSTypeID,
+        GPURenderPassColorAttachment.bridgeJSTypeID,
+        GPURenderPassDepthStencilAttachment.bridgeJSTypeID,
+        GPURenderPassDescriptor.bridgeJSTypeID,
+        GPUComputePassDescriptor.bridgeJSTypeID,
+        GPUStencilFaceState.bridgeJSTypeID,
+        GPUDepthStencilState.bridgeJSTypeID,
+        GPUExtent3D.bridgeJSTypeID,
+        GPUOrigin3D.bridgeJSTypeID,
+        GPUTextureDescriptor.bridgeJSTypeID,
+        GPUTextureViewDescriptor.bridgeJSTypeID,
+        GPUSamplerDescriptor.bridgeJSTypeID,
+        GPUQuerySetDescriptor.bridgeJSTypeID,
+        GPUPassTimestampWrites.bridgeJSTypeID,
+        GPUBufferBindingLayout.bridgeJSTypeID,
+        GPUSamplerBindingLayout.bridgeJSTypeID,
+        GPUTextureBindingLayout.bridgeJSTypeID,
+        GPUStorageTextureBindingLayout.bridgeJSTypeID,
+        GPUBindGroupLayoutEntry.bridgeJSTypeID,
+        GPUBindGroupLayoutDescriptor.bridgeJSTypeID,
+        GPUMultisampleState.bridgeJSTypeID,
+        GPUVertexState.bridgeJSTypeID,
+        GPUFragmentState.bridgeJSTypeID,
+        GPURenderPipelineDescriptor.bridgeJSTypeID,
+        GPUBufferBinding.bridgeJSTypeID,
+        GPUBindGroupEntry.bridgeJSTypeID,
+        GPUBindGroupDescriptor.bridgeJSTypeID,
+        GPUCanvasConfiguration.bridgeJSTypeID,
+        GPUComputeState.bridgeJSTypeID,
+        GPUComputePipelineDescriptor.bridgeJSTypeID,
+        GPUPipelineLayoutDescriptor.bridgeJSTypeID,
+        GPUCanvasAlphaMode.bridgeJSTypeID,
+        GPUPrimitiveTopology.bridgeJSTypeID,
+        GPUVertexFormat.bridgeJSTypeID,
+        GPUVertexStepMode.bridgeJSTypeID,
+        GPUTextureFormat.bridgeJSTypeID,
+        GPULoadOp.bridgeJSTypeID,
+        GPUStoreOp.bridgeJSTypeID,
+        GPUFrontFace.bridgeJSTypeID,
+        GPUCullMode.bridgeJSTypeID,
+        GPUIndexFormat.bridgeJSTypeID,
+        GPUBufferBindingType.bridgeJSTypeID,
+        GPUTextureViewDimension.bridgeJSTypeID,
+        GPUTextureSampleType.bridgeJSTypeID,
+        GPUStorageTextureAccess.bridgeJSTypeID,
+        GPUSamplerBindingType.bridgeJSTypeID,
+        GPUQueryType.bridgeJSTypeID,
+        GPUAddressMode.bridgeJSTypeID,
+        GPUFilterMode.bridgeJSTypeID,
+        GPUMipmapFilterMode.bridgeJSTypeID,
+        GPUCompareFunction.bridgeJSTypeID,
+        GPUBlendFactor.bridgeJSTypeID,
+        GPUBlendOperation.bridgeJSTypeID,
+        GPUTextureAspect.bridgeJSTypeID,
+        GPUTextureDimension.bridgeJSTypeID,
+        GPUStencilOperation.bridgeJSTypeID,
+    ]
+    typeIds.withUnsafeBufferPointer { buffer in
+        _bjs_WebGPUWasm_register_type_handles_extern(buffer.baseAddress, Int32(buffer.count))
+    }
+}
+#endif

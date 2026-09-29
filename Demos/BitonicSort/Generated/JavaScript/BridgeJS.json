@@ -1,0 +1,119 @@
+{
+  "exported" : {
+    "aliases" : [
+
+    ],
+    "classes" : [
+
+    ],
+    "enums" : [
+
+    ],
+    "exposeToGlobal" : false,
+    "functions" : [
+      {
+        "abiName" : "bjs_initializeBitonicSort",
+        "effects" : {
+          "isAsync" : false,
+          "isStatic" : false,
+          "isThrows" : false
+        },
+        "name" : "initializeBitonicSort",
+        "parameters" : [
+          {
+            "label" : "device",
+            "name" : "deviceJS",
+            "type" : {
+              "jsObject" : {
+
+              }
+            }
+          },
+          {
+            "label" : "context",
+            "name" : "contextJS",
+            "type" : {
+              "jsObject" : {
+
+              }
+            }
+          },
+          {
+            "label" : "format",
+            "name" : "formatString",
+            "type" : {
+              "string" : {
+
+              }
+            }
+          }
+        ],
+        "returnType" : {
+          "void" : {
+
+          }
+        }
+      },
+      {
+        "abiName" : "bjs_renderFrame",
+        "effects" : {
+          "isAsync" : false,
+          "isStatic" : false,
+          "isThrows" : false
+        },
+        "name" : "renderFrame",
+        "parameters" : [
+          {
+            "label" : "time",
+            "name" : "time",
+            "type" : {
+              "double" : {
+
+              }
+            }
+          }
+        ],
+        "returnType" : {
+          "void" : {
+
+          }
+        }
+      },
+      {
+        "abiName" : "bjs_keyPressed",
+        "effects" : {
+          "isAsync" : false,
+          "isStatic" : false,
+          "isThrows" : false
+        },
+        "name" : "keyPressed",
+        "parameters" : [
+          {
+            "label" : "key",
+            "name" : "key",
+            "type" : {
+              "string" : {
+
+              }
+            }
+          }
+        ],
+        "returnType" : {
+          "void" : {
+
+          }
+        }
+      }
+    ],
+    "protocols" : [
+
+    ],
+    "structs" : [
+
+    ]
+  },
+  "moduleName" : "BitonicSort",
+  "usedExternalModules" : [
+
+  ]
+}

@@ -52,9 +52,15 @@ swift build
 ```
 
 #### WASM builds
-The WASM SDK version is defined in `.wasm-sdk-version`. WASM builds need to set the swift-sdk and specify the WebGPU target in the build command:
+WASM SDK IDs, URLs, and checksums are pinned in `.swan-config`. Install the SDK before building:
 ```bash
-BUILD_WASM=1 swift build --target WebGPU --swift-sdk $(cat .wasm-sdk-version)
+make sdk-install
+make wasm-build
+make wasm-build-bitonic
+
+# Embedded WASM
+make sdk-install-embedded
+make wasm-build SWIFT_MODE=embedded
 ```
 
 ### Testing
@@ -80,8 +86,7 @@ The project uses swift-format with configuration in `.swift-format`:
 
 - macOS 15+ 
 - iOS 18+
-- Swift 6.3+
-- Uses development snapshot toolchain (6.3-snapshot-2026-01-29)
+- Swift 6.4+
 
 ## Dependencies
 
@@ -95,7 +100,7 @@ The project uses swift-format with configuration in `.swift-format`:
 
 - `Package.swift`: Swift Package Manager configuration
 - `Dawn/ci_build_dawn.py`: Python script for building dawn in CI
-- `.wasm-sdk-version`: WASM SDK version for cross-compilation to WebAssembly
+- `.swan-config`: WASM SDK pins, download URLs, and checksums
 - `.swift-format`: Code formatting configuration
 - `.vscode/settings.json`: VS Code configuration with specific Swift toolchain path
 

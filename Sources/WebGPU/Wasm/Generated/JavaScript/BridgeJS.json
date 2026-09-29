@@ -1,5 +1,8 @@
 {
   "exported" : {
+    "aliases" : [
+
+    ],
     "classes" : [
 
     ],
@@ -1980,8 +1983,11 @@
             "isStatic" : false,
             "name" : "usage",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -1990,8 +1996,11 @@
             "isStatic" : false,
             "name" : "size",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2066,8 +2075,11 @@
             "isStatic" : false,
             "name" : "offset",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2076,8 +2088,11 @@
             "isStatic" : false,
             "name" : "shaderLocation",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           }
@@ -2096,8 +2111,11 @@
             "isStatic" : false,
             "name" : "arrayStride",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2294,8 +2312,11 @@
             "isStatic" : false,
             "name" : "writeMask",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           }
@@ -2565,8 +2586,11 @@
             "isStatic" : false,
             "name" : "stencilClearValue",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2810,8 +2834,11 @@
             "isStatic" : false,
             "name" : "stencilReadMask",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2820,8 +2847,11 @@
             "isStatic" : false,
             "name" : "stencilWriteMask",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2830,8 +2860,11 @@
             "isStatic" : false,
             "name" : "depthBias",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2870,8 +2903,11 @@
             "isStatic" : false,
             "name" : "width",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2880,8 +2916,11 @@
             "isStatic" : false,
             "name" : "height",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2890,8 +2929,11 @@
             "isStatic" : false,
             "name" : "depthOrArrayLayers",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           }
@@ -2910,8 +2952,11 @@
             "isStatic" : false,
             "name" : "x",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2920,8 +2965,11 @@
             "isStatic" : false,
             "name" : "y",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2930,8 +2978,11 @@
             "isStatic" : false,
             "name" : "z",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           }
@@ -2975,8 +3026,11 @@
             "isStatic" : false,
             "name" : "mipLevelCount",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -2985,8 +3039,11 @@
             "isStatic" : false,
             "name" : "sampleCount",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -3017,8 +3074,11 @@
             "isStatic" : false,
             "name" : "usage",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           }
@@ -3095,8 +3155,11 @@
             "isStatic" : false,
             "name" : "baseMipLevel",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -3107,8 +3170,11 @@
             "type" : {
               "nullable" : {
                 "_0" : {
-                  "int" : {
-
+                  "integer" : {
+                    "_0" : {
+                      "isSigned" : true,
+                      "width" : "word"
+                    }
                   }
                 },
                 "_1" : "null"
@@ -3120,8 +3186,11 @@
             "isStatic" : false,
             "name" : "baseArrayLayer",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -3132,8 +3201,11 @@
             "type" : {
               "nullable" : {
                 "_0" : {
-                  "int" : {
-
+                  "integer" : {
+                    "_0" : {
+                      "isSigned" : true,
+                      "width" : "word"
+                    }
                   }
                 },
                 "_1" : "null"
@@ -3272,8 +3344,11 @@
             "isStatic" : false,
             "name" : "maxAnisotropy",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           }
@@ -3318,8 +3393,11 @@
             "isStatic" : false,
             "name" : "count",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           }
@@ -3348,8 +3426,11 @@
             "isStatic" : false,
             "name" : "beginningOfPassWriteIndex",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -3358,8 +3439,11 @@
             "isStatic" : false,
             "name" : "endOfPassWriteIndex",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           }
@@ -3399,8 +3483,11 @@
             "isStatic" : false,
             "name" : "minBindingSize",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           }
@@ -3525,8 +3612,11 @@
             "isStatic" : false,
             "name" : "binding",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -3535,8 +3625,11 @@
             "isStatic" : false,
             "name" : "visibility",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -3654,8 +3747,11 @@
             "isStatic" : false,
             "name" : "count",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -3664,8 +3760,11 @@
             "isStatic" : false,
             "name" : "mask",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -3904,8 +4003,11 @@
             "type" : {
               "nullable" : {
                 "_0" : {
-                  "int" : {
-
+                  "integer" : {
+                    "_0" : {
+                      "isSigned" : true,
+                      "width" : "word"
+                    }
                   }
                 },
                 "_1" : "null"
@@ -3919,8 +4021,11 @@
             "type" : {
               "nullable" : {
                 "_0" : {
-                  "int" : {
-
+                  "integer" : {
+                    "_0" : {
+                      "isSigned" : true,
+                      "width" : "word"
+                    }
                   }
                 },
                 "_1" : "null"
@@ -3942,8 +4047,11 @@
             "isStatic" : false,
             "name" : "binding",
             "type" : {
-              "int" : {
-
+              "integer" : {
+                "_0" : {
+                  "isSigned" : true,
+                  "width" : "word"
+                }
               }
             }
           },
@@ -4185,11 +4293,18 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
             "methods" : [
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "hasFeature",
                 "name" : "_hasFeature",
                 "parameters" : [
@@ -4212,6 +4327,7 @@
             "name" : "GPUAdapter",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -4234,6 +4350,7 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
@@ -4243,6 +4360,7 @@
             "name" : "GPUBindGroup",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -4265,6 +4383,7 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
@@ -4274,6 +4393,7 @@
             "name" : "GPUBindGroupLayout",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -4296,26 +4416,36 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
               {
+                "accessLevel" : "internal",
                 "jsName" : "size",
                 "name" : "_size",
                 "type" : {
-                  "int" : {
-
+                  "integer" : {
+                    "_0" : {
+                      "isSigned" : true,
+                      "width" : "word"
+                    }
                   }
                 }
               },
               {
+                "accessLevel" : "internal",
                 "jsName" : "usage",
                 "name" : "_usage",
                 "type" : {
-                  "int" : {
-
+                  "integer" : {
+                    "_0" : {
+                      "isSigned" : true,
+                      "width" : "word"
+                    }
                   }
                 }
               },
               {
+                "accessLevel" : "internal",
                 "jsName" : "mapState",
                 "name" : "_mapState",
                 "type" : {
@@ -4327,6 +4457,12 @@
             ],
             "methods" : [
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "destroy",
                 "name" : "_destroy",
                 "parameters" : [
@@ -4339,30 +4475,45 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "mapAsync",
                 "name" : "_mapAsync",
                 "parameters" : [
                   {
                     "name" : "mode",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "offset",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "size",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -4374,22 +4525,34 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "getMappedRange",
                 "name" : "_getMappedRange",
                 "parameters" : [
                   {
                     "name" : "offset",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "size",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -4401,6 +4564,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "unmap",
                 "name" : "_unmap",
                 "parameters" : [
@@ -4416,6 +4585,7 @@
             "name" : "GPUBuffer",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -4438,11 +4608,18 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
             "methods" : [
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "configure",
                 "name" : "_configure",
                 "parameters" : [
@@ -4462,6 +4639,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "getCurrentTexture",
                 "name" : "_getCurrentTexture",
                 "parameters" : [
@@ -4490,6 +4673,7 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
@@ -4499,6 +4683,7 @@
             "name" : "GPUCommandBuffer",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -4521,11 +4706,18 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
             "methods" : [
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "finish",
                 "name" : "_finish",
                 "parameters" : [
@@ -4545,6 +4737,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "copyBufferToBuffer",
                 "name" : "_copyBufferToBuffer",
                 "parameters" : [
@@ -4559,8 +4757,11 @@
                   {
                     "name" : "sourceOffset",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
@@ -4575,16 +4776,22 @@
                   {
                     "name" : "destinationOffset",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "size",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -4596,6 +4803,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "copyBufferToTexture",
                 "name" : "_copyBufferToTexture",
                 "parameters" : [
@@ -4631,6 +4844,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "copyTextureToBuffer",
                 "name" : "_copyTextureToBuffer",
                 "parameters" : [
@@ -4666,6 +4885,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "resolveQuerySet",
                 "name" : "_resolveQuerySet",
                 "parameters" : [
@@ -4680,16 +4905,22 @@
                   {
                     "name" : "firstQuery",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "queryCount",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
@@ -4704,8 +4935,11 @@
                   {
                     "name" : "destinationOffset",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -4717,6 +4951,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "clearBuffer",
                 "name" : "_clearBuffer",
                 "parameters" : [
@@ -4731,8 +4971,11 @@
                   {
                     "name" : "offset",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -4744,6 +4987,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "clearBuffer",
                 "name" : "_clearBufferWithSize",
                 "parameters" : [
@@ -4758,16 +5007,22 @@
                   {
                     "name" : "offset",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "size",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -4779,6 +5034,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "writeTimestamp",
                 "name" : "_writeTimestamp",
                 "parameters" : [
@@ -4793,8 +5054,11 @@
                   {
                     "name" : "queryIndex",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -4809,6 +5073,7 @@
             "name" : "GPUCommandEncoder",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -4831,11 +5096,18 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
             "methods" : [
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "setPipeline",
                 "name" : "_setPipeline",
                 "parameters" : [
@@ -4855,14 +5127,23 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "setBindGroup",
                 "name" : "_setBindGroup",
                 "parameters" : [
                   {
                     "name" : "groupIndex",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
@@ -4882,14 +5163,23 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "setBindGroup",
                 "name" : "_setBindGroupWithOffsets",
                 "parameters" : [
                   {
                     "name" : "groupIndex",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
@@ -4917,30 +5207,45 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "dispatchWorkgroups",
                 "name" : "_dispatchWorkgroups",
                 "parameters" : [
                   {
                     "name" : "workgroupCountX",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "workgroupCountY",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "workgroupCountZ",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -4952,6 +5257,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "dispatchWorkgroupsIndirect",
                 "name" : "_dispatchWorkgroupsIndirect",
                 "parameters" : [
@@ -4966,8 +5277,11 @@
                   {
                     "name" : "indirectOffset",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -4979,6 +5293,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "writeTimestamp",
                 "name" : "_writeTimestamp",
                 "parameters" : [
@@ -4993,8 +5313,11 @@
                   {
                     "name" : "queryIndex",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -5006,6 +5329,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "end",
                 "name" : "_end",
                 "parameters" : [
@@ -5021,6 +5350,7 @@
             "name" : "GPUComputePassEncoder",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -5043,6 +5373,7 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
@@ -5052,6 +5383,7 @@
             "name" : "GPUComputePipeline",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -5074,8 +5406,10 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
               {
+                "accessLevel" : "internal",
                 "jsName" : "queue",
                 "name" : "_queue",
                 "type" : {
@@ -5087,6 +5421,12 @@
             ],
             "methods" : [
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "createBuffer",
                 "name" : "_createBuffer",
                 "parameters" : [
@@ -5106,6 +5446,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "createTexture",
                 "name" : "_createTexture",
                 "parameters" : [
@@ -5125,6 +5471,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "createQuerySet",
                 "name" : "_createQuerySet",
                 "parameters" : [
@@ -5144,6 +5496,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "createShaderModule",
                 "name" : "_createShaderModule",
                 "parameters" : [
@@ -5163,6 +5521,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "createCommandEncoder",
                 "name" : "_createCommandEncoder",
                 "parameters" : [
@@ -5182,6 +5546,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "createBindGroup",
                 "name" : "_createBindGroupRaw",
                 "parameters" : [
@@ -5201,6 +5571,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "createPipelineLayout",
                 "name" : "_createPipelineLayout",
                 "parameters" : [
@@ -5220,6 +5596,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "createComputePipeline",
                 "name" : "_createComputePipeline",
                 "parameters" : [
@@ -5239,6 +5621,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "pushErrorScope",
                 "name" : "_pushErrorScope",
                 "parameters" : [
@@ -5258,6 +5646,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "popErrorScope",
                 "name" : "_popErrorScope",
                 "parameters" : [
@@ -5273,6 +5667,7 @@
             "name" : "GPUDevice",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -5295,6 +5690,7 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
@@ -5304,6 +5700,7 @@
             "name" : "GPUPipelineLayout",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -5326,8 +5723,10 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
               {
+                "accessLevel" : "internal",
                 "jsName" : "type",
                 "name" : "_type",
                 "type" : {
@@ -5337,17 +5736,27 @@
                 }
               },
               {
+                "accessLevel" : "internal",
                 "jsName" : "count",
                 "name" : "_count",
                 "type" : {
-                  "int" : {
-
+                  "integer" : {
+                    "_0" : {
+                      "isSigned" : true,
+                      "width" : "word"
+                    }
                   }
                 }
               }
             ],
             "methods" : [
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "destroy",
                 "name" : "_destroy",
                 "parameters" : [
@@ -5363,6 +5772,7 @@
             "name" : "GPUQuerySet",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -5385,11 +5795,18 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
             "methods" : [
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "submit",
                 "name" : "_submit",
                 "parameters" : [
@@ -5409,6 +5826,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "writeBuffer",
                 "name" : "_writeBuffer",
                 "parameters" : [
@@ -5423,8 +5846,11 @@
                   {
                     "name" : "bufferOffset",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
@@ -5444,6 +5870,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "writeTexture",
                 "name" : "_writeTexture",
                 "parameters" : [
@@ -5490,6 +5922,7 @@
             "name" : "GPUQueue",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -5512,11 +5945,18 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
             "methods" : [
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "setPipeline",
                 "name" : "_setPipeline",
                 "parameters" : [
@@ -5536,14 +5976,23 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "setVertexBuffer",
                 "name" : "_setVertexBuffer",
                 "parameters" : [
                   {
                     "name" : "slot",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
@@ -5558,16 +6007,22 @@
                   {
                     "name" : "offset",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "size",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -5579,6 +6034,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "setIndexBuffer",
                 "name" : "_setIndexBuffer",
                 "parameters" : [
@@ -5601,16 +6062,22 @@
                   {
                     "name" : "offset",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "size",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -5622,38 +6089,56 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "draw",
                 "name" : "_draw",
                 "parameters" : [
                   {
                     "name" : "vertexCount",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "instanceCount",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "firstVertex",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "firstInstance",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -5665,46 +6150,67 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "drawIndexed",
                 "name" : "_drawIndexed",
                 "parameters" : [
                   {
                     "name" : "indexCount",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "instanceCount",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "firstIndex",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "baseVertex",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "firstInstance",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -5716,14 +6222,23 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "setBindGroup",
                 "name" : "_setBindGroup",
                 "parameters" : [
                   {
                     "name" : "groupIndex",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
@@ -5751,38 +6266,56 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "setScissorRect",
                 "name" : "_setScissorRect",
                 "parameters" : [
                   {
                     "name" : "x",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "y",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "width",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   },
                   {
                     "name" : "height",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -5794,6 +6327,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "writeTimestamp",
                 "name" : "_writeTimestamp",
                 "parameters" : [
@@ -5808,8 +6347,11 @@
                   {
                     "name" : "queryIndex",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -5821,6 +6363,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "end",
                 "name" : "_end",
                 "parameters" : [
@@ -5836,6 +6384,7 @@
             "name" : "GPURenderPassEncoder",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -5858,19 +6407,29 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
             "methods" : [
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "getBindGroupLayout",
                 "name" : "_getBindGroupLayout",
                 "parameters" : [
                   {
                     "name" : "index",
                     "type" : {
-                      "int" : {
-
+                      "integer" : {
+                        "_0" : {
+                          "isSigned" : true,
+                          "width" : "word"
+                        }
                       }
                     }
                   }
@@ -5885,6 +6444,7 @@
             "name" : "GPURenderPipeline",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -5907,6 +6467,7 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
@@ -5916,6 +6477,7 @@
             "name" : "GPUSampler",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -5938,6 +6500,7 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
@@ -5947,6 +6510,7 @@
             "name" : "GPUShaderModule",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -5969,8 +6533,10 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
               {
+                "accessLevel" : "internal",
                 "jsName" : "format",
                 "name" : "_format",
                 "type" : {
@@ -5980,35 +6546,53 @@
                 }
               },
               {
+                "accessLevel" : "internal",
                 "jsName" : "width",
                 "name" : "_width",
                 "type" : {
-                  "int" : {
-
+                  "integer" : {
+                    "_0" : {
+                      "isSigned" : true,
+                      "width" : "word"
+                    }
                   }
                 }
               },
               {
+                "accessLevel" : "internal",
                 "jsName" : "height",
                 "name" : "_height",
                 "type" : {
-                  "int" : {
-
+                  "integer" : {
+                    "_0" : {
+                      "isSigned" : true,
+                      "width" : "word"
+                    }
                   }
                 }
               },
               {
+                "accessLevel" : "internal",
                 "jsName" : "depthOrArrayLayers",
                 "name" : "_depthOrArrayLayers",
                 "type" : {
-                  "int" : {
-
+                  "integer" : {
+                    "_0" : {
+                      "isSigned" : true,
+                      "width" : "word"
+                    }
                   }
                 }
               }
             ],
             "methods" : [
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "createView",
                 "name" : "_createView",
                 "parameters" : [
@@ -6021,6 +6605,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "createView",
                 "name" : "_createViewWithDescriptor",
                 "parameters" : [
@@ -6040,6 +6630,12 @@
                 }
               },
               {
+                "accessLevel" : "internal",
+                "effects" : {
+                  "isAsync" : false,
+                  "isStatic" : false,
+                  "isThrows" : true
+                },
                 "jsName" : "destroy",
                 "name" : "_destroy",
                 "parameters" : [
@@ -6055,6 +6651,7 @@
             "name" : "GPUTexture",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -6077,6 +6674,7 @@
         ],
         "types" : [
           {
+            "accessLevel" : "public",
             "getters" : [
 
             ],
@@ -6086,6 +6684,7 @@
             "name" : "GPUTextureView",
             "setters" : [
               {
+                "accessLevel" : "internal",
                 "functionName" : "label__set",
                 "jsName" : "label",
                 "name" : "label_",
@@ -6104,5 +6703,8 @@
       }
     ]
   },
-  "moduleName" : "WebGPUWasm"
+  "moduleName" : "WebGPUWasm",
+  "usedExternalModules" : [
+
+  ]
 }
