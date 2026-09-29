@@ -105,7 +105,7 @@ jobs:
         run: |
           cmake -S Dawn -B Dawn/host-protoc-build -GNinja -DCMAKE_BUILD_TYPE=Release
           cmake --build Dawn/host-protoc-build --target protoc --config Release
-          protoc_path=Dawn/host-protoc-build/dawn_source/protoc
+          protoc_path="$GITHUB_WORKSPACE/Dawn/host-protoc-build/dawn_source/protoc"
           if [ ! -x "$protoc_path" ]; then
             echo "::error::Could not find the host protoc executable in Dawn/host-protoc-build"
             exit 1
