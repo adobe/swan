@@ -188,6 +188,10 @@ def cmake_flags(target_config: TargetConfig) -> List[str]:
     """
     flags = []
 
+    if target_config.os == OS.LINUX:
+        # CMake cannot scan module dependencies with the Linux GCC toolchain.
+        flags.append("-DDAWN_SUPPORTS_CXX_MODULES=OFF")
+
     if target_config.os.is_apple():
         flags.append(
             f"-DCMAKE_OSX_ARCHITECTURES={';'.join([arch.value for arch in target_config.arch])}"
@@ -199,6 +203,12 @@ def cmake_flags(target_config: TargetConfig) -> List[str]:
         if target_config.os != OS.MACOS:
             flags.append("-DDAWN_USE_GLFW=OFF")
             flags.append("-DCMAKE_SYSTEM_NAME=iOS")
+            protoc_executable = shutil.which("protoc")
+            if not protoc_executable:
+                raise FileNotFoundError(
+                    "Host protoc executable not found; install protobuf before building Dawn for iOS"
+                )
+            flags.append(f"-DPROTOC_EXECUTABLE={protoc_executable}")
 
     if target_config.config == "debug":
         flags.append("-DCMAKE_BUILD_TYPE=Debug")
